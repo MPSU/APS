@@ -19,10 +19,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-import riscv_pkg::*;
-
 module tb_decoder_riscv();
 
+  import riscv_pkg::*;
+  import alu_opcodes_pkg::*;
   parameter delay = 4;
   parameter cycle = 200; // per one opcode
 
@@ -64,8 +64,8 @@ module tb_decoder_riscv();
     .mem_req_o        (mem_req),
     .mem_we_o         (mem_we),
     .mem_size_o       (mem_size),
-    .gpr_we_a_o       (gpr_we_a),
-    .wb_src_sel_o     (wb_src_sel),
+    .gpr_we_o         (gpr_we_a),
+    .wb_sel_o         (wb_src_sel),
     .illegal_instr_o  (illegal_instr),
     .branch_o         (branch),
     .jal_o            (jal),
