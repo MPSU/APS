@@ -37,7 +37,7 @@ module tb_CYBERcobra();
     always #5 clk = ~clk;
     
     initial begin 
-    $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
+    $display( "\nStart test: \n\n===============================================\nAdd CYBERcobra signals to the waveform and then\nCLICK THE BUTTON 'Run All'\n===============================================\n"); $stop();
     rstn = 1'b1;
     #10;
     rstn = 1'b0;
