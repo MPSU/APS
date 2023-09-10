@@ -49,7 +49,7 @@
 
 На рисунке ниже представлен способ подключения процессора к памяти инструкций и данных, а так же 255 периферийным устройствам.
 
-![../../.pic/Labs/lab_09_periph/fig_01.drawio.png](../../.pic/Labs/lab_09_periph/fig_01.drawio.png)
+![../../.pic/Labs/lab_12_periph/fig_01.drawio.png](../../.pic/Labs/lab_12_periph/fig_01.drawio.png)
 
 ### Активация выбранного устройства
 
