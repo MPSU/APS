@@ -2,20 +2,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Nikita Bulavin
-// 
-// Create Date:    
-// Design Name: 
+//
+// Create Date:
+// Design Name:
 // Module Name:    tb_riscv_unit
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
+// Tool Versions:
 // Description: tb for datapath
-// 
-// Dependencies: 
 //
-// Revision: 
+// Dependencies:
+//
+// Revision:
 // Revision 0.01 - File Created
-// Additional Comments: 
+// Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -36,16 +36,16 @@ module tb_riscv_unit();
         rst = 1;
         #20;
         rst = 0;
-        #500;
+        #800;
         $display("\n The test is over \n See the internal signals of the module on the waveform \n");
         $finish;
     end
 
-stall: assert property (
+stall_seq: assert property (
   @(posedge clk)
-  disable iff ( rst )
-  (top.mem_req) |-> (top.stall) |-> ##1 (!top.stall & top.mem_req)
-  
+  disable iff ( !unit.mem_req )
+  $past(unit.mem_req) |-> !$stable(unit.stall)
+
 )else $error("\n================================================\nThe realisation of the STALL signal is INCORRECT\n================================================\n");
 
 endmodule
