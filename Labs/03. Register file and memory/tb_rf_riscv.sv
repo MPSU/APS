@@ -1,21 +1,21 @@
-`timescale 1ns/1ps  
+`timescale 1ns/1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Nikita Bulavin
-// 
-// Create Date:    
-// Design Name: 
+//
+// Create Date:
+// Design Name:
 // Module Name:    tb_rf_riscv
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
+// Tool Versions:
 // Description: tb for RISC-V register file
-// 
-// Dependencies: 
 //
-// Revision: 
+// Dependencies:
+//
+// Revision:
 // Revision 0.01 - File Created
-// Additional Comments: 
+// Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -27,12 +27,12 @@ module tb_rf_riscv();
     logic [ 4:0] WA;
     logic [31:0] WD;
     logic        WE;
-    
+
     logic [31:0] RD1;
     logic [31:0] RD2;
     logic [31:0] RD1ref;
     logic [31:0] RD2ref;
-    
+
     rf_riscv DUT(
         .clk_i         (CLK),
         .read_addr1_i  (RA1),
@@ -43,7 +43,7 @@ module tb_rf_riscv();
         .read_data1_o  (RD1),
         .read_data2_o  (RD2)
     );
-    
+
     rf_riscv_ref DUTref(
         .clk(CLK   ),
         .A1 (RA1   ),
@@ -54,12 +54,12 @@ module tb_rf_riscv();
         .RD1(RD1ref),
         .RD2(RD2ref)
     );
-    
+
     integer i, err_count = 0;
-    
+
     parameter CLK_FREQ_MHz   = 100;
     parameter CLK_SEMI_PERIOD= 1e3/CLK_FREQ_MHz/2;
-    
+
     parameter address_length = 32;
 
     initial CLK <= 0;
@@ -69,7 +69,7 @@ module tb_rf_riscv();
             $display("\n\nThe test was stopped due to errors"); $stop();
         end
     end
-    
+
     initial begin
       $timeformat (-9, 2, "ns");
       $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
@@ -86,12 +86,14 @@ module tb_rf_riscv();
         err_count = err_count + 1;
       end
       @(posedge CLK);
-      DUT.rf_mem[0] = 32'd1;
+      WD <= 32'd1;
+      WA <= '0;
+      WE <= 1'b1;
       @(posedge CLK);
       WE  <= 'b0;
       RA1 <= 'b0;
       @(posedge CLK);
-      if( RD1 !== 'b0 ) begin 
+      if( RD1 !== 'b0 ) begin
         $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
         err_count = err_count + 1;
       end
@@ -120,7 +122,7 @@ module tb_rf_riscv();
       RA2  <= 'b0;
       @(posedge CLK);
       if( RD2 !== 'b0 )begin
-        $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD2);
+        $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
         err_count = err_count + 1;
       end
       @(posedge CLK);
@@ -137,11 +139,11 @@ module tb_rf_riscv();
         RA1  <= i;
         RA2  <= address_length - (i + 1);
         @(posedge CLK);
-        if(RD1ref !== RD1) begin 
+        if(RD1ref !== RD1) begin
             $display("time = %0t, address %h, RD1. Invalid data %h, correct data %h", $time, RA1, RD1, RD1ref);
             err_count = err_count + 1;
         end
-        if(RD2ref !== RD2) begin 
+        if(RD2ref !== RD2) begin
             $display("time = %0t, address %h, RD2. Invalid data %h, correct data %h", $time, RA2, RD2, RD2ref);
             err_count = err_count + 1;
         end
@@ -185,20 +187,20 @@ module rf_riscv_ref
 
   GND GND
        (.G(\<const0> ));
-  (* METHODOLOGY_DRC_VIOS = "" *) 
-  (* RTL_RAM_BITS = "1024" *) 
-  (* RTL_RAM_NAME = "RAM" *) 
-  (* RTL_RAM_TYPE = "RAM_SDP" *) 
-  (* ram_addr_begin = "0" *) 
-  (* ram_addr_end = "31" *) 
-  (* ram_offset = "0" *) 
-  (* ram_slice_begin = "0" *) 
-  (* ram_slice_end = "5" *) 
+  (* METHODOLOGY_DRC_VIOS = "" *)
+  (* RTL_RAM_BITS = "1024" *)
+  (* RTL_RAM_NAME = "RAM" *)
+  (* RTL_RAM_TYPE = "RAM_SDP" *)
+  (* ram_addr_begin = "0" *)
+  (* ram_addr_end = "31" *)
+  (* ram_offset = "0" *)
+  (* ram_slice_begin = "0" *)
+  (* ram_slice_end = "5" *)
   RAM32M #(
     .INIT_A(64'h0000000000000000),
     .INIT_B(64'h0000000000000000),
     .INIT_C(64'h0000000000000000),
-    .INIT_D(64'h0000000000000000)) 
+    .INIT_D(64'h0000000000000000))
     RAM_reg_r1_0_31_0_5
        (.ADDRA(A1),
         .ADDRB(A1),

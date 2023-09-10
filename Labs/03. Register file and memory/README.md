@@ -140,12 +140,12 @@ module mem16_20 (                     // создать блок с именем
                                     // (асинхронное чтение)
 
   // синхронное чтение
-  always_ff(@posedge clk) begin     // поставить перед выходом sync_read_data
+  always_ff @(posedge clk) begin     // поставить перед выходом sync_read_data
     sync_read_data <= memory[addr]; // регистр, в который каждый такт будут
   end                               // записываться считываемые данные
 
   // запись
-  always_ff @ (posedge clk) begin   // каждый раз по фронту clk
+  always_ff @(posedge clk) begin   // каждый раз по фронту clk
     if(write_enable) begin          // если сигнал write_enable == 1, то
       memory[addr] <= write_data;   // в ячейку по адресу addr будут записаны
                                     // данные сигнала write_data
