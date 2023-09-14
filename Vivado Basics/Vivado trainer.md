@@ -29,24 +29,24 @@
 
 1. Создать новый Verilog файл, для этого в окне `Sources` нажать на кнопку `+`
 2. В открывшемся окне выбрать `Add or create design source` → Нажать `Next`
-3. Нажать `Create File` → В открывшемся окне ввести имя модуля `top` → Нажать `OK` → В оставшемся окне нажать `Finish`
+3. Нажать `Create File` → В открывшемся окне ввести имя модуля `top` и выбрать тип файла SystemVerilog → Нажать `OK` → В оставшемся окне нажать `Finish`
 4. В открывшемся окне НЕ вводить названия портов и сразу нажать OK → После чего подтвердить выбор `Yes`
-5. Двойным кликов в окне `Source` открыть файл `top.v`
+5. Двойным кликов в окне `Source` открыть файл `top.sv`
 6. Написать следующий код:
 
-```Verilog
+```SystemVerilog
 module top (
-  input       clk,
-  input       a,
-  input       b,
-  output reg  q
+  input  logic clk,
+  input  logic a,
+  input  logic b,
+  output logic q
 );
 
-wire c;
+logic c;
 
 assign c = a ^ b;
 
-always @ (posedge clk) begin
+always_ff @(posedge clk) begin
  q <= c;
 end
 
@@ -56,19 +56,19 @@ endmodule
 7. Сохранить изменения
 8. Нажать `Open Elaborated Design`
 9.  Нажать `Schematic` в открывшемся списке
-10. Проанализировать полученный результат (сопоставить с Verilog-описанием)
+10. Проанализировать полученный результат (сопоставить с SystemVerilog-описанием)
 11. Закрыть проект
 
 ## Реализация простого проекта на отладочном стенде
 
 1. Создать новый проект
-2. Создать новый Verilog файл с названием basic
+2. Создать новый SystemVerilog файл с названием `basic`
 3. Написать следующий код:
 
-```Verilog
+```SystemVerilog
 module basic (
-  input [15:0] SW,
-  output [15:0] LED
+  input  logic [15:0] SW,
+  output logic [15:0] LED
 );
 
 assign LED[0] = SW[0] & SW[1];
@@ -96,4 +96,4 @@ endmodule
 15. Вместо окна `Source` будет отображаться окно `Hardware`, в нем необходимо нажать кнопку `Auto Connect`  (единственная активная кнопка) → В окне появится подключенное устройство
 16. Нажать правой кнопкой на устройстве `xc7a100t_0` → Выбрать пункт меню `Program Device`
 17. В открывшемся окне нажать `Program`
-18. Сопоставить поведение отладочной платы с Verilog-описанием
+18. Сопоставить поведение отладочной платы с SystemVerilog-описанием
