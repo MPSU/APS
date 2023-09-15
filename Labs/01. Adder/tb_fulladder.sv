@@ -41,7 +41,7 @@ parameter TEST_VALUES = 8;
 
     integer     i, err_count = 0;
     reg [4:0] running_line;
-
+    reg [5*8-1:0] line_dump;
     wire sum_dump;
     wire carry_o_dump;
 
@@ -67,7 +67,7 @@ parameter TEST_VALUES = 8;
         $finish();
     end
 
-    reg [5*8-1:0] line_dump = {
+    initial line_dump = {
     5'b00000,
     5'b10010,
     5'b01010,

@@ -46,7 +46,7 @@ alu_riscv DUT
 
 integer     i, err_count = 0;
 reg [8*9:1] operator_type;
-
+reg [103*10000:0] line_dump;
 wire [31:0] result_dump;
 wire        comparison_result_dump;
 
@@ -98,7 +98,7 @@ always @(*) begin
  endcase
 end
 
-reg [103*10000:0] line_dump = {
+initial line_dump = {
 103'h1e88592d984c690cac00000000,
 103'h18f51e266e7dff015e00000000,
 103'h22fd89520d06582ef800000000,

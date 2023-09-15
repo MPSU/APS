@@ -40,7 +40,7 @@ module tb_fulladder4();
 
     integer     i, err_count = 0;
     reg [13:0] running_line;
-
+    reg [14*400:0] line_dump;
     wire [3:0] sum_dump;
     wire       carry_o_dump;
 
@@ -77,7 +77,7 @@ module tb_fulladder4();
     end
 `endif
 
-    reg [14*400:0] line_dump = {
+    initial line_dump = {
     14'h1787,
     14'h1787,
     14'h1f8b,

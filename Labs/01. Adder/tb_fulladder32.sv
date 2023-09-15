@@ -40,7 +40,7 @@ parameter TEST_VALUES = 3000;
 
     integer     i, err_count = 0;
     reg [97:0] running_line;
-    
+    reg [98*3000:0] line_dump;
     wire [31:0] sum_dump;
     wire        carry_o_dump;
 
@@ -76,7 +76,7 @@ parameter TEST_VALUES = 3000;
         $finish();
     end
 `endif
-reg [98*3000:0] line_dump = {
+initial line_dump = {
 98'h04854d49302257a06d29e93a6,
 98'h2c7c1598c1ae5ec36b8a9d171,
 98'h2cb0a119624dd484b3bf9d678,
