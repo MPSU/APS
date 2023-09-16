@@ -17,7 +17,7 @@
 - дополнительные материалы и литературу ([Other/Further readings.md](Other/Further%20readings.md))
 - популярные материалы ([Other/Extras.md](Other/Extras.md))
 - информацию о преподавателях, их расписание и контакты ([Other/Educators.md](Other/Educators.md))
-- страницу с анонимной обратной связью (WIP).
+- страницу с анонимной обратной связью ([Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSdoLdMCnFOv-RS_E4ztVjVzPqy-pqcCcaD7JNx6F4r8Kd_8iw/viewform?usp=sharing)).
 
 Имея доступ к этой странице ты имеешь доступ ко всему курсу АПС.
 
