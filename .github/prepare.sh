@@ -1,5 +1,4 @@
 #!/bin/bash
 
 mkdir src
-cp .github/book.toml ./
-cp -R .github/SUMMARY.md .github/index.md .pic/ Basic\ Verilog\ structures/ Introduction/ Labs/ Vivado\ Basics/ Other/ src/
+cp .github/book.toml .github/SUMMARY.md .github/index.md ./
