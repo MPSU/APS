@@ -37,8 +37,8 @@ parameter STEP = 8;
     .mem_req_i      (REQ),
     .write_enable_i (WE ),
     .addr_i         (A  ),
-    .write_data_i   (WD ),
-    .read_data_o    (RD )
+    .write_data_i   (WD),
+    .read_data_o    (RD)
     );
     
     logic [31:0] RDa;
@@ -90,7 +90,7 @@ parameter STEP = 8;
                 REQ = 1;
                 #TIME_OPERATION;
                 if (RD !== 32'd3735928559) begin
-                    $display("When reading (write_enable_i = %h) at an address greater than 16383 (addr = %d), it should return dead_beef your data: %h_%h, time: %t", WE, A, RD[31:16],RD[15:0], $time);
+                    $display("When reading (write_enable_i = %h) at address greater than 16383 (current addr = %d), it should return dead_beef, but your data: %h_%h, time: %t", WE, A, RD[31:16],RD[15:0], $time);
                     err_count = err_count + 1;
                 end
             end
