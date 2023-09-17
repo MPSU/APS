@@ -1,18 +1,18 @@
-# Список типичных ошибок при работе с Vivado и Verilog
+# Список типичных ошибок при работе с Vivado и SystemVerilog
 
 ## Содержание
 
-1. [Ошибки, связанные с САПР Vivado](#ошибки-связанные-с-сапр-vivado)  
-1.1 [Не запускается симуляция: FATAL_ERROR: PrivateChannel: Error creating client socket](#не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)  
-1.2 [Не запускается симуляция: boot::filesystem::remove: Процесс не может получить доступ к файлу, т.к. этот файл занят другим процессом](#не-запускается-симуляция-boot-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)  
-1.3 [Вылетает Vivado при попытке открыть схему](#вылетает-vivado-при-попытке-открыть-схему)  
-1.4 [Не устанавливается Vivado: The following fatal error encountered while installing files: Unable to open archive](#не-устанавливается-vivado-unable-to-open-archive)  
+- [Список типичных ошибок при работе с Vivado и SystemVerilog](#список-типичных-ошибок-при-работе-с-vivado-и-systemverilog)
+  - [Содержание](#содержание)
+  - [Ошибки связанные с САПР Vivado](#ошибки-связанные-с-сапр-vivado)
+    - [Не запускается симуляция FATAL\_ERROR PrivateChannel Error creating client socket](#не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)
+    - [Не запускается симуляция boot filesystem remove Процесс не может получить доступ к файлу](#не-запускается-симуляция-boot-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
+    - [Вылетает Vivado при попытке открыть схему](#вылетает-vivado-при-попытке-открыть-схему)
+    - [Не устанавливается Vivado Unable to open archive](#не-устанавливается-vivado-unable-to-open-archive)
+  - [Ошибки синтаксиса языка SystemVerilog](#ошибки-синтаксиса-языка-systemverilog)
+    - [имя сигнала is not a type](#имя-сигнала-is-not-a-type)
+    - [cannot find port on this module](#cannot-find-port-on-this-module)
 
-2. [Ошибки синтаксиса языка Verilog](#ошибки-синтаксиса-языка-verilog)  
-2.1 [concurrent assignment to a non-net is not permitted](#concurrent-assignment-to-a-non-net-is-not-permitted)  
-2.2 [procedural assignment to a non-register test is not permitted, left-hand side should be reg/integer/time/genvar](#procedural-assignment-to-a-non-register-test-is-not-permitted-left-hand-side-should-be-reg)  
-2.3 ['имя сигнала' is not a type](#имя-сигнала-is-not-a-type)  
-2.4 [cannot find port on this module](#cannot-find-port-on-this-module)  
 
 ## Ошибки связанные с САПР Vivado
 
@@ -78,26 +78,26 @@
 
 ---
 
-## Ошибки синтаксиса языка Verilog
+## Ошибки синтаксиса языка SystemVerilog
 
-### concurrent assignment to a non-net is not permitted
+<!-- ### concurrent assignment to a non-net is not permitted
 
 Запрещено выполнять непрерывное присваивание (`assign`) к объектам, не являющимися цепями. Скорее всего, вы пытались выполнить `assign b = a;`, где `b` является регистром.
 
-```Verilog
+```SystemVerilog
 module alu(input a, input b,
-  input [3:0] alu_op,
-  output reg flag,
-  output reg result
+  input  logic [3:0] alu_op,
+  output logic flag,
+  output logic result
 );
 
 assign flag = alu_op[3] ? (a > b) : 1'b0; // ошибка
 endmodule
 ```
 
----
+--- -->
 
-### procedural assignment to a non-register test is not permitted left-hand side should be reg
+<!-- ### procedural assignment to a non-register test is not permitted left-hand side should be reg
 
 Запрещено использовать процедурное присваивание (присваивание в блоке `always` или `initial`) объектам, не являющимися регистрами. Скорее всего, вы пытались выполнить `b = a;` или `b <= a;` блоке `always`/`initial`, где `b` является проводом.
 
@@ -110,14 +110,14 @@ end
 endmodule
 ```
 
----
+--- -->
 
 ### имя сигнала is not a type
 
 Скорее всего, компилятор не распознал присваивание, поскольку оно было записано с ошибками. Вне блоков `always` и `initial` можно выполнять только непрерывное присваивание (через `assign`).
 
-```Verilog
-module adder(input a, input b, output c);
+```SystemVerilog
+module half_adder(input logic a, input logic b, output logic c);
 c = a ^ b;  // ошибка, для непрерывного присваивания
             // необходимо ключевое слово assign
 endmodule
@@ -131,17 +131,17 @@ endmodule
 
 Пример
 
-```Verilog
-module adder(input a, input b, output c);
+```SystemVerilog
+module half_adder(input logic a, input logic b, output logic c);
   assign c = a ^ b;
-endmodule 
+endmodule
 
 module testbench();
-reg A, B;
-wire C;
+logic A, B, C;
+
 adder DUT(
   .A(A),  // <- здесь будет ошибка,
-          // т.к. в модуле adder нет порта 'A'
+          // т.к. в модуле half_adder нет порта 'A'
   .b(B),
   .c(C)
 );
