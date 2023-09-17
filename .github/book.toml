@@ -1,0 +1,6 @@
+[book]
+authors = ["Andrei Solodovnikov"]
+language = "ru"
+multilingual = true
+src = "src"
+title = "Архитектуры процессорных систем"
