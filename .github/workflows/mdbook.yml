@@ -36,14 +36,14 @@ jobs:
         run: |
           chmod +x .github/prepare.sh
           .github/prepare.sh
-          curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
-          rustup update
-          cargo install --version ${MDBOOK_VERSION} mdbook
+          mkdir bin
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.34/mdbook-v0.4.34-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+          bin/mdbook build
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
       - name: Build with mdBook
-        run: mdbook build
+        run: bin/mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
