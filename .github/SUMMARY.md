@@ -48,3 +48,9 @@
 - [Руководство по прошивке ПЛИС](Vivado%20Basics/Program%20nexys%20a7.md)
 - [Заголовочные файлы в Verilog](Vivado%20Basics/Verilog%20Header.md)
 - [Как добавить файл, инициализирующий память](Vivado%20Basics/How%20to%20add%20a%20mem-file.md)
+
+# Остальное
+
+- [RV32I - Стандартный набор целочисленных инструкций RISC-V](Other/rv32i.md)
+- [Список типичных ошибок при работе с Vivado и SystemVerilog](Other/FAQ.md)
+- [Студенческий сервер](Other/Students%20server.md)
