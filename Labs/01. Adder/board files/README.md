@@ -4,20 +4,20 @@
 
 После этого наше устройство будет выглядеть так:
 
-![../../../.pic/Labs/board%20files/board%20files/nexys_adder1.png](../../../.pic/Labs/board%20files/board%20files/nexys_adder1.png)
+![../../../.pic/Labs/board%20files/nexys_adder1.png](../../../.pic/Labs/board%20files/nexys_adder1.png)
 
 Подключенное окружение позволяет производить ввод входных значений (А, В и Pin) с помощью переключателей (номер переключателя отображен на самом краю платы), расположенных на плате. Операнд А задается переключателями 15-8, В: 7-0, Pin: тактовая кнопка BTND (нижняя из 5-ти, расположенных вместе в форме крестовины). Семисегментные индикаторы в шестнадцатиричном формате отображают на левом блоке слагаемые А и В, а на правом - результат сложения. На светодиодах, расположенных над переключателями отображается результат  в двоичном формате.
 
 Управление сумматором через плату
 
-![../../../.pic/Labs/board%20files/board%20files/nexys_adder2.png](../../../.pic/Labs/board%20files/board%20files/nexys_adder2.png)
+![../../../.pic/Labs/board%20files/nexys_adder2.png](../../../.pic/Labs/board%20files/nexys_adder2.png)
 
 Для прошивки ПЛИС подключите утройство через USB, включите питание переключателем, выполните синтез и имплементацию вашего дизайна и сгенерируйте битстрим. Если на этом этапе у вас возникают ошибки, постарайтесь исправить из с помощью [`инструкции по работе с ошибками синтеза`](../../../Vivado%20Basics/Elaboration%20failed.md). После этого выберите в левом меню `Open Target` - `Auto Connect`, затем `Program Device` и ваше устройство прошьется.
 
 Генерация битстрима
-![../../../.pic/Labs/board%20files/board%20files/Program_Device1.png](../../../.pic/Labs/board%20files/board%20files/Program_Device1.png)
+![../../../.pic/Labs/board%20files/Program_Device1.png](../../../.pic/Labs/board%20files/Program_Device1.png)
 
 Прошивка ПЛИС
-![../../../.pic/Labs/board%20files/board%20files/Program_Device2.png](../../../.pic/Labs/board%20files/board%20files/Program_Device2.png)
+![../../../.pic/Labs/board%20files/Program_Device2.png](../../../.pic/Labs/board%20files/Program_Device2.png)
 
 Попробуйте выставить на переключателях различные слагаемые, убедитесь, что все работает исправно и сдавайте работу.
