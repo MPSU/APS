@@ -4,20 +4,20 @@
 
 После этого наше устройство будет выглядеть так:
 
-![../../../.pic/Labs/board%20files/board%20files/alu_9.png](../../../.pic/Labs/board%20files/board%20files/alu_9.png)
+![../../../.pic/Labs/board%20files/alu_9.png](../../../.pic/Labs/board%20files/alu_9.png)
 
 Подключенное окружение позволяет производить ввод входных значений (А и В) и управляющего сигнала (ALUOp) с помощью переключателей (номер переключателя отображен на самом краю платы), расположенных на плате. А: 15-11, В: 10-6, ALUOp: 4-0, а переключатель №5 активирует семисегментные индикаторы, на которых отображается на левом блоке операнды А и В, а на правом - ALUOp. На светодиодах, расположенных над переключателями отображается выходное значение в двоичном формате, а 15-й светодиод отвечает за сигнал `Flag`
 
 Управление АЛУ через плату
 
-![../../../.pic/Labs/board%20files/board%20files/nexys_alu.png](../../../.pic/Labs/board%20files/board%20files/nexys_alu.png)
+![../../../.pic/Labs/board%20files/nexys_alu.png](../../../.pic/Labs/board%20files/nexys_alu.png)
 
 Для прошивки ПЛИС подключите утройство через USB, включите питание переключателем, выполните синтез и имплементацию вашего дизайна и сгенерируйте битстрим. Если на этом этапе у вас возникают ошибки, постарайтесь исправить из с помощью [`инструкции по работе с ошибками синтеза`](../../../Vivado%20Basics/Synthesis%20failed.md). После этого выберите в левом меню `Open Target` - `Auto Connect`, затем `Program Device` и ваше устройство прошьется.
 
 Генерация битстрима
-![../../../.pic/Labs/board%20files/board%20files/Program_Device1.png](../../../.pic/Labs/board%20files/board%20files/Program_Device1.png)
+![../../../.pic/Labs/board%20files/Program_Device1.png](../../../.pic/Labs/board%20files/Program_Device1.png)
 
 Прошивка ПЛИС
-![../../../.pic/Labs/board%20files/board%20files/Program_Device2.png](../../../.pic/Labs/board%20files/board%20files/Program_Device2.png)
+![../../../.pic/Labs/board%20files/Program_Device2.png](../../../.pic/Labs/board%20files/Program_Device2.png)
 
 Попробуйте выставить на переключателях различные опкоды, такие как сложение, вычитание, сдвиг и сравнения, убедитесь, что все работает исправно и сдавайте работу.
