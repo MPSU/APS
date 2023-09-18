@@ -30,12 +30,12 @@ reg [15:0] LEDr;
 
 fulladder32 DUT
 (
-  .A    (A),
-  .B    (B),
-  .Pin  (Pin),
+  .a_i     (A),
+  .b_i     (B),
+  .carry_i (Pin),
   
-  .S    (S),
-  .Pout (Pout)
+  .sum_o   (S),
+  .carry_o (Pout)
 );
 
 assign B = {24'b0,SW[7:0]};
