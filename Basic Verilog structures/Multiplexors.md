@@ -124,7 +124,7 @@ end
 
 ```SystemVerilog
 logic Y;
-always @(*) begin
+always_comb begin
   case(S)           // Описываем блок case, где значение сигнала S
                     // будет сравниваться с различными возможными его значениями
     1'b0: Y <= D0;  // Если S==0, то Y = D0
