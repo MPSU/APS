@@ -103,7 +103,7 @@ parameter STEP = 8;
         for (i = 0; i < 4; i = i + 1) begin 
           if(i==0) begin 
             repeat(2)@(posedge CLK); 
-            RDa = RD;
+            #1; RDa = RD;
           end else
           if(RD !== RDa) begin
             $display("incorrect conversion of the reading address = %h, time: %t", A, $time);
@@ -119,6 +119,13 @@ parameter STEP = 8;
         @(posedge CLK); #1;
         if (RD == RDa) begin
             $display("reading from data memory must be synchronous, time: %t", $time);
+            err_count = err_count + 1;
+        end
+        @(posedge CLK);
+        i = {14{1'b1}};
+        repeat(2) @(posedge CLK);
+        if (RD === 'd3735928559) begin
+            $display("incorrect reading from address = %d, data = %h", A, RD);
             err_count = err_count + 1;
         end
         $display("Number of errors: %d", err_count);
