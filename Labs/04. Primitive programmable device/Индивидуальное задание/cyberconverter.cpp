@@ -12,7 +12,7 @@ void print_help(const std::string program_name)
   cout << "CYBERcobra program file may contain only comments (starting with \"//\"),\n";
   cout << "whitespaces and binary digits '0' or '1'.\n";
   cout << "This program will erase this parts from every line and then convert\n";
-  cout << "32-bits binary strings into 4 little endian 8-bit strings in hex-format.\n\n";
+  cout << "in hex-format.\n\n";
   cout << "If output file omitted, the <input_file_base>_converted.<input_file_ext>\n";
   cout << "will be produced.\n\n";
   cout << "If input file omitted, program.txt will be used.\n\n";
@@ -109,24 +109,19 @@ int main(int argc, char ** argv)
       cerr << "line " << line_counter << " length is not equal 32 after trimming comments and whitespaces" << endl;
       return -2;
     }
-    // split 32-bits binary line into 4 little-endian hex lines and write them into file
-    for (size_t i = 0; i < 4; i++)
+    // Convert into hex lines and write them into file
+    size_t valid_char_num;
+    int cur_word = std::stoi(str, &valid_char_num, 2);
+    if(valid_char_num != 32)
     {
-      // For every 8-bit part of 32-bit line get int representation.
-      // If illegal character found, throw error.
-      size_t valid_char_num;
-      string byte_substr = str.substr(8*(3-i), 8);
-      int cur_byte = std::stoi(byte_substr, &valid_char_num, 2);
-      if(valid_char_num != 8)
-      {
-        cerr << "Illegal character '" << byte_substr.at(valid_char_num) <<
-            "' found in line " << line_counter << ": \"" << str << "\"\n";
-        cerr << "Should be only '0' or '1'." << endl;
-        return -3;
-      }
-      char hex_byte_str[3];
+      cerr << "Illegal character '" << str.at(valid_char_num) <<
+          "' found in line " << line_counter << ": \"" << str << "\"\n";
+      cerr << "Should be only '0' or '1'." << endl;
+      return -3;
+    }
+      char hex_byte_str[9];
       // convert int representation into hex string
-      snprintf(hex_byte_str, 3, "%02x", cur_byte);
+      snprintf(hex_byte_str, 9, "%08x", cur_word);
       ofs << hex_byte_str << "\n";
     }
   }
