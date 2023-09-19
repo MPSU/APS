@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
     }
     // Convert into hex lines and write them into file
     size_t valid_char_num;
-    int cur_word = std::stoi(str, &valid_char_num, 2);
+    uint32_t cur_word = std::stoll(str, &valid_char_num, 2);
     if(valid_char_num != 32)
     {
       cerr << "Illegal character '" << str.at(valid_char_num) <<
@@ -123,7 +123,6 @@ int main(int argc, char ** argv)
       // convert int representation into hex string
       snprintf(hex_byte_str, 9, "%08x", cur_word);
       ofs << hex_byte_str << "\n";
-    }
   }
   ifs.close();
   ofs.close();
