@@ -60,6 +60,7 @@ reg [102:0] running_line;
 
 initial
   begin
+    running_line <= 0;
     $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
     for ( i = 0; i < TEST_VALUES; i = i + 1 )
       begin
@@ -10097,7 +10098,7 @@ initial line_dump = {
 103'h3f27ac46eaaae4027700000000,
 103'h16570085a76566615400000000,
 103'h3cfd0b67e68d12a83e00000000,
-103'h32d7053ffce4132de500000000,
+103'hxxxxxxxxxxxxxxxxx000000000,
 103'h073ec21038e11e95ca00000000
 };
 

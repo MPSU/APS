@@ -31,6 +31,7 @@
 - [Базовые конструкции Verilog](../Basic%20Verilog%20structures/)
 - [Список типичных ошибок в Vivado и SystemVerilog](../Other/FAQ.md)
 - [Тестовое окружение](../Basic%20Verilog%20structures/Testbench.md)
+- [Готовые модули](Made-up%20modules)
 
 ## Порядок выполнения лабораторных работ для групп
 

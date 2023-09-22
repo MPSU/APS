@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_fulladder32();
-
+`define __debug__
 parameter TIME_OPERATION  = 100;
 parameter TEST_VALUES = 3000;
 
