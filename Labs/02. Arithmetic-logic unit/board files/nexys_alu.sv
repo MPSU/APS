@@ -26,12 +26,12 @@ reg minus;
 
 alu_riscv DUT
 (
-  .ALUOp  (operator_i),
-  .A      (operand_a_i),
-  .B      (operand_b_i),
+  .alu_op_i (operator_i),
+  .a_i      (operand_a_i),
+  .b_i      (operand_b_i),
 
-  .Result (result_o),
-  .Flag   (comparison_result_o)
+  .result_o (result_o),
+  .flag_o   (comparison_result_o)
 );
 
 assign operator_i  = SW[4:0];

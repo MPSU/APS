@@ -28,11 +28,10 @@
 
 - [Студенческий сервер](../Other/Students%20server.md)
 - [Создание базового проекта с прошивкой ПЛИС в Vivado](../Vivado%20Basics/Vivado%20trainer.md)
-- [Что такое язык описания аппаратуры HDL](../Introduction/What%20is%20HDL.md)
-- [Как работает ПЛИС](../Introduction/How%20FPGA%20works.md)
-- [Синтаксис языка Verilog](../Basic%20Verilog%20structures/Verilog%20syntax.md)
 - [Базовые конструкции Verilog](../Basic%20Verilog%20structures/)
+- [Список типичных ошибок в Vivado и SystemVerilog](../Other/FAQ.md)
 - [Тестовое окружение](../Basic%20Verilog%20structures/Testbench.md)
+- [Готовые модули](Made-up%20modules)
 
 ## Порядок выполнения лабораторных работ для групп
 
