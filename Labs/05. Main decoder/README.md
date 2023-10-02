@@ -257,7 +257,7 @@ module decoder_riscv (
   output logic         branch_o,
   output logic         jal_o,
   output logic         jalr_o,
-  output logic         mret
+  output logic         mret_o
 );
   import riscv_pkg::*;
 
