@@ -40,11 +40,11 @@ parameter STEP = 8;
     .write_data_i   (WD),
     .read_data_o    (RD)
     );
-    
+
     logic [31:0] RDa;
-    integer i, err_count = 0;
+    integer i, hash, err_count = 0;
     assign A = i;
-    
+
     parameter CLK_FREQ_MHz   = 100;
     parameter CLK_SEMI_PERIOD= 1e3/CLK_FREQ_MHz/2;
 
@@ -56,15 +56,22 @@ parameter STEP = 8;
         $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
         REQ = 1;
         WE = 0;
-        i = 0; #10;
-        if (RD !== 32'hx) begin
-            $display("The data memory should not be initialized by the $readmemh function");
-            err_count = err_count + 1;
-        end
-        for (i = 0; i < ADDR_SIZE; i = i + 4) begin
-            @(posedge CLK);
+        @(posedge CLK);
+        for (i = 0; i < ADDR_SIZE; i = i + STEP) begin
+            hash = (i+4)*8/15*16/23*42;
             WE = 1;
-            WD = $urandom;
+            WD = hash;
+            @(posedge CLK)#3;
+        end
+        WE = 0;
+        @(posedge CLK);
+        for (i = 0; i < ADDR_SIZE; i = i + STEP) begin
+            @(posedge CLK)#3;
+            hash = (i+4)*8/15*16/23*42;
+            if(RD !== hash) begin
+                $error("Read data: %0h is unequal written data: %0h at addres: %0h, time: %t", RD, hash, i, $time);
+                err_count = err_count + 1;
+            end
         end
         for (i = 0; i < (ADDR_SIZE+STEP); i = i + 1 + $urandom() % STEP) begin
             if (i < (ADDR_SIZE)) begin
@@ -77,11 +84,11 @@ parameter STEP = 8;
                 WE = $urandom % 2;
                 #TIME_OPERATION;
                 if ((WE && REQ || !REQ) && RD !== 32'd4195425967) begin
-                    $display("When writing (write_enable_i = %h) read_data_o should be equal to fa11_1eaf, your data: %h_%h, time: %t", WE, RD[31:16],RD[15:0], $time);
+                    $error("When writing (write_enable_i = %h) read_data_o should be equal to fa11_1eaf, your data: %h_%h, time: %t", WE, RD[31:16],RD[15:0], $time);
                     err_count = err_count + 1;
                 end
                 if ((!WE && REQ) && RD !== RDa) begin
-                    $display("When reading (write_enable_i = %h), the data %h is overwritten with data %h at address %h, time: %t", WE, RDa, RD, A, $time);
+                    $error("When reading (write_enable_i = %h), the data %h is overwritten with data %h at address %h, time: %t", WE, RDa, RD, A, $time);
                     err_count = err_count + 1;
                 end
             end
@@ -90,7 +97,7 @@ parameter STEP = 8;
                 REQ = 1;
                 #TIME_OPERATION;
                 if (RD !== 32'd3735928559) begin
-                    $display("When reading (write_enable_i = %h) at address greater than 16383 (current addr = %d), it should return dead_beef, but your data: %h_%h, time: %t", WE, A, RD[31:16],RD[15:0], $time);
+                    $error("When reading (write_enable_i = %h) at address greater than 16383 (current addr = %d), it should return dead_beef, but your data: %h_%h, time: %t", WE, A, RD[31:16],RD[15:0], $time);
                     err_count = err_count + 1;
                 end
             end
@@ -106,7 +113,7 @@ parameter STEP = 8;
             #1; RDa = RD;
           end else
           if(RD !== RDa) begin
-            $display("incorrect conversion of the reading address = %h, time: %t", A, $time);
+            $error("incorrect conversion of the reading address = %h, time: %t", A, $time);
             err_count = err_count + 1;
           end
           #TIME_OPERATION;
@@ -118,14 +125,14 @@ parameter STEP = 8;
         #1; RDa = RD;
         @(posedge CLK); #1;
         if (RD == RDa) begin
-            $display("reading from data memory must be synchronous, time: %t", $time);
+            $error("reading from data memory must be synchronous, time: %t", $time);
             err_count = err_count + 1;
         end
         @(posedge CLK);
         i = {14{1'b1}};
         repeat(2) @(posedge CLK);
         if (RD === 'd3735928559) begin
-            $display("incorrect reading from address = %d, data = %h", A, RD);
+            $error("incorrect reading from address = %d, data = %h", A, RD);
             err_count = err_count + 1;
         end
         $display("Number of errors: %d", err_count);
