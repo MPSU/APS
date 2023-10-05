@@ -123,7 +123,6 @@ module tb_decoder_riscv();
         a_sel_miss      = (grm.a_sel_o !== a_sel) & !illegal_instr;
         b_sel_miss      = (grm.b_sel_o !== b_sel) & !illegal_instr;
         alu_op_miss     = (grm.alu_op_o !== alu_op) & !illegal_instr;
-        csr_op_miss     = (grm.csr_op_o !== csr_op) & !illegal_instr;
         csr_we_miss     = (grm.csr_we_o !== csr_we);
         mem_req_miss    = grm.mem_req_o !== mem_req;
         mem_we_miss     = grm.mem_we_o !== mem_we;
@@ -144,7 +143,6 @@ module tb_decoder_riscv();
         a_sel_miss      = (grm.a_sel_o !== a_sel) & !illegal_instr;
         b_sel_miss      = (grm.b_sel_o !== b_sel) & !illegal_instr;
         alu_op_miss     = (grm.alu_op_o !== alu_op) & !illegal_instr;
-        csr_op_miss     = (grm.csr_op_o !== csr_op) & !illegal_instr;
         csr_we_miss     = (grm.csr_we_o !== csr_we);
         mem_req_miss    = grm.mem_req_o !== mem_req;
         mem_we_miss     = grm.mem_we_o !== mem_we;
@@ -163,7 +161,6 @@ module tb_decoder_riscv();
         a_sel_miss      = (grm.a_sel_o !== a_sel) & !illegal_instr;
         b_sel_miss      = (grm.b_sel_o !== b_sel) & !illegal_instr;
         alu_op_miss     = (grm.alu_op_o !== alu_op) & !illegal_instr;
-        csr_op_miss     = (grm.csr_op_o !== csr_op) & !illegal_instr;
         csr_we_miss     = (grm.csr_we_o !== csr_we);
         mem_req_miss    = grm.mem_req_o !== mem_req;
         mem_we_miss     = grm.mem_we_o !== mem_we;
@@ -181,7 +178,6 @@ module tb_decoder_riscv();
         a_sel_miss      = (grm.a_sel_o !== a_sel) & !illegal_instr;
         b_sel_miss      = (grm.b_sel_o !== b_sel) & !illegal_instr;
         alu_op_miss     = ((alu_op !== ALU_ADD)&(alu_op !== ALU_XOR)&(alu_op !== ALU_OR)) & !illegal_instr;
-        csr_op_miss     = (grm.csr_op_o !== csr_op) & !illegal_instr;
         csr_we_miss     = (grm.csr_we_o !== csr_we);
         mem_req_miss    = grm.mem_req_o !== mem_req;
         mem_we_miss     = grm.mem_we_o !== mem_we;
@@ -195,12 +191,13 @@ module tb_decoder_riscv();
         mret_miss       = grm.mret_o !== mret;
       end
       
+      SYSTEM_OPCODE: csr_op_miss     = (grm.csr_op_o !== csr_op);
+      
       default:      //MISC_MEM_OPCODE, SYSTEM_OPCODE and other
       begin
         //a_sel_miss      = grm.a_sel_o !== a_sel;
         //b_sel_miss      = grm.b_sel_o !== b_sel;
         //alu_op_miss     = grm.alu_op_o !== alu_op;
-        csr_op_miss     = (grm.csr_op_o !== csr_op);
         csr_we_miss     = (grm.csr_we_o !== csr_we);
         mem_req_miss    = grm.mem_req_o !== mem_req;
         mem_we_miss     = grm.mem_we_o !== mem_we;
@@ -278,21 +275,31 @@ module tb_decoder_riscv();
       error = error + 1'b1;
       end
     if (~illegal_miss) begin
-      if (a_sel_miss)begin
-        $display ("Output 'a_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",a_sel, grm.a_sel_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
-        end
-      if (b_sel_miss)begin
-        $display ("Output 'b_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",b_sel, grm.b_sel_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
-        end
-      if (alu_op_miss)begin
-        $display ("Output 'alu_op_o       ' is incorrect(%b instead of %b), instruction: %s %s, time: %t",alu_op, grm.alu_op_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
-        end
-      if (csr_op_miss) begin
-        $display ("Output 'csr_op_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",csr_op, grm.csr_op_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
+      if(!illegal_instr) begin
+          if (a_sel_miss)begin
+            $display ("Output 'a_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",a_sel, grm.a_sel_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+            end
+          if (b_sel_miss)begin
+            $display ("Output 'b_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",b_sel, grm.b_sel_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+            end
+          if (alu_op_miss)begin
+            $display ("Output 'alu_op_o       ' is incorrect(%b instead of %b), instruction: %s %s, time: %t",alu_op, grm.alu_op_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+            end
+          if (csr_op_miss) begin
+            $display ("Output 'csr_op_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",csr_op, grm.csr_op_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+          end
+          if (mem_size_miss)begin
+            $display ("Output 'mem_size_o     ' is incorrect( %b  instead of %b  ), instruction: %s %s, time: %t",mem_size, grm.mem_size_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+          end
+          if (wb_sel_miss)begin
+            $display ("Output 'wb_sel_o   ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",wb_sel, grm.wb_sel_o, instr_type, opcode_type, $time);
+            error = error + 1'b1;
+          end
       end
       if (csr_we_miss) begin
         $display ("Output 'csr_we_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",csr_we, grm.csr_we_o, instr_type, opcode_type, $time);
@@ -302,16 +309,8 @@ module tb_decoder_riscv();
         $display ("Output 'mem_we_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mem_we, grm.mem_we_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
-      if (mem_size_miss)begin
-        $display ("Output 'mem_size_o     ' is incorrect( %b  instead of %b  ), instruction: %s %s, time: %t",mem_size, grm.mem_size_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
-        end
       if (mem_req_miss)begin
         $display ("Output 'mem_req_o      ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mem_req, grm.mem_req_o, instr_type, opcode_type, $time);
-        error = error + 1'b1;
-        end
-      if (wb_sel_miss)begin
-        $display ("Output 'wb_sel_o   ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",wb_sel, grm.wb_sel_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (gpr_we_miss)begin
@@ -330,46 +329,12 @@ module tb_decoder_riscv();
         $display ("Output 'jalr_o         ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",jalr, grm.jalr_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
+      if (mret_miss)begin
+        $display ("Output 'mret_o         ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mret, grm.mret_o, instr_type, opcode_type, $time);
+        error = error + 1'b1;
+        end
     end
 
-    if ((a_sel != OP_A_RS1) &
-        (a_sel != OP_A_CURR_PC) &
-        (a_sel != OP_A_ZERO)) begin
-      $display ("Output 'a_sel_o' must always have a legal value, instruction: %s %s, time: %t", instr_type, opcode_type, $time);
-      error = error + 1;
-    end
-    if ((b_sel != OP_B_RS2) &
-        (b_sel != OP_B_IMM_I) &
-        (b_sel != OP_B_IMM_U) &
-        (b_sel != OP_B_IMM_S) &
-        (b_sel != OP_B_INCR)) begin
-      $display ("Output 'b_sel_o' must always have a legal value, instruction: %s %s, time: %t", instr_type, opcode_type, $time);
-      error = error + 1;
-    end
-    if ((alu_op != ALU_ADD)  & (alu_op != ALU_SUB) &
-        (alu_op != ALU_XOR)  & (alu_op != ALU_OR)  &
-        (alu_op != ALU_AND)  & (alu_op != ALU_SRA) &
-        (alu_op != ALU_SRL)  & (alu_op != ALU_SLL) &
-        (alu_op != ALU_LTS)  & (alu_op != ALU_LTU) &
-        (alu_op != ALU_GES)  & (alu_op != ALU_GEU) &
-        (alu_op != ALU_EQ)   & (alu_op != ALU_NE)  &
-        (alu_op != ALU_SLTS) & (alu_op != ALU_SLTU)) begin
-      $display ("Output 'alu_op_o' must always have a legal value, instruction: %s %s, time: %t", instr_type, opcode_type, $time);
-      error = error + 1;
-    end
-    if ((mem_size != LDST_B) &
-        (mem_size != LDST_H) &
-        (mem_size != LDST_W) &
-        (mem_size != LDST_BU) &
-        (mem_size != LDST_HU)) begin
-      $display ("Output 'mem_size_o' must always have a legal value, instruction: %s %s, time: %t", instr_type, opcode_type, $time);
-      error = error + 1;
-    end
-    if ((wb_sel != WB_EX_RESULT) &
-        (wb_sel != WB_LSU_DATA)) begin
-      $display ("Output 'wb_sel_o' must always have a legal value, instruction: %s %s, time: %t", instr_type, opcode_type, $time);
-      error = error + 1;
-    end
   end
   
   always begin
@@ -460,6 +425,19 @@ module tb_decoder_riscv();
 
 endmodule
 
+// Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+// Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+// --------------------------------------------------------------------------------
+// Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
+// Date        : Thu Oct  5 10:40:50 2023
+// Host        : HepoH-HomePC running 64-bit major release  (build 9200)
+// Command     : write_verilog C:/Users/voult/Desktop/aps_labs/decoder_netist.v
+// Design      : decoder_riscv
+// Purpose     : This is a Verilog netlist of the current design or from a specific cell of the design. The output is an
+//               IEEE 1364-2001 compliant Verilog HDL file that contains netlist information obtained from the input
+//               design files.
+// Device      : xc7a100tcsg324-1
+// --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
 (* STRUCTURAL_NETLIST = "yes" *)
@@ -497,867 +475,547 @@ module decoder_riscv_ref
   output jalr_o;
   output mret_o;
 
-  wire \<const0> ;
   wire [1:0]a_sel_o;
-  wire [1:0]a_sel_o_OBUF;
-  wire \a_sel_o_OBUF[0]_inst_i_2_n_0 ;
-  wire \a_sel_o_OBUF[0]_inst_i_3_n_0 ;
-  wire \a_sel_o_OBUF[1]_inst_i_2_n_0 ;
+  wire \a_sel_o[0]_INST_0_i_1_n_0 ;
+  wire \a_sel_o[1]_INST_0_i_1_n_0 ;
   wire [4:0]alu_op_o;
-  wire [4:0]alu_op_o_OBUF;
-  wire \alu_op_o_OBUF[3]_inst_i_2_n_0 ;
-  wire \alu_op_o_OBUF[3]_inst_i_3_n_0 ;
-  wire \alu_op_o_OBUF[3]_inst_i_4_n_0 ;
-  wire \alu_op_o_OBUF[3]_inst_i_5_n_0 ;
-  wire \alu_op_o_OBUF[4]_inst_i_2_n_0 ;
+  wire \alu_op_o[3]_INST_0_i_1_n_0 ;
   wire [2:0]b_sel_o;
-  wire [2:0]b_sel_o_OBUF;
-  wire \b_sel_o_OBUF[0]_inst_i_2_n_0 ;
-  wire \b_sel_o_OBUF[0]_inst_i_3_n_0 ;
-  wire \b_sel_o_OBUF[0]_inst_i_4_n_0 ;
-  wire \b_sel_o_OBUF[0]_inst_i_5_n_0 ;
-  wire \b_sel_o_OBUF[0]_inst_i_6_n_0 ;
-  wire \b_sel_o_OBUF[0]_inst_i_7_n_0 ;
-  wire \b_sel_o_OBUF[1]_inst_i_2_n_0 ;
-  wire \b_sel_o_OBUF[2]_inst_i_2_n_0 ;
+  wire \b_sel_o[0]_INST_0_i_1_n_0 ;
+  wire \b_sel_o[1]_INST_0_i_1_n_0 ;
   wire branch_o;
-  wire branch_o_OBUF;
-  wire [2:0]csr_op_o;
-  wire [2:0]csr_op_o_OBUF;
-  wire \csr_op_o_OBUF[2]_inst_i_2_n_0 ;
-  wire \csr_op_o_OBUF[2]_inst_i_3_n_0 ;
-  wire \csr_op_o_OBUF[2]_inst_i_4_n_0 ;
-  wire \csr_op_o_OBUF[2]_inst_i_5_n_0 ;
   wire csr_we_o;
-  wire csr_we_o_OBUF;
+  wire csr_we_o_INST_0_i_1_n_0;
   wire [31:0]fetched_instr_i;
-  wire [31:0]fetched_instr_i_IBUF;
   wire gpr_we_o;
-  wire gpr_we_o_OBUF;
-  wire gpr_we_o_OBUF_inst_i_2_n_0;
+  wire gpr_we_o_INST_0_i_1_n_0;
+  wire gpr_we_o_INST_0_i_2_n_0;
+  wire gpr_we_o_INST_0_i_3_n_0;
+  wire gpr_we_o_INST_0_i_4_n_0;
+  wire gpr_we_o_INST_0_i_5_n_0;
+  wire gpr_we_o_INST_0_i_6_n_0;
+  wire gpr_we_o_INST_0_i_7_n_0;
+  wire gpr_we_o_INST_0_i_8_n_0;
   wire illegal_instr_o;
-  wire illegal_instr_o_OBUF;
-  wire illegal_instr_o_OBUF_inst_i_10_n_0;
-  wire illegal_instr_o_OBUF_inst_i_11_n_0;
-  wire illegal_instr_o_OBUF_inst_i_12_n_0;
-  wire illegal_instr_o_OBUF_inst_i_13_n_0;
-  wire illegal_instr_o_OBUF_inst_i_14_n_0;
-  wire illegal_instr_o_OBUF_inst_i_2_n_0;
-  wire illegal_instr_o_OBUF_inst_i_3_n_0;
-  wire illegal_instr_o_OBUF_inst_i_4_n_0;
-  wire illegal_instr_o_OBUF_inst_i_5_n_0;
-  wire illegal_instr_o_OBUF_inst_i_6_n_0;
-  wire illegal_instr_o_OBUF_inst_i_7_n_0;
-  wire illegal_instr_o_OBUF_inst_i_8_n_0;
-  wire illegal_instr_o_OBUF_inst_i_9_n_0;
+  wire illegal_instr_o_INST_0_i_10_n_0;
+  wire illegal_instr_o_INST_0_i_11_n_0;
+  wire illegal_instr_o_INST_0_i_12_n_0;
+  wire illegal_instr_o_INST_0_i_13_n_0;
+  wire illegal_instr_o_INST_0_i_14_n_0;
+  wire illegal_instr_o_INST_0_i_15_n_0;
+  wire illegal_instr_o_INST_0_i_16_n_0;
+  wire illegal_instr_o_INST_0_i_17_n_0;
+  wire illegal_instr_o_INST_0_i_1_n_0;
+  wire illegal_instr_o_INST_0_i_2_n_0;
+  wire illegal_instr_o_INST_0_i_3_n_0;
+  wire illegal_instr_o_INST_0_i_4_n_0;
+  wire illegal_instr_o_INST_0_i_5_n_0;
+  wire illegal_instr_o_INST_0_i_6_n_0;
+  wire illegal_instr_o_INST_0_i_7_n_0;
+  wire illegal_instr_o_INST_0_i_8_n_0;
+  wire illegal_instr_o_INST_0_i_9_n_0;
   wire jal_o;
-  wire jal_o_OBUF;
   wire jalr_o;
-  wire jalr_o_OBUF;
   wire mem_req_o;
-  wire mem_req_o_OBUF;
-  wire mem_req_o_OBUF_inst_i_2_n_0;
+  wire mem_req_o_INST_0_i_1_n_0;
   wire [2:0]mem_size_o;
-  wire [2:0]mem_size_o_OBUF;
   wire mem_we_o;
-  wire mem_we_o_OBUF;
   wire mret_o;
-  wire mret_o_OBUF;
-  wire mret_o_OBUF_inst_i_2_n_0;
-  wire mret_o_OBUF_inst_i_3_n_0;
-  wire mret_o_OBUF_inst_i_4_n_0;
-  wire mret_o_OBUF_inst_i_5_n_0;
+  wire mret_o_INST_0_i_1_n_0;
   wire [1:0]wb_sel_o;
-  wire [0:0]wb_sel_o_OBUF;
 
-  GND GND
-       (.G(\<const0> ));
-  OBUF \a_sel_o_OBUF[0]_inst 
-       (.I(a_sel_o_OBUF[0]),
+  assign csr_op_o[2:0] = fetched_instr_i[14:12];
+  LUT6 #(
+    .INIT(64'h0001000030000000)) 
+    \a_sel_o[0]_INST_0 
+       (.I0(fetched_instr_i[3]),
+        .I1(\a_sel_o[0]_INST_0_i_1_n_0 ),
+        .I2(fetched_instr_i[6]),
+        .I3(fetched_instr_i[5]),
+        .I4(fetched_instr_i[2]),
+        .I5(fetched_instr_i[4]),
         .O(a_sel_o[0]));
-  LUT6 #(
-    .INIT(64'h0031000000000300)) 
-    \a_sel_o_OBUF[0]_inst_i_1 
-       (.I0(\a_sel_o_OBUF[0]_inst_i_2_n_0 ),
-        .I1(\a_sel_o_OBUF[0]_inst_i_3_n_0 ),
-        .I2(fetched_instr_i_IBUF[3]),
-        .I3(fetched_instr_i_IBUF[4]),
-        .I4(fetched_instr_i_IBUF[6]),
-        .I5(fetched_instr_i_IBUF[5]),
-        .O(a_sel_o_OBUF[0]));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    \a_sel_o_OBUF[0]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[14]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[13]),
-        .O(\a_sel_o_OBUF[0]_inst_i_2_n_0 ));
-  LUT3 #(
-    .INIT(8'h7F)) 
-    \a_sel_o_OBUF[0]_inst_i_3 
-       (.I0(fetched_instr_i_IBUF[1]),
-        .I1(fetched_instr_i_IBUF[0]),
-        .I2(fetched_instr_i_IBUF[2]),
-        .O(\a_sel_o_OBUF[0]_inst_i_3_n_0 ));
-  OBUF \a_sel_o_OBUF[1]_inst 
-       (.I(a_sel_o_OBUF[1]),
-        .O(a_sel_o[1]));
-  LUT6 #(
-    .INIT(64'h0002000000000000)) 
-    \a_sel_o_OBUF[1]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[5]),
-        .I1(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[3]),
-        .I4(fetched_instr_i_IBUF[2]),
-        .I5(fetched_instr_i_IBUF[4]),
-        .O(a_sel_o_OBUF[1]));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT2 #(
     .INIT(4'h7)) 
-    \a_sel_o_OBUF[1]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[0]),
-        .I1(fetched_instr_i_IBUF[1]),
-        .O(\a_sel_o_OBUF[1]_inst_i_2_n_0 ));
-  OBUF \alu_op_o_OBUF[0]_inst 
-       (.I(alu_op_o_OBUF[0]),
+    \a_sel_o[0]_INST_0_i_1 
+       (.I0(fetched_instr_i[0]),
+        .I1(fetched_instr_i[1]),
+        .O(\a_sel_o[0]_INST_0_i_1_n_0 ));
+  LUT2 #(
+    .INIT(4'h8)) 
+    \a_sel_o[1]_INST_0 
+       (.I0(\a_sel_o[1]_INST_0_i_1_n_0 ),
+        .I1(fetched_instr_i[5]),
+        .O(a_sel_o[1]));
+  LUT6 #(
+    .INIT(64'h0000080000000000)) 
+    \a_sel_o[1]_INST_0_i_1 
+       (.I0(fetched_instr_i[1]),
+        .I1(fetched_instr_i[0]),
+        .I2(fetched_instr_i[3]),
+        .I3(fetched_instr_i[4]),
+        .I4(fetched_instr_i[6]),
+        .I5(fetched_instr_i[2]),
+        .O(\a_sel_o[1]_INST_0_i_1_n_0 ));
+  LUT5 #(
+    .INIT(32'h60400000)) 
+    \alu_op_o[0]_INST_0 
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I3(fetched_instr_i[5]),
+        .I4(fetched_instr_i[12]),
         .O(alu_op_o[0]));
-  LUT6 #(
-    .INIT(64'hC0E0C00000000000)) 
-    \alu_op_o_OBUF[0]_inst_i_1 
-       (.I0(\alu_op_o_OBUF[3]_inst_i_2_n_0 ),
-        .I1(\alu_op_o_OBUF[3]_inst_i_4_n_0 ),
-        .I2(fetched_instr_i_IBUF[12]),
-        .I3(fetched_instr_i_IBUF[6]),
-        .I4(fetched_instr_i_IBUF[4]),
-        .I5(\alu_op_o_OBUF[4]_inst_i_2_n_0 ),
-        .O(alu_op_o_OBUF[0]));
-  OBUF \alu_op_o_OBUF[1]_inst 
-       (.I(alu_op_o_OBUF[1]),
+  LUT5 #(
+    .INIT(32'h60400000)) 
+    \alu_op_o[1]_INST_0 
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I3(fetched_instr_i[5]),
+        .I4(fetched_instr_i[13]),
         .O(alu_op_o[1]));
-  LUT6 #(
-    .INIT(64'hC0E0C00000000000)) 
-    \alu_op_o_OBUF[1]_inst_i_1 
-       (.I0(\alu_op_o_OBUF[3]_inst_i_2_n_0 ),
-        .I1(\alu_op_o_OBUF[3]_inst_i_4_n_0 ),
-        .I2(fetched_instr_i_IBUF[13]),
-        .I3(fetched_instr_i_IBUF[6]),
-        .I4(fetched_instr_i_IBUF[4]),
-        .I5(\alu_op_o_OBUF[4]_inst_i_2_n_0 ),
-        .O(alu_op_o_OBUF[1]));
-  OBUF \alu_op_o_OBUF[2]_inst 
-       (.I(alu_op_o_OBUF[2]),
+  LUT5 #(
+    .INIT(32'h60400000)) 
+    \alu_op_o[2]_INST_0 
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I3(fetched_instr_i[5]),
+        .I4(fetched_instr_i[14]),
         .O(alu_op_o[2]));
   LUT6 #(
-    .INIT(64'h6240000000000000)) 
-    \alu_op_o_OBUF[2]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[6]),
-        .I1(fetched_instr_i_IBUF[4]),
-        .I2(\alu_op_o_OBUF[3]_inst_i_2_n_0 ),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(\alu_op_o_OBUF[4]_inst_i_2_n_0 ),
-        .I5(fetched_instr_i_IBUF[14]),
-        .O(alu_op_o_OBUF[2]));
-  OBUF \alu_op_o_OBUF[3]_inst 
-       (.I(alu_op_o_OBUF[3]),
+    .INIT(64'h0000C400F0000000)) 
+    \alu_op_o[3]_INST_0 
+       (.I0(\alu_op_o[3]_INST_0_i_1_n_0 ),
+        .I1(fetched_instr_i[30]),
+        .I2(fetched_instr_i[5]),
+        .I3(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I4(fetched_instr_i[6]),
+        .I5(fetched_instr_i[4]),
         .O(alu_op_o[3]));
-  LUT6 #(
-    .INIT(64'hAA00AA8000000080)) 
-    \alu_op_o_OBUF[3]_inst_i_1 
-       (.I0(\alu_op_o_OBUF[4]_inst_i_2_n_0 ),
-        .I1(\alu_op_o_OBUF[3]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[4]),
-        .I3(fetched_instr_i_IBUF[6]),
-        .I4(\alu_op_o_OBUF[3]_inst_i_3_n_0 ),
-        .I5(\alu_op_o_OBUF[3]_inst_i_4_n_0 ),
-        .O(alu_op_o_OBUF[3]));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
-  LUT4 #(
-    .INIT(16'h1F10)) 
-    \alu_op_o_OBUF[3]_inst_i_2 
-       (.I0(\b_sel_o_OBUF[0]_inst_i_7_n_0 ),
-        .I1(\alu_op_o_OBUF[3]_inst_i_5_n_0 ),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(\b_sel_o_OBUF[0]_inst_i_3_n_0 ),
-        .O(\alu_op_o_OBUF[3]_inst_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hBBFFBBFFBAFFBBFF)) 
-    \alu_op_o_OBUF[3]_inst_i_3 
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[30]),
-        .I4(fetched_instr_i_IBUF[5]),
-        .I5(\b_sel_o_OBUF[0]_inst_i_7_n_0 ),
-        .O(\alu_op_o_OBUF[3]_inst_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
-  LUT4 #(
-    .INIT(16'h00D0)) 
-    \alu_op_o_OBUF[3]_inst_i_4 
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[14]),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(fetched_instr_i_IBUF[4]),
-        .O(\alu_op_o_OBUF[3]_inst_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
-  LUT4 #(
-    .INIT(16'hAA28)) 
-    \alu_op_o_OBUF[3]_inst_i_5 
-       (.I0(fetched_instr_i_IBUF[30]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[13]),
-        .O(\alu_op_o_OBUF[3]_inst_i_5_n_0 ));
-  OBUF \alu_op_o_OBUF[4]_inst 
-       (.I(alu_op_o_OBUF[4]),
-        .O(alu_op_o[4]));
-  LUT6 #(
-    .INIT(64'h0000A20000000000)) 
-    \alu_op_o_OBUF[4]_inst_i_1 
-       (.I0(\alu_op_o_OBUF[4]_inst_i_2_n_0 ),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(fetched_instr_i_IBUF[4]),
-        .I5(fetched_instr_i_IBUF[6]),
-        .O(alu_op_o_OBUF[4]));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
-  LUT4 #(
-    .INIT(16'h0008)) 
-    \alu_op_o_OBUF[4]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[1]),
-        .I1(fetched_instr_i_IBUF[0]),
-        .I2(fetched_instr_i_IBUF[3]),
-        .I3(fetched_instr_i_IBUF[2]),
-        .O(\alu_op_o_OBUF[4]_inst_i_2_n_0 ));
-  OBUF \b_sel_o_OBUF[0]_inst 
-       (.I(b_sel_o_OBUF[0]),
-        .O(b_sel_o[0]));
-  LUT6 #(
-    .INIT(64'h000000002E220000)) 
-    \b_sel_o_OBUF[0]_inst_i_1 
-       (.I0(\b_sel_o_OBUF[0]_inst_i_2_n_0 ),
-        .I1(fetched_instr_i_IBUF[4]),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(\b_sel_o_OBUF[0]_inst_i_3_n_0 ),
-        .I4(\b_sel_o_OBUF[0]_inst_i_4_n_0 ),
-        .I5(fetched_instr_i_IBUF[2]),
-        .O(b_sel_o_OBUF[0]));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
-  LUT4 #(
-    .INIT(16'h0737)) 
-    \b_sel_o_OBUF[0]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[12]),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .O(\b_sel_o_OBUF[0]_inst_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFF0F2FFFFFFF2F)) 
-    \b_sel_o_OBUF[0]_inst_i_3 
-       (.I0(\b_sel_o_OBUF[0]_inst_i_5_n_0 ),
-        .I1(\b_sel_o_OBUF[0]_inst_i_6_n_0 ),
-        .I2(fetched_instr_i_IBUF[12]),
-        .I3(fetched_instr_i_IBUF[14]),
-        .I4(fetched_instr_i_IBUF[13]),
-        .I5(\b_sel_o_OBUF[0]_inst_i_7_n_0 ),
-        .O(\b_sel_o_OBUF[0]_inst_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
-  LUT4 #(
-    .INIT(16'h0008)) 
-    \b_sel_o_OBUF[0]_inst_i_4 
-       (.I0(fetched_instr_i_IBUF[1]),
-        .I1(fetched_instr_i_IBUF[0]),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[3]),
-        .O(\b_sel_o_OBUF[0]_inst_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
-  LUT4 #(
-    .INIT(16'h0001)) 
-    \b_sel_o_OBUF[0]_inst_i_5 
-       (.I0(fetched_instr_i_IBUF[25]),
-        .I1(fetched_instr_i_IBUF[26]),
-        .I2(fetched_instr_i_IBUF[28]),
-        .I3(fetched_instr_i_IBUF[27]),
-        .O(\b_sel_o_OBUF[0]_inst_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    \b_sel_o_OBUF[0]_inst_i_6 
-       (.I0(fetched_instr_i_IBUF[30]),
-        .I1(fetched_instr_i_IBUF[31]),
-        .I2(fetched_instr_i_IBUF[29]),
-        .O(\b_sel_o_OBUF[0]_inst_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFE)) 
-    \b_sel_o_OBUF[0]_inst_i_7 
-       (.I0(fetched_instr_i_IBUF[26]),
-        .I1(fetched_instr_i_IBUF[25]),
-        .I2(fetched_instr_i_IBUF[27]),
-        .I3(fetched_instr_i_IBUF[29]),
-        .I4(fetched_instr_i_IBUF[31]),
-        .I5(fetched_instr_i_IBUF[28]),
-        .O(\b_sel_o_OBUF[0]_inst_i_7_n_0 ));
-  OBUF \b_sel_o_OBUF[1]_inst 
-       (.I(b_sel_o_OBUF[1]),
-        .O(b_sel_o[1]));
-  LUT6 #(
-    .INIT(64'h0003000000000002)) 
-    \b_sel_o_OBUF[1]_inst_i_1 
-       (.I0(\b_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I1(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[3]),
-        .I4(fetched_instr_i_IBUF[2]),
-        .I5(fetched_instr_i_IBUF[4]),
-        .O(b_sel_o_OBUF[1]));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
-  LUT4 #(
-    .INIT(16'h0070)) 
-    \b_sel_o_OBUF[1]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[12]),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(fetched_instr_i_IBUF[14]),
-        .O(\b_sel_o_OBUF[1]_inst_i_2_n_0 ));
-  OBUF \b_sel_o_OBUF[2]_inst 
-       (.I(b_sel_o_OBUF[2]),
-        .O(b_sel_o[2]));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
-  LUT5 #(
-    .INIT(32'h0000FF01)) 
-    \b_sel_o_OBUF[2]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[3]),
-        .I4(\b_sel_o_OBUF[2]_inst_i_2_n_0 ),
-        .O(b_sel_o_OBUF[2]));
-  LUT6 #(
-    .INIT(64'hFF7FFFFFFFFFFFFF)) 
-    \b_sel_o_OBUF[2]_inst_i_2 
-       (.I0(fetched_instr_i_IBUF[2]),
-        .I1(fetched_instr_i_IBUF[0]),
-        .I2(fetched_instr_i_IBUF[1]),
-        .I3(fetched_instr_i_IBUF[4]),
-        .I4(fetched_instr_i_IBUF[6]),
-        .I5(fetched_instr_i_IBUF[5]),
-        .O(\b_sel_o_OBUF[2]_inst_i_2_n_0 ));
-  OBUF branch_o_OBUF_inst
-       (.I(branch_o_OBUF),
-        .O(branch_o));
-  LUT6 #(
-    .INIT(64'h0000000000008000)) 
-    branch_o_OBUF_inst_i_1
-       (.I0(\alu_op_o_OBUF[3]_inst_i_4_n_0 ),
-        .I1(fetched_instr_i_IBUF[1]),
-        .I2(fetched_instr_i_IBUF[0]),
-        .I3(fetched_instr_i_IBUF[6]),
-        .I4(fetched_instr_i_IBUF[2]),
-        .I5(fetched_instr_i_IBUF[3]),
-        .O(branch_o_OBUF));
-  OBUF \csr_op_o_OBUF[0]_inst 
-       (.I(csr_op_o_OBUF[0]),
-        .O(csr_op_o[0]));
-  LUT5 #(
-    .INIT(32'h80000000)) 
-    \csr_op_o_OBUF[0]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[12]),
-        .I1(\csr_op_o_OBUF[2]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(fetched_instr_i_IBUF[1]),
-        .I4(fetched_instr_i_IBUF[0]),
-        .O(csr_op_o_OBUF[0]));
-  OBUF \csr_op_o_OBUF[1]_inst 
-       (.I(csr_op_o_OBUF[1]),
-        .O(csr_op_o[1]));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT5 #(
-    .INIT(32'h80000000)) 
-    \csr_op_o_OBUF[1]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(\csr_op_o_OBUF[2]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(fetched_instr_i_IBUF[1]),
-        .I4(fetched_instr_i_IBUF[0]),
-        .O(csr_op_o_OBUF[1]));
-  OBUF \csr_op_o_OBUF[2]_inst 
-       (.I(csr_op_o_OBUF[2]),
-        .O(csr_op_o[2]));
-  LUT6 #(
-    .INIT(64'h00C0008000000000)) 
-    \csr_op_o_OBUF[2]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[12]),
-        .I1(\csr_op_o_OBUF[2]_inst_i_2_n_0 ),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I4(fetched_instr_i_IBUF[13]),
-        .I5(fetched_instr_i_IBUF[14]),
-        .O(csr_op_o_OBUF[2]));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT5 #(
-    .INIT(32'h00000040)) 
-    \csr_op_o_OBUF[2]_inst_i_2 
-       (.I0(\csr_op_o_OBUF[2]_inst_i_3_n_0 ),
-        .I1(fetched_instr_i_IBUF[4]),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[2]),
-        .I4(fetched_instr_i_IBUF[3]),
-        .O(\csr_op_o_OBUF[2]_inst_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000010)) 
-    \csr_op_o_OBUF[2]_inst_i_3 
-       (.I0(fetched_instr_i_IBUF[30]),
-        .I1(\csr_op_o_OBUF[2]_inst_i_4_n_0 ),
-        .I2(\b_sel_o_OBUF[0]_inst_i_5_n_0 ),
-        .I3(illegal_instr_o_OBUF_inst_i_10_n_0),
-        .I4(mret_o_OBUF_inst_i_4_n_0),
-        .I5(\csr_op_o_OBUF[2]_inst_i_5_n_0 ),
-        .O(\csr_op_o_OBUF[2]_inst_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
-  LUT2 #(
-    .INIT(4'hE)) 
-    \csr_op_o_OBUF[2]_inst_i_4 
-       (.I0(fetched_instr_i_IBUF[29]),
-        .I1(fetched_instr_i_IBUF[31]),
-        .O(\csr_op_o_OBUF[2]_inst_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFE)) 
-    \csr_op_o_OBUF[2]_inst_i_5 
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[16]),
-        .I4(fetched_instr_i_IBUF[17]),
-        .I5(fetched_instr_i_IBUF[18]),
-        .O(\csr_op_o_OBUF[2]_inst_i_5_n_0 ));
-  OBUF csr_we_o_OBUF_inst
-       (.I(csr_we_o_OBUF),
-        .O(csr_we_o));
-  LUT6 #(
-    .INIT(64'hC000000080000000)) 
-    csr_we_o_OBUF_inst_i_1
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[0]),
-        .I2(fetched_instr_i_IBUF[1]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(\csr_op_o_OBUF[2]_inst_i_2_n_0 ),
-        .I5(fetched_instr_i_IBUF[12]),
-        .O(csr_we_o_OBUF));
-  IBUF \fetched_instr_i_IBUF[0]_inst 
-       (.I(fetched_instr_i[0]),
-        .O(fetched_instr_i_IBUF[0]));
-  IBUF \fetched_instr_i_IBUF[10]_inst 
-       (.I(fetched_instr_i[10]),
-        .O(fetched_instr_i_IBUF[10]));
-  IBUF \fetched_instr_i_IBUF[11]_inst 
-       (.I(fetched_instr_i[11]),
-        .O(fetched_instr_i_IBUF[11]));
-  IBUF \fetched_instr_i_IBUF[12]_inst 
-       (.I(fetched_instr_i[12]),
-        .O(fetched_instr_i_IBUF[12]));
-  IBUF \fetched_instr_i_IBUF[13]_inst 
-       (.I(fetched_instr_i[13]),
-        .O(fetched_instr_i_IBUF[13]));
-  IBUF \fetched_instr_i_IBUF[14]_inst 
-       (.I(fetched_instr_i[14]),
-        .O(fetched_instr_i_IBUF[14]));
-  IBUF \fetched_instr_i_IBUF[15]_inst 
-       (.I(fetched_instr_i[15]),
-        .O(fetched_instr_i_IBUF[15]));
-  IBUF \fetched_instr_i_IBUF[16]_inst 
-       (.I(fetched_instr_i[16]),
-        .O(fetched_instr_i_IBUF[16]));
-  IBUF \fetched_instr_i_IBUF[17]_inst 
-       (.I(fetched_instr_i[17]),
-        .O(fetched_instr_i_IBUF[17]));
-  IBUF \fetched_instr_i_IBUF[18]_inst 
-       (.I(fetched_instr_i[18]),
-        .O(fetched_instr_i_IBUF[18]));
-  IBUF \fetched_instr_i_IBUF[19]_inst 
-       (.I(fetched_instr_i[19]),
-        .O(fetched_instr_i_IBUF[19]));
-  IBUF \fetched_instr_i_IBUF[1]_inst 
-       (.I(fetched_instr_i[1]),
-        .O(fetched_instr_i_IBUF[1]));
-  IBUF \fetched_instr_i_IBUF[20]_inst 
-       (.I(fetched_instr_i[20]),
-        .O(fetched_instr_i_IBUF[20]));
-  IBUF \fetched_instr_i_IBUF[21]_inst 
-       (.I(fetched_instr_i[21]),
-        .O(fetched_instr_i_IBUF[21]));
-  IBUF \fetched_instr_i_IBUF[22]_inst 
-       (.I(fetched_instr_i[22]),
-        .O(fetched_instr_i_IBUF[22]));
-  IBUF \fetched_instr_i_IBUF[23]_inst 
-       (.I(fetched_instr_i[23]),
-        .O(fetched_instr_i_IBUF[23]));
-  IBUF \fetched_instr_i_IBUF[24]_inst 
-       (.I(fetched_instr_i[24]),
-        .O(fetched_instr_i_IBUF[24]));
-  IBUF \fetched_instr_i_IBUF[25]_inst 
-       (.I(fetched_instr_i[25]),
-        .O(fetched_instr_i_IBUF[25]));
-  IBUF \fetched_instr_i_IBUF[26]_inst 
-       (.I(fetched_instr_i[26]),
-        .O(fetched_instr_i_IBUF[26]));
-  IBUF \fetched_instr_i_IBUF[27]_inst 
-       (.I(fetched_instr_i[27]),
-        .O(fetched_instr_i_IBUF[27]));
-  IBUF \fetched_instr_i_IBUF[28]_inst 
-       (.I(fetched_instr_i[28]),
-        .O(fetched_instr_i_IBUF[28]));
-  IBUF \fetched_instr_i_IBUF[29]_inst 
-       (.I(fetched_instr_i[29]),
-        .O(fetched_instr_i_IBUF[29]));
-  IBUF \fetched_instr_i_IBUF[2]_inst 
-       (.I(fetched_instr_i[2]),
-        .O(fetched_instr_i_IBUF[2]));
-  IBUF \fetched_instr_i_IBUF[30]_inst 
-       (.I(fetched_instr_i[30]),
-        .O(fetched_instr_i_IBUF[30]));
-  IBUF \fetched_instr_i_IBUF[31]_inst 
-       (.I(fetched_instr_i[31]),
-        .O(fetched_instr_i_IBUF[31]));
-  IBUF \fetched_instr_i_IBUF[3]_inst 
-       (.I(fetched_instr_i[3]),
-        .O(fetched_instr_i_IBUF[3]));
-  IBUF \fetched_instr_i_IBUF[4]_inst 
-       (.I(fetched_instr_i[4]),
-        .O(fetched_instr_i_IBUF[4]));
-  IBUF \fetched_instr_i_IBUF[5]_inst 
-       (.I(fetched_instr_i[5]),
-        .O(fetched_instr_i_IBUF[5]));
-  IBUF \fetched_instr_i_IBUF[6]_inst 
-       (.I(fetched_instr_i[6]),
-        .O(fetched_instr_i_IBUF[6]));
-  IBUF \fetched_instr_i_IBUF[7]_inst 
-       (.I(fetched_instr_i[7]),
-        .O(fetched_instr_i_IBUF[7]));
-  IBUF \fetched_instr_i_IBUF[8]_inst 
-       (.I(fetched_instr_i[8]),
-        .O(fetched_instr_i_IBUF[8]));
-  IBUF \fetched_instr_i_IBUF[9]_inst 
-       (.I(fetched_instr_i[9]),
-        .O(fetched_instr_i_IBUF[9]));
-  OBUF gpr_we_o_OBUF_inst
-       (.I(gpr_we_o_OBUF),
-        .O(gpr_we_o));
-  LUT6 #(
-    .INIT(64'hEEEAEEEEEEEAAAAA)) 
-    gpr_we_o_OBUF_inst_i_1
-       (.I0(b_sel_o_OBUF[2]),
-        .I1(\b_sel_o_OBUF[0]_inst_i_4_n_0 ),
-        .I2(fetched_instr_i_IBUF[2]),
-        .I3(\alu_op_o_OBUF[3]_inst_i_2_n_0 ),
-        .I4(fetched_instr_i_IBUF[4]),
-        .I5(gpr_we_o_OBUF_inst_i_2_n_0),
-        .O(gpr_we_o_OBUF));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
-  LUT5 #(
-    .INIT(32'h00000037)) 
-    gpr_we_o_OBUF_inst_i_2
-       (.I0(fetched_instr_i_IBUF[14]),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[12]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(fetched_instr_i_IBUF[2]),
-        .O(gpr_we_o_OBUF_inst_i_2_n_0));
-  OBUF illegal_instr_o_OBUF_inst
-       (.I(illegal_instr_o_OBUF),
-        .O(illegal_instr_o));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFDD00DF00)) 
-    illegal_instr_o_OBUF_inst_i_1
-       (.I0(illegal_instr_o_OBUF_inst_i_2_n_0),
-        .I1(illegal_instr_o_OBUF_inst_i_3_n_0),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[4]),
-        .I4(illegal_instr_o_OBUF_inst_i_4_n_0),
-        .I5(illegal_instr_o_OBUF_inst_i_5_n_0),
-        .O(illegal_instr_o_OBUF));
-  LUT5 #(
-    .INIT(32'hFFFFFFFE)) 
-    illegal_instr_o_OBUF_inst_i_10
-       (.I0(fetched_instr_i_IBUF[23]),
-        .I1(fetched_instr_i_IBUF[19]),
-        .I2(fetched_instr_i_IBUF[22]),
-        .I3(fetched_instr_i_IBUF[21]),
-        .I4(fetched_instr_i_IBUF[24]),
-        .O(illegal_instr_o_OBUF_inst_i_10_n_0));
-  LUT5 #(
-    .INIT(32'hFFFFFFFE)) 
-    illegal_instr_o_OBUF_inst_i_11
-       (.I0(mret_o_OBUF_inst_i_4_n_0),
-        .I1(fetched_instr_i_IBUF[18]),
-        .I2(fetched_instr_i_IBUF[17]),
-        .I3(fetched_instr_i_IBUF[16]),
-        .I4(\a_sel_o_OBUF[0]_inst_i_2_n_0 ),
-        .O(illegal_instr_o_OBUF_inst_i_11_n_0));
-  LUT6 #(
-    .INIT(64'hC800CD11C901CD11)) 
-    illegal_instr_o_OBUF_inst_i_12
-       (.I0(fetched_instr_i_IBUF[2]),
-        .I1(fetched_instr_i_IBUF[6]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(fetched_instr_i_IBUF[13]),
-        .I5(fetched_instr_i_IBUF[12]),
-        .O(illegal_instr_o_OBUF_inst_i_12_n_0));
-  LUT6 #(
-    .INIT(64'hFFFF62FFFFFFAAA2)) 
-    illegal_instr_o_OBUF_inst_i_13
-       (.I0(fetched_instr_i_IBUF[3]),
-        .I1(fetched_instr_i_IBUF[2]),
-        .I2(\a_sel_o_OBUF[0]_inst_i_2_n_0 ),
-        .I3(fetched_instr_i_IBUF[5]),
-        .I4(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I5(fetched_instr_i_IBUF[6]),
-        .O(illegal_instr_o_OBUF_inst_i_13_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    illegal_instr_o_OBUF_inst_i_14
-       (.I0(fetched_instr_i_IBUF[27]),
-        .I1(fetched_instr_i_IBUF[25]),
-        .I2(fetched_instr_i_IBUF[26]),
-        .O(illegal_instr_o_OBUF_inst_i_14_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT3 #(
-    .INIT(8'h15)) 
-    illegal_instr_o_OBUF_inst_i_2
-       (.I0(fetched_instr_i_IBUF[3]),
-        .I1(fetched_instr_i_IBUF[6]),
-        .I2(fetched_instr_i_IBUF[2]),
-        .O(illegal_instr_o_OBUF_inst_i_2_n_0));
-  LUT6 #(
-    .INIT(64'h0F0F0F0F0E0E000E)) 
-    illegal_instr_o_OBUF_inst_i_3
-       (.I0(illegal_instr_o_OBUF_inst_i_6_n_0),
-        .I1(illegal_instr_o_OBUF_inst_i_7_n_0),
-        .I2(illegal_instr_o_OBUF_inst_i_8_n_0),
-        .I3(illegal_instr_o_OBUF_inst_i_9_n_0),
-        .I4(illegal_instr_o_OBUF_inst_i_10_n_0),
-        .I5(illegal_instr_o_OBUF_inst_i_11_n_0),
-        .O(illegal_instr_o_OBUF_inst_i_3_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
-  LUT5 #(
-    .INIT(32'hAEAEAEFE)) 
-    illegal_instr_o_OBUF_inst_i_4
-       (.I0(fetched_instr_i_IBUF[2]),
-        .I1(\b_sel_o_OBUF[0]_inst_i_3_n_0 ),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(\alu_op_o_OBUF[3]_inst_i_5_n_0 ),
-        .I4(\b_sel_o_OBUF[0]_inst_i_7_n_0 ),
-        .O(illegal_instr_o_OBUF_inst_i_4_n_0));
-  LUT4 #(
-    .INIT(16'hFF01)) 
-    illegal_instr_o_OBUF_inst_i_5
-       (.I0(illegal_instr_o_OBUF_inst_i_12_n_0),
-        .I1(fetched_instr_i_IBUF[4]),
-        .I2(fetched_instr_i_IBUF[3]),
-        .I3(illegal_instr_o_OBUF_inst_i_13_n_0),
-        .O(illegal_instr_o_OBUF_inst_i_5_n_0));
-  LUT5 #(
-    .INIT(32'hFFEFFFFF)) 
-    illegal_instr_o_OBUF_inst_i_6
-       (.I0(illegal_instr_o_OBUF_inst_i_14_n_0),
-        .I1(fetched_instr_i_IBUF[24]),
-        .I2(fetched_instr_i_IBUF[29]),
-        .I3(fetched_instr_i_IBUF[30]),
-        .I4(fetched_instr_i_IBUF[28]),
-        .O(illegal_instr_o_OBUF_inst_i_6_n_0));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFD)) 
-    illegal_instr_o_OBUF_inst_i_7
-       (.I0(fetched_instr_i_IBUF[21]),
-        .I1(fetched_instr_i_IBUF[31]),
-        .I2(fetched_instr_i_IBUF[22]),
-        .I3(fetched_instr_i_IBUF[19]),
-        .I4(fetched_instr_i_IBUF[23]),
-        .I5(fetched_instr_i_IBUF[20]),
-        .O(illegal_instr_o_OBUF_inst_i_7_n_0));
-  LUT3 #(
-    .INIT(8'hEF)) 
-    illegal_instr_o_OBUF_inst_i_8
-       (.I0(fetched_instr_i_IBUF[12]),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[6]),
-        .O(illegal_instr_o_OBUF_inst_i_8_n_0));
-  LUT6 #(
-    .INIT(64'h0000000000000001)) 
-    illegal_instr_o_OBUF_inst_i_9
-       (.I0(fetched_instr_i_IBUF[27]),
-        .I1(fetched_instr_i_IBUF[28]),
-        .I2(fetched_instr_i_IBUF[26]),
-        .I3(fetched_instr_i_IBUF[25]),
-        .I4(\csr_op_o_OBUF[2]_inst_i_4_n_0 ),
-        .I5(fetched_instr_i_IBUF[30]),
-        .O(illegal_instr_o_OBUF_inst_i_9_n_0));
-  OBUF jal_o_OBUF_inst
-       (.I(jal_o_OBUF),
-        .O(jal_o));
-  LUT6 #(
-    .INIT(64'h0000008000000000)) 
-    jal_o_OBUF_inst_i_1
-       (.I0(fetched_instr_i_IBUF[3]),
-        .I1(fetched_instr_i_IBUF[5]),
-        .I2(fetched_instr_i_IBUF[6]),
-        .I3(fetched_instr_i_IBUF[4]),
-        .I4(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I5(fetched_instr_i_IBUF[2]),
-        .O(jal_o_OBUF));
-  OBUF jalr_o_OBUF_inst
-       (.I(jalr_o_OBUF),
-        .O(jalr_o));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
-  LUT5 #(
-    .INIT(32'hFFFFFFFE)) 
-    jalr_o_OBUF_inst_i_1
-       (.I0(\b_sel_o_OBUF[2]_inst_i_2_n_0 ),
-        .I1(fetched_instr_i_IBUF[14]),
-        .I2(fetched_instr_i_IBUF[12]),
-        .I3(fetched_instr_i_IBUF[13]),
-        .I4(fetched_instr_i_IBUF[3]),
-        .O(jalr_o_OBUF));
-  OBUF mem_req_o_OBUF_inst
-       (.I(mem_req_o_OBUF),
-        .O(mem_req_o));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
-  LUT5 #(
-    .INIT(32'h07370000)) 
-    mem_req_o_OBUF_inst_i_1
-       (.I0(fetched_instr_i_IBUF[5]),
-        .I1(fetched_instr_i_IBUF[14]),
-        .I2(fetched_instr_i_IBUF[13]),
-        .I3(fetched_instr_i_IBUF[12]),
-        .I4(mem_req_o_OBUF_inst_i_2_n_0),
-        .O(mem_req_o_OBUF));
-  LUT6 #(
-    .INIT(64'h0000000000001000)) 
-    mem_req_o_OBUF_inst_i_2
-       (.I0(fetched_instr_i_IBUF[2]),
-        .I1(fetched_instr_i_IBUF[3]),
-        .I2(fetched_instr_i_IBUF[0]),
-        .I3(fetched_instr_i_IBUF[1]),
-        .I4(fetched_instr_i_IBUF[6]),
-        .I5(fetched_instr_i_IBUF[4]),
-        .O(mem_req_o_OBUF_inst_i_2_n_0));
-  OBUF \mem_size_o_OBUF[0]_inst 
-       (.I(mem_size_o_OBUF[0]),
-        .O(mem_size_o[0]));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
-  LUT5 #(
-    .INIT(32'h002A0000)) 
-    \mem_size_o_OBUF[0]_inst_i_1 
-       (.I0(mem_req_o_OBUF_inst_i_2_n_0),
-        .I1(fetched_instr_i_IBUF[14]),
-        .I2(fetched_instr_i_IBUF[5]),
-        .I3(fetched_instr_i_IBUF[13]),
-        .I4(fetched_instr_i_IBUF[12]),
-        .O(mem_size_o_OBUF[0]));
-  OBUF \mem_size_o_OBUF[1]_inst 
-       (.I(mem_size_o_OBUF[1]),
-        .O(mem_size_o[1]));
   (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  LUT2 #(
+    .INIT(4'hB)) 
+    \alu_op_o[3]_INST_0_i_1 
+       (.I0(fetched_instr_i[13]),
+        .I1(fetched_instr_i[12]),
+        .O(\alu_op_o[3]_INST_0_i_1_n_0 ));
+  LUT4 #(
+    .INIT(16'h0800)) 
+    \alu_op_o[4]_INST_0 
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[5]),
+        .I2(fetched_instr_i[4]),
+        .I3(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .O(alu_op_o[4]));
+  LUT4 #(
+    .INIT(16'h1030)) 
+    \b_sel_o[0]_INST_0 
+       (.I0(fetched_instr_i[5]),
+        .I1(fetched_instr_i[6]),
+        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I3(fetched_instr_i[4]),
+        .O(b_sel_o[0]));
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT4 #(
     .INIT(16'h0040)) 
-    \mem_size_o_OBUF[1]_inst_i_1 
-       (.I0(fetched_instr_i_IBUF[14]),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(mem_req_o_OBUF_inst_i_2_n_0),
-        .I3(fetched_instr_i_IBUF[12]),
-        .O(mem_size_o_OBUF[1]));
-  OBUF \mem_size_o_OBUF[2]_inst 
-       (.I(mem_size_o_OBUF[2]),
-        .O(mem_size_o[2]));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
-  LUT4 #(
-    .INIT(16'h0020)) 
-    \mem_size_o_OBUF[2]_inst_i_1 
-       (.I0(mem_req_o_OBUF_inst_i_2_n_0),
-        .I1(fetched_instr_i_IBUF[13]),
-        .I2(fetched_instr_i_IBUF[14]),
-        .I3(fetched_instr_i_IBUF[5]),
-        .O(mem_size_o_OBUF[2]));
-  OBUF mem_we_o_OBUF_inst
-       (.I(mem_we_o_OBUF),
-        .O(mem_we_o));
+    \b_sel_o[0]_INST_0_i_1 
+       (.I0(fetched_instr_i[3]),
+        .I1(fetched_instr_i[0]),
+        .I2(fetched_instr_i[1]),
+        .I3(fetched_instr_i[2]),
+        .O(\b_sel_o[0]_INST_0_i_1_n_0 ));
+  LUT5 #(
+    .INIT(32'h0C020000)) 
+    \b_sel_o[1]_INST_0 
+       (.I0(fetched_instr_i[5]),
+        .I1(fetched_instr_i[2]),
+        .I2(fetched_instr_i[6]),
+        .I3(fetched_instr_i[4]),
+        .I4(\b_sel_o[1]_INST_0_i_1_n_0 ),
+        .O(b_sel_o[1]));
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \b_sel_o[1]_INST_0_i_1 
+       (.I0(fetched_instr_i[1]),
+        .I1(fetched_instr_i[0]),
+        .I2(fetched_instr_i[3]),
+        .O(\b_sel_o[1]_INST_0_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000000010)) 
-    mem_we_o_OBUF_inst_i_1
-       (.I0(fetched_instr_i_IBUF[2]),
-        .I1(fetched_instr_i_IBUF[4]),
-        .I2(\b_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I3(fetched_instr_i_IBUF[3]),
-        .I4(fetched_instr_i_IBUF[6]),
-        .I5(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .O(mem_we_o_OBUF));
-  OBUF mret_o_OBUF_inst
-       (.I(mret_o_OBUF),
-        .O(mret_o));
+    .INIT(64'h4000000000000000)) 
+    \b_sel_o[2]_INST_0 
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[2]),
+        .I2(fetched_instr_i[5]),
+        .I3(fetched_instr_i[6]),
+        .I4(fetched_instr_i[1]),
+        .I5(fetched_instr_i[0]),
+        .O(b_sel_o[2]));
   LUT6 #(
-    .INIT(64'h0000000000000002)) 
-    mret_o_OBUF_inst_i_1
-       (.I0(\csr_op_o_OBUF[2]_inst_i_2_n_0 ),
-        .I1(mret_o_OBUF_inst_i_2_n_0),
-        .I2(fetched_instr_i_IBUF[16]),
-        .I3(fetched_instr_i_IBUF[17]),
-        .I4(fetched_instr_i_IBUF[18]),
-        .I5(mret_o_OBUF_inst_i_3_n_0),
-        .O(mret_o_OBUF));
+    .INIT(64'h0000808800000000)) 
+    branch_o_INST_0
+       (.I0(fetched_instr_i[5]),
+        .I1(fetched_instr_i[6]),
+        .I2(fetched_instr_i[14]),
+        .I3(fetched_instr_i[13]),
+        .I4(fetched_instr_i[4]),
+        .I5(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .O(branch_o));
+  LUT5 #(
+    .INIT(32'h80000000)) 
+    csr_we_o_INST_0
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[6]),
+        .I2(csr_we_o_INST_0_i_1_n_0),
+        .I3(fetched_instr_i[5]),
+        .I4(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .O(csr_we_o));
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT3 #(
+    .INIT(8'hFE)) 
+    csr_we_o_INST_0_i_1
+       (.I0(fetched_instr_i[14]),
+        .I1(fetched_instr_i[12]),
+        .I2(fetched_instr_i[13]),
+        .O(csr_we_o_INST_0_i_1_n_0));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFE)) 
-    mret_o_OBUF_inst_i_2
-       (.I0(mret_o_OBUF_inst_i_4_n_0),
-        .I1(fetched_instr_i_IBUF[20]),
-        .I2(fetched_instr_i_IBUF[23]),
-        .I3(fetched_instr_i_IBUF[19]),
-        .I4(fetched_instr_i_IBUF[22]),
-        .I5(illegal_instr_o_OBUF_inst_i_6_n_0),
-        .O(mret_o_OBUF_inst_i_2_n_0));
+    .INIT(64'hFFFFFFFFFFFFF020)) 
+    gpr_we_o_INST_0
+       (.I0(\alu_op_o[3]_INST_0_i_1_n_0 ),
+        .I1(fetched_instr_i[5]),
+        .I2(gpr_we_o_INST_0_i_1_n_0),
+        .I3(gpr_we_o_INST_0_i_2_n_0),
+        .I4(gpr_we_o_INST_0_i_3_n_0),
+        .I5(gpr_we_o_INST_0_i_4_n_0),
+        .O(gpr_we_o));
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT5 #(
+    .INIT(32'h04000000)) 
+    gpr_we_o_INST_0_i_1
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(fetched_instr_i[3]),
+        .I3(fetched_instr_i[0]),
+        .I4(fetched_instr_i[1]),
+        .O(gpr_we_o_INST_0_i_1_n_0));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFBFFFF)) 
-    mret_o_OBUF_inst_i_3
-       (.I0(fetched_instr_i_IBUF[14]),
-        .I1(fetched_instr_i_IBUF[5]),
-        .I2(\a_sel_o_OBUF[1]_inst_i_2_n_0 ),
-        .I3(fetched_instr_i_IBUF[31]),
-        .I4(fetched_instr_i_IBUF[21]),
-        .I5(mret_o_OBUF_inst_i_5_n_0),
-        .O(mret_o_OBUF_inst_i_3_n_0));
+    .INIT(64'h0082AAAAAAAAAAAA)) 
+    gpr_we_o_INST_0_i_2
+       (.I0(gpr_we_o_INST_0_i_5_n_0),
+        .I1(fetched_instr_i[14]),
+        .I2(fetched_instr_i[12]),
+        .I3(fetched_instr_i[13]),
+        .I4(fetched_instr_i[30]),
+        .I5(fetched_instr_i[5]),
+        .O(gpr_we_o_INST_0_i_2_n_0));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFE)) 
-    mret_o_OBUF_inst_i_4
-       (.I0(fetched_instr_i_IBUF[10]),
-        .I1(fetched_instr_i_IBUF[7]),
-        .I2(fetched_instr_i_IBUF[9]),
-        .I3(fetched_instr_i_IBUF[8]),
-        .I4(fetched_instr_i_IBUF[11]),
-        .I5(fetched_instr_i_IBUF[15]),
-        .O(mret_o_OBUF_inst_i_4_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+    .INIT(64'h00000010000000F0)) 
+    gpr_we_o_INST_0_i_3
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[13]),
+        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I3(fetched_instr_i[6]),
+        .I4(fetched_instr_i[5]),
+        .I5(gpr_we_o_INST_0_i_6_n_0),
+        .O(gpr_we_o_INST_0_i_3_n_0));
+  LUT6 #(
+    .INIT(64'hFFF8FF88FFFFFF00)) 
+    gpr_we_o_INST_0_i_4
+       (.I0(gpr_we_o_INST_0_i_7_n_0),
+        .I1(gpr_we_o_INST_0_i_8_n_0),
+        .I2(fetched_instr_i[3]),
+        .I3(\a_sel_o[1]_INST_0_i_1_n_0 ),
+        .I4(b_sel_o[2]),
+        .I5(csr_we_o_INST_0_i_1_n_0),
+        .O(gpr_we_o_INST_0_i_4_n_0));
+  LUT6 #(
+    .INIT(64'h0000000000000001)) 
+    gpr_we_o_INST_0_i_5
+       (.I0(fetched_instr_i[27]),
+        .I1(fetched_instr_i[31]),
+        .I2(fetched_instr_i[25]),
+        .I3(fetched_instr_i[26]),
+        .I4(fetched_instr_i[29]),
+        .I5(fetched_instr_i[28]),
+        .O(gpr_we_o_INST_0_i_5_n_0));
   LUT2 #(
     .INIT(4'hE)) 
-    mret_o_OBUF_inst_i_5
-       (.I0(fetched_instr_i_IBUF[13]),
-        .I1(fetched_instr_i_IBUF[12]),
-        .O(mret_o_OBUF_inst_i_5_n_0));
-  OBUF \wb_sel_o_OBUF[0]_inst 
-       (.I(wb_sel_o_OBUF),
-        .O(wb_sel_o[0]));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+    gpr_we_o_INST_0_i_6
+       (.I0(fetched_instr_i[12]),
+        .I1(fetched_instr_i[14]),
+        .O(gpr_we_o_INST_0_i_6_n_0));
+  LUT2 #(
+    .INIT(4'h8)) 
+    gpr_we_o_INST_0_i_7
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[6]),
+        .O(gpr_we_o_INST_0_i_7_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT5 #(
-    .INIT(32'h00000A2A)) 
-    \wb_sel_o_OBUF[0]_inst_i_1 
-       (.I0(mem_req_o_OBUF_inst_i_2_n_0),
-        .I1(fetched_instr_i_IBUF[12]),
-        .I2(fetched_instr_i_IBUF[13]),
-        .I3(fetched_instr_i_IBUF[14]),
-        .I4(fetched_instr_i_IBUF[5]),
-        .O(wb_sel_o_OBUF));
-  OBUF \wb_sel_o_OBUF[1]_inst 
-       (.I(\<const0> ),
+    .INIT(32'h00400000)) 
+    gpr_we_o_INST_0_i_8
+       (.I0(fetched_instr_i[2]),
+        .I1(fetched_instr_i[1]),
+        .I2(fetched_instr_i[0]),
+        .I3(fetched_instr_i[3]),
+        .I4(fetched_instr_i[5]),
+        .O(gpr_we_o_INST_0_i_8_n_0));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFEFEFE)) 
+    illegal_instr_o_INST_0
+       (.I0(illegal_instr_o_INST_0_i_1_n_0),
+        .I1(illegal_instr_o_INST_0_i_2_n_0),
+        .I2(illegal_instr_o_INST_0_i_3_n_0),
+        .I3(illegal_instr_o_INST_0_i_4_n_0),
+        .I4(illegal_instr_o_INST_0_i_5_n_0),
+        .I5(illegal_instr_o_INST_0_i_6_n_0),
+        .O(illegal_instr_o));
+  LUT6 #(
+    .INIT(64'hF3BBF3BBFF0FFC0F)) 
+    illegal_instr_o_INST_0_i_1
+       (.I0(illegal_instr_o_INST_0_i_7_n_0),
+        .I1(fetched_instr_i[5]),
+        .I2(illegal_instr_o_INST_0_i_8_n_0),
+        .I3(fetched_instr_i[3]),
+        .I4(csr_we_o_INST_0_i_1_n_0),
+        .I5(fetched_instr_i[6]),
+        .O(illegal_instr_o_INST_0_i_1_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  LUT4 #(
+    .INIT(16'h4440)) 
+    illegal_instr_o_INST_0_i_10
+       (.I0(fetched_instr_i[2]),
+        .I1(fetched_instr_i[4]),
+        .I2(fetched_instr_i[29]),
+        .I3(fetched_instr_i[28]),
+        .O(illegal_instr_o_INST_0_i_10_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  LUT4 #(
+    .INIT(16'h0F44)) 
+    illegal_instr_o_INST_0_i_11
+       (.I0(fetched_instr_i[13]),
+        .I1(fetched_instr_i[12]),
+        .I2(fetched_instr_i[6]),
+        .I3(fetched_instr_i[5]),
+        .O(illegal_instr_o_INST_0_i_11_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    illegal_instr_o_INST_0_i_12
+       (.I0(fetched_instr_i[30]),
+        .I1(fetched_instr_i[5]),
+        .I2(fetched_instr_i[2]),
+        .O(illegal_instr_o_INST_0_i_12_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT5 #(
+    .INIT(32'h22320230)) 
+    illegal_instr_o_INST_0_i_13
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[6]),
+        .I2(fetched_instr_i[14]),
+        .I3(fetched_instr_i[12]),
+        .I4(fetched_instr_i[13]),
+        .O(illegal_instr_o_INST_0_i_13_n_0));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    illegal_instr_o_INST_0_i_14
+       (.I0(fetched_instr_i[10]),
+        .I1(fetched_instr_i[9]),
+        .I2(fetched_instr_i[15]),
+        .I3(fetched_instr_i[11]),
+        .O(illegal_instr_o_INST_0_i_14_n_0));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFFFBFF)) 
+    illegal_instr_o_INST_0_i_15
+       (.I0(fetched_instr_i[30]),
+        .I1(fetched_instr_i[29]),
+        .I2(fetched_instr_i[24]),
+        .I3(fetched_instr_i[28]),
+        .I4(fetched_instr_i[8]),
+        .I5(fetched_instr_i[7]),
+        .O(illegal_instr_o_INST_0_i_15_n_0));
+  LUT4 #(
+    .INIT(16'hFFFD)) 
+    illegal_instr_o_INST_0_i_16
+       (.I0(fetched_instr_i[21]),
+        .I1(fetched_instr_i[20]),
+        .I2(fetched_instr_i[23]),
+        .I3(fetched_instr_i[22]),
+        .O(illegal_instr_o_INST_0_i_16_n_0));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    illegal_instr_o_INST_0_i_17
+       (.I0(fetched_instr_i[17]),
+        .I1(fetched_instr_i[16]),
+        .I2(fetched_instr_i[19]),
+        .I3(fetched_instr_i[18]),
+        .O(illegal_instr_o_INST_0_i_17_n_0));
+  LUT6 #(
+    .INIT(64'hFFFFFEEEFEEEFEEE)) 
+    illegal_instr_o_INST_0_i_2
+       (.I0(\a_sel_o[0]_INST_0_i_1_n_0 ),
+        .I1(illegal_instr_o_INST_0_i_9_n_0),
+        .I2(illegal_instr_o_INST_0_i_10_n_0),
+        .I3(illegal_instr_o_INST_0_i_11_n_0),
+        .I4(illegal_instr_o_INST_0_i_12_n_0),
+        .I5(illegal_instr_o_INST_0_i_13_n_0),
+        .O(illegal_instr_o_INST_0_i_2_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  LUT3 #(
+    .INIT(8'h80)) 
+    illegal_instr_o_INST_0_i_3
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(fetched_instr_i[2]),
+        .O(illegal_instr_o_INST_0_i_3_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT5 #(
+    .INIT(32'h00000008)) 
+    illegal_instr_o_INST_0_i_4
+       (.I0(fetched_instr_i[6]),
+        .I1(fetched_instr_i[4]),
+        .I2(fetched_instr_i[13]),
+        .I3(fetched_instr_i[12]),
+        .I4(fetched_instr_i[14]),
+        .O(illegal_instr_o_INST_0_i_4_n_0));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    illegal_instr_o_INST_0_i_5
+       (.I0(illegal_instr_o_INST_0_i_14_n_0),
+        .I1(illegal_instr_o_INST_0_i_15_n_0),
+        .I2(illegal_instr_o_INST_0_i_16_n_0),
+        .I3(illegal_instr_o_INST_0_i_17_n_0),
+        .O(illegal_instr_o_INST_0_i_5_n_0));
+  LUT6 #(
+    .INIT(64'h0080A0A000800080)) 
+    illegal_instr_o_INST_0_i_6
+       (.I0(mret_o_INST_0_i_1_n_0),
+        .I1(fetched_instr_i[6]),
+        .I2(fetched_instr_i[4]),
+        .I3(csr_we_o_INST_0_i_1_n_0),
+        .I4(fetched_instr_i[2]),
+        .I5(illegal_instr_o_INST_0_i_11_n_0),
+        .O(illegal_instr_o_INST_0_i_6_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT5 #(
+    .INIT(32'hAA8FAA88)) 
+    illegal_instr_o_INST_0_i_7
+       (.I0(fetched_instr_i[2]),
+        .I1(fetched_instr_i[12]),
+        .I2(fetched_instr_i[4]),
+        .I3(fetched_instr_i[14]),
+        .I4(fetched_instr_i[13]),
+        .O(illegal_instr_o_INST_0_i_7_n_0));
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  LUT2 #(
+    .INIT(4'hB)) 
+    illegal_instr_o_INST_0_i_8
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[2]),
+        .O(illegal_instr_o_INST_0_i_8_n_0));
+  LUT6 #(
+    .INIT(64'h000044000000FC88)) 
+    illegal_instr_o_INST_0_i_9
+       (.I0(fetched_instr_i[5]),
+        .I1(fetched_instr_i[14]),
+        .I2(fetched_instr_i[12]),
+        .I3(fetched_instr_i[13]),
+        .I4(fetched_instr_i[4]),
+        .I5(fetched_instr_i[6]),
+        .O(illegal_instr_o_INST_0_i_9_n_0));
+  LUT2 #(
+    .INIT(4'h8)) 
+    jal_o_INST_0
+       (.I0(b_sel_o[2]),
+        .I1(fetched_instr_i[3]),
+        .O(jal_o));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    jalr_o_INST_0
+       (.I0(csr_we_o_INST_0_i_1_n_0),
+        .I1(\b_sel_o[1]_INST_0_i_1_n_0 ),
+        .I2(fetched_instr_i[4]),
+        .I3(fetched_instr_i[2]),
+        .I4(fetched_instr_i[5]),
+        .I5(fetched_instr_i[6]),
+        .O(jalr_o));
+  LUT5 #(
+    .INIT(32'h040C04CC)) 
+    mem_req_o_INST_0
+       (.I0(fetched_instr_i[5]),
+        .I1(mem_req_o_INST_0_i_1_n_0),
+        .I2(fetched_instr_i[13]),
+        .I3(fetched_instr_i[14]),
+        .I4(fetched_instr_i[12]),
+        .O(mem_req_o));
+  LUT6 #(
+    .INIT(64'h0000000000001000)) 
+    mem_req_o_INST_0_i_1
+       (.I0(fetched_instr_i[4]),
+        .I1(fetched_instr_i[3]),
+        .I2(fetched_instr_i[0]),
+        .I3(fetched_instr_i[1]),
+        .I4(fetched_instr_i[2]),
+        .I5(fetched_instr_i[6]),
+        .O(mem_req_o_INST_0_i_1_n_0));
+  LUT2 #(
+    .INIT(4'h8)) 
+    \mem_size_o[0]_INST_0 
+       (.I0(mem_req_o_INST_0_i_1_n_0),
+        .I1(fetched_instr_i[12]),
+        .O(mem_size_o[0]));
+  LUT2 #(
+    .INIT(4'h8)) 
+    \mem_size_o[1]_INST_0 
+       (.I0(mem_req_o_INST_0_i_1_n_0),
+        .I1(fetched_instr_i[13]),
+        .O(mem_size_o[1]));
+  LUT2 #(
+    .INIT(4'h8)) 
+    \mem_size_o[2]_INST_0 
+       (.I0(mem_req_o_INST_0_i_1_n_0),
+        .I1(fetched_instr_i[14]),
+        .O(mem_size_o[2]));
+  LUT5 #(
+    .INIT(32'h020A0000)) 
+    mem_we_o_INST_0
+       (.I0(fetched_instr_i[5]),
+        .I1(fetched_instr_i[13]),
+        .I2(fetched_instr_i[14]),
+        .I3(fetched_instr_i[12]),
+        .I4(mem_req_o_INST_0_i_1_n_0),
+        .O(mem_we_o));
+  LUT5 #(
+    .INIT(32'h00000080)) 
+    mret_o_INST_0
+       (.I0(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I1(fetched_instr_i[5]),
+        .I2(illegal_instr_o_INST_0_i_4_n_0),
+        .I3(mret_o_INST_0_i_1_n_0),
+        .I4(illegal_instr_o_INST_0_i_5_n_0),
+        .O(mret_o));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    mret_o_INST_0_i_1
+       (.I0(fetched_instr_i[26]),
+        .I1(fetched_instr_i[25]),
+        .I2(fetched_instr_i[31]),
+        .I3(fetched_instr_i[27]),
+        .O(mret_o_INST_0_i_1_n_0));
+  LUT2 #(
+    .INIT(4'h2)) 
+    \wb_sel_o[0]_INST_0 
+       (.I0(mem_req_o_INST_0_i_1_n_0),
+        .I1(fetched_instr_i[5]),
+        .O(wb_sel_o[0]));
+  LUT4 #(
+    .INIT(16'h8000)) 
+    \wb_sel_o[1]_INST_0 
+       (.I0(fetched_instr_i[5]),
+        .I1(\b_sel_o[0]_INST_0_i_1_n_0 ),
+        .I2(fetched_instr_i[6]),
+        .I3(fetched_instr_i[4]),
         .O(wb_sel_o[1]));
 endmodule
