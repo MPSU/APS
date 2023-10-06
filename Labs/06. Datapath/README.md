@@ -17,11 +17,32 @@
 
 ### riscv_core
 
-Рассмотрим микроархитектуру процессорного ядра `riscv_core`.
+Рассмотрим микроархитектуру процессорного ядра `riscv_core`. Данный модуль обладает следующим прототипом и микроархитектурой:
+
+```SystemVerilog
+module riscv_core (
+
+  input  logic        clk_i,
+  input  logic        rst_i,
+
+  input  logic        stall_i,
+  input  logic [31:0] instr_i,
+  input  logic [31:0] mem_rd_i,
+
+  output logic [31:0] instr_addr_o,
+  output logic [31:0] mem_addr_o,
+  output logic [ 2:0] mem_size_o,
+  output logic        mem_req_o,
+  output logic        mem_we_o,
+  output logic [31:0] mem_wd_o
+);
+
+endmodule
+```
 
 ![../../.pic/Labs/lab_06_dp/fig_01.drawio.png](../../.pic/Labs/lab_06_dp/fig_01.drawio.png)
 
-В отличие от реализованного ранее процессора с архитектурой Cybercobra, в данном модуле отсутствует память (она подключается извне, а значит у этого модуля должны быть сигналы интерфейса памяти).
+В отличие от реализованного ранее процессора с архитектурой CYBERcobra, в данном модуле отсутствует память (она подключается извне, а значит у этого модуля должны быть сигналы интерфейса памяти).
 
 Кроме того, в данной микроархитектуре используется пять различных видов констант (соответствующих определенным типам инструкций).
 
@@ -36,6 +57,15 @@
 ### riscv_unit
 
 После реализации процессорного ядра, к нему необходимо подключить память. Это происходит в модуле `riscv_unit`.
+
+```SystemVerilog
+module riscv_unit(
+  input  logic        clk_i,
+  input  logic        resetn_i
+);
+
+endmodule
+```
 
 ![../../.pic/Labs/lab_06_dp/fig_02.drawio.png](../../.pic/Labs/lab_06_dp/fig_02.drawio.png)
 
