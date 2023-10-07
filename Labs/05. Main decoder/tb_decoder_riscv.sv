@@ -22,7 +22,6 @@
 module tb_decoder_riscv();
 
   import riscv_pkg::*;
-  import alu_opcodes_pkg::*;
   parameter delay = 4;
   parameter cycle = 200; // per one opcode
 
@@ -42,7 +41,7 @@ module tb_decoder_riscv();
   wire                       jal;
   wire                       jalr;
   wire                       mret;
-                             
+
   reg                        a_sel_miss;
   reg                        b_sel_miss;
   reg                        alu_op_miss;

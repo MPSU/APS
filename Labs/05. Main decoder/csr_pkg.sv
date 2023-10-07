@@ -6,7 +6,7 @@ package csr_pkg;
   localparam CSR_RWI         = 3'b101;
   localparam CSR_RSI         = 3'b110;
   localparam CSR_RCI         = 3'b111;
-  
+
   localparam MIE_ADDR        = 12'h304;
   localparam MTVEC_ADDR      = 12'h305;
   localparam MSCRATCH_ADDR   = 12'h340;
