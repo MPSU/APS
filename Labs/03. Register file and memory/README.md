@@ -131,21 +131,21 @@ module mem16_20 (                     // создать блок с именем
   output logic [19:0]  sync_read_data // синхронный выход считанных данных
 );
 
-  logic [19:0] memory [0:15];          // создать память с 16-ю
-                                    // 20-битными ячейками
+  logic [19:0] memory [0:15];         // создать память с 16-ю
+                                      // 20-битными ячейками
 
   // асинхронное чтение
-  assign read_data = memory[addr];  // подключить к выходу async_read_data
-                                    // ячейку памяти по адресу addr
-                                    // (асинхронное чтение)
+  assign async_read_data = memory[addr];  // подключить к выходу async_read_data
+                                          // ячейку памяти по адресу addr
+                                          // (асинхронное чтение)
 
   // синхронное чтение
   always_ff @(posedge clk) begin     // поставить перед выходом sync_read_data
-    sync_read_data <= memory[addr]; // регистр, в который каждый такт будут
-  end                               // записываться считываемые данные
+    sync_read_data <= memory[addr];  // регистр, в который каждый такт будут
+  end                                // записываться считываемые данные
 
   // запись
-  always_ff @(posedge clk) begin   // каждый раз по фронту clk
+  always_ff @(posedge clk) begin    // каждый раз по фронту clk
     if(write_enable) begin          // если сигнал write_enable == 1, то
       memory[addr] <= write_data;   // в ячейку по адресу addr будут записаны
                                     // данные сигнала write_data
