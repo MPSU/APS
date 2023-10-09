@@ -31,15 +31,14 @@ reg [31:0] rd2;
 
 rf_riscv DUT
 (
-  .clk   (CLK100),
-  .A1    (a1),
-  .A2    (a2),
-  .A3    (a3),
-  .WD3   (WD3),
-  .WE    (WE),
-  
-  .RD1   (RD1),
-  .RD2   (RD2)
+  .clk_i            (CLK100 ),
+  .write_addr_i     (a1     ),
+  .read_addr1_i     (a2     ),
+  .read_addr2_i     (a3     ),
+  .write_data_i     (WD3    ),
+  .write_enable_i   (WE     ),
+  .read_data1_o     (RD1    ),
+  .read_data2_o     (RD2    )
 );
 
 assign LED = {1'b0, a1, a2, a3};
