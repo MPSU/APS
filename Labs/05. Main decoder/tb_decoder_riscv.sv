@@ -245,7 +245,6 @@ module tb_decoder_riscv();
     instr[6:0]  = {SYSTEM_OPCODE,2'b11};
     instr[31:7] = 25'h604000;
     #delay;
-    $stop();
     for (X=0; X<2**5-1; X=X+1) begin
       for (V=0; V<cycle; V=V+1) begin
         instr[1:0]  = 2'b11;
@@ -270,72 +269,72 @@ module tb_decoder_riscv();
     @(instr);
     #2;
     if (illegal_miss)begin
-      $display("Output 'illegal_instr_o' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",illegal_instr, grm.illegal_instr_o, instr_type, opcode_type, $time);
+      $display       ("Output 'illegal_instr_o' is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",illegal_instr, grm.illegal_instr_o, instr_type, opcode_type, $time);
       error = error + 1'b1;
       end
     if (~illegal_miss) begin
       if(!illegal_instr) begin
           if (a_sel_miss)begin
-            $display ("Output 'a_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",a_sel, grm.a_sel_o, instr_type, opcode_type, $time);
+            $display ("Output 'a_sel_o'         is incorrect(   %02b instead of    %02b), instruction: %s %s, time: %t",a_sel, grm.a_sel_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
             end
           if (b_sel_miss)begin
-            $display ("Output 'b_sel_o  ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",b_sel, grm.b_sel_o, instr_type, opcode_type, $time);
+            $display ("Output 'b_sel_o'         is incorrect(  %03b instead of   %b), instruction: %s %s, time: %t",b_sel, grm.b_sel_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
             end
           if (alu_op_miss)begin
-            $display ("Output 'alu_op_o       ' is incorrect(%b instead of %b), instruction: %s %s, time: %t",alu_op, grm.alu_op_o, instr_type, opcode_type, $time);
+            $display ("Output 'alu_op_o'        is incorrect(%05b instead of %05b), instruction: %s %s, time: %t",alu_op, grm.alu_op_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
             end
           if (csr_op_miss) begin
-            $display ("Output 'csr_op_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",csr_op, grm.csr_op_o, instr_type, opcode_type, $time);
+            $display ("Output 'csr_op_o'        is incorrect(  %03b instead of   %03b), instruction: %s %s, time: %t",csr_op, grm.csr_op_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
           end
           if (mem_size_miss)begin
-            $display ("Output 'mem_size_o     ' is incorrect( %b  instead of %b  ), instruction: %s %s, time: %t",mem_size, grm.mem_size_o, instr_type, opcode_type, $time);
+            $display ("Output 'mem_size_o'      is incorrect(  %03b instead of   %03b), instruction: %s %s, time: %t",mem_size, grm.mem_size_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
           end
           if (wb_sel_miss)begin
-            $display ("Output 'wb_sel_o   ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",wb_sel, grm.wb_sel_o, instr_type, opcode_type, $time);
+            $display ("Output 'wb_sel_o'        is incorrect(   %02b instead of    %02b), instruction: %s %s, time: %t",wb_sel, grm.wb_sel_o, instr_type, opcode_type, $time);
             error = error + 1'b1;
           end
       end
       if (csr_we_miss) begin
-        $display ("Output 'csr_we_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",csr_we, grm.csr_we_o, instr_type, opcode_type, $time);
+        $display     ("Output 'csr_we_o'        is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",csr_we, grm.csr_we_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
       end
       if (mem_we_miss)begin
-        $display ("Output 'mem_we_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mem_we, grm.mem_we_o, instr_type, opcode_type, $time);
+        $display     ("Output 'mem_we_o'        is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",mem_we, grm.mem_we_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (mem_req_miss)begin
-        $display ("Output 'mem_req_o      ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mem_req, grm.mem_req_o, instr_type, opcode_type, $time);
+        $display     ("Output 'mem_req_o'       is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",mem_req, grm.mem_req_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (gpr_we_miss)begin
-        $display ("Output 'gpr_we_o     ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",gpr_we, grm.gpr_we_o, instr_type, opcode_type, $time);
+        $display     ("Output 'gpr_we_o'        is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",gpr_we, grm.gpr_we_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (branch_miss)begin
-        $display ("Output 'branch_o       ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",branch, grm.branch_o, instr_type, opcode_type, $time);
+        $display     ("Output 'branch_o'        is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",branch, grm.branch_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (jal_miss)begin
-        $display ("Output 'jal_o          ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",jal, grm.jal_o, instr_type, opcode_type, $time);
+        $display     ("Output 'jal_o'           is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",jal, grm.jal_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (jalr_miss)begin
-        $display ("Output 'jalr_o         ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",jalr, grm.jalr_o, instr_type, opcode_type, $time);
+        $display     ("Output 'jalr_o'          is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",jalr, grm.jalr_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
       if (mret_miss)begin
-        $display ("Output 'mret_o         ' is incorrect(   %b  instead of %b    ), instruction: %s %s, time: %t",mret, grm.mret_o, instr_type, opcode_type, $time);
+        $display     ("Output 'mret_o'          is incorrect(    %b instead of     %b), instruction: %s %s, time: %t",mret, grm.mret_o, instr_type, opcode_type, $time);
         error = error + 1'b1;
         end
     end
 
   end
-  
+
   always begin
     @(instr);
     #1;
