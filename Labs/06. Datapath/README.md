@@ -61,7 +61,7 @@ endmodule
 ```SystemVerilog
 module riscv_unit(
   input  logic        clk_i,
-  input  logic        resetn_i
+  input  logic        rst_i
 );
 
 endmodule
