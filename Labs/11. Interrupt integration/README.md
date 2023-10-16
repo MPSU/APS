@@ -5,7 +5,7 @@
 ![../../.pic/Labs/lab_08_lsu/fig_01.drawio.png](../../.pic/Labs/lab_10_irq/fig_02.drawio.png)
 
 <details>
-<summary>Схема выделения новых частей относительно старой версии модуля</summary>
+<summary>Схема без выделения новых частей относительно старой версии модуля</summary>
 
 ![../../.pic/Labs/lab_11_irq_integration/fig_01.drawio.png](../../.pic/Labs/lab_11_irq_integration/fig_01.drawio.png)
 
