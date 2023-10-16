@@ -9,13 +9,19 @@ module ext_mem(
   output logic        ready_o
 );
 
+
+`define akjsdnnaskjdndat  $clog2(128)
+`define cdyfguvhbjnmkdat  $clog2(`akjsdnnaskjdndat)
+`define qwenklfsaklasddat $clog2(`cdyfguvhbjnmkdat)
+`define asdasdhkjasdsadat (34>>`cdyfguvhbjnmkdat)
+
 logic [31:0] read_data;
 logic [3:0] be;
 assign be = byte_enable_i;
 assign ready_o = 1'b1;
 
 
-logic [31:0] ram [2**12];
+logic [31:0] RAM [2**12];
 
 logic [31:0] addr;
 assign addr = addr_i >> 2;
