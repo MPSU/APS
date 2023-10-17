@@ -19,247 +19,247 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-primitive gpr_we_table (gpr_we_sig, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gpr_we_sig;
+module gpr_we_table (gpr_we_sig, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gpr_we_sig;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gpr_we_sig
-              0        0         0          0         0    :    1;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    1;
-              0        0         1          0         1    :    1;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    0;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    1;
-              0        1         1          0         1    :    1;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    0;
-              1        1         0          0         1    :    1;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    1;
-              1        1         1          0         0    :    1;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gpr_we_sig = 1'b1;
+        5'b00001: gpr_we_sig = 1'b0;
+        5'b00010: gpr_we_sig = 1'b0;
+        5'b00011: gpr_we_sig = 1'b0;
+        5'b00100: gpr_we_sig = 1'b1;
+        5'b00101: gpr_we_sig = 1'b1;
+        5'b00110: gpr_we_sig = 1'b0;
+        5'b00111: gpr_we_sig = 1'b0;
+        5'b01000: gpr_we_sig = 1'b0;
+        5'b01001: gpr_we_sig = 1'b0;
+        5'b01010: gpr_we_sig = 1'b0;
+        5'b01011: gpr_we_sig = 1'b0;
+        5'b01100: gpr_we_sig = 1'b1;
+        5'b01101: gpr_we_sig = 1'b1;
+        5'b01110: gpr_we_sig = 1'b0;
+        5'b01111: gpr_we_sig = 1'b0;
+        5'b10000: gpr_we_sig = 1'b0;
+        5'b10001: gpr_we_sig = 1'b0;
+        5'b10010: gpr_we_sig = 1'b0;
+        5'b10011: gpr_we_sig = 1'b0;
+        5'b10100: gpr_we_sig = 1'b0;
+        5'b10101: gpr_we_sig = 1'b0;
+        5'b10110: gpr_we_sig = 1'b0;
+        5'b10111: gpr_we_sig = 1'b0;
+        5'b11000: gpr_we_sig = 1'b0;
+        5'b11001: gpr_we_sig = 1'b1;
+        5'b11010: gpr_we_sig = 1'b0;
+        5'b11011: gpr_we_sig = 1'b1;
+        5'b11100: gpr_we_sig = 1'b1;
+        5'b11101: gpr_we_sig = 1'b0;
+        5'b11110: gpr_we_sig = 1'b0;
+        5'b11111: gpr_we_sig = 1'b0;
+    endcase
+endmodule
 
-primitive csr_we_table (gis_ew_rsc, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gis_ew_rsc;
+module csr_we_table (gis_ew_rsc, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_rsc;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gis_ew_rsc
-              0        0         0          0         0    :    0;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    0;
-              0        0         1          0         1    :    0;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    0;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    0;
-              0        1         1          0         1    :    0;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    0;
-              1        1         0          0         1    :    0;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    0;
-              1        1         1          0         0    :    1;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_ew_rsc = 1'b0;
+        5'b00001: gis_ew_rsc = 1'b0;
+        5'b00010: gis_ew_rsc = 1'b0;
+        5'b00011: gis_ew_rsc = 1'b0;
+        5'b00100: gis_ew_rsc = 1'b0;
+        5'b00101: gis_ew_rsc = 1'b0;
+        5'b00110: gis_ew_rsc = 1'b0;
+        5'b00111: gis_ew_rsc = 1'b0;
+        5'b01000: gis_ew_rsc = 1'b0;
+        5'b01001: gis_ew_rsc = 1'b0;
+        5'b01010: gis_ew_rsc = 1'b0;
+        5'b01011: gis_ew_rsc = 1'b0;
+        5'b01100: gis_ew_rsc = 1'b0;
+        5'b01101: gis_ew_rsc = 1'b0;
+        5'b01110: gis_ew_rsc = 1'b0;
+        5'b01111: gis_ew_rsc = 1'b0;
+        5'b10000: gis_ew_rsc = 1'b0;
+        5'b10001: gis_ew_rsc = 1'b0;
+        5'b10010: gis_ew_rsc = 1'b0;
+        5'b10011: gis_ew_rsc = 1'b0;
+        5'b10100: gis_ew_rsc = 1'b0;
+        5'b10101: gis_ew_rsc = 1'b0;
+        5'b10110: gis_ew_rsc = 1'b0;
+        5'b10111: gis_ew_rsc = 1'b0;
+        5'b11000: gis_ew_rsc = 1'b0;
+        5'b11001: gis_ew_rsc = 1'b0;
+        5'b11010: gis_ew_rsc = 1'b0;
+        5'b11011: gis_ew_rsc = 1'b0;
+        5'b11100: gis_ew_rsc = 1'b1;
+        5'b11101: gis_ew_rsc = 1'b0;
+        5'b11110: gis_ew_rsc = 1'b0;
+        5'b11111: gis_ew_rsc = 1'b0;
+    endcase
+endmodule
 
 
 
-primitive mem_req_table (gis_qer_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gis_qer_mem;
+module mem_req_table (gis_qer_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_qer_mem;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gis_qer_mem
-              0        0         0          0         0    :    1;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    0;
-              0        0         1          0         1    :    0;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    1;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    0;
-              0        1         1          0         1    :    0;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    0;
-              1        1         0          0         1    :    0;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    0;
-              1        1         1          0         0    :    0;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_qer_mem = 1'b1;
+        5'b00001: gis_qer_mem = 1'b0;
+        5'b00010: gis_qer_mem = 1'b0;
+        5'b00011: gis_qer_mem = 1'b0;
+        5'b00100: gis_qer_mem = 1'b0;
+        5'b00101: gis_qer_mem = 1'b0;
+        5'b00110: gis_qer_mem = 1'b0;
+        5'b00111: gis_qer_mem = 1'b0;
+        5'b01000: gis_qer_mem = 1'b1;
+        5'b01001: gis_qer_mem = 1'b0;
+        5'b01010: gis_qer_mem = 1'b0;
+        5'b01011: gis_qer_mem = 1'b0;
+        5'b01100: gis_qer_mem = 1'b0;
+        5'b01101: gis_qer_mem = 1'b0;
+        5'b01110: gis_qer_mem = 1'b0;
+        5'b01111: gis_qer_mem = 1'b0;
+        5'b10000: gis_qer_mem = 1'b0;
+        5'b10001: gis_qer_mem = 1'b0;
+        5'b10010: gis_qer_mem = 1'b0;
+        5'b10011: gis_qer_mem = 1'b0;
+        5'b10100: gis_qer_mem = 1'b0;
+        5'b10101: gis_qer_mem = 1'b0;
+        5'b10110: gis_qer_mem = 1'b0;
+        5'b10111: gis_qer_mem = 1'b0;
+        5'b11000: gis_qer_mem = 1'b0;
+        5'b11001: gis_qer_mem = 1'b0;
+        5'b11010: gis_qer_mem = 1'b0;
+        5'b11011: gis_qer_mem = 1'b0;
+        5'b11100: gis_qer_mem = 1'b0;
+        5'b11101: gis_qer_mem = 1'b0;
+        5'b11110: gis_qer_mem = 1'b0;
+        5'b11111: gis_qer_mem = 1'b0;
+    endcase
+endmodule
 
-primitive mem_we_table (gis_ew_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gis_ew_mem;
+module mem_we_table (gis_ew_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_mem;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gis_ew_mem
-              0        0         0          0         0    :    0;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    0;
-              0        0         1          0         1    :    0;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    1;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    0;
-              0        1         1          0         1    :    0;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    0;
-              1        1         0          0         1    :    0;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    0;
-              1        1         1          0         0    :    0;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_ew_mem = 1'b0;
+        5'b00001: gis_ew_mem = 1'b0;
+        5'b00010: gis_ew_mem = 1'b0;
+        5'b00011: gis_ew_mem = 1'b0;
+        5'b00100: gis_ew_mem = 1'b0;
+        5'b00101: gis_ew_mem = 1'b0;
+        5'b00110: gis_ew_mem = 1'b0;
+        5'b00111: gis_ew_mem = 1'b0;
+        5'b01000: gis_ew_mem = 1'b1;
+        5'b01001: gis_ew_mem = 1'b0;
+        5'b01010: gis_ew_mem = 1'b0;
+        5'b01011: gis_ew_mem = 1'b0;
+        5'b01100: gis_ew_mem = 1'b0;
+        5'b01101: gis_ew_mem = 1'b0;
+        5'b01110: gis_ew_mem = 1'b0;
+        5'b01111: gis_ew_mem = 1'b0;
+        5'b10000: gis_ew_mem = 1'b0;
+        5'b10001: gis_ew_mem = 1'b0;
+        5'b10010: gis_ew_mem = 1'b0;
+        5'b10011: gis_ew_mem = 1'b0;
+        5'b10100: gis_ew_mem = 1'b0;
+        5'b10101: gis_ew_mem = 1'b0;
+        5'b10110: gis_ew_mem = 1'b0;
+        5'b10111: gis_ew_mem = 1'b0;
+        5'b11000: gis_ew_mem = 1'b0;
+        5'b11001: gis_ew_mem = 1'b0;
+        5'b11010: gis_ew_mem = 1'b0;
+        5'b11011: gis_ew_mem = 1'b0;
+        5'b11100: gis_ew_mem = 1'b0;
+        5'b11101: gis_ew_mem = 1'b0;
+        5'b11110: gis_ew_mem = 1'b0;
+        5'b11111: gis_ew_mem = 1'b0;
+    endcase
+endmodule
 
-primitive branch_table (gis_hcnarb, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gis_hcnarb;
+module branch_table (gis_hcnarb, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_hcnarb;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gis_hcnarb
-              0        0         0          0         0    :    0;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    0;
-              0        0         1          0         1    :    0;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    0;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    0;
-              0        1         1          0         1    :    0;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    1;
-              1        1         0          0         1    :    0;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    0;
-              1        1         1          0         0    :    0;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_hcnarb = 1'b0;
+        5'b00001: gis_hcnarb = 1'b0;
+        5'b00010: gis_hcnarb = 1'b0;
+        5'b00011: gis_hcnarb = 1'b0;
+        5'b00100: gis_hcnarb = 1'b0;
+        5'b00101: gis_hcnarb = 1'b0;
+        5'b00110: gis_hcnarb = 1'b0;
+        5'b00111: gis_hcnarb = 1'b0;
+        5'b01000: gis_hcnarb = 1'b0;
+        5'b01001: gis_hcnarb = 1'b0;
+        5'b01010: gis_hcnarb = 1'b0;
+        5'b01011: gis_hcnarb = 1'b0;
+        5'b01100: gis_hcnarb = 1'b0;
+        5'b01101: gis_hcnarb = 1'b0;
+        5'b01110: gis_hcnarb = 1'b0;
+        5'b01111: gis_hcnarb = 1'b0;
+        5'b10000: gis_hcnarb = 1'b0;
+        5'b10001: gis_hcnarb = 1'b0;
+        5'b10010: gis_hcnarb = 1'b0;
+        5'b10011: gis_hcnarb = 1'b0;
+        5'b10100: gis_hcnarb = 1'b0;
+        5'b10101: gis_hcnarb = 1'b0;
+        5'b10110: gis_hcnarb = 1'b0;
+        5'b10111: gis_hcnarb = 1'b0;
+        5'b11000: gis_hcnarb = 1'b1;
+        5'b11001: gis_hcnarb = 1'b0;
+        5'b11010: gis_hcnarb = 1'b0;
+        5'b11011: gis_hcnarb = 1'b0;
+        5'b11100: gis_hcnarb = 1'b0;
+        5'b11101: gis_hcnarb = 1'b0;
+        5'b11110: gis_hcnarb = 1'b0;
+        5'b11111: gis_hcnarb = 1'b0;
+    endcase
+endmodule
 
-primitive jalr_table (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output gis_rlaj;
+module jalr_table (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_rlaj;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
-    table
-        // edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2 gis_rlaj
-              0        0         0          0         0    :    0;
-              0        0         0          0         1    :    0;
-              0        0         0          1         0    :    0;
-              0        0         0          1         1    :    0;
-              0        0         1          0         0    :    0;
-              0        0         1          0         1    :    0;
-              0        0         1          1         0    :    0;
-              0        0         1          1         1    :    0;
-              0        1         0          0         0    :    0;
-              0        1         0          0         1    :    0;
-              0        1         0          1         0    :    0;
-              0        1         0          1         1    :    0;
-              0        1         1          0         0    :    0;
-              0        1         1          0         1    :    0;
-              0        1         1          1         0    :    0;
-              0        1         1          1         1    :    0;
-              1        0         0          0         0    :    0;
-              1        0         0          0         1    :    0;
-              1        0         0          1         0    :    0;
-              1        0         0          1         1    :    0;
-              1        0         1          0         0    :    0;
-              1        0         1          0         1    :    0;
-              1        0         1          1         0    :    0;
-              1        0         1          1         1    :    0;
-              1        1         0          0         0    :    0;
-              1        1         0          0         1    :    1;
-              1        1         0          1         0    :    0;
-              1        1         0          1         1    :    0;
-              1        1         1          0         0    :    0;
-              1        1         1          0         1    :    0;
-              1        1         1          1         0    :    0;
-              1        1         1          1         1    :    0;
-    endtable
-endprimitive
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_rlaj = 1'b0;
+        5'b00001: gis_rlaj = 1'b0;
+        5'b00010: gis_rlaj = 1'b0;
+        5'b00011: gis_rlaj = 1'b0;
+        5'b00100: gis_rlaj = 1'b0;
+        5'b00101: gis_rlaj = 1'b0;
+        5'b00110: gis_rlaj = 1'b0;
+        5'b00111: gis_rlaj = 1'b0;
+        5'b01000: gis_rlaj = 1'b0;
+        5'b01001: gis_rlaj = 1'b0;
+        5'b01010: gis_rlaj = 1'b0;
+        5'b01011: gis_rlaj = 1'b0;
+        5'b01100: gis_rlaj = 1'b0;
+        5'b01101: gis_rlaj = 1'b0;
+        5'b01110: gis_rlaj = 1'b0;
+        5'b01111: gis_rlaj = 1'b0;
+        5'b10000: gis_rlaj = 1'b0;
+        5'b10001: gis_rlaj = 1'b0;
+        5'b10010: gis_rlaj = 1'b0;
+        5'b10011: gis_rlaj = 1'b0;
+        5'b10100: gis_rlaj = 1'b0;
+        5'b10101: gis_rlaj = 1'b0;
+        5'b10110: gis_rlaj = 1'b0;
+        5'b10111: gis_rlaj = 1'b0;
+        5'b11000: gis_rlaj = 1'b0;
+        5'b11001: gis_rlaj = 1'b1;
+        5'b11010: gis_rlaj = 1'b0;
+        5'b11011: gis_rlaj = 1'b0;
+        5'b11100: gis_rlaj = 1'b0;
+        5'b11101: gis_rlaj = 1'b0;
+        5'b11110: gis_rlaj = 1'b0;
+        5'b11111: gis_rlaj = 1'b0;
+    endcase
+endmodule
 
 module decoder_riscv (
     input  logic [31:0] fetched_instr_i,
