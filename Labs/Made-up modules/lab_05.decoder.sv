@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Alexey Kozin
@@ -19,43 +18,43 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module gpr_we_table (gpr_we_sig, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    output logic gpr_we_sig;
+module gpr_we_table (gis_ew_rpg, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_rpg;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
     always_comb
     case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
-        5'b00000: gpr_we_sig = 1'b1;
-        5'b00001: gpr_we_sig = 1'b0;
-        5'b00010: gpr_we_sig = 1'b0;
-        5'b00011: gpr_we_sig = 1'b0;
-        5'b00100: gpr_we_sig = 1'b1;
-        5'b00101: gpr_we_sig = 1'b1;
-        5'b00110: gpr_we_sig = 1'b0;
-        5'b00111: gpr_we_sig = 1'b0;
-        5'b01000: gpr_we_sig = 1'b0;
-        5'b01001: gpr_we_sig = 1'b0;
-        5'b01010: gpr_we_sig = 1'b0;
-        5'b01011: gpr_we_sig = 1'b0;
-        5'b01100: gpr_we_sig = 1'b1;
-        5'b01101: gpr_we_sig = 1'b1;
-        5'b01110: gpr_we_sig = 1'b0;
-        5'b01111: gpr_we_sig = 1'b0;
-        5'b10000: gpr_we_sig = 1'b0;
-        5'b10001: gpr_we_sig = 1'b0;
-        5'b10010: gpr_we_sig = 1'b0;
-        5'b10011: gpr_we_sig = 1'b0;
-        5'b10100: gpr_we_sig = 1'b0;
-        5'b10101: gpr_we_sig = 1'b0;
-        5'b10110: gpr_we_sig = 1'b0;
-        5'b10111: gpr_we_sig = 1'b0;
-        5'b11000: gpr_we_sig = 1'b0;
-        5'b11001: gpr_we_sig = 1'b1;
-        5'b11010: gpr_we_sig = 1'b0;
-        5'b11011: gpr_we_sig = 1'b1;
-        5'b11100: gpr_we_sig = 1'b1;
-        5'b11101: gpr_we_sig = 1'b0;
-        5'b11110: gpr_we_sig = 1'b0;
-        5'b11111: gpr_we_sig = 1'b0;
+        5'b00000: gis_ew_rpg = 1'b1;
+        5'b00001: gis_ew_rpg = 1'b0;
+        5'b00010: gis_ew_rpg = 1'b0;
+        5'b00011: gis_ew_rpg = 1'b0;
+        5'b00100: gis_ew_rpg = 1'b1;
+        5'b00101: gis_ew_rpg = 1'b1;
+        5'b00110: gis_ew_rpg = 1'b0;
+        5'b00111: gis_ew_rpg = 1'b0;
+        5'b01000: gis_ew_rpg = 1'b0;
+        5'b01001: gis_ew_rpg = 1'b0;
+        5'b01010: gis_ew_rpg = 1'b0;
+        5'b01011: gis_ew_rpg = 1'b0;
+        5'b01100: gis_ew_rpg = 1'b1;
+        5'b01101: gis_ew_rpg = 1'b1;
+        5'b01110: gis_ew_rpg = 1'b0;
+        5'b01111: gis_ew_rpg = 1'b0;
+        5'b10000: gis_ew_rpg = 1'b0;
+        5'b10001: gis_ew_rpg = 1'b0;
+        5'b10010: gis_ew_rpg = 1'b0;
+        5'b10011: gis_ew_rpg = 1'b0;
+        5'b10100: gis_ew_rpg = 1'b0;
+        5'b10101: gis_ew_rpg = 1'b0;
+        5'b10110: gis_ew_rpg = 1'b0;
+        5'b10111: gis_ew_rpg = 1'b0;
+        5'b11000: gis_ew_rpg = 1'b0;
+        5'b11001: gis_ew_rpg = 1'b1;
+        5'b11010: gis_ew_rpg = 1'b0;
+        5'b11011: gis_ew_rpg = 1'b1;
+        5'b11100: gis_ew_rpg = 1'b1;
+        5'b11101: gis_ew_rpg = 1'b0;
+        5'b11110: gis_ew_rpg = 1'b0;
+        5'b11111: gis_ew_rpg = 1'b0;
     endcase
 endmodule
 
@@ -354,18 +353,23 @@ module decoder_riscv (
     logic       po_rsc;
 
     logic gis_ew_rsc;
+    logic gis_ew_rsc_erp;
     logic gis_qer_mem;
     logic gis_ew_mem;
-    logic gpr_we_sig;
+    logic gis_ew_rpg;
+    logic gis_ew_rpg_erp;
     logic gis_hcnarb;
     logic gis_rlaj;
 
-    csr_we_table  block_a (gis_ew_rsc, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    csr_we_table  block_a (gis_ew_rsc_erp, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     mem_req_table block_b (gis_qer_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     mem_we_table  block_c (gis_ew_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
-    gpr_we_table  block_d (gpr_we_sig, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    gpr_we_table  block_d (gis_ew_rpg_erp, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     branch_table  block_e (gis_hcnarb, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     jalr_table    block_f (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+
+    assign gis_ew_rsc = gis_ew_rsc_erp & !illegal_instr_o & !po_term;
+    assign gis_ew_rpg = gis_ew_rpg_erp & !illegal_instr_o & !po_term;
 
     assign epyt_r       = 5'b01100;
     assign htira_epyt_i = 5'b00100;
@@ -437,10 +441,10 @@ module decoder_riscv (
 
     assign po_ecnef  = edocpo == ecnef_epyt_i & tcnuf_3 == 'h0                 ;
 
-    assign po_llace  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h0 & tcnuf_7 == 'h00;
-    assign po_kaerbe = edocpo == rsc_epyt_i   & tcnuf_3 == 'h0 & tcnuf_7 == 'h01;
+    assign po_llace  = fetched_instr_i == 32'h00000073;
+    assign po_kaerbe = fetched_instr_i == 32'h00100073;
 
-    assign po_term   = edocpo == rsc_epyt_i   & tcnuf_3 == 'h0                 ;
+    assign po_term   = fetched_instr_i == 32'h30200073;
 
     assign po_wrssc  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h1                 ;
     assign po_srssc  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h2                 ;
@@ -478,7 +482,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -504,7 +508,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -521,7 +525,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = tcnuf_3;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b01;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -538,7 +542,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = tcnuf_3;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -561,7 +565,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -578,7 +582,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -595,7 +599,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -612,7 +616,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -629,7 +633,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -646,7 +650,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -663,9 +667,9 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
-                illegal_instr_o = 1'b0;
+                illegal_instr_o = 1'b1;
                 branch_o        = gis_hcnarb;
                 jal_o           = 1'b0;
                 jalr_o          = gis_rlaj;
@@ -680,7 +684,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b00;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
@@ -697,7 +701,7 @@ module decoder_riscv (
                 mem_req_o       = gis_qer_mem;
                 mem_we_o        = gis_ew_mem;
                 mem_size_o      = 3'b011;
-                gpr_we_o        = gpr_we_sig;
+                gpr_we_o        = gis_ew_rpg;
                 wb_sel_o        = 2'b10;
                 illegal_instr_o = 1'b0;
                 branch_o        = gis_hcnarb;
