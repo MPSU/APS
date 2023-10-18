@@ -116,6 +116,7 @@ module tb_decoder_riscv();
     jal_miss        = 'b0;
     jalr_miss       = 'b0;
     mret_miss       = 'b0;
+    illegal_miss    = grm.illegal_instr_o !== illegal_instr;
     case (opcode)
       LOAD_OPCODE, STORE_OPCODE:
       begin
@@ -128,7 +129,6 @@ module tb_decoder_riscv();
         mem_size_miss   = (grm.mem_size_o !== mem_size) & !illegal_instr;
         gpr_we_miss   = grm.gpr_we_o !== gpr_we;
         wb_sel_miss = (grm.wb_sel_o !== wb_sel) & !illegal_instr;
-        illegal_miss    = grm.illegal_instr_o !== illegal_instr;
         branch_miss     = grm.branch_o !== branch;
         jal_miss        = grm.jal_o !== jal;
         jalr_miss       = grm.jalr_o !== jalr;
@@ -148,7 +148,6 @@ module tb_decoder_riscv();
         //mem_size_miss   = (grm.mem_size_o !== mem_size) & !illegal_instr;
         gpr_we_miss   = grm.gpr_we_o !== gpr_we;
         wb_sel_miss = (grm.wb_sel_o !== wb_sel) & !illegal_instr;
-        illegal_miss    = grm.illegal_instr_o !== illegal_instr;
         branch_miss     = grm.branch_o !== branch;
         jal_miss        = grm.jal_o !== jal;
         jalr_miss       = grm.jalr_o !== jalr;
@@ -166,7 +165,6 @@ module tb_decoder_riscv();
         //mem_size_miss   = (grm.mem_size_o !== mem_size) & !illegal_instr;
         gpr_we_miss   = grm.gpr_we_o !== gpr_we;
         //wb_sel_miss = (grm.wb_sel_o !== wb_sel) & !illegal_instr;
-        illegal_miss    = grm.illegal_instr_o !== illegal_instr;
         branch_miss     = grm.branch_o !== branch;
         jal_miss        = grm.jal_o !== jal;
         jalr_miss       = grm.jalr_o !== jalr;
@@ -183,16 +181,28 @@ module tb_decoder_riscv();
         //mem_size_miss   = (grm.mem_size_o !== mem_size) & !illegal_instr;
         gpr_we_miss   = grm.gpr_we_o !== gpr_we;
         wb_sel_miss = (grm.wb_sel_o !== wb_sel) & !illegal_instr;
-        illegal_miss    = grm.illegal_instr_o !== illegal_instr;
         branch_miss     = grm.branch_o !== branch;
         jal_miss        = grm.jal_o !== jal;
         jalr_miss       = grm.jalr_o !== jalr;
         mret_miss       = grm.mret_o !== mret;
       end
       
-      SYSTEM_OPCODE: csr_op_miss     = (grm.csr_op_o !== csr_op);
-      
-      default:      //MISC_MEM_OPCODE, SYSTEM_OPCODE and other
+      SYSTEM_OPCODE:  begin
+        //a_sel_miss      = (grm.a_sel_o !== a_sel) & !illegal_instr;
+        //b_sel_miss      = (grm.b_sel_o !== b_sel) & !illegal_instr;
+        //alu_op_miss     = ((alu_op !== ALU_ADD)&(alu_op !== ALU_XOR)&(alu_op !== ALU_OR)) & !illegal_instr;
+        csr_we_miss     = (grm.csr_we_o !== csr_we);
+        mem_req_miss    = grm.mem_req_o !== mem_req;
+        mem_we_miss     = grm.mem_we_o !== mem_we;
+        //mem_size_miss   = (grm.mem_size_o !== mem_size) & !illegal_instr;
+        gpr_we_miss   = grm.gpr_we_o !== gpr_we;
+        wb_sel_miss = (grm.wb_sel_o !== wb_sel) & !illegal_instr & !mret;
+        branch_miss     = grm.branch_o !== branch;
+        jal_miss        = grm.jal_o !== jal;
+        jalr_miss       = grm.jalr_o !== jalr;
+        mret_miss       = grm.mret_o !== mret;
+      end
+      default:      //MISC_MEM_OPCODE and other
       begin
         //a_sel_miss      = grm.a_sel_o !== a_sel;
         //b_sel_miss      = grm.b_sel_o !== b_sel;
@@ -203,7 +213,6 @@ module tb_decoder_riscv();
         //mem_size_miss   = grm.mem_size_o !== mem_size;
         gpr_we_miss   = grm.gpr_we_o !== gpr_we;
         //wb_sel_miss = grm.wb_sel_o !== wb_sel;
-        illegal_miss    = grm.illegal_instr_o !== illegal_instr;
         branch_miss     = grm.branch_o !== branch;
         jal_miss        = grm.jal_o !== jal;
         jalr_miss       = grm.jalr_o !== jalr;
@@ -212,7 +221,7 @@ module tb_decoder_riscv();
     endcase
   end
 
-  reg [4:0] X;
+  integer X;
   reg [$clog2(cycle+1)-1:0] V;
   integer error;
 
@@ -224,20 +233,20 @@ module tb_decoder_riscv();
   initial begin
     $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
     
-    for (V=0; V<cycle/10; V=V+1) begin  // illegal по 11 в конце opcode
+    for (V=0; V<cycle/10; V=V+1) begin  // illegal Ð¿Ð¾ 11 Ð² ÐºÐ¾Ð½Ñ†Ðµ opcode
         instr[1:0]  = $random;
         instr[6:2]  = {1'b0,V[1:0],2'b0};
         instr[31:7] = 'b0;
         #delay;
     end
-    for (V=0; V<cycle; V=V+1) begin  // illegal по OP_OPCODE funct7
+    for (V=0; V<cycle; V=V+1) begin  // illegal Ð¿Ð¾ OP_OPCODE funct7
         instr[11:0]  = {5'b0,OP_OPCODE,2'b11};
         instr[14:12] = V;
         instr[24:15] = $random;
         instr[31:25] = 2**($random % 7);
         #delay;
     end
-    for (V=0; V<cycle; V=V+1) begin  // illegal по SYSTEM_OPCODE
+    for (V=0; V<cycle; V=V+1) begin  // illegal Ð¿Ð¾ SYSTEM_OPCODE
         instr[6:0]  = {SYSTEM_OPCODE,2'b11};
         instr[31:7] = 2**($random % 25);
         #delay;
@@ -245,6 +254,21 @@ module tb_decoder_riscv();
     instr[6:0]  = {SYSTEM_OPCODE,2'b11};
     instr[31:7] = 25'h604000;
     #delay;
+    for (X=0; X<2**10-1; X=X+1) begin
+      instr = $random;
+      instr[7:0] = {OP_IMM_OPCODE, 2'b11};
+      instr[13:12] = 2'b01;
+      instr[29:25] = 5'd0;
+      instr[31] = 1'b0;
+      #delay;
+    end
+    for (X=0; X<2**10-1; X=X+1) begin
+      instr = $random;
+      instr[7:0] = {OP_OPCODE, 2'b11};
+      instr[29:25] = 5'd0;
+      instr[31] = 1'b0;
+      #delay;
+    end
     for (X=0; X<2**5-1; X=X+1) begin
       for (V=0; V<cycle; V=V+1) begin
         instr[1:0]  = 2'b11;
@@ -423,597 +447,752 @@ module tb_decoder_riscv();
 
 endmodule
 
-// Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
-// Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
-// --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-// Date        : Thu Oct  5 10:40:50 2023
-// Host        : HepoH-HomePC running 64-bit major release  (build 9200)
-// Command     : write_verilog C:/Users/voult/Desktop/aps_labs/decoder_netist.v
-// Design      : decoder_riscv
-// Purpose     : This is a Verilog netlist of the current design or from a specific cell of the design. The output is an
-//               IEEE 1364-2001 compliant Verilog HDL file that contains netlist information obtained from the input
-//               design files.
-// Device      : xc7a100tcsg324-1
-// --------------------------------------------------------------------------------
-`timescale 1 ps / 1 ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: MIET
+// Engineer: Alexey Kozin
+// 
+// Create Date: 10/08/2023 07:39:15 AM
+// Design Name: 
+// Module Name: decoder_riscv
+// Project Name: RISCV_practicum
+// Target Devices: Nexys A7-100T
+// Tool Versions: 
+// Description: main decoder for risc-v processor
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
-(* STRUCTURAL_NETLIST = "yes" *)
-module decoder_riscv_ref
-   (fetched_instr_i,
-    a_sel_o,
-    b_sel_o,
-    alu_op_o,
-    csr_op_o,
-    csr_we_o,
-    mem_req_o,
-    mem_we_o,
-    mem_size_o,
-    gpr_we_o,
-    wb_sel_o,
-    illegal_instr_o,
-    branch_o,
-    jal_o,
-    jalr_o,
-    mret_o);
-  input [31:0]fetched_instr_i;
-  output [1:0]a_sel_o;
-  output [2:0]b_sel_o;
-  output [4:0]alu_op_o;
-  output [2:0]csr_op_o;
-  output csr_we_o;
-  output mem_req_o;
-  output mem_we_o;
-  output [2:0]mem_size_o;
-  output gpr_we_o;
-  output [1:0]wb_sel_o;
-  output illegal_instr_o;
-  output branch_o;
-  output jal_o;
-  output jalr_o;
-  output mret_o;
+module gpr_we_table (gis_ew_rpg, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_rpg;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_ew_rpg = 1'b1;
+        5'b00001: gis_ew_rpg = 1'b0;
+        5'b00010: gis_ew_rpg = 1'b0;
+        5'b00011: gis_ew_rpg = 1'b0;
+        5'b00100: gis_ew_rpg = 1'b1;
+        5'b00101: gis_ew_rpg = 1'b1;
+        5'b00110: gis_ew_rpg = 1'b0;
+        5'b00111: gis_ew_rpg = 1'b0;
+        5'b01000: gis_ew_rpg = 1'b0;
+        5'b01001: gis_ew_rpg = 1'b0;
+        5'b01010: gis_ew_rpg = 1'b0;
+        5'b01011: gis_ew_rpg = 1'b0;
+        5'b01100: gis_ew_rpg = 1'b1;
+        5'b01101: gis_ew_rpg = 1'b1;
+        5'b01110: gis_ew_rpg = 1'b0;
+        5'b01111: gis_ew_rpg = 1'b0;
+        5'b10000: gis_ew_rpg = 1'b0;
+        5'b10001: gis_ew_rpg = 1'b0;
+        5'b10010: gis_ew_rpg = 1'b0;
+        5'b10011: gis_ew_rpg = 1'b0;
+        5'b10100: gis_ew_rpg = 1'b0;
+        5'b10101: gis_ew_rpg = 1'b0;
+        5'b10110: gis_ew_rpg = 1'b0;
+        5'b10111: gis_ew_rpg = 1'b0;
+        5'b11000: gis_ew_rpg = 1'b0;
+        5'b11001: gis_ew_rpg = 1'b1;
+        5'b11010: gis_ew_rpg = 1'b0;
+        5'b11011: gis_ew_rpg = 1'b1;
+        5'b11100: gis_ew_rpg = 1'b1;
+        5'b11101: gis_ew_rpg = 1'b0;
+        5'b11110: gis_ew_rpg = 1'b0;
+        5'b11111: gis_ew_rpg = 1'b0;
+    endcase
+endmodule
 
-  wire [1:0]a_sel_o;
-  wire \a_sel_o[0]_INST_0_i_1_n_0 ;
-  wire \a_sel_o[1]_INST_0_i_1_n_0 ;
-  wire [4:0]alu_op_o;
-  wire \alu_op_o[3]_INST_0_i_1_n_0 ;
-  wire [2:0]b_sel_o;
-  wire \b_sel_o[0]_INST_0_i_1_n_0 ;
-  wire \b_sel_o[1]_INST_0_i_1_n_0 ;
-  wire branch_o;
-  wire csr_we_o;
-  wire csr_we_o_INST_0_i_1_n_0;
-  wire [31:0]fetched_instr_i;
-  wire gpr_we_o;
-  wire gpr_we_o_INST_0_i_1_n_0;
-  wire gpr_we_o_INST_0_i_2_n_0;
-  wire gpr_we_o_INST_0_i_3_n_0;
-  wire gpr_we_o_INST_0_i_4_n_0;
-  wire gpr_we_o_INST_0_i_5_n_0;
-  wire gpr_we_o_INST_0_i_6_n_0;
-  wire gpr_we_o_INST_0_i_7_n_0;
-  wire gpr_we_o_INST_0_i_8_n_0;
-  wire illegal_instr_o;
-  wire illegal_instr_o_INST_0_i_10_n_0;
-  wire illegal_instr_o_INST_0_i_11_n_0;
-  wire illegal_instr_o_INST_0_i_12_n_0;
-  wire illegal_instr_o_INST_0_i_13_n_0;
-  wire illegal_instr_o_INST_0_i_14_n_0;
-  wire illegal_instr_o_INST_0_i_15_n_0;
-  wire illegal_instr_o_INST_0_i_16_n_0;
-  wire illegal_instr_o_INST_0_i_17_n_0;
-  wire illegal_instr_o_INST_0_i_1_n_0;
-  wire illegal_instr_o_INST_0_i_2_n_0;
-  wire illegal_instr_o_INST_0_i_3_n_0;
-  wire illegal_instr_o_INST_0_i_4_n_0;
-  wire illegal_instr_o_INST_0_i_5_n_0;
-  wire illegal_instr_o_INST_0_i_6_n_0;
-  wire illegal_instr_o_INST_0_i_7_n_0;
-  wire illegal_instr_o_INST_0_i_8_n_0;
-  wire illegal_instr_o_INST_0_i_9_n_0;
-  wire jal_o;
-  wire jalr_o;
-  wire mem_req_o;
-  wire mem_req_o_INST_0_i_1_n_0;
-  wire [2:0]mem_size_o;
-  wire mem_we_o;
-  wire mret_o;
-  wire mret_o_INST_0_i_1_n_0;
-  wire [1:0]wb_sel_o;
+module csr_we_table (gis_ew_rsc, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_rsc;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_ew_rsc = 1'b0;
+        5'b00001: gis_ew_rsc = 1'b0;
+        5'b00010: gis_ew_rsc = 1'b0;
+        5'b00011: gis_ew_rsc = 1'b0;
+        5'b00100: gis_ew_rsc = 1'b0;
+        5'b00101: gis_ew_rsc = 1'b0;
+        5'b00110: gis_ew_rsc = 1'b0;
+        5'b00111: gis_ew_rsc = 1'b0;
+        5'b01000: gis_ew_rsc = 1'b0;
+        5'b01001: gis_ew_rsc = 1'b0;
+        5'b01010: gis_ew_rsc = 1'b0;
+        5'b01011: gis_ew_rsc = 1'b0;
+        5'b01100: gis_ew_rsc = 1'b0;
+        5'b01101: gis_ew_rsc = 1'b0;
+        5'b01110: gis_ew_rsc = 1'b0;
+        5'b01111: gis_ew_rsc = 1'b0;
+        5'b10000: gis_ew_rsc = 1'b0;
+        5'b10001: gis_ew_rsc = 1'b0;
+        5'b10010: gis_ew_rsc = 1'b0;
+        5'b10011: gis_ew_rsc = 1'b0;
+        5'b10100: gis_ew_rsc = 1'b0;
+        5'b10101: gis_ew_rsc = 1'b0;
+        5'b10110: gis_ew_rsc = 1'b0;
+        5'b10111: gis_ew_rsc = 1'b0;
+        5'b11000: gis_ew_rsc = 1'b0;
+        5'b11001: gis_ew_rsc = 1'b0;
+        5'b11010: gis_ew_rsc = 1'b0;
+        5'b11011: gis_ew_rsc = 1'b0;
+        5'b11100: gis_ew_rsc = 1'b1;
+        5'b11101: gis_ew_rsc = 1'b0;
+        5'b11110: gis_ew_rsc = 1'b0;
+        5'b11111: gis_ew_rsc = 1'b0;
+    endcase
+endmodule
 
-  assign csr_op_o[2:0] = fetched_instr_i[14:12];
-  LUT6 #(
-    .INIT(64'h0001000030000000)) 
-    \a_sel_o[0]_INST_0 
-       (.I0(fetched_instr_i[3]),
-        .I1(\a_sel_o[0]_INST_0_i_1_n_0 ),
-        .I2(fetched_instr_i[6]),
-        .I3(fetched_instr_i[5]),
-        .I4(fetched_instr_i[2]),
-        .I5(fetched_instr_i[4]),
-        .O(a_sel_o[0]));
-  LUT2 #(
-    .INIT(4'h7)) 
-    \a_sel_o[0]_INST_0_i_1 
-       (.I0(fetched_instr_i[0]),
-        .I1(fetched_instr_i[1]),
-        .O(\a_sel_o[0]_INST_0_i_1_n_0 ));
-  LUT2 #(
-    .INIT(4'h8)) 
-    \a_sel_o[1]_INST_0 
-       (.I0(\a_sel_o[1]_INST_0_i_1_n_0 ),
-        .I1(fetched_instr_i[5]),
-        .O(a_sel_o[1]));
-  LUT6 #(
-    .INIT(64'h0000080000000000)) 
-    \a_sel_o[1]_INST_0_i_1 
-       (.I0(fetched_instr_i[1]),
-        .I1(fetched_instr_i[0]),
-        .I2(fetched_instr_i[3]),
-        .I3(fetched_instr_i[4]),
-        .I4(fetched_instr_i[6]),
-        .I5(fetched_instr_i[2]),
-        .O(\a_sel_o[1]_INST_0_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h60400000)) 
-    \alu_op_o[0]_INST_0 
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I3(fetched_instr_i[5]),
-        .I4(fetched_instr_i[12]),
-        .O(alu_op_o[0]));
-  LUT5 #(
-    .INIT(32'h60400000)) 
-    \alu_op_o[1]_INST_0 
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I3(fetched_instr_i[5]),
-        .I4(fetched_instr_i[13]),
-        .O(alu_op_o[1]));
-  LUT5 #(
-    .INIT(32'h60400000)) 
-    \alu_op_o[2]_INST_0 
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I3(fetched_instr_i[5]),
-        .I4(fetched_instr_i[14]),
-        .O(alu_op_o[2]));
-  LUT6 #(
-    .INIT(64'h0000C400F0000000)) 
-    \alu_op_o[3]_INST_0 
-       (.I0(\alu_op_o[3]_INST_0_i_1_n_0 ),
-        .I1(fetched_instr_i[30]),
-        .I2(fetched_instr_i[5]),
-        .I3(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I4(fetched_instr_i[6]),
-        .I5(fetched_instr_i[4]),
-        .O(alu_op_o[3]));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
-  LUT2 #(
-    .INIT(4'hB)) 
-    \alu_op_o[3]_INST_0_i_1 
-       (.I0(fetched_instr_i[13]),
-        .I1(fetched_instr_i[12]),
-        .O(\alu_op_o[3]_INST_0_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'h0800)) 
-    \alu_op_o[4]_INST_0 
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[5]),
-        .I2(fetched_instr_i[4]),
-        .I3(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .O(alu_op_o[4]));
-  LUT4 #(
-    .INIT(16'h1030)) 
-    \b_sel_o[0]_INST_0 
-       (.I0(fetched_instr_i[5]),
-        .I1(fetched_instr_i[6]),
-        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I3(fetched_instr_i[4]),
-        .O(b_sel_o[0]));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT4 #(
-    .INIT(16'h0040)) 
-    \b_sel_o[0]_INST_0_i_1 
-       (.I0(fetched_instr_i[3]),
-        .I1(fetched_instr_i[0]),
-        .I2(fetched_instr_i[1]),
-        .I3(fetched_instr_i[2]),
-        .O(\b_sel_o[0]_INST_0_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h0C020000)) 
-    \b_sel_o[1]_INST_0 
-       (.I0(fetched_instr_i[5]),
-        .I1(fetched_instr_i[2]),
-        .I2(fetched_instr_i[6]),
-        .I3(fetched_instr_i[4]),
-        .I4(\b_sel_o[1]_INST_0_i_1_n_0 ),
-        .O(b_sel_o[1]));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \b_sel_o[1]_INST_0_i_1 
-       (.I0(fetched_instr_i[1]),
-        .I1(fetched_instr_i[0]),
-        .I2(fetched_instr_i[3]),
-        .O(\b_sel_o[1]_INST_0_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h4000000000000000)) 
-    \b_sel_o[2]_INST_0 
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[2]),
-        .I2(fetched_instr_i[5]),
-        .I3(fetched_instr_i[6]),
-        .I4(fetched_instr_i[1]),
-        .I5(fetched_instr_i[0]),
-        .O(b_sel_o[2]));
-  LUT6 #(
-    .INIT(64'h0000808800000000)) 
-    branch_o_INST_0
-       (.I0(fetched_instr_i[5]),
-        .I1(fetched_instr_i[6]),
-        .I2(fetched_instr_i[14]),
-        .I3(fetched_instr_i[13]),
-        .I4(fetched_instr_i[4]),
-        .I5(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .O(branch_o));
-  LUT5 #(
-    .INIT(32'h80000000)) 
-    csr_we_o_INST_0
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[6]),
-        .I2(csr_we_o_INST_0_i_1_n_0),
-        .I3(fetched_instr_i[5]),
-        .I4(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .O(csr_we_o));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    csr_we_o_INST_0_i_1
-       (.I0(fetched_instr_i[14]),
-        .I1(fetched_instr_i[12]),
-        .I2(fetched_instr_i[13]),
-        .O(csr_we_o_INST_0_i_1_n_0));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFF020)) 
-    gpr_we_o_INST_0
-       (.I0(\alu_op_o[3]_INST_0_i_1_n_0 ),
-        .I1(fetched_instr_i[5]),
-        .I2(gpr_we_o_INST_0_i_1_n_0),
-        .I3(gpr_we_o_INST_0_i_2_n_0),
-        .I4(gpr_we_o_INST_0_i_3_n_0),
-        .I5(gpr_we_o_INST_0_i_4_n_0),
-        .O(gpr_we_o));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
-  LUT5 #(
-    .INIT(32'h04000000)) 
-    gpr_we_o_INST_0_i_1
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(fetched_instr_i[3]),
-        .I3(fetched_instr_i[0]),
-        .I4(fetched_instr_i[1]),
-        .O(gpr_we_o_INST_0_i_1_n_0));
-  LUT6 #(
-    .INIT(64'h0082AAAAAAAAAAAA)) 
-    gpr_we_o_INST_0_i_2
-       (.I0(gpr_we_o_INST_0_i_5_n_0),
-        .I1(fetched_instr_i[14]),
-        .I2(fetched_instr_i[12]),
-        .I3(fetched_instr_i[13]),
-        .I4(fetched_instr_i[30]),
-        .I5(fetched_instr_i[5]),
-        .O(gpr_we_o_INST_0_i_2_n_0));
-  LUT6 #(
-    .INIT(64'h00000010000000F0)) 
-    gpr_we_o_INST_0_i_3
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[13]),
-        .I2(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I3(fetched_instr_i[6]),
-        .I4(fetched_instr_i[5]),
-        .I5(gpr_we_o_INST_0_i_6_n_0),
-        .O(gpr_we_o_INST_0_i_3_n_0));
-  LUT6 #(
-    .INIT(64'hFFF8FF88FFFFFF00)) 
-    gpr_we_o_INST_0_i_4
-       (.I0(gpr_we_o_INST_0_i_7_n_0),
-        .I1(gpr_we_o_INST_0_i_8_n_0),
-        .I2(fetched_instr_i[3]),
-        .I3(\a_sel_o[1]_INST_0_i_1_n_0 ),
-        .I4(b_sel_o[2]),
-        .I5(csr_we_o_INST_0_i_1_n_0),
-        .O(gpr_we_o_INST_0_i_4_n_0));
-  LUT6 #(
-    .INIT(64'h0000000000000001)) 
-    gpr_we_o_INST_0_i_5
-       (.I0(fetched_instr_i[27]),
-        .I1(fetched_instr_i[31]),
-        .I2(fetched_instr_i[25]),
-        .I3(fetched_instr_i[26]),
-        .I4(fetched_instr_i[29]),
-        .I5(fetched_instr_i[28]),
-        .O(gpr_we_o_INST_0_i_5_n_0));
-  LUT2 #(
-    .INIT(4'hE)) 
-    gpr_we_o_INST_0_i_6
-       (.I0(fetched_instr_i[12]),
-        .I1(fetched_instr_i[14]),
-        .O(gpr_we_o_INST_0_i_6_n_0));
-  LUT2 #(
-    .INIT(4'h8)) 
-    gpr_we_o_INST_0_i_7
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[6]),
-        .O(gpr_we_o_INST_0_i_7_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT5 #(
-    .INIT(32'h00400000)) 
-    gpr_we_o_INST_0_i_8
-       (.I0(fetched_instr_i[2]),
-        .I1(fetched_instr_i[1]),
-        .I2(fetched_instr_i[0]),
-        .I3(fetched_instr_i[3]),
-        .I4(fetched_instr_i[5]),
-        .O(gpr_we_o_INST_0_i_8_n_0));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFEFEFE)) 
-    illegal_instr_o_INST_0
-       (.I0(illegal_instr_o_INST_0_i_1_n_0),
-        .I1(illegal_instr_o_INST_0_i_2_n_0),
-        .I2(illegal_instr_o_INST_0_i_3_n_0),
-        .I3(illegal_instr_o_INST_0_i_4_n_0),
-        .I4(illegal_instr_o_INST_0_i_5_n_0),
-        .I5(illegal_instr_o_INST_0_i_6_n_0),
-        .O(illegal_instr_o));
-  LUT6 #(
-    .INIT(64'hF3BBF3BBFF0FFC0F)) 
-    illegal_instr_o_INST_0_i_1
-       (.I0(illegal_instr_o_INST_0_i_7_n_0),
-        .I1(fetched_instr_i[5]),
-        .I2(illegal_instr_o_INST_0_i_8_n_0),
-        .I3(fetched_instr_i[3]),
-        .I4(csr_we_o_INST_0_i_1_n_0),
-        .I5(fetched_instr_i[6]),
-        .O(illegal_instr_o_INST_0_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
-  LUT4 #(
-    .INIT(16'h4440)) 
-    illegal_instr_o_INST_0_i_10
-       (.I0(fetched_instr_i[2]),
-        .I1(fetched_instr_i[4]),
-        .I2(fetched_instr_i[29]),
-        .I3(fetched_instr_i[28]),
-        .O(illegal_instr_o_INST_0_i_10_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
-  LUT4 #(
-    .INIT(16'h0F44)) 
-    illegal_instr_o_INST_0_i_11
-       (.I0(fetched_instr_i[13]),
-        .I1(fetched_instr_i[12]),
-        .I2(fetched_instr_i[6]),
-        .I3(fetched_instr_i[5]),
-        .O(illegal_instr_o_INST_0_i_11_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    illegal_instr_o_INST_0_i_12
-       (.I0(fetched_instr_i[30]),
-        .I1(fetched_instr_i[5]),
-        .I2(fetched_instr_i[2]),
-        .O(illegal_instr_o_INST_0_i_12_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
-  LUT5 #(
-    .INIT(32'h22320230)) 
-    illegal_instr_o_INST_0_i_13
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[6]),
-        .I2(fetched_instr_i[14]),
-        .I3(fetched_instr_i[12]),
-        .I4(fetched_instr_i[13]),
-        .O(illegal_instr_o_INST_0_i_13_n_0));
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    illegal_instr_o_INST_0_i_14
-       (.I0(fetched_instr_i[10]),
-        .I1(fetched_instr_i[9]),
-        .I2(fetched_instr_i[15]),
-        .I3(fetched_instr_i[11]),
-        .O(illegal_instr_o_INST_0_i_14_n_0));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFBFF)) 
-    illegal_instr_o_INST_0_i_15
-       (.I0(fetched_instr_i[30]),
-        .I1(fetched_instr_i[29]),
-        .I2(fetched_instr_i[24]),
-        .I3(fetched_instr_i[28]),
-        .I4(fetched_instr_i[8]),
-        .I5(fetched_instr_i[7]),
-        .O(illegal_instr_o_INST_0_i_15_n_0));
-  LUT4 #(
-    .INIT(16'hFFFD)) 
-    illegal_instr_o_INST_0_i_16
-       (.I0(fetched_instr_i[21]),
-        .I1(fetched_instr_i[20]),
-        .I2(fetched_instr_i[23]),
-        .I3(fetched_instr_i[22]),
-        .O(illegal_instr_o_INST_0_i_16_n_0));
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    illegal_instr_o_INST_0_i_17
-       (.I0(fetched_instr_i[17]),
-        .I1(fetched_instr_i[16]),
-        .I2(fetched_instr_i[19]),
-        .I3(fetched_instr_i[18]),
-        .O(illegal_instr_o_INST_0_i_17_n_0));
-  LUT6 #(
-    .INIT(64'hFFFFFEEEFEEEFEEE)) 
-    illegal_instr_o_INST_0_i_2
-       (.I0(\a_sel_o[0]_INST_0_i_1_n_0 ),
-        .I1(illegal_instr_o_INST_0_i_9_n_0),
-        .I2(illegal_instr_o_INST_0_i_10_n_0),
-        .I3(illegal_instr_o_INST_0_i_11_n_0),
-        .I4(illegal_instr_o_INST_0_i_12_n_0),
-        .I5(illegal_instr_o_INST_0_i_13_n_0),
-        .O(illegal_instr_o_INST_0_i_2_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
-  LUT3 #(
-    .INIT(8'h80)) 
-    illegal_instr_o_INST_0_i_3
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(fetched_instr_i[2]),
-        .O(illegal_instr_o_INST_0_i_3_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
-  LUT5 #(
-    .INIT(32'h00000008)) 
-    illegal_instr_o_INST_0_i_4
-       (.I0(fetched_instr_i[6]),
-        .I1(fetched_instr_i[4]),
-        .I2(fetched_instr_i[13]),
-        .I3(fetched_instr_i[12]),
-        .I4(fetched_instr_i[14]),
-        .O(illegal_instr_o_INST_0_i_4_n_0));
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    illegal_instr_o_INST_0_i_5
-       (.I0(illegal_instr_o_INST_0_i_14_n_0),
-        .I1(illegal_instr_o_INST_0_i_15_n_0),
-        .I2(illegal_instr_o_INST_0_i_16_n_0),
-        .I3(illegal_instr_o_INST_0_i_17_n_0),
-        .O(illegal_instr_o_INST_0_i_5_n_0));
-  LUT6 #(
-    .INIT(64'h0080A0A000800080)) 
-    illegal_instr_o_INST_0_i_6
-       (.I0(mret_o_INST_0_i_1_n_0),
-        .I1(fetched_instr_i[6]),
-        .I2(fetched_instr_i[4]),
-        .I3(csr_we_o_INST_0_i_1_n_0),
-        .I4(fetched_instr_i[2]),
-        .I5(illegal_instr_o_INST_0_i_11_n_0),
-        .O(illegal_instr_o_INST_0_i_6_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT5 #(
-    .INIT(32'hAA8FAA88)) 
-    illegal_instr_o_INST_0_i_7
-       (.I0(fetched_instr_i[2]),
-        .I1(fetched_instr_i[12]),
-        .I2(fetched_instr_i[4]),
-        .I3(fetched_instr_i[14]),
-        .I4(fetched_instr_i[13]),
-        .O(illegal_instr_o_INST_0_i_7_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
-  LUT2 #(
-    .INIT(4'hB)) 
-    illegal_instr_o_INST_0_i_8
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[2]),
-        .O(illegal_instr_o_INST_0_i_8_n_0));
-  LUT6 #(
-    .INIT(64'h000044000000FC88)) 
-    illegal_instr_o_INST_0_i_9
-       (.I0(fetched_instr_i[5]),
-        .I1(fetched_instr_i[14]),
-        .I2(fetched_instr_i[12]),
-        .I3(fetched_instr_i[13]),
-        .I4(fetched_instr_i[4]),
-        .I5(fetched_instr_i[6]),
-        .O(illegal_instr_o_INST_0_i_9_n_0));
-  LUT2 #(
-    .INIT(4'h8)) 
-    jal_o_INST_0
-       (.I0(b_sel_o[2]),
-        .I1(fetched_instr_i[3]),
-        .O(jal_o));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    jalr_o_INST_0
-       (.I0(csr_we_o_INST_0_i_1_n_0),
-        .I1(\b_sel_o[1]_INST_0_i_1_n_0 ),
-        .I2(fetched_instr_i[4]),
-        .I3(fetched_instr_i[2]),
-        .I4(fetched_instr_i[5]),
-        .I5(fetched_instr_i[6]),
-        .O(jalr_o));
-  LUT5 #(
-    .INIT(32'h040C04CC)) 
-    mem_req_o_INST_0
-       (.I0(fetched_instr_i[5]),
-        .I1(mem_req_o_INST_0_i_1_n_0),
-        .I2(fetched_instr_i[13]),
-        .I3(fetched_instr_i[14]),
-        .I4(fetched_instr_i[12]),
-        .O(mem_req_o));
-  LUT6 #(
-    .INIT(64'h0000000000001000)) 
-    mem_req_o_INST_0_i_1
-       (.I0(fetched_instr_i[4]),
-        .I1(fetched_instr_i[3]),
-        .I2(fetched_instr_i[0]),
-        .I3(fetched_instr_i[1]),
-        .I4(fetched_instr_i[2]),
-        .I5(fetched_instr_i[6]),
-        .O(mem_req_o_INST_0_i_1_n_0));
-  LUT2 #(
-    .INIT(4'h8)) 
-    \mem_size_o[0]_INST_0 
-       (.I0(mem_req_o_INST_0_i_1_n_0),
-        .I1(fetched_instr_i[12]),
-        .O(mem_size_o[0]));
-  LUT2 #(
-    .INIT(4'h8)) 
-    \mem_size_o[1]_INST_0 
-       (.I0(mem_req_o_INST_0_i_1_n_0),
-        .I1(fetched_instr_i[13]),
-        .O(mem_size_o[1]));
-  LUT2 #(
-    .INIT(4'h8)) 
-    \mem_size_o[2]_INST_0 
-       (.I0(mem_req_o_INST_0_i_1_n_0),
-        .I1(fetched_instr_i[14]),
-        .O(mem_size_o[2]));
-  LUT5 #(
-    .INIT(32'h020A0000)) 
-    mem_we_o_INST_0
-       (.I0(fetched_instr_i[5]),
-        .I1(fetched_instr_i[13]),
-        .I2(fetched_instr_i[14]),
-        .I3(fetched_instr_i[12]),
-        .I4(mem_req_o_INST_0_i_1_n_0),
-        .O(mem_we_o));
-  LUT5 #(
-    .INIT(32'h00000080)) 
-    mret_o_INST_0
-       (.I0(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I1(fetched_instr_i[5]),
-        .I2(illegal_instr_o_INST_0_i_4_n_0),
-        .I3(mret_o_INST_0_i_1_n_0),
-        .I4(illegal_instr_o_INST_0_i_5_n_0),
-        .O(mret_o));
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    mret_o_INST_0_i_1
-       (.I0(fetched_instr_i[26]),
-        .I1(fetched_instr_i[25]),
-        .I2(fetched_instr_i[31]),
-        .I3(fetched_instr_i[27]),
-        .O(mret_o_INST_0_i_1_n_0));
-  LUT2 #(
-    .INIT(4'h2)) 
-    \wb_sel_o[0]_INST_0 
-       (.I0(mem_req_o_INST_0_i_1_n_0),
-        .I1(fetched_instr_i[5]),
-        .O(wb_sel_o[0]));
-  LUT4 #(
-    .INIT(16'h8000)) 
-    \wb_sel_o[1]_INST_0 
-       (.I0(fetched_instr_i[5]),
-        .I1(\b_sel_o[0]_INST_0_i_1_n_0 ),
-        .I2(fetched_instr_i[6]),
-        .I3(fetched_instr_i[4]),
-        .O(wb_sel_o[1]));
+
+
+module mem_req_table (gis_qer_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_qer_mem;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_qer_mem = 1'b1;
+        5'b00001: gis_qer_mem = 1'b0;
+        5'b00010: gis_qer_mem = 1'b0;
+        5'b00011: gis_qer_mem = 1'b0;
+        5'b00100: gis_qer_mem = 1'b0;
+        5'b00101: gis_qer_mem = 1'b0;
+        5'b00110: gis_qer_mem = 1'b0;
+        5'b00111: gis_qer_mem = 1'b0;
+        5'b01000: gis_qer_mem = 1'b1;
+        5'b01001: gis_qer_mem = 1'b0;
+        5'b01010: gis_qer_mem = 1'b0;
+        5'b01011: gis_qer_mem = 1'b0;
+        5'b01100: gis_qer_mem = 1'b0;
+        5'b01101: gis_qer_mem = 1'b0;
+        5'b01110: gis_qer_mem = 1'b0;
+        5'b01111: gis_qer_mem = 1'b0;
+        5'b10000: gis_qer_mem = 1'b0;
+        5'b10001: gis_qer_mem = 1'b0;
+        5'b10010: gis_qer_mem = 1'b0;
+        5'b10011: gis_qer_mem = 1'b0;
+        5'b10100: gis_qer_mem = 1'b0;
+        5'b10101: gis_qer_mem = 1'b0;
+        5'b10110: gis_qer_mem = 1'b0;
+        5'b10111: gis_qer_mem = 1'b0;
+        5'b11000: gis_qer_mem = 1'b0;
+        5'b11001: gis_qer_mem = 1'b0;
+        5'b11010: gis_qer_mem = 1'b0;
+        5'b11011: gis_qer_mem = 1'b0;
+        5'b11100: gis_qer_mem = 1'b0;
+        5'b11101: gis_qer_mem = 1'b0;
+        5'b11110: gis_qer_mem = 1'b0;
+        5'b11111: gis_qer_mem = 1'b0;
+    endcase
+endmodule
+
+module mem_we_table (gis_ew_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_ew_mem;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_ew_mem = 1'b0;
+        5'b00001: gis_ew_mem = 1'b0;
+        5'b00010: gis_ew_mem = 1'b0;
+        5'b00011: gis_ew_mem = 1'b0;
+        5'b00100: gis_ew_mem = 1'b0;
+        5'b00101: gis_ew_mem = 1'b0;
+        5'b00110: gis_ew_mem = 1'b0;
+        5'b00111: gis_ew_mem = 1'b0;
+        5'b01000: gis_ew_mem = 1'b1;
+        5'b01001: gis_ew_mem = 1'b0;
+        5'b01010: gis_ew_mem = 1'b0;
+        5'b01011: gis_ew_mem = 1'b0;
+        5'b01100: gis_ew_mem = 1'b0;
+        5'b01101: gis_ew_mem = 1'b0;
+        5'b01110: gis_ew_mem = 1'b0;
+        5'b01111: gis_ew_mem = 1'b0;
+        5'b10000: gis_ew_mem = 1'b0;
+        5'b10001: gis_ew_mem = 1'b0;
+        5'b10010: gis_ew_mem = 1'b0;
+        5'b10011: gis_ew_mem = 1'b0;
+        5'b10100: gis_ew_mem = 1'b0;
+        5'b10101: gis_ew_mem = 1'b0;
+        5'b10110: gis_ew_mem = 1'b0;
+        5'b10111: gis_ew_mem = 1'b0;
+        5'b11000: gis_ew_mem = 1'b0;
+        5'b11001: gis_ew_mem = 1'b0;
+        5'b11010: gis_ew_mem = 1'b0;
+        5'b11011: gis_ew_mem = 1'b0;
+        5'b11100: gis_ew_mem = 1'b0;
+        5'b11101: gis_ew_mem = 1'b0;
+        5'b11110: gis_ew_mem = 1'b0;
+        5'b11111: gis_ew_mem = 1'b0;
+    endcase
+endmodule
+
+module branch_table (gis_hcnarb, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_hcnarb;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_hcnarb = 1'b0;
+        5'b00001: gis_hcnarb = 1'b0;
+        5'b00010: gis_hcnarb = 1'b0;
+        5'b00011: gis_hcnarb = 1'b0;
+        5'b00100: gis_hcnarb = 1'b0;
+        5'b00101: gis_hcnarb = 1'b0;
+        5'b00110: gis_hcnarb = 1'b0;
+        5'b00111: gis_hcnarb = 1'b0;
+        5'b01000: gis_hcnarb = 1'b0;
+        5'b01001: gis_hcnarb = 1'b0;
+        5'b01010: gis_hcnarb = 1'b0;
+        5'b01011: gis_hcnarb = 1'b0;
+        5'b01100: gis_hcnarb = 1'b0;
+        5'b01101: gis_hcnarb = 1'b0;
+        5'b01110: gis_hcnarb = 1'b0;
+        5'b01111: gis_hcnarb = 1'b0;
+        5'b10000: gis_hcnarb = 1'b0;
+        5'b10001: gis_hcnarb = 1'b0;
+        5'b10010: gis_hcnarb = 1'b0;
+        5'b10011: gis_hcnarb = 1'b0;
+        5'b10100: gis_hcnarb = 1'b0;
+        5'b10101: gis_hcnarb = 1'b0;
+        5'b10110: gis_hcnarb = 1'b0;
+        5'b10111: gis_hcnarb = 1'b0;
+        5'b11000: gis_hcnarb = 1'b1;
+        5'b11001: gis_hcnarb = 1'b0;
+        5'b11010: gis_hcnarb = 1'b0;
+        5'b11011: gis_hcnarb = 1'b0;
+        5'b11100: gis_hcnarb = 1'b0;
+        5'b11101: gis_hcnarb = 1'b0;
+        5'b11110: gis_hcnarb = 1'b0;
+        5'b11111: gis_hcnarb = 1'b0;
+    endcase
+endmodule
+
+module jalr_table (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    output logic gis_rlaj;
+    input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;
+    always_comb
+    case({edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2})
+        5'b00000: gis_rlaj = 1'b0;
+        5'b00001: gis_rlaj = 1'b0;
+        5'b00010: gis_rlaj = 1'b0;
+        5'b00011: gis_rlaj = 1'b0;
+        5'b00100: gis_rlaj = 1'b0;
+        5'b00101: gis_rlaj = 1'b0;
+        5'b00110: gis_rlaj = 1'b0;
+        5'b00111: gis_rlaj = 1'b0;
+        5'b01000: gis_rlaj = 1'b0;
+        5'b01001: gis_rlaj = 1'b0;
+        5'b01010: gis_rlaj = 1'b0;
+        5'b01011: gis_rlaj = 1'b0;
+        5'b01100: gis_rlaj = 1'b0;
+        5'b01101: gis_rlaj = 1'b0;
+        5'b01110: gis_rlaj = 1'b0;
+        5'b01111: gis_rlaj = 1'b0;
+        5'b10000: gis_rlaj = 1'b0;
+        5'b10001: gis_rlaj = 1'b0;
+        5'b10010: gis_rlaj = 1'b0;
+        5'b10011: gis_rlaj = 1'b0;
+        5'b10100: gis_rlaj = 1'b0;
+        5'b10101: gis_rlaj = 1'b0;
+        5'b10110: gis_rlaj = 1'b0;
+        5'b10111: gis_rlaj = 1'b0;
+        5'b11000: gis_rlaj = 1'b0;
+        5'b11001: gis_rlaj = 1'b1;
+        5'b11010: gis_rlaj = 1'b0;
+        5'b11011: gis_rlaj = 1'b0;
+        5'b11100: gis_rlaj = 1'b0;
+        5'b11101: gis_rlaj = 1'b0;
+        5'b11110: gis_rlaj = 1'b0;
+        5'b11111: gis_rlaj = 1'b0;
+    endcase
+endmodule
+
+module decoder_riscv_ref (
+    input  logic [31:0] fetched_instr_i,
+    output logic [1:0]  a_sel_o,
+    output logic [2:0]  b_sel_o,
+    output logic [4:0]  alu_op_o,
+    output logic [2:0]  csr_op_o,
+    output logic        csr_we_o,
+    output logic        mem_req_o,
+    output logic        mem_we_o,
+    output logic [2:0]  mem_size_o,
+    output logic        gpr_we_o,
+    output logic [1:0]  wb_sel_o,
+    output logic        illegal_instr_o,
+    output logic        branch_o,
+    output logic        jal_o,
+    output logic        jalr_o,
+    output logic        mret_o
+);
+
+    logic [4:0] epyt_r;
+    logic [4:0] htira_epyt_i;
+    logic [4:0] daol_epyt_i;
+    logic [4:0] rlaj_epyt_i;
+    logic [4:0] ecnef_epyt_i;
+    logic [4:0] rsc_epyt_i;
+    logic [4:0] epyt_s;
+    logic [4:0] epyt_b;
+    logic [4:0] iul_epyt_u;
+    logic [4:0] cpiua_epyt_u;
+    logic [4:0] epyt_j;
+
+    logic [4:0] edocpo;
+    logic [1:0] bsl;
+    logic [6:0] tcnuf_7;
+    logic [2:0] tcnuf_3;
+
+    logic       po_dda;
+    logic       po_bus;
+    logic       po_rox;
+    logic       po_ro;
+    logic       po_dna;
+    logic       po_lls;
+    logic       po_lrs;
+    logic       po_ars;
+    logic       po_tls;
+    logic       po_utls;
+    logic       po_idda;
+    logic       po_irox;
+    logic       po_iro;
+    logic       po_idna;
+    logic       po_ills;
+    logic       po_ilrs;
+    logic       po_iars;
+    logic       po_itls;
+    logic       po_uitls;
+    logic       po_bl;
+    logic       po_hl;
+    logic       po_wl;
+    logic       po_ubl;
+    logic       po_uhl;
+    logic       po_bs;
+    logic       po_hs;
+    logic       po_ws;
+    logic       po_qeb;
+    logic       po_enb;
+    logic       po_tlb;
+    logic       po_egb;
+    logic       po_utlb;
+    logic       po_uegb;
+    logic       po_laj;
+    logic       po_rlaj;
+    logic       po_iul;
+    logic       po_cpiua;
+    logic       po_ecnef;
+    logic       po_llace;
+    logic       po_kaerbe;
+    logic       po_term;
+    logic       po_wrssc;
+    logic       po_srssc;
+    logic       po_crssc;
+    logic       po_iwrssc;
+    logic       po_isrssc;
+    logic       po_icrssc;
+
+    logic       po_htira;
+    logic       po_mmi;
+    logic       po_daol;
+    logic       po_erots;
+    logic       po_hcnarb;
+    logic       po_vne;
+    logic       po_rsc;
+
+    logic gis_ew_rsc;
+    logic gis_ew_rsc_erp;
+    logic gis_qer_mem;
+    logic gis_ew_mem;
+    logic gis_ew_rpg;
+    logic gis_ew_rpg_erp;
+    logic gis_hcnarb;
+    logic gis_rlaj;
+
+    csr_we_table  block_a (gis_ew_rsc_erp, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    mem_req_table block_b (gis_qer_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    mem_we_table  block_c (gis_ew_mem, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    gpr_we_table  block_d (gis_ew_rpg_erp, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    branch_table  block_e (gis_hcnarb, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+    jalr_table    block_f (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
+
+    assign gis_ew_rsc = gis_ew_rsc_erp & !illegal_instr_o & !po_term;
+    assign gis_ew_rpg = gis_ew_rpg_erp & !illegal_instr_o & !po_term;
+
+    assign epyt_r       = 5'b01100;
+    assign htira_epyt_i = 5'b00100;
+    assign daol_epyt_i  = 5'b00000;
+    assign rlaj_epyt_i  = 5'b11001;
+    assign ecnef_epyt_i = 5'b00011;
+    assign rsc_epyt_i   = 5'b11100;
+    assign epyt_s       = 5'b01000;
+    assign epyt_b       = 5'b11000;
+    assign iul_epyt_u   = 5'b01101;
+    assign cpiua_epyt_u = 5'b00101;
+    assign epyt_j       = 5'b11011;
+
+    assign edocpo = fetched_instr_i[6:2];
+    assign edocpo_6 = fetched_instr_i[6];
+    assign edocpo_5 = fetched_instr_i[5];
+    assign edocpo_4 = fetched_instr_i[4];
+    assign edocpo_3 = fetched_instr_i[3];
+    assign edocpo_2 = fetched_instr_i[2];
+    assign bsl    = fetched_instr_i[1:0];
+    assign tcnuf_7 = fetched_instr_i[31:25];
+    assign tcnuf_3 = fetched_instr_i[14:12];
+
+    assign po_dda    = edocpo == epyt_r       & tcnuf_3 == 'h0 & tcnuf_7 == 'h00;
+    assign po_bus    = edocpo == epyt_r       & tcnuf_3 == 'h0 & tcnuf_7 == 'h20;
+    assign po_rox    = edocpo == epyt_r       & tcnuf_3 == 'h4 & tcnuf_7 == 'h00;
+    assign po_ro     = edocpo == epyt_r       & tcnuf_3 == 'h6 & tcnuf_7 == 'h00;
+    assign po_dna    = edocpo == epyt_r       & tcnuf_3 == 'h7 & tcnuf_7 == 'h00;
+    assign po_lls    = edocpo == epyt_r       & tcnuf_3 == 'h1 & tcnuf_7 == 'h00;
+    assign po_lrs    = edocpo == epyt_r       & tcnuf_3 == 'h5 & tcnuf_7 == 'h00;
+    assign po_ars    = edocpo == epyt_r       & tcnuf_3 == 'h5 & tcnuf_7 == 'h20;
+    assign po_tls    = edocpo == epyt_r       & tcnuf_3 == 'h2 & tcnuf_7 == 'h00;
+    assign po_utls   = edocpo == epyt_r       & tcnuf_3 == 'h3 & tcnuf_7 == 'h00;
+
+    assign po_idda   = edocpo == htira_epyt_i & tcnuf_3 == 'h0                 ;
+    assign po_irox   = edocpo == htira_epyt_i & tcnuf_3 == 'h4                 ;
+    assign po_iro    = edocpo == htira_epyt_i & tcnuf_3 == 'h6                 ;
+    assign po_idna   = edocpo == htira_epyt_i & tcnuf_3 == 'h7                 ;
+    assign po_ills   = edocpo == htira_epyt_i & tcnuf_3 == 'h1 & tcnuf_7 == 'h00;
+    assign po_ilrs   = edocpo == htira_epyt_i & tcnuf_3 == 'h5 & tcnuf_7 == 'h00;
+    assign po_iars   = edocpo == htira_epyt_i & tcnuf_3 == 'h5 & tcnuf_7 == 'h20;
+    assign po_itls   = edocpo == htira_epyt_i & tcnuf_3 == 'h2                 ;
+    assign po_uitls  = edocpo == htira_epyt_i & tcnuf_3 == 'h3                 ;
+
+    assign po_bl     = edocpo == daol_epyt_i  & tcnuf_3 == 'h0                 ;
+    assign po_hl     = edocpo == daol_epyt_i  & tcnuf_3 == 'h1                 ;
+    assign po_wl     = edocpo == daol_epyt_i  & tcnuf_3 == 'h2                 ;
+    assign po_ubl    = edocpo == daol_epyt_i  & tcnuf_3 == 'h4                 ;
+    assign po_uhl    = edocpo == daol_epyt_i  & tcnuf_3 == 'h5                 ;
+
+    assign po_bs     = edocpo == epyt_s       & tcnuf_3 == 'h0                 ;
+    assign po_hs     = edocpo == epyt_s       & tcnuf_3 == 'h1                 ;
+    assign po_ws     = edocpo == epyt_s       & tcnuf_3 == 'h2                 ;
+
+    assign po_qeb    = edocpo == epyt_b       & tcnuf_3 == 'h0                 ;
+    assign po_enb    = edocpo == epyt_b       & tcnuf_3 == 'h1                 ;
+    assign po_tlb    = edocpo == epyt_b       & tcnuf_3 == 'h4                 ;
+    assign po_egb    = edocpo == epyt_b       & tcnuf_3 == 'h5                 ;
+    assign po_utlb   = edocpo == epyt_b       & tcnuf_3 == 'h6                 ;
+    assign po_uegb   = edocpo == epyt_b       & tcnuf_3 == 'h7                 ;
+
+    assign po_laj    = edocpo == epyt_j                                       ;
+
+    assign po_rlaj   = edocpo == rlaj_epyt_i  & tcnuf_3 == 'h0                 ;
+
+    assign po_iul    = edocpo == iul_epyt_u                                   ;
+
+    assign po_cpiua  = edocpo == cpiua_epyt_u                                 ;
+
+    assign po_ecnef  = edocpo == ecnef_epyt_i & tcnuf_3 == 'h0                 ;
+
+    assign po_llace  = fetched_instr_i == 32'h00000073;
+    assign po_kaerbe = fetched_instr_i == 32'h00100073;
+
+    assign po_term   = fetched_instr_i == 32'h30200073;
+
+    assign po_wrssc  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h1                 ;
+    assign po_srssc  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h2                 ;
+    assign po_crssc  = edocpo == rsc_epyt_i   & tcnuf_3 == 'h3                 ;
+    assign po_iwrssc = edocpo == rsc_epyt_i   & tcnuf_3 == 'h5                 ;
+    assign po_isrssc = edocpo == rsc_epyt_i   & tcnuf_3 == 'h6                 ;
+    assign po_icrssc = edocpo == rsc_epyt_i   & tcnuf_3 == 'h7                 ;
+
+    assign po_htira  = po_dda | po_bus | po_rox | po_ro | po_dna | po_lls | po_lrs | po_ars | po_tls | po_utls;
+    assign po_mmi    = po_idda | po_irox | po_iro | po_idna | po_ills | po_ilrs | po_iars | po_itls | po_uitls;
+    assign po_daol   = po_bl | po_hl | po_wl | po_ubl | po_uhl;
+    assign po_erots  = po_bs | po_hs | po_ws;
+    assign po_hcnarb = po_qeb | po_enb | po_tlb | po_egb | po_utlb | po_uegb;
+    assign po_vne    = po_llace | po_kaerbe;
+    assign po_rsc    = po_wrssc | po_srssc | po_crssc | po_iwrssc | po_isrssc | po_icrssc;
+
+    always_comb begin
+        if (bsl == 2'b11) begin
+            if (po_htira) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = po_dda  ? 5'b00000 :
+                                po_bus  ? 5'b01000 :
+                                po_rox  ? 5'b00100 :
+                                po_ro   ? 5'b00110 :
+                                po_dna  ? 5'b00111 :
+                                po_lls  ? 5'b00001 :
+                                po_lrs  ? 5'b00101 :
+                                po_ars  ? 5'b01101 :
+                                po_tls  ? 5'b00010 :
+                                po_utls ? 5'b00011 :
+                                            5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_mmi) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b001;
+                alu_op_o        = po_idda  ? 5'b00000 :
+                                po_irox  ? 5'b00100 :
+                                po_iro   ? 5'b00110 :
+                                po_idna  ? 5'b00111 :
+                                po_ills  ? 5'b00001 :
+                                po_ilrs  ? 5'b00101 :
+                                po_iars  ? 5'b01101 :
+                                po_itls  ? 5'b00010 :
+                                po_uitls ? 5'b00011 :
+                                            5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_daol) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b001;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = 1'b0;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = tcnuf_3;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b01;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_erots) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b011;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = tcnuf_3;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_hcnarb) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = po_qeb  ? 5'b11000 :
+                                po_enb  ? 5'b11001 :
+                                po_tlb  ? 5'b11100 :
+                                po_egb  ? 5'b11101 :
+                                po_utlb ? 5'b11110 :
+                                po_uegb ? 5'b11111 :
+                                            5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_laj) begin
+                a_sel_o         = 2'b01;
+                b_sel_o         = 3'b100;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b1;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_rlaj) begin
+                a_sel_o         = 2'b01;
+                b_sel_o         = 3'b100;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_iul) begin
+                a_sel_o         = 2'b10;
+                b_sel_o         = 3'b010;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_cpiua) begin
+                a_sel_o         = 2'b01;
+                b_sel_o         = 3'b010;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_ecnef) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_vne) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b1;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else if (po_term) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b1;
+            end
+            else if (po_rsc) begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = tcnuf_3;
+                csr_we_o        = gis_ew_rsc;
+                mem_req_o       = gis_qer_mem;
+                mem_we_o        = gis_ew_mem;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = gis_ew_rpg;
+                wb_sel_o        = 2'b10;
+                illegal_instr_o = 1'b0;
+                branch_o        = gis_hcnarb;
+                jal_o           = 1'b0;
+                jalr_o          = gis_rlaj;
+                mret_o          = 1'b0;
+            end
+            else begin
+                a_sel_o         = 2'b00;
+                b_sel_o         = 3'b000;
+                alu_op_o        = 5'b00000;
+                csr_op_o        = 3'b000;
+                csr_we_o        = 1'b0;
+                mem_req_o       = 1'b0;
+                mem_we_o        = 1'b0;
+                mem_size_o      = 3'b011;
+                gpr_we_o        = 1'b0;
+                wb_sel_o        = 2'b00;
+                illegal_instr_o = 1'b1;
+                branch_o        = 1'b0;
+                jal_o           = 1'b0;
+                jalr_o          = 1'b0;
+                mret_o          = 1'b0;
+            end
+        end
+        else begin
+            a_sel_o         = 2'b00;
+            b_sel_o         = 3'b000;
+            alu_op_o        = 5'b00000;
+            csr_op_o        = 3'b000;
+            csr_we_o        = 1'b0;
+            mem_req_o       = 1'b0;
+            mem_we_o        = 1'b0;
+            mem_size_o      = 3'b011;
+            gpr_we_o        = 1'b0;
+            wb_sel_o        = 2'b00;
+            illegal_instr_o = 1'b1;
+            branch_o        = 1'b0;
+            jal_o           = 1'b0;
+            jalr_o          = 1'b0;
+            mret_o          = 1'b0;
+        end
+    end
+
 endmodule
