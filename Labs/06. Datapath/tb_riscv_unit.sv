@@ -42,10 +42,12 @@ module tb_riscv_unit();
     end
 
 stall_seq: assert property (
-  @(posedge clk)
-  disable iff ( !unit.mem_req )
-  $past(unit.mem_req) |-> !$stable(unit.stall)
+  @(posedge unit.core.clk_i) disable iff ( unit.core.rst_i )
+    unit.core.mem_req_o |-> (unit.core.stall_i || $past(unit.core.stall_i))
+)else $error("\nincorrect implementation of stall signal\n");
 
-)else $error("\n================================================\nThe realisation of the STALL signal is INCORRECT\n================================================\n");
-
+stall_seq_fall: assert property (
+  @(posedge unit.core.clk_i) disable iff ( unit.core.rst_i )
+    (unit.core.stall_i) |=> !unit.core.stall_i
+)else $error("\nstall must fall exact one cycle after rising\n");
 endmodule
