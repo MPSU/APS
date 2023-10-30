@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: MIET
+// Engineer: Andrei Solodovnikov
+
+// Module Name:    ext_mem
+// Project Name:   RISCV_practicum
+// Target Devices: Nexys A7-100T
+// Description: external memory with byte_enable support
+//
+//////////////////////////////////////////////////////////////////////////////////
 module ext_mem(
   input  logic        clk_i,
   input  logic        mem_req_i,
