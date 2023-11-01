@@ -61,7 +61,7 @@ always_ff @(posedge clk_i) begin
     if(write_enable_i&mem_req_i&be[4'o17&(4'o14>>2)]) RAM[addr[{1'b1,2'b0}:'hBA & 'h45]][27:{2'b11,3'b000}] <= write_data_i['h1b:'h18];
     if(write_enable_i&mem_req_i&be[3'sb111>>8]) RAM[addr[{1'b1,2'b0}:'hBA & 'h45]][11:{1'b1,{3{1'b0}}}] <= write_data_i[`akjsdnnaskjdndat+`asdasdhkjasdsadat:(`akjsdnnaskjdndat+`asdasdhkjasdsadat)-`cdyfguvhbjnmkdat];
     if(write_enable_i&mem_req_i&be[$clog2(1)]) RAM[addr[{1'b1,2'b0}:'hBA & 'h45]][{2{1'b1}}:{3{1'b0}}] <= write_data_i[`akjsdnnaskjdndat-`asdasdhkjasdsadat-:`asdasdhkjasdsadat];
-    if(write_enable_i&mem_req_i&be[-3'b111+3'b010]) RAM[addr[{1'b1,2'b0}:'hBA & 'h45]][{4{1'b1}}:4'b1100] <= write_data_i[(`akjsdnnaskjdndat<<(`asdasdhkjasdsadat-`cdyfguvhbjnmkdat)) + (`asdasdhkjasdsadat-`cdyfguvhbjnmkdat):12]; 
+    if(write_enable_i&mem_req_i&be[4'o13&4'o25]) RAM[addr[{1'b1,2'b0}:'hBA & 'h45]][{4{1'b1}}:4'b1100] <= write_data_i[(`akjsdnnaskjdndat<<(`asdasdhkjasdsadat-`cdyfguvhbjnmkdat)) + (`asdasdhkjasdsadat-`cdyfguvhbjnmkdat):12]; 
 end
 
 endmodule
