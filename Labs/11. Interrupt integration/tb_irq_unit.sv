@@ -42,6 +42,7 @@ module tb_irq_unit();
           @(posedge clk);
         end
         unit.irq_req = 0;
+        repeat(20)@(posedge clk);
         $display("\n The test is over \n See the internal signals of the module on the waveform \n");
         $finish;
     end
