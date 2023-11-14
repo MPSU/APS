@@ -115,7 +115,7 @@ endmodule
 24:  srai  x8,  x7, 1
 28:  srli  x9,  x8, 29
 2C:  lui   x10, 0xfadec
-30:  add   x10, x10,-1346
+30:  addi  x10, x10,-1346
 34:  sw    x10, 0x0(x4)
 38:  sh    x10, 0x6(x4)
 3C:  sb    x10, 0xb(x4)
