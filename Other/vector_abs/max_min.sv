@@ -1,11 +1,11 @@
 module max_min(
-  input [31:0] a,
-  input [31:0] b,
-  output reg[31:0] max,
-  output reg[ 3:0] min
+  input  logic [31:0] a,
+  input  logic [31:0] b,
+  output logic [31:0] max,
+  output logic [ 3:0] min
 );
 
-  always @(*) begin
+  always_comb @(*) begin
     if(a > b) begin
       max = a;
       min = b;

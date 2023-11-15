@@ -1,8 +1,8 @@
 module tb();
 
-reg [31:0] a;
-reg [31:0] b;
-wire [31:0] res;
+logic [31:0] a;
+logic [31:0] b;
+logic [31:0] res;
 
 vector_abs dut(
   .x(a),
@@ -31,8 +31,8 @@ initial begin : test
  a = 0; b = 0;
  #5;
  checker(a,b,res);
- 
- 
+
+
  a = 1; b = 1;
  #5;
  checker(a,b,res);
@@ -40,14 +40,14 @@ initial begin : test
  a = 3; b = 4;
  #5;
  checker(a,b,res);
- 
- 
+
+
  for(i = 0; i < 100; i=i+1) begin
    a = $random()&32'hff; b = $random()&32'hff;
    #5;
    checker(a,b,res);
  end
- 
+
  $display("Test has been finished with %d errors", err_count);
  if(err_count == 0) begin
    $display("SUCCESS!");

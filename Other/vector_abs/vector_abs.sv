@@ -1,12 +1,12 @@
 module vector_abs(
-  input [31:0] x,
-  input [31:0] y,
-  output[31:0] abs
+  input  logic [31:0] x,
+  input  logic [31:0] y,
+  output logic [31:0] abs
 );
 
 
-  wire [31:0] min;
-  wire [31:0] min_half;
+  logic [31:0] min;
+  logic [31:0] min_half;
 
   max_min max_min_unit(
     .a(x),
