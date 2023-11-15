@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module nexys_alu(
     input CLK100,
     input resetn,

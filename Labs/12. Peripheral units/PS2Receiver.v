@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module PS2Receiver(
     input clk,
     input kclk,

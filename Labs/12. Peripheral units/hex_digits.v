@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module hex_digits(
   input       clk_i, rst_i,
   input [4:0] hex0,     // Входной сигнал со значением цифры, выводимой на нулевой (самый правый) индикатор

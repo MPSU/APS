@@ -1,5 +1,3 @@
-`timescale 1 ps / 1 ps
-
 (* STRUCTURAL_NETLIST = "yes" *)
 module alu_riscv
    (alu_op_i,

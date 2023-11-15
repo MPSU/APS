@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module nexys_rf_riscv(
     input CLK100,
     input resetn,
