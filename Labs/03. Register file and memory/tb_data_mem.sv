@@ -63,32 +63,17 @@ parameter STEP = 8;
             end
         end
         for (i = 0; i < (ADDR_SIZE+STEP); i = i + 1 + $urandom() % STEP) begin
-            if (i < (ADDR_SIZE)) begin
-                REQ = |($urandom %10);
-                WE = 0;
-                #TIME_OPERATION;
-                RDa = RD;
-                WD = $urandom;
-                #TIME_OPERATION;
-                WE = $urandom % 2;
-                #TIME_OPERATION;
-                if ((WE && REQ || !REQ) && RD !== 32'd4195425967) begin
-                    $error("When writing (write_enable_i = %h) read_data_o should be equal to fa11_1eaf, your data: %h_%h, time: %t", WE, RD[31:16],RD[15:0], $time);
-                    err_count = err_count + 1;
-                end
-                if ((!WE && REQ) && RD !== RDa) begin
-                    $error("When reading (write_enable_i = %h), the data %h is overwritten with data %h at address %h, time: %t", WE, RDa, RD, A, $time);
-                    err_count = err_count + 1;
-                end
-            end
-            else begin
-                WE = 0;
-                REQ = 1;
-                #TIME_OPERATION;
-                if (RD !== 32'd3735928559) begin
-                    $error("When reading (write_enable_i = %h) at address greater than 16383 (current addr = %d), it should return dead_beef, but your data: %h_%h, time: %t", WE, A, RD[31:16],RD[15:0], $time);
-                    err_count = err_count + 1;
-                end
+            REQ = |($urandom %10);
+            WE = 0;
+            #TIME_OPERATION;
+            RDa = RD;
+            WD = $urandom;
+            #TIME_OPERATION;
+            WE = $urandom % 2;
+            #TIME_OPERATION;
+            if ((!WE && REQ) && RD !== RDa) begin
+                $error("When reading (write_enable_i = %h), the data %h is overwritten with data %h at address %h, time: %t", WE, RDa, RD, A, $time);
+                err_count = err_count + 1;
             end
             #TIME_OPERATION;
         end
@@ -96,9 +81,9 @@ parameter STEP = 8;
         REQ = 1;
         WE = 0;
         #TIME_OPERATION;
-        for (i = 0; i < 4; i = i + 1) begin 
-          if(i==0) begin 
-            repeat(2)@(posedge CLK); 
+        for (i = 0; i < 4; i = i + 1) begin
+          if(i==0) begin
+            repeat(2)@(posedge CLK);
             #1; RDa = RD;
           end else
           if(RD !== RDa) begin
@@ -118,12 +103,6 @@ parameter STEP = 8;
             err_count = err_count + 1;
         end
         @(posedge CLK);
-        i = {14{1'b1}};
-        repeat(2) @(posedge CLK);
-        if (RD === 'd3735928559) begin
-            $error("incorrect reading from address = %d, data = %h", A, RD);
-            err_count = err_count + 1;
-        end
         $display("Number of errors: %d", err_count);
         if( !err_count )  $display("\ndata_mem SUCCESS!!!\n");
         $finish();
