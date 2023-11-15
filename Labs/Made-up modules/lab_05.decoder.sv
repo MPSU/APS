@@ -1,21 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Alexey Kozin
-// 
-// Create Date: 10/08/2023 07:39:15 AM
-// Design Name: 
+
 // Module Name: decoder_riscv
 // Project Name: RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
 // Description: main decoder for risc-v processor
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
 //////////////////////////////////////////////////////////////////////////////////
 
 module gpr_we_table (gis_ew_rpg, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);

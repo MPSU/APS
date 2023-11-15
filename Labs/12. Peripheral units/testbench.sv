@@ -1,21 +1,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Nikita Bulavin
-// 
-// Create Date:    
-// Design Name: 
+
 // Module Name:    tb_riscv_unit
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
+
 // Description: tb for peripheral units
-// 
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_riscv_unit();

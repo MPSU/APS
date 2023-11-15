@@ -1,21 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Nikita Bulavin
-// 
-// Create Date:    
-// Design Name: 
+
 // Module Name:    tb_fulladder32
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
 // Description: tb for 32-bit fulladder
-// 
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_fulladder32();

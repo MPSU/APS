@@ -1,21 +1,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Andrei Solodovnikov
-//
-// Create Date:
-// Design Name:
+
 // Module Name:    tb_riscv_unit
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions:
 // Description: tb for riscv unit with irq support
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
+
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_irq_unit();

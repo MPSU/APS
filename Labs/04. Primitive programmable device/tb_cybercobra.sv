@@ -1,21 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
 // Engineer: Nikita Bulavin
-// 
-// Create Date:    
-// Design Name: 
+
 // Module Name:    tb_cybercobra
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
-// Tool Versions: 
 // Description: tb for CYBERcobra 3000 Pro 2.1
-// 
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_CYBERcobra();
