@@ -1,4 +1,4 @@
-module tb();
+module tb_vector_abs();
 
 logic [31:0] a;
 logic [31:0] b;
