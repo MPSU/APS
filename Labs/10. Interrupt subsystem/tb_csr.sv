@@ -300,90 +300,39 @@ task check_reg();
 end
 endtask
 
-trap_a: assert property (
+trap_mepc_a: assert property (
   @(posedge clk_i) disable iff ( rst_i )
-  ($rose(trap_i) && (addr_i == MCAUSE_ADDR)) |-> ##1 (mepc_o === pc_i) && (read_data_o === mcause_i)
+  $rose(trap_i) |-> ##1 (mepc_o === pc_i)
 )else begin
         err_count++;
-        if (mepc_o != pc_i)
-          if (read_data_o != mcause_i)
-            $error("Incorrect mepc and mcause on trap_i == 1: Time = %t. mepc_o(%h) != pc_i(%h), read_data_o(%h) != mcause_i(%h).\n", $time, mepc_o, pc_i, read_data_o, mcause_i);
-          else
-            $error("Incorrect mepc on trap_i == 1: Time = %t. mepc_o(%h) != pc_i(%h).\n", $time, mepc_o, pc_i);
-        else
-            $error("Incorrect mcause on trap_i == 1: Time = %t. read_data_o(%h) != mcause_i(%h).\n", $time, read_data_o, mcause_i);
+        $display("Incorrect mepc   on trap    :      mepc_o = %08h while it should be %08h.\n", mepc_o, pc_i);
     end
 
-csrrw_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ( (opcode_i === CSR_RW) && $rose(write_enable_i)) |=> (read_data_o === data_ref)
+
+trap_mcause_a: assert property (
+  @(posedge clk_i) disable iff ( rst_i )
+  ($rose(trap_i) && (addr_i == MCAUSE_ADDR)) |-> ##1 (read_data_o === mcause_i)
 )else begin
         err_count++;
-        if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrw: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrw: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrw: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrw: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrw: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
+        $display("Incorrect mcause on trap    : read_data_o = %08h while it should be %08h.\n", read_data_o, mcause_i);
     end
 
-csrrs_a: assert property (
+string reg_name;
+string padding;
+csr_read_a: assert property (
   @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ((opcode_i === CSR_RS) && $rose(write_enable_i)) |=> read_data_o === data_ref
+  ( (opcode_i inside {CSR_RW, CSR_RS, CSR_RC, CSR_RWI, CSR_RSI, CSR_RCI} ) && $rose(write_enable_i)) |=> (read_data_o === data_ref)
 )else begin
         err_count++;
-        if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrs: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrs: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrs: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrs: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrs: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-    end
-
-csrrc_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ((opcode_i === CSR_RC) && $rose(write_enable_i)) |=> read_data_o === data_ref
-)else begin
-        err_count++;
-        if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrc: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrc: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrc: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrc: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrc: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-    end
-
-csrrwi_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ((opcode_i === CSR_RWI) && $rose(write_enable_i)) |=> read_data_o === data_ref
-)else begin
-        err_count++;
-         if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrwi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-         if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrwi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-         if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrwi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-         if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrwi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-         if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrwi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-    end
-
-csrrci_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ((opcode_i === CSR_RCI) && $rose(write_enable_i) ) |=> read_data_o === data_ref //and (addr_i === MIE_ADDR) |-> (mie_o === data_ref) and (addr_i === MEPC_ADDR) |-> (mepc_o === data_ref) and (addr_i === MTVEC_ADDR) |-> (mtvec_o === data_ref)
-)else begin
-        err_count++;
-        if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrci: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrci: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrci: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrci: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrci: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-    end
-
-csrrsi_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ((opcode_i === CSR_RSI) && $rose(write_enable_i)) |=> read_data_o === data_ref //and (addr_i === MIE_ADDR) |-> (mie_o === data_ref) and (addr_i === MEPC_ADDR) |-> (mepc_o === data_ref) and (addr_i === MTVEC_ADDR) |-> (mtvec_o === data_ref)
-)else begin
-        err_count++;
-        if (addr_i === MIE_ADDR)      $error("Incorrect value in register mie      by csrrsi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MEPC_ADDR)     $error("Incorrect value in register mepc     by csrrsi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MTVEC_ADDR)    $error("Incorrect value in register mtvec    by csrrsi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MCAUSE_ADDR)   $error("Incorrect value in register mcause   by csrrsi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
-        if (addr_i === MSCRATCH_ADDR) $error("Incorrect value in register mscratch by csrrsi: Time = %t. read_data_o(%h) != data_ref(%h).\n", $time, read_data_o, data_ref);
+        case(addr_i)
+          MIE_ADDR      : reg_name = "mie     ";
+          MTVEC_ADDR    : reg_name = "mtvec   ";
+          MSCRATCH_ADDR : reg_name = "mscratch";
+          MEPC_ADDR     : reg_name = "mepc    ";
+          MCAUSE_ADDR   : reg_name = "mcause  ";
+          default       : reg_name = "ill_addr";
+        endcase
+        $display("Incorrect read from %s: read_data_o = %08h while it should be %08h.\n", reg_name, read_data_o, data_ref);
     end
 
 mie_a: assert property (
@@ -391,7 +340,7 @@ mie_a: assert property (
   ((addr_i === MIE_ADDR) && $rose(write_enable_i)) |=> (mie_o === data_ref)
 )else begin
         err_count++;
-        $error("Incorrect signal mie_o: Time = %t. mie_o(%h) != data_ref(%h).\n", $time, mie_o, data_ref);
+        $display("Incorrect value of mie_o    :       mie_o = %08h while if should be %08h.\n", mie_o, data_ref);
       end
 
 mepc_a: assert property (
@@ -399,7 +348,7 @@ mepc_a: assert property (
   ((addr_i === MEPC_ADDR) && $rose(write_enable_i)) |=> (mepc_o === data_ref)
 )else begin
         err_count++;
-        $error("Incorrect signal mepc_o: Time = %t. mepc_o(%h) != data_ref(%h).\n", $time, mepc_o, data_ref);
+        $display("Incorrect value of mepc_o   :      mepc_o = %08h while if should be %08h.\n", mepc_o, data_ref);
     end
 
 mtvec_a: assert property (
@@ -407,7 +356,8 @@ mtvec_a: assert property (
   ((addr_i === MTVEC_ADDR) && $rose(write_enable_i)) |=> (mtvec_o === data_ref)
 )else begin
         err_count++;
-        $error("Incorrect signal mtvec_o: Time = %t. mtvec_o(%h) != data_ref(%h).\n", $time, mtvec_o, data_ref);
+        $display("Incorrect value of mtvec_o  :     mtvec_o = %08h while if should be %08h.\n", mtvec_o, data_ref);
     end
+
 
 endmodule
