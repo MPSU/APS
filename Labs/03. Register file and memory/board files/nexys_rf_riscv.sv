@@ -30,9 +30,9 @@ reg [31:0] rd2;
 rf_riscv DUT
 (
   .clk_i            (CLK100 ),
-  .write_addr_i     (a1     ),
-  .read_addr1_i     (a2     ),
-  .read_addr2_i     (a3     ),
+  .read_addr1_i     (a1     ),
+  .read_addr2_i     (a2     ),
+  .write_addr_i     (a3     ),
   .write_data_i     (WD3    ),
   .write_enable_i   (WE     ),
   .read_data1_o     (RD1    ),
