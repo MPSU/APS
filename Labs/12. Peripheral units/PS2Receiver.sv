@@ -1,9 +1,9 @@
 module PS2Receiver(
-  input  logic        clk,
-  input  logic        kclk,
-  input  logic        kdata,
-  output logic [15:0] keycodeout,
-  output              keycode_valid
+  input  logic        clk_i,
+  input  logic        kclk_i,
+  input  logic        kdata_i,
+  output logic [7:0]  keycodeout_o,
+  output              keycode_valid_o
   );
 
   logic       flag;
@@ -11,43 +11,40 @@ module PS2Receiver(
   logic       kclkf, kdataf;
   logic [3:0] cnt;
 
-  assign keycode_valid = flag_shift[0] && !flag_shift[2];
+  assign keycode_valid_o = flag_shift[0] && !flag_shift[2];
 
   initial begin //for tb
     cnt = 0;
-    keycodeout = 0;
+    keycodeout_o = 0;
     flag_shift = 0;
     flag = 0;
   end
 
 debouncer debounce(
-  .clk(clk),
-  .I0(kclk),
-  .I1(kdata),
+  .clk(clk_i),
+  .I0(kclk_i),
+  .I1(kdata_i),
   .O0(kclkf),
   .O1(kdataf)
 );
-always@(posedge clk) begin
+always@(posedge clk_i) begin
   flag_shift <= (flag_shift << 1) + flag;
 end
 
 always_ff @(negedge(kclkf))begin
   case(cnt)
-    0:if(keycodeout != 16'hE000)keycodeout <= 0;//Start bit
-    1:keycodeout[0]<=kdataf;
-    2:keycodeout[1]<=kdataf;
-    3:keycodeout[2]<=kdataf;
-    4:keycodeout[3]<=kdataf;
-    5:keycodeout[4]<=kdataf;
-    6:keycodeout[5]<=kdataf;
-    7:keycodeout[6]<=kdataf;
-    8:keycodeout[7]<=kdataf;
+    0:;
+    1:keycodeout_o[0]<=kdataf;
+    2:keycodeout_o[1]<=kdataf;
+    3:keycodeout_o[2]<=kdataf;
+    4:keycodeout_o[3]<=kdataf;
+    5:keycodeout_o[4]<=kdataf;
+    6:keycodeout_o[5]<=kdataf;
+    7:keycodeout_o[6]<=kdataf;
+    8:keycodeout_o[7]<=kdataf;
     //TODO ADD PARITY CHECK
     9:begin
       flag<=1'b1;
-      if(keycodeout[7:0] == 8'hE0) begin
-        keycodeout <= {keycodeout[7:0], 8'd0};
-      end
     end
     10:flag<=1'b0;
     default: cnt <= 0;
@@ -68,8 +65,8 @@ module debouncer(
     );
 
   logic [4:0]cnt0, cnt1;
-  logi Iv0=0,Iv1=0;
-  logi out0, out1;
+  logic Iv0=0,Iv1=0;
+  logic out0, out1;
 
   always_ff @(posedge(clk))begin
     if (I0==Iv0) begin
@@ -77,7 +74,7 @@ module debouncer(
       else cnt0<=cnt0+1;
     end
     else begin
-      cnt0<="00000";
+      cnt0<=5'd0;
       Iv0<=I0;
     end
     if (I1==Iv1)begin
@@ -85,7 +82,7 @@ module debouncer(
       else cnt1<=cnt1+1;
     end
     else begin
-      cnt1<="00000";
+      cnt1<=5'd0;
       Iv1<=I1;
     end
   end
