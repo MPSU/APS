@@ -29,7 +29,7 @@ int err_count;
 always #5 clk_i <= ~clk_i;
 
 initial begin
-  $display("\n\n===========================\n\nPress button 'Run All' (F3)\n\n===========================\n\n", $time);
+  $display("\n\n===========================\n\nPress button 'Run All' (F3)\n\n===========================\n\n");
   $stop();
   clk_i       = '0;
   exception_i = '0;
