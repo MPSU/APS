@@ -64,6 +64,7 @@ initial begin
   csrr();
   csrw();
   trap();
+  seq_write();
 
   $display("Simulation finished. Number of errors: %d", err_count);
   if( !err_count )  $display("\n csr_controller SUCCESS!!!\n");
@@ -71,7 +72,7 @@ initial begin
 end
 
 initial begin
-  int not_stopped = 1;
+  automatic int not_stopped = 1;
   forever begin
     @(posedge clk_i);
     if((err_count >= 10) && not_stopped) begin
@@ -81,7 +82,6 @@ initial begin
     end
   end
 end
-
 logic [31:0] data_ref;
 logic [31:0] pc_ref;
 logic [31:0] mcause_ref;
@@ -91,20 +91,39 @@ MSCRATCH_ADDR,
 MEPC_ADDR,
 MCAUSE_ADDR};
 
+task seq_write();
+  trap_i          <= 0;
+for (int i = 0; i<5; i = i+1) begin
+  repeat(20) begin
+    @(posedge clk_i);
+  addr_i          <= addr[i];
+  opcode_i        <= CSR_RW;
+  rs1_data_i      <= $random;
+  imm_data_i      <= $random;
+  write_enable_i  <= 1;
+  end
+  clear();
+  @(posedge clk_i);
+end
+endtask
+
+
+
+
 assign pc_ref = write_enable_i ? pc_i : pc_ref;
 assign mcause_ref = write_enable_i ? mcause_i : mcause_ref;
 
-always_comb begin
-  if (rst_i) data_ref <= 0;
+always_ff @(posedge clk_i) begin
+  if (rst_i) data_ref = 0;
   if (write_enable_i)
   case(opcode_i)
-    CSR_RW:  data_ref <= #1 rs1_data_i;
-    CSR_RS:  data_ref <= #1 rs1_data_i  | read_data_o;
-    CSR_RC:  data_ref <= #1 ~rs1_data_i & read_data_o;
-    CSR_RWI: data_ref <= #1 imm_data_i;
-    CSR_RSI: data_ref <= #1 imm_data_i | read_data_o;
-    CSR_RCI: data_ref <= #1 ~imm_data_i & read_data_o;
-    default: data_ref <= #1 data_ref;
+    CSR_RW:  data_ref = rs1_data_i;
+    CSR_RS:  data_ref = rs1_data_i  | read_data_o;
+    CSR_RC:  data_ref = ~rs1_data_i & read_data_o;
+    CSR_RWI: data_ref = imm_data_i;
+    CSR_RSI: data_ref = imm_data_i | read_data_o;
+    CSR_RCI: data_ref = ~imm_data_i & read_data_o;
+    default: data_ref = data_ref;
   endcase
 end
 
@@ -272,6 +291,7 @@ for (int i = 0; i<5; i = i+1) begin
 end
 endtask
 
+
 //trap
 task trap();
 repeat(100) begin
@@ -320,8 +340,8 @@ trap_mcause_a: assert property (
 string reg_name;
 string padding;
 csr_read_a: assert property (
-  @(posedge clk_i) disable iff ( rst_i || trap_i )
-  ( (opcode_i inside {CSR_RW, CSR_RS, CSR_RC, CSR_RWI, CSR_RSI, CSR_RCI} ) && $rose(write_enable_i)) |=> (read_data_o === data_ref)
+  @(posedge clk_i) disable iff ( rst_i || trap_i || $changed(addr_i, @(posedge clk_i)))
+  ( (opcode_i inside {CSR_RW, CSR_RS, CSR_RC, CSR_RWI, CSR_RSI, CSR_RCI} ) && write_enable_i) |=> (read_data_o === data_ref)
 )else begin
         err_count++;
         case(addr_i)
@@ -359,5 +379,28 @@ mtvec_a: assert property (
         $display("Incorrect value of mtvec_o  :     mtvec_o = %08h while if should be %08h.\n", mtvec_o, data_ref);
     end
 
+mepc_stability_a: assert property (
+  @(posedge clk_i) disable iff (rst_i)
+  !(trap_i | (write_enable_i & (addr_i === MEPC_ADDR))) |=> $stable(mepc_o)
+)else begin
+        err_count++;
+        $display("Illegal change of mepc val  : it should be stable while trap_i = 0 and there is no CSR instruction at MEPC_ADDR");
+    end
+
+mtvec_stability_a: assert property (
+  @(posedge clk_i) disable iff (rst_i)
+  !(write_enable_i & (addr_i === MTVEC_ADDR)) |=> $stable(mtvec_o)
+)else begin
+        err_count++;
+        $display("Illegal change of mtvec val : it should be stable while there is no CSR instruction at MTVEC_ADDR");
+    end
+
+mie_stability_a: assert property (
+  @(posedge clk_i) disable iff (rst_i)
+  !(write_enable_i & (addr_i === MIE_ADDR)) |=> $stable(mie_o)
+)else begin
+        err_count++;
+        $display("Illegal change of mie val   : it should be stable while there is no CSR instruction at MIE_ADDR");
+    end
 
 endmodule
