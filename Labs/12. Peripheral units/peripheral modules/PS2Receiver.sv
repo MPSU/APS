@@ -1,5 +1,6 @@
 module PS2Receiver(
   input  logic        clk_i,
+  input  logic        rst_i,
   input  logic        kclk_i,
   input  logic        kdata_i,
   output logic [7:0]  keycodeout_o,
@@ -13,13 +14,6 @@ module PS2Receiver(
 
   assign keycode_valid_o = flag_shift[0] && !flag_shift[2];
 
-  initial begin //for tb
-    cnt = 0;
-    keycodeout_o = 0;
-    flag_shift = 0;
-    flag = 0;
-  end
-
 debouncer debounce(
   .clk(clk_i),
   .I0(kclk_i),
@@ -28,30 +22,46 @@ debouncer debounce(
   .O1(kdataf)
 );
 always@(posedge clk_i) begin
-  flag_shift <= (flag_shift << 1) + flag;
+  if(rst_i) begin
+    flag_shift <= '0;
+  end
+  else begin
+    flag_shift <= {flag_shift[2:0], flag};
+  end
 end
 
-always_ff @(negedge(kclkf))begin
-  case(cnt)
-    0:;
-    1:keycodeout_o[0]<=kdataf;
-    2:keycodeout_o[1]<=kdataf;
-    3:keycodeout_o[2]<=kdataf;
-    4:keycodeout_o[3]<=kdataf;
-    5:keycodeout_o[4]<=kdataf;
-    6:keycodeout_o[5]<=kdataf;
-    7:keycodeout_o[6]<=kdataf;
-    8:keycodeout_o[7]<=kdataf;
-    //TODO ADD PARITY CHECK
-    9:begin
-      flag<=1'b1;
-    end
-    10:flag<=1'b0;
-    default: cnt <= 0;
-  endcase
-  if(cnt<=9) cnt<=cnt+1;
-  else if(cnt==10) cnt<=0;
+always_ff @(negedge kclkf or posedge rst_i)begin
+  if(rst_i) begin
+    cnt <= '0;
+  end
+  else if (cnt <= 9) begin
+    cnt <= cnt + 1;
+  end
+  else begin
+    cnt <= '0;
+  end
 end
+
+always_ff @(negedge kclkf or posedge rst_i) begin
+  if(rst_i) begin
+    keycodeout_o <= '0;
+  end
+  else begin
+    case(cnt)
+      1:keycodeout_o[0]<=kdataf;
+      2:keycodeout_o[1]<=kdataf;
+      3:keycodeout_o[2]<=kdataf;
+      4:keycodeout_o[3]<=kdataf;
+      5:keycodeout_o[4]<=kdataf;
+      6:keycodeout_o[5]<=kdataf;
+      7:keycodeout_o[6]<=kdataf;
+      8:keycodeout_o[7]<=kdataf;
+      default: keycodeout_o <= keycodeout_o;
+    endcase
+  end
+end
+
+assign flag = cnt == 9;
 
 endmodule
 
