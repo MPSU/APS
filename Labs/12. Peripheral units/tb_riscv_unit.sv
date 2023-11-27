@@ -29,10 +29,10 @@ logic [3:0] cntr;
 
 initial begin clk = 0; ps2_clk = 0; end
 
-always #5 clk = ~clk;
+always #5ns clk = ~clk;
 always #50000 if(starter || (cntr > 0)) ps2_clk = ~ps2_clk; else ps2_clk = 1;
 
-logic [11:0] data;
+logic [11:0] data, uart_data;
 
 initial #5ms $finish();
 
@@ -86,7 +86,6 @@ initial begin: ps2_initial_block
   data = 0;
   #100000;
   ps2_send_scan_code(8'h1c);
-  ps2_send_scan_code(8'he0);
   ps2_send_scan_code(8'hf0);
   ps2_send_scan_code(8'h1c);
   ps2_send_scan_code(8'h5c);
@@ -102,6 +101,24 @@ endtask
 
 
 // TODO uart block
-
+initial begin: uart_rx_initial_block
+  uart_data = '1;
+  #100000;
+  uart_rx_send_char(8'h1c, 115200);
+  uart_rx_send_char(8'ha5, 115200);
+  uart_rx_send_char(8'h5a, 115200);
+  uart_rx_send_char(8'hff, 115200);
+end
+assign rx_i = uart_data[0];
+int uart_cntr;
+task uart_rx_send_char(input logic [7:0] char, input logic [31:0] baudrate);
+  uart_data = {2'b11, (^char), char, 1'b0};
+  uart_cntr = 0;
+  while(uart_cntr <= 15) begin
+    #(1s/baudrate);
+    uart_data = {1'b1, uart_data[11:1]};
+    uart_cntr++;
+  end
+endtask
 
 endmodule

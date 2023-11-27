@@ -224,6 +224,7 @@ module sw_sb_ctrl(
   input  logic [31:0] write_data_i,  // не используется, добавлен для
                                      // совместимости с системной шиной
   output logic [31:0] read_data_o,
+  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -271,6 +272,7 @@ module led_sb_ctrl(
   input  logic [31:0] addr_i,
   input  logic [31:0] write_data_i,
   output logic [31:0] read_data_o,
+  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к периферии
@@ -333,6 +335,7 @@ module ps2_sb_ctrl(
   input  logic [31:0]  write_data_i,
   input  logic         write_enable_i,
   output logic [31:0]  read_data_o,
+  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -423,6 +426,7 @@ module hex_sb_ctrl(
   input  logic [31:0] write_data_i,
   input  logic        write_enable_i,
   output logic [31:0] read_data_o,
+  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к модулю,
@@ -519,6 +523,7 @@ module uart_rx_sb_ctrl(
   input  logic [31:0]   write_data_i,
   input  logic          write_enable_i,
   output logic [31:0]   read_data_o,
+  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -539,7 +544,7 @@ module uart_rx_sb_ctrl(
   logic [15:0] baudrate;
   logic parity_en;
   logic stopbit;
-  logic data;
+  logic [7:0]  data;
   logic valid;
 
 endmodule
@@ -570,6 +575,7 @@ module uart_tx_sb_ctrl(
   logic [15:0] baudrate;
   logic parity_en;
   logic stopbit;
+  logic [7:0]  data;
 
 endmodule
 ```
@@ -719,6 +725,17 @@ module vgachargen (
   output logic          vga_vs_o          // линия вертикальной синхронизации vga
 );
 ```
+
+Файлы модуля:
+
+* peripheral modules/vhachargen.sv
+* peripheral modules/vhachargen_pkg.sv
+* firmware/mem_files/lab_12_ps2_vga_instr.mem — этим файлом необходимо проинициализировать память инструкций
+* firmware/mem_files/lab_12_ps2ascii_data.mem — этим файлом необходимо проинициализировать память данных
+* firmware/mem_files/lab_12_vga_ch_map.mem
+* firmware/mem_files/lab_12_vga_ch_t_ro.mem
+* firmware/mem_files/lab_12_vga_ch_t_rw.mem
+* firmware/mem_files/lab_12_vga_col_map.mem
 
 Для управления данным модулем, необходимо написать модуль-контроллер со следующим прототипом:
 
