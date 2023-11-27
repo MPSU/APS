@@ -12,7 +12,7 @@ module hex_digits(
   output logic [6:0] hex_led, // Выходной сигнал, контролирующий каждый отдельный светодиод индикатора
   output logic [7:0] hex_sel  // Выходной сигнал, указывающий на какой индикатор выставляется hex_led
     );
-  localparam pwm = 32'32d1000;//шим сегментов
+  localparam pwm = 32'd1000;  //шим сегментов
 
   logic [9:0] counter;
   logic [4:0] semseg;
