@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: MIET
-// Engineer: Nikita Bulavin
+// Engineer: Andrei Solodovnikov
 
 // Module Name:    tb_riscv_unit
 // Project Name:   RISCV_practicum
@@ -34,7 +34,7 @@ always #50000 if(starter || (cntr > 0)) ps2_clk = ~ps2_clk; else ps2_clk = 1;
 
 logic [11:0] data, uart_data;
 
-initial #5ms $finish();
+initial #6ms $finish();
 
 initial begin
   resetn = 1;
@@ -86,6 +86,7 @@ initial begin: ps2_initial_block
   data = 0;
   #100000;
   ps2_send_scan_code(8'h1c);
+  ps2_send_scan_code(8'he0);
   ps2_send_scan_code(8'hf0);
   ps2_send_scan_code(8'h1c);
   ps2_send_scan_code(8'h5c);
@@ -100,7 +101,6 @@ task ps2_send_scan_code(input logic [7:0] code);
 endtask
 
 
-// TODO uart block
 initial begin: uart_rx_initial_block
   uart_data = '1;
   #100000;
