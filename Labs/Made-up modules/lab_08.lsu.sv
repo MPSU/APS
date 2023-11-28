@@ -118,3 +118,5 @@ always_comb begin
     default:mem_wd_o <= 32'd0;
   endcase
 end
+
+endmodule
