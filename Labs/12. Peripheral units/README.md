@@ -343,6 +343,7 @@ module ps2_sb_ctrl(
 */
 
   output logic        interrupt_request_o,
+  input  lotic        interrupt_return_i,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к модулю,
