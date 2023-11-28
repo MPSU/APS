@@ -223,7 +223,7 @@ module sw_sb_ctrl(
   input  logic [31:0] write_data_i,  // не используется, добавлен для
                                      // совместимости с системной шиной
   output logic [31:0] read_data_o,
-  output logic          ready_o,
+  output logic        ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -271,12 +271,12 @@ module led_sb_ctrl(
   input  logic [31:0] addr_i,
   input  logic [31:0] write_data_i,
   output logic [31:0] read_data_o,
-  output logic          ready_o,
+  output logic        ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к периферии
 */
-  output logic [15:0]  led_o
+  output logic [15:0] led_o
 );
 
 logic [15:0]  led_val;
@@ -342,7 +342,7 @@ module ps2_sb_ctrl(
 */
 
   output logic        interrupt_request_o,
-  input  lotic        interrupt_return_i,
+  input  logic        interrupt_return_i,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к модулю,
