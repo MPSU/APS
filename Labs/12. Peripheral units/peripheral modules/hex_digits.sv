@@ -1,17 +1,33 @@
 module hex_digits(
-  input logic       clk_i, rst_i,
-  input logic [4:0] hex0,     // Входной сигнал со значением цифры, выводимой на нулевой (самый правый) индикатор
-  input logic [4:0] hex1,     // Входной сигнал со значением цифры, выводимой на первый индикатор
-  input logic [4:0] hex2,     // Входной сигнал со значением цифры, выводимой на второй индикатор
-  input logic [4:0] hex3,     // Входной сигнал со значением цифры, выводимой на третий индикатор
-  input logic [4:0] hex4,     // Входной сигнал со значением цифры, выводимой на четвертый индикатор
-  input logic [4:0] hex5,     // Входной сигнал со значением цифры, выводимой на пятый индикатор
-  input logic [4:0] hex6,     // Входной сигнал со значением цифры, выводимой на шестой индикатор
-  input logic [4:0] hex7,     // Входной сигнал со значением цифры, выводимой на седьмой индикатор
+  input  logic       clk_i,
+  input  logic       rst_i,
+  input  logic [3:0] hex0_i,    // Цифра, выводимой на нулевой (самый правый) индикатор
+  input  logic [3:0] hex1_i,    // Цифра, выводимая на первый индикатор
+  input  logic [3:0] hex2_i,    // Цифра, выводимая на второй индикатор
+  input  logic [3:0] hex3_i,    // Цифра, выводимая на третий индикатор
+  input  logic [3:0] hex4_i,    // Цифра, выводимая на четвертый индикатор
+  input  logic [3:0] hex5_i,    // Цифра, выводимая на пятый индикатор
+  input  logic [3:0] hex6_i,    // Цифра, выводимая на шестой индикатор
+  input  logic [3:0] hex7_i,    // Цифра, выводимая на седьмой индикатор
+  input  logic [7:0] bitmask_i, // Битовая маска для включения/отключения
+                                // отдельных индикаторов
 
-  output logic [6:0] hex_led, // Выходной сигнал, контролирующий каждый отдельный светодиод индикатора
-  output logic [7:0] hex_sel  // Выходной сигнал, указывающий на какой индикатор выставляется hex_led
-    );
+  output logic [6:0] hex_led_o, // Сигнал, контролирующий каждый отдельный
+                                // светодиод индикатора
+  output logic [7:0] hex_sel_o  // Сигнал, указывающий на какой индикатор
+                                // выставляется hex_led
+);
+
+  logic [4:0] hex0, hex1, hex2, hex3, hex4, hex5, hex6, hex7;
+  assign hex0 = {bitmask_i[0], hex0_i};
+  assign hex1 = {bitmask_i[1], hex1_i};
+  assign hex2 = {bitmask_i[2], hex2_i};
+  assign hex3 = {bitmask_i[3], hex3_i};
+  assign hex4 = {bitmask_i[4], hex4_i};
+  assign hex5 = {bitmask_i[5], hex5_i};
+  assign hex6 = {bitmask_i[6], hex6_i};
+  assign hex7 = {bitmask_i[7], hex7_i};
+
   localparam pwm = 32'd1000;  //шим сегментов
 
   logic [9:0] counter;
@@ -19,8 +35,8 @@ module hex_digits(
   logic [7:0] ANreg;
   logic [6:0] hex_ledr;
 
-  assign hex_sel = ANreg;
-  assign hex_led = hex_ledr;
+  assign hex_sel_o = ANreg;
+  assign hex_led_o = hex_ledr;
 
   always_ff @(posedge clk_i) begin
     if (rst_i) begin
