@@ -223,7 +223,6 @@ module sw_sb_ctrl(
   input  logic [31:0] write_data_i,  // не используется, добавлен для
                                      // совместимости с системной шиной
   output logic [31:0] read_data_o,
-  output logic        ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -334,7 +333,6 @@ module ps2_sb_ctrl(
   input  logic [31:0]  write_data_i,
   input  logic         write_enable_i,
   output logic [31:0]  read_data_o,
-  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за отправку запросов на прерывание
@@ -426,7 +424,6 @@ module hex_sb_ctrl(
   input  logic [31:0] write_data_i,
   input  logic        write_enable_i,
   output logic [31:0] read_data_o,
-  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение к модулю,
@@ -483,7 +480,7 @@ module uart_rx (
   input  logic            rx_i,       // Сигнал линии, подключенной к выводу ПЛИС,
                                       // по которой будут приниматься данные
   output logic            busy_o,     // Сигнал о том, что модуль занят приемом данных
-  input  logic [15:0]     baudrate_i, // Настройка скорости передачи данных
+  input  logic [16:0]     baudrate_i, // Настройка скорости передачи данных
   input  logic            parity_en_i,// Настройка контроля целостности через бит четности
   input  logic            stopbit_i,  // Настройка длины стопового бита
   output logic [7:0]      rx_data_o,  // Принятые данные
@@ -500,7 +497,7 @@ module uart_tx (
   output logic            tx_o,       // Сигнал линии, подключенной к выводу ПЛИС,
                                       // по которой будут отправляться данные
   output logic            busy_o,     // Сигнал о том, что модуль занят передачей данных
-  input  logic [15:0]     baudrate_i, // Настройка скорости передачи данных
+  input  logic [16:0]     baudrate_i, // Настройка скорости передачи данных
   input  logic            parity_en_i,// Настройка контроля целостности через бит четности
   input  logic            stopbit_i,  // Настройка длины стопового бита
   input  logic [7:0]      tx_data_i,  // Отправляемые данные
@@ -541,7 +538,7 @@ module uart_rx_sb_ctrl(
 );
 
   logic busy;
-  logic [15:0] baudrate;
+  logic [16:0] baudrate;
   logic parity_en;
   logic stopbit;
   logic [7:0]  data;
@@ -571,7 +568,7 @@ module uart_tx_sb_ctrl(
 );
 
   logic busy;
-  logic [15:0] baudrate;
+  logic [16:0] baudrate;
   logic parity_en;
   logic stopbit;
   logic [7:0]  data;
