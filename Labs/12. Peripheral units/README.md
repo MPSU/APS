@@ -148,8 +148,6 @@ _Рисунок 2. Карта памяти периферийных устрой
 
 Подробное описание периферийных устройств их управления и назначение управляющих регистров будет дано после порядка выполнения задания.
 
-Обратите внимание на то, что у всех модулей периферийных устройств есть выходной сигнал `ready_o`, который должен быть всегда равен единице.
-
 ---
 
 ## Порядок выполнения задания
@@ -564,7 +562,6 @@ module uart_tx_sb_ctrl(
   input  logic [31:0]   write_data_i,
   input  logic          write_enable_i,
   output logic [31:0]   read_data_o,
-  output logic          ready_o,
 
 /*
     Часть интерфейса модуля, отвечающая за подключение передающему,
@@ -752,7 +749,6 @@ module vga_sb_ctrl (
   input  logic [31:0] addr_i,
   input  logic [31:0] write_data_i,
   output logic [31:0] read_data_o,
-  output logic        ready_o,
 
   output logic [3:0]  vga_r_o,
   output logic [3:0]  vga_g_o,
