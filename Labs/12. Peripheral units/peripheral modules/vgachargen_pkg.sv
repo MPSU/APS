@@ -34,19 +34,19 @@ package vgachargen_pkg;
 
   typedef enum logic [23:0] {
     COL_0  = 24'h000000,
-    COL_2  = 24'h0000d8,
-    COL_3  = 24'h0000ff,
+    COL_1  = 24'h0000d8,
+    COL_2  = 24'h00d800,
+    COL_3  = 24'h00d8d8,
     COL_4  = 24'hd80000,
-    COL_5  = 24'hff0000,
-    COL_6  = 24'hd800d8,
-    COL_7  = 24'hff00ff,
-    COL_8  = 24'h00d800,
-    COL_9  = 24'h00ff00,
-    COL_10 = 24'h00d8d8,
+    COL_5  = 24'hd800d8,
+    COL_6  = 24'hd8d800,
+    COL_7  = 24'hd8d8d8,
+    COL_9  = 24'h0000ff,
+    COL_10 = 24'h00ff00,
     COL_11 = 24'h00ffff,
-    COL_12 = 24'hd8d800,
-    COL_13 = 24'hffff00,
-    COL_14 = 24'hd8d8d8,
+    COL_12 = 24'hff0000,
+    COL_13 = 24'hff00ff,
+    COL_14 = 24'hffff00,
     COL_15 = 24'hffffff
   } rgb_t;
 
@@ -57,14 +57,14 @@ package vgachargen_pkg;
   function automatic logic [11:0] color_decode(logic [3:0] color_encoded_i);
     unique case (color_encoded_i)
       4'h0   : return rgb2half(COL_0 );
-      4'h1   : return rgb2half(COL_0 );
+      4'h1   : return rgb2half(COL_1 );
       4'h2   : return rgb2half(COL_2 );
       4'h3   : return rgb2half(COL_3 );
       4'h4   : return rgb2half(COL_4 );
       4'h5   : return rgb2half(COL_5 );
       4'h6   : return rgb2half(COL_6 );
       4'h7   : return rgb2half(COL_7 );
-      4'h8   : return rgb2half(COL_8 );
+      4'h8   : return rgb2half(COL_0 );
       4'h9   : return rgb2half(COL_9 );
       4'ha   : return rgb2half(COL_10);
       4'hb   : return rgb2half(COL_11);
