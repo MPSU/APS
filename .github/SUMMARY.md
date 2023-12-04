@@ -14,7 +14,7 @@
 - [Лабораторная №4. Простейшее программируемое устройство](Labs/04.%20Primitive%20programmable%20device/README.md)
 - [Лабораторная №5. Основной дешифратор](Labs/05.%20Main%20decoder/README.md)
 - [Лабораторная №6. Тракт данных](Labs/06.%20Datapath/README.md)
-- [Лабораторная №7. Внешняя память]()
+- [Лабораторная №7. Внешняя память](Labs/07.%20External%20memory/README.md)
 - [Лабораторная №8. Блок загрузки и сохранения](Labs/08.%20Load-store%20unit/README.md)
 - [Лабораторная №9. Интеграция LSU](Labs/09.%20LSU%20Integration/README.md)
 - [Лабораторная №10. Подсистема прерываний](Labs/10.%20Interrupt%20subsystem/README.md)
