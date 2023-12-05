@@ -15,8 +15,8 @@ module nexys_riscv_unit(
   wire [31:0] instr;
   reg   btn;
   
-  assign instr_addr = unit.instr_addr;
-  assign instr = unit.instr;
+  assign instr_addr = unit.core.instr_addr_o;
+  assign instr = unit.core.instr_i;
 
   localparam pwm = 1000;
   reg [9:0] counter;
