@@ -3,8 +3,8 @@
 
 #ifdef __cplusplus
 #define CAST(type, addr) reinterpret_cast<type>(addr)
-#elif
-#define CAST(addr) (type) (addr)
+#else
+#define CAST(type, addr) (type) (addr)
 #endif
 
 struct SW_HANDLE
