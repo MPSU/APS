@@ -9,7 +9,7 @@ _start:
   la    t0, _bss_start
   la    t1, _bss_end
 _bss_init_loop:
-  beq   t0, t1, _irq_config
+  blt   t1, t0, _irq_config
   sw    zero, 0(t0)
   addi  t0, t0, 4
   j     _bss_init_loop
