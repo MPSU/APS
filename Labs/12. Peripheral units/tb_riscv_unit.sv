@@ -59,13 +59,13 @@ riscv_unit dut(
 
 initial begin: sw_block
   sw_i = 16'd0;
-  repeat(260) @(posedge clk);
+  repeat(1000) @(posedge clk);
   sw_i = 16'hdead;
-  repeat(300) @(posedge clk);
+  repeat(1000) @(posedge clk);
   sw_i = 16'h5555;
-  repeat(300) @(posedge clk);
+  repeat(1000) @(posedge clk);
   sw_i = 16'hbeef;
-  repeat(300) @(posedge clk);
+  repeat(1000) @(posedge clk);
   sw_i = 16'haaaa;
 end
 
@@ -84,7 +84,7 @@ initial begin: ps2_initial_block
   cntr = 0;
   starter = 0;
   data = 0;
-  #100000;
+  repeat(10000) @(posedge clk);
   ps2_send_scan_code(8'h1c);
   ps2_send_scan_code(8'he0);
   ps2_send_scan_code(8'hf0);
@@ -103,11 +103,12 @@ endtask
 
 initial begin: uart_rx_initial_block
   uart_data = '1;
-  #100000;
+  repeat(1000) @(posedge clk);
   uart_rx_send_char(8'h1c, 115200);
-  uart_rx_send_char(8'ha5, 115200);
-  uart_rx_send_char(8'h5a, 115200);
-  uart_rx_send_char(8'hff, 115200);
+  uart_rx_send_char(8'h0D, 115200);
+  uart_rx_send_char(8'h0D, 115200);
+  uart_rx_send_char(8'h7F, 115200);
+  uart_rx_send_char(8'h7F, 115200);
 end
 assign rx_i = uart_data[0];
 int uart_cntr;
