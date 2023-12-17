@@ -68,9 +68,9 @@ struct TX_HANDLE
 
 struct VGA_HANDLE
 {
-        uint32_t *const char_map;
-        uint32_t *const color_map;
-        uint32_t *const tiff_map;
+        uint32_t * char_map;
+        uint32_t * color_map;
+        uint32_t * tiff_map;
 };
 
 struct SUPER_COLLIDER_HANDLE
