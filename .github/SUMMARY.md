@@ -21,6 +21,8 @@
 - [Лабораторная №11. Интеграция подсистемы прерываний](Labs/11.%20Interrupt%20integration/README.md)
 - [Лабораторная №12. Периферийные устройства](Labs/12.%20Peripheral%20units/README.md)
 - [Лабораторная №13. Программирование](Labs/13.%20Programming/README.md)
+- [Лабораторная №14. Программатор](Labs/14.%20Programming%20device/README.md)
+- [Лабораторная №15. Оценка производительности](Labs/14.%20Coremark/README.md)
 
 ---
 
