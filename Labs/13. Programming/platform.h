@@ -68,8 +68,8 @@ struct TX_HANDLE
 
 struct VGA_HANDLE
 {
-        uint32_t * char_map;
-        uint32_t * color_map;
+        uint8_t * char_map;
+        uint8_t * color_map;
         uint32_t * tiff_map;
 };
 
