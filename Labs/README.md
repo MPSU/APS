@@ -180,4 +180,4 @@
 
 В рамках данной лабораторной работы мы немного упростим процесс передачи программы: вместо записи в ПЗУ, программатор будет записывать её сразу в память инструкций, минуя загрузчик.
 
-![../.pic/Labs/lab_14_programming_device/fig_04.drawio.png](../.pic/Labs/lab_14_programming_device.drawio.drawio.png)
+![../.pic/Labs/lab_14_programming_device/fig_04.drawio.png](../.pic/Labs/lab_14_programming_device.drawio.png)
