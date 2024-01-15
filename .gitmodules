@@ -1,0 +1,3 @@
+[submodule "Lectures/Presentations"]
+	path = Lectures/Presentations
+	url = git@github.com:MPSU/APS-lect-presentations.git
