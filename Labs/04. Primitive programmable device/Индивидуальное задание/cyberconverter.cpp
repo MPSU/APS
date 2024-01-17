@@ -15,11 +15,11 @@ void print_help(const std::string program_name)
   cout << "in hex-format.\n\n";
   cout << "If output file omitted, the <input_file_base>_converted.<input_file_ext>\n";
   cout << "will be produced.\n\n";
-  cout << "If input file omitted, program.txt will be used.\n\n";
+  cout << "If input file omitted, program.mem will be used.\n\n";
   cout << "Example:\n\n";
-  cout << program_name << "  open \"program.txt\" and produce \"program_converted.txt\"\n";
+  cout << program_name << "  open \"program.mem\" and produce \"program_converted.mem\"\n";
   cout << program_name << " test.txt  open \"test.txt\" and produce \"test_converted.txt\"\n";
-  cout << program_name << " test.txt myname.dat  open \"test.txt\" and produce \"myname.dat\"\n";
+  cout << program_name << " test.txt myname.mem  open \"test.txt\" and produce \"myname.mem\"\n";
 
 }
 
@@ -39,8 +39,8 @@ int main(int argc, char ** argv)
   switch (argc)
   {
   case 1:
-    ifname = "program.txt";
-    ofname = "program_converted.txt";
+    ifname = "program.mem";
+    ofname = "program_converted.mem";
     break;
   case 2:
     if (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h"))

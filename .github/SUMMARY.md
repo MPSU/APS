@@ -49,7 +49,6 @@
 - [Руководство по поиску ошибок](Vivado%20Basics/Debug%20manual.md)
 - [Руководство по прошивке ПЛИС](Vivado%20Basics/Program%20nexys%20a7.md)
 - [Заголовочные файлы в Verilog](Vivado%20Basics/Verilog%20Header.md)
-- [Как добавить файл, инициализирующий память](Vivado%20Basics/How%20to%20add%20a%20mem-file.md)
 
 # Остальное
 

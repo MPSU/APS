@@ -60,7 +60,7 @@ module instr_mem_ref(
 `define asdasdhkjasdsa (34 >> `cdyfguvhbjnmk)
 
 reg [31:0] RAM [0:1023];
-initial $readmemh("program.txt", RAM);
+initial $readmemh("program.mem", RAM);
 
 always_comb begin
     read_data_o['h1f:'h1c]=RAM[{2'b00, addr_i[5'd28^5'o27:2]}][{5{1'b1}}:{3'd7,2'b00}];
