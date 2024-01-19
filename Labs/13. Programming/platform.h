@@ -103,4 +103,5 @@ struct SUPER_COLLIDER_HANDLE
   volatile const uint32_t status;
   volatile       uint32_t emergency_switch;
 };
-struct SUPER_COLLIDER_HANDLE *const collider_ptr = CAST(struct TIMER_HANDLE *const, 0xFF000000);
+struct SUPER_COLLIDER_HANDLE *const collider_ptr = CAST(struct SUPER_COLLIDER_HANDLE *const, 0xFF000000);
+volatile uint8_t *const collider_mem = CAST(uint8_t *const, 0xFF000100);
