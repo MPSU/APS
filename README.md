@@ -15,7 +15,7 @@
 - [Видеозаписи](https://www.youtube.com/c/%D0%90%D0%9F%D0%A1%D0%9F%D0%BE%D0%BF%D0%BE%D0%B2), [презентации](https://github.com/MPSU/APS-lect-presentations) и [конспекты](Lectures) лекций с прошлых лет.
 - методички по лабораторным работам ([Labs](Labs/))
 - дополнительные материалы и литературу ([Other/Further readings.md](Other/Further%20readings.md))
-- популярные материалы ([Other/Extras.md](Other/Extras.md))
+- полезные интернет-ресурсы ([Other/Extras.md](Other/Extras.md))
 - информацию о преподавателях, их расписание и контакты ([Other/Educators.md](Other/Educators.md))
 - страницу с анонимной обратной связью ([Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSdoLdMCnFOv-RS_E4ztVjVzPqy-pqcCcaD7JNx6F4r8Kd_8iw/viewform?usp=sharing)).
 
