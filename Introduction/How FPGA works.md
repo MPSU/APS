@@ -13,7 +13,7 @@
   - [Выводы](#выводы)
   - [Источники](#источники)
 
-При написании разделов "Цифровые схемы и логические вентили" и "Таблицы подстановки", использовалась статья "[How Does an FPGA Work?[1]](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)".
+> Разделы "Цифровые схемы и логические вентили" и "Таблицы подстановки" являются переводом статьи "[How Does an FPGA Work?[1]](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)" за авторством `Alchitry, Ell C`, распространяемой по лицензии [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ## История появления ПЛИС
 
@@ -222,6 +222,6 @@ _Рисунок 15. Пример использования логической
 
 ## Источники
 
-1. [How Does an FPGA Work?](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)
-2. [The D Flip-Flop (Quickstart Tutorial)](https://www.build-electronic-circuits.com/d-flip-flop/)
+1. Alchitry, Ell C / [How Does an FPGA Work?](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)
+2. Omar Muñoz Urias / [The D Flip-Flop (Quickstart Tutorial)](https://www.build-electronic-circuits.com/d-flip-flop/)
 3. [Field-programmable gate array](https://en.wikipedia.org/wiki/Field-programmable_gate_array)
