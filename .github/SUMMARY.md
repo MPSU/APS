@@ -3,10 +3,13 @@
 [Порядок выполнения лабораторных работ для групп](index.md)
 [Предисловие](Intro.md)
 
+---
+
 # Введение
-[Зачем читать введение в HDL и работу с ПЛИС](Introduction/README.md)
-[Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
-[Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
+
+- [Зачем читать введение в HDL и работу с ПЛИС](Introduction/README.md)
+- [Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
+- [Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
 
 ---
 
