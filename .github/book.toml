@@ -1,5 +1,5 @@
 [book]
-authors = ["Andrei Solodovnikov"]
+authors = ["Andrei Solodovnikov, Mikhail Popov"]
 language = "ru"
 multilingual = true
 src = "./"

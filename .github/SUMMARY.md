@@ -1,12 +1,16 @@
 # Summary
 
 [Порядок выполнения лабораторных работ для групп](index.md)
+[Предисловие](Intro.md)
+
+# Введение
+[Зачем читать введение в HDL и работу с ПЛИС](Introduction/README.md)
 [Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
 [Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
 
 ---
 
-# Цикл лабораторных работ
+# Лабораторные работы
 
 - [Лабораторная №1. Сумматор](Labs/01.%20Adder/README.md)
 - [Лабораторная №2. АЛУ](Labs/02.%20Arithmetic-logic%20unit/README.md)
@@ -26,8 +30,9 @@
 
 ---
 
-# Базовые структуры языка SystemVerilog
+# Базовые конструкции SystemVerilog
 
+- [Описание раздела](Basic%20Verilog%20structures/README.md)
 - [Модули](Basic%20Verilog%20structures/Modules.md)
 - [Мультиплексоры](Basic%20Verilog%20structures/Multiplexors.md)
 - [Регистры](Basic%20Verilog%20structures/Registers.md)
