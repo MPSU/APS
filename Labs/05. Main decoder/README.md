@@ -37,7 +37,7 @@
 
 ![../../.pic/Labs/lab_05_decoder/rv32i_BIS.png](../../.pic/Labs/lab_05_decoder/rv32i_BIS.png)
 
-*Таблица 1. Базовый набор инструкций из [спецификации RISC-V](https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf) (стр. 130), Стандартное расширение Zicsr(стр. 131), а также привилегированная инструкция mret([спецификация привилегированной архитектуры RISC-V](https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-release-1239329-2023-05-23/riscv-privileged.pdf), стр. 144)*
+_Таблица 1. Базовый набор инструкций из спецификации RISC-V[[1, стр. 130]](https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf), Стандартное расширение Zicsr[[1, стр. 131]](https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf), а также привилегированная инструкция mret[[2, стр. 138]](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)._
 
 | Кодирование |                                              Описание                                                                                                         |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -285,3 +285,8 @@ endmodule
    4. **Во время симуляции, вы должны прожать "Run All" и убедиться, что в логе есть сообщение о завершении теста!**
    5. Вполне возможно, что после первого запуска вы столкнетесь с сообщениями о множестве ошибок. Вам необходимо [исследовать](../../Vivado%20Basics/Debug%20manual.md) эти ошибки на временной диаграмме и исправить их в вашем модуле.
 4. Данная лабораторная работа не предполагает проверки в ПЛИС
+
+## Источники
+
+1. [The RISC-V Instruction Set Manual Volume I: Unprivileged ISA](https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf)
+2. [The RISC-V Instruction Set Manual Volume II: Privileged Architecture](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
