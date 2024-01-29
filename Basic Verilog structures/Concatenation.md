@@ -6,7 +6,7 @@
 
 Предположим, у нас есть следующий набор сигналов:
 
-![../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.png](../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.png)
+![../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg)
 
 ```SystemVerilog
 
@@ -25,7 +25,7 @@ logic [5:0] e;
 - на его следующие 2 бита подавались биты `[4:3]` сигнала `c`
 - на младшие 2 бита подавался сигнал `d`
 
-![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg)
 
 Это можно сделать путем 4 непрерывных присваиваний:
 
@@ -58,7 +58,7 @@ assign e = {a, b, c[4:3], d};
 
 Кроме того, возможна и обратная ситуация. Предположим, мы хотим подать отдельные биты сигнала `e` на различные провода:
 
-![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg)
 
 ```SystemVerilog
 logic a;
@@ -105,4 +105,3 @@ logic [7:0] e;
 
 assign e = { {3{c[4:3]}}, a, b};
 ```
-

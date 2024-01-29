@@ -50,7 +50,7 @@
 
 На рисунке ниже представлен способ подключения процессора к памяти инструкций и данных, а также 255 периферийным устройствам.
 
-![../../.pic/Labs/lab_12_periph/fig_01.drawio.png](../../.pic/Labs/lab_12_periph/fig_01.drawio.png)
+![../../.pic/Labs/lab_12_periph/fig_01.drawio.svg](../../.pic/Labs/lab_12_periph/fig_01.drawio.svg)
 
 _Рисунок 1. Итоговая структура процессорной системы._
 

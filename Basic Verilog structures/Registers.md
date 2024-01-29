@@ -6,7 +6,7 @@
 logic reg_name;
 ```
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_01.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_01.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_01.drawio.svg)
 
 У регистра может быть несколько входов и один выход. Основных входов, без которых не может существовать регистр два: вход данных и вход тактирующего синхроимпульса. На рисунке они обозначены как `D` и `clk`. Опциональный вход сигнала сброса (`rst`) позволяет обнулять содержимое регистра вне зависимости от входных данных и может работать как с тактовым синхроимпульсом (синхронный сброс), так и без него (асинхронный сброс).
 
@@ -18,11 +18,11 @@ logic reg_name;
 
 Поскольку все сигналы в цифровой схеме передаются по цепям, удобно представлять, что к выходу регистра всегда неявно подключен провод, с именем, совпадающим с именем регистра, поэтому вы можете использовать имя регистра в дальнейшей цифровой логике:
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_02.drawio.svg)
 
 Итак, мы добавили регистр на холст схемы, но как соединить его с какой-то логикой? Предположим, у нас есть сигнал тактового синхроимпульса и данные, которые мы хотим записать:
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_03.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_03.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_03.drawio.svg)
 
 Данной схеме соответствует код:
 
@@ -40,7 +40,7 @@ modulе rеg_ехаmрlе(
 
 Очевидно, мы хотим подключить сигнал `clk` ко входу тактирующего сигнала регистра, вход `data` ко входу данных, а выход регистра к выходу `reg_data`:
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_04.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_04.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_04.drawio.svg)
 
 Запись в регистр возможна только по фронту тактирующего синхроимпульса. **Фронт** — это переход сигнала из нуля в единицу (**положительный фронт**), либо из единицы в ноль (**отрицательный фронт**).
 
@@ -116,7 +116,7 @@ modulе rеg_ехаmрlе(
 
 Итоговая схема регистра со сбросом и сигналом разрешения записи:
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_05.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_05.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_05.drawio.svg)
 
 Помимо прочего есть еще одно важное правило, которое необходимо знать при описании регистра:
 
@@ -126,7 +126,7 @@ modulе rеg_ехаmрlе(
 
 В блоке присваивания регистру можно описывать и комбинационную логику, стоящую перед ним, например схему:
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_06.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_06.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_06.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_06.drawio.svg)
 
 можно описать как
 
@@ -214,4 +214,4 @@ modulе rеg_ехаmрlе(
 
 Как, по-вашему, описать на языке SystemVerilog схему, приведённую ниже?
 
-![../.pic/Basic%20Verilog%20structures/registers/fig_07.drawio.png](../.pic/Basic%20Verilog%20structures/registers/fig_07.drawio.png)
+![../.pic/Basic%20Verilog%20structures/registers/fig_07.drawio.svg](../.pic/Basic%20Verilog%20structures/registers/fig_07.drawio.svg)
