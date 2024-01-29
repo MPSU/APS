@@ -2,7 +2,7 @@
 
 Основой цифровых схем в SystemVerilog является модуль. Модуль — это блок SystemVerilog-кода, описывающий цифровую схему какого-то устройства, например пульта телевизора:
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_00.drawio.jpg](../.pic/Basic%20Verilog%20structures/modules/fig_00.jpg)
+<img src="../.pic/Basic%20Verilog%20structures/modules/fig_00.svg" alt="../.pic/Basic%20Verilog%20structures/modules/fig_00.svg" width="300"/>
 
 У пульта есть входные сигналы: кнопки, нажатие на которые сообщает о нашем намерении изменить громкость или переключить канал. Кроме того, есть выходной сигнал ИК-светодиода, по которому пульт отправляет информацию телевизору.
 
