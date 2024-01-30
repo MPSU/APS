@@ -258,12 +258,12 @@ module bluster
 );
 
 enum logic [2:0] {
+  RCV_NEXT_COMMAND,
   INIT_MSG,
   RCV_SIZE,
   SIZE_ACK,
   FLASH,
   FLASH_ACK,
-  RCV_NEXT_COMMAND,
   WAIT_TX_DONE,
   FINISH}
 state, next_state;
@@ -277,10 +277,10 @@ logic [3:0] [7:0] flash_size, flash_addr;
 
 logic send_fin, size_fin, flash_fin, next_round;
 
-assign send_fin   = (msg_counter    == 0) && !tx_busy;
-assign size_fin   = (size_counter   == 0) && !rx_busy;
-assign flash_fin  = (flash_counter  == 0) && !rx_busy;
-assign next_round = (flash_addr     != 0) && !rx_busy;
+assign send_fin   = (msg_counter    == 0)  && !tx_busy;
+assign size_fin   = (size_counter   == 0)  && !rx_busy;
+assign flash_fin  = (flash_counter  == 0)  && !rx_busy;
+assign next_round = (flash_addr     != '1) && !rx_busy;
 
 localparam INIT_MSG_SIZE  = 40;
 localparam FLASH_MSG_SIZE = 57;

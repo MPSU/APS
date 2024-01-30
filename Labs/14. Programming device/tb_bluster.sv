@@ -297,7 +297,7 @@ module tb_blaster();
 
 /*
     RCV_NEXT_COMMAND
-*/  flash_addr = 32'h0000_0000;
+*/  flash_addr = 32'hFFFF_FFFF;
     for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
       tx_data = flash_addr[i];
       tx_valid = 1'b1;
