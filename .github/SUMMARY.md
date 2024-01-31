@@ -49,7 +49,7 @@
 
 - [Руководство по установке Vivado](Vivado%20Basics/Install%20Vivado.md)
 - [Создание проекта в Vivado](Vivado%20Basics/Vivado%20trainer.md)
-- [Структура директорий в проекте Vivado](Vivado%20Basics/Folder%20Structure%20In%20The%20Project.md)
+- [Структура директорий в проекте Vivado](Vivado%20Basics/How%20to%20use%20Source%20Window.md)
 - [Как сгенерировать схему](Vivado%20Basics/How%20to%20open%20a%20schematic.md)
 - [Ошибки элаборации](Vivado%20Basics/Elaboration%20failed.md)
 - [Запуск симуляции](Vivado%20Basics/Run%20Simulation.md)

@@ -14,7 +14,7 @@
 
 Рассмотрим _рис. 1_.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_01.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_01.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_01.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_01.png)
 
 _Рисунок 1. Окно `Sources`, открытое на вкладке `Hierarchy`._
 
@@ -41,31 +41,31 @@ _Рисунок 1. Окно `Sources`, открытое на вкладке `Hie
 
 Раскрыв папку `Design Sources` мы увидим два модуля – `fulladder` и `fulladder4`, которые пока что никак друг с другом не связаны. Двойное нажатие на название модуля приведёт к открытию файла, содержащего описание этого модуля.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_02.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_02.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_02.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_02.png)
 
 _Рисунок 2. Содержимое папки `Design Sources`._
 
 Модуль `fulladder4` является модулем верхнего уровня (top-level module). Это значит, что при попытке запуска моделирования или синтеза, Vivado будет работать именно с этим модулем. Чтобы сменить модуль верхнего уровня, необходимо нажать правой кнопкой мыши на интересующий модуль и выбрать `Set a top`.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_03.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_03.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_03.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_03.png)
 
 _Рисунок 3. Пример смены модуля верхнего уровня._
 
 Опишем логику работы четырехбитного сумматора таким образом, чтобы тот содержал четыре однобитных сумматора. После сохранения окно изменится так:
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_04.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_04.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_04.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_04.png)
 
 _Рисунок 4. Обновленное содержимое папки `Design Sources`._
 
 После раскрытия ветки `fulladder4` будет отображено 4 подключенных модуля `fulladder`.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_05.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_05.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_05.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_05.png)
 
 _Рисунок 5. Иерархия проекта с четырьмя копиями модуля `fulladder`._
 
 В `Simulation Sources` мы видим один файл тестбенча, к которому что-то подключено, и модуль `fulladder4` с подключенными к нему другими модулями:
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_06.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_06.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_06.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_06.png)
 
 _Рисунок 6. Иерархия модулей `Simulation Sources`.
 
@@ -75,7 +75,7 @@ _Рисунок 6. Иерархия модулей `Simulation Sources`.
 
 Каждый раз, когда вы меняете что-то в модулях разрабатываемого устройства, это отражается как во вкладке `Design Sources`, так и в `Simulation Sources`. Раскроем вкладку с модулем `tb`:
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_07.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_07.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_07.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_07.png)
 
 _Рисунок 7. Пример иерархии с отсутствующим модулем._
 
@@ -119,13 +119,13 @@ endmodule
 
 После обновления в окне `Sources` модуль `fulladder4` "спрячется" под `tb`. Если раскрыть вкладку, будет видно, что `fulladder4` подключен к `tb`, а четыре модуля `fulladder` – к `fulladder4`. Также отметим, что `tb` является модулем верхнего уровня, значит, если мы захотим запустить симуляцию, то Vivado выполнит симуляцию именно для модуля `tb`. Изменить модуль верхнего уровня можно так же, как было описано ранее.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_08.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_08.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_08.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_08.png)
 
 _Рисунок 8. Пример исправленной иерархии верификационного окружения._
 
 После каждого сохранения файла проекта, иерархия проекта будет какое-то время обновляться. Это можно заметить по надписи `Updating` вверху окна (см. _рис 9_). Во время обновления иерархии не стоит выполнять операции синтеза или моделирования — это приведет к ошибке.
 
-![../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_09.png](../.pic/Vivado%20Basics/Folder%20Structure%20In%20The%20Project/fig_09.png)
+![../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_09.png](../.pic/Vivado%20Basics/How%20to%20use%20Source%20Window/fig_09.png)
 
 _Рисунок 9. Окно `Sources` во время обновления иерархии проекта._
 

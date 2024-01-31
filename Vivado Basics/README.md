@@ -11,7 +11,7 @@
 1. [установить Vivado](Install%20Vivado.md);
 2. [создать демо-проект под отладочный стенд Nexys-7](Vivado%20trainer.md);
 3. [прошить ПЛИС](How%20to%20program%20an%20fpga%20board.md);
-4. [разобраться в структуре папок проекта Vivado](Folder%20Structure%20In%20The%20Project.md);
+4. [взаимодействовать с окном исходников проекта Vivado](How%20to%20use%20Source%20Window.md);
 5. [открыть логическую схему написанного вами модуля](How%20to%20open%20a%20schematic.md);
 6. [запустить симуляцию](Run%20Simulation.md);
 7. [разобраться с ошибками, при попытке открыть схему / запустить симуляцию](Elaboration%20failed.md);
