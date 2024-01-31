@@ -54,7 +54,7 @@
 - [Ошибки элаборации](Vivado%20Basics/Elaboration%20failed.md)
 - [Запуск симуляции](Vivado%20Basics/Run%20Simulation.md)
 - [Руководство по поиску ошибок](Vivado%20Basics/Debug%20manual.md)
-- [Руководство по прошивке ПЛИС](Vivado%20Basics/Program%20nexys%20a7.md)
+- [Руководство по прошивке ПЛИС](Vivado%20Basics/How%20to%20program%20an%20fpga%20board.md)
 - [Заголовочные файлы в Verilog](Vivado%20Basics/Verilog%20Header.md)
 
 # Остальное
