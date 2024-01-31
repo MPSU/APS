@@ -4,11 +4,11 @@
 
 Иными словами, мультиплексор — это переключатель (коммутатор), соединяющий выход с одним из множества входов.
 
-![../.pic/Basic%20Verilog%20structures/multiplexor/fig_01.drawio.png](../.pic/Basic%20Verilog%20structures/multiplexors/fig_01.drawio.png)
+![../.pic/Basic%20Verilog%20structures/multiplexor/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_01.drawio.svg)
 
 Для начала создадим простой двухвходовой мультиплексор. Предположим, на `Y` нам необходимо передать один из сигналов — `D0` или `D1` в зависимости от значения управляющего сигнала `S`: когда `S==0`, на `Y` подается сигнал `D0`, в противном случае — `D1`.
 
-![../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.svg)
 
 На языке SystemVerilog это можно описать несколькими способами. Первый — с помощью **[тернарного условного оператора](https://ru.wikipedia.org/wiki/Тернарная_условная_операция)**:
 
@@ -49,7 +49,7 @@ assign Y = S==1 ? D1 : D0;
 
 Данное выражение говорит нам, что если `S==1`, то `Y` присваивается значение `D1`, в противном случае — значение `D0`.
 
-![../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.png](../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.png)
+![../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.svg)
 
 Также мультиплексор можно описать через конструкцию `if-else` в блоке `always`.
 
@@ -137,7 +137,7 @@ end                 // (так же как каждый begin должен ок�
 
 Рассмотрим вариант посложнее и опишем следующую схему:
 
-![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.png](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.png)
+![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg)
 
 Здесь уже используется мультиплексор 4в1. Управляющий сигнал `S` в данном случае двухбитный. В блоке `case` мы перечисляем всевозможные варианты значений `S` и описываем выход мультиплексора.
 
@@ -269,4 +269,4 @@ endmodule
 
 Как, по-вашему, описать на языке SystemVerilog схему, приведённую ниже?
 
-![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.png](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.png)
+![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg)

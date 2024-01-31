@@ -4,7 +4,7 @@
 
 Ну, раз хочешь под [ПЛИС](https://marsohod.org/index.php/ourblog/11-blog/265-fpga) проектировать, то мы просто не могли пройти мимо. Не очень дорогая, но невероятно универсальная для цифровой электроники вещь. Можно назвать не иначе, как конструктором Lego для взрослых, только детальки имеют нанометровые размеры, и ты можешь сделать все что угодно. Ну, пока «пластилин» не закончится, она ведь не резиновая, хотя современные дешевые ПЛИС позволяют разворачивать на себе относительно большие проекты.
 
-![../.pic/Introduction/About%20FPGA/beatles.jpg](../.pic/Introduction/About%20FPGA/beatles.jpg)
+![../.pic/Other/About%20FPGA/beatles.jpg](../.pic/Other/About%20FPGA/beatles.jpg)
 
 Гибкость! Гибкость помогает реализовать просто гигантский полет фантазии. Хочешь, [нейроночку](https://habr.com/ru/post/349750/) [запусти](https://cyberleninka.ru/article/n/ustroystvo-na-osnove-plis-dlya-raspoznavaniya-rukopisnyh-tsifr-na-izobrazheniyah). Хочешь, [книжку небольшую](https://www.amazon.com/Designing-Video-Game-Hardware-Verilog/dp/1728619440) прочитай за недельку, да видео-игру запили. Или крутую обработку каких-нибудь данных для студенческого проекта или курсовой. Или процессор разверни, да не один, а сразу несколько, и все они зачем-то будут общаться друг с другом, [вон сколько](https://opencores.org/projects?expanded=Processor&language=Verilog) бесплатных доступно для скачивания. Да-да, для скачивания. [Процессор можно описать](https://ru.wikipedia.org/wiki/Soft-микропроцессор), например, на verilog (что ты и делаешь на лабах по АПС вообще-то) и просто скачать его код и развернуть у себя на отладке. Или [клеточный автомат](https://marsohod.org/projects/marsohod2/276-2014-09-04-09-57-27) реализуй, просто так, по-приколу. Или [измеритель дивергенции](http://www.mindspring.com/~tomtitor/index.html), почему нет. Или вот, в [интернетах ваших](https://marsohod.org), не менее 60 проектов различного уровня сложности, все в одном месте, и многое прям сделать хочется. ПЛИС — это настолько шикарная вещь, что легендарные the Beatles даже песню написали о желании приобрести ее. Так что не тормози, скорее заимей себе такую. Во-первых, это весело, а во-вторых это тебе точно пригодится в будущем.
 
@@ -22,7 +22,7 @@
 
 ### Altera Cyclone IV EP4CE6 FPGA Development Board
 
-![../.pic/Introduction/About%20FPGA/cyclone4.jpg](../.pic/Introduction/About%20FPGA/cyclone4.jpg)
+![../.pic/Other/About%20FPGA/cyclone4.jpg](../.pic/Other/About%20FPGA/cyclone4.jpg)
 
 **~3040 рублей**
 
@@ -36,7 +36,7 @@
 
 ### Отладочная плата с ПЛИС Altera EP2C5T144
 
-![../.pic/Introduction/About%20FPGA/EP2.jpg](../.pic/Introduction/About%20FPGA/EP2.jpg)
+![../.pic/Other/About%20FPGA/EP2.jpg](../.pic/Other/About%20FPGA/EP2.jpg)
 
 **~ 1100 рублей**
 
@@ -46,7 +46,7 @@
 
 ### TinyFPGA BX
 
-![../.pic/Introduction/About%20FPGA/TinyFPGA.jpg](../.pic/Introduction/About%20FPGA/TinyFPGA.jpg)
+![../.pic/Other/About%20FPGA/TinyFPGA.jpg](../.pic/Other/About%20FPGA/TinyFPGA.jpg)
 
 **~ 2900 рублей**
 
@@ -56,7 +56,7 @@
 
 ### iCEBreaker FPGA
 
-![../.pic/Introduction/About%20FPGA/ice.jpg](../.pic/Introduction/About%20FPGA/ice.jpg)
+![../.pic/Other/About%20FPGA/ice.jpg](../.pic/Other/About%20FPGA/ice.jpg)
 
 **~ 5500 рублей**
 

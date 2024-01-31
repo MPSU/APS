@@ -86,19 +86,19 @@ endmodule
 
 Для начала, добавим на структурную схему входы и выходы модуля:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.svg)
 
 В первую очередь, спецификация вводит понятия **запрос на чтение** и **запрос на запись**. Создадим вспомогательные провода, которые будут сигнализировать о том, что произошел **запрос на чтение** или **запрос на запись**:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.svg)
 
 Далее, спецификация накладывает ограничение на допустимые адреса и значения. Поэтому создадим вспомогательные сигналы, сигнализирующие о том, что текущий адрес соответствует одному из регистров контроллера, а данные для записи соответствуют диапазону допустимых значений этих регистров:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.svg)
 
 Теперь, когда подготовительные работы выполнены, начнем с реализации сброса этого контроллера. Сброс может произойти в двух случаях: когда `rst_i == 1` либо же в случае **запроса на запись** единицы по адресу `0x24`. Создадим вспомогательный провод `rst`, который будет равен единице в случае, если произойдет любое из этих событий. Этот сигнал будет сбрасывать все созданные в данном модуле регистры.
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.svg)
 
 Продолжим описание контроллера, создав первый из **архитектурных регистров** — `led_val`. Запись в этот регистр возможна только в случае выполнения трех условий:
 
@@ -108,7 +108,7 @@ endmodule
 
 Создадим вспомогательный сигнал `val_en`, который будет равен единице только в случае выполнения этих трех условий:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.svg)
 
 Теперь реализация регистра `lev_val` становится совершенно тривиальной задачей, ведь у нас есть:
 
@@ -116,11 +116,11 @@ endmodule
 * сигнал разрешения записи в регистр `val_en`;
 * сигнал данных для записи в регистр `write_data_i`(из которого мы будем брать только младшие 16 бит данных).
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.svg)
 
 Аналогичным образом реализуем еще один **архитектурный регистр** `led_mode`:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.svg)
 
 Два этих регистра должны управлять поведением выходного сигнала `led_o` следующим образом:
 
@@ -140,7 +140,7 @@ endmodule
   * счетчик досчитал до 20 миллионов (`cntr >= 32'd20_000_000`);
 * в остальных ситуациях, счетчик инкрементирует свое значение.
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.svg)
 
 Последним этапом описания контроллера будет добавление логики управления выходным сигналом `read_data_o`.
 
@@ -154,4 +154,4 @@ endmodule
 
 Таким образом, итоговая схема примет вид:
 
-![../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.png](../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.png)
+![../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.svg)

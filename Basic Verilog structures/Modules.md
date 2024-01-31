@@ -10,7 +10,7 @@
 
 Определим наш модуль:
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_01.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_01.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_01.drawio.svg)
 
 ```SystemVerilog
 module
@@ -21,7 +21,7 @@ endmodule
 
 У всякого модуля должно быть название. Назовём его `box`. В круглых скобках пишутся имена портов, их направление и типы. Если модуль не имеет ни входов, ни выходов, внутри скобок ничего не пишется. После них всегда ставится точка с запятой.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_02.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_02.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_02.drawio.svg)
 
 ```SystemVerilog
 module box();
@@ -32,7 +32,7 @@ endmodule
 
 Модуль без входов и выходов (портов) — это просто коробка, которая никак не взаимодействует с внешним миром. Подключим к нему два входных сигнала `a, b`  и один выходной `q`. Для объявления портов, необходимо указать направление порта (вход это или выход), и тип используемого сигнала. В рамках данного курса лабораторных работ в качестве типа и входов и выходов будет использоваться тип `logic`, о котором будет рассказано чуть позже.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_03.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_03.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_03.drawio.svg)
 
 ```SystemVerilog
 module box(
@@ -47,7 +47,7 @@ endmodule
 
 Внутри модуля могут быть объявления сигналов, параметров, констант и т.п., о которых другой модуль не узнает. Объявим внутри модуля `box` провод `c`.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_04.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_04.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_04.drawio.svg)
 
 ```SystemVerilog
 module box(
@@ -66,7 +66,7 @@ endmodule
 
 Подключим провод `c` ко входу `a`. Для этого используется конструкция `assign c = a;`. Такая конструкция называется **непрерывным присваиванием**. Если очень сильно упростить, то непрерывное присваивание схоже со спайкой двух проводов. После подобного присваивания, провод `c` всегда будет иметь то же значение, что и `a` — как только входной сигнал `a` изменит свое значение, внутренний провод `c` также изменит свое значение (проводу `c` будет **непрерывно присваиваться** значение входа `a`).
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_05.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_05.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_05.drawio.svg)
 
 ```SystemVerilog
 module box(
@@ -91,7 +91,7 @@ endmodule
 
 К примеру, мы можем присвоить проводу `с` значение выхода логического вентиля. Пусть нам нужно, чтобы к сигналу `c` был подключен результат операции `a ИЛИ b`.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_06.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_06.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_06.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_06.drawio.svg)
 
 Такую схему можно реализовать следующим описанием:
 
@@ -112,7 +112,7 @@ endmodule
 
 Пусть в схеме имеется ещё один логический вентиль - Исключающее ИЛИ. На него подаётся результат операции `a ИЛИ b`, то есть `c`, а также входной сигнал `b`. Результат операции `c ИСКЛЮЧАЮЩЕЕ ИЛИ b` подаётся на выход `q` нашего модуля.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_07.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_07.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_07.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_07.drawio.svg)
 
 ```SystemVerilog
 module box(
@@ -182,7 +182,7 @@ endmodule
 
 Допустим, у нас есть модуль `inv`, который подает на выход инверсию входа, и мы хотим реализовать модуль `top`, который хочет использовать функционал модуля `inv` следующим образом:
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_08.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_08.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_08.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_08.drawio.svg)
 
 Опишем `inv`:
 
@@ -223,7 +223,7 @@ endmodule
 
 Мы можем подключить сколько угодно экземпляров одного модуля, поэтому у каждого из экземпляра должно быть свое уникальное имя. Пусть `c` подаётся на логический вентиль И вместе со входом `b`. Результат операции И тоже пойдет на инвертор, а затем на выход `q` модуля top.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_09.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_09.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_09.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_09.drawio.svg)
 
 Тогда в нашем описании добавится подключение второго модуля `inv` и провод `c`.
 
@@ -293,4 +293,4 @@ ___
 
 Обратите внимание, что вход `a` модуля `top` является двухразрядным: нулевой его бит идет на вход `a` модуля `or`, первый бит идет на вход `b` модуля `or`.
 
-![../.pic/Basic%20Verilog%20structures/modules/fig_10.drawio.png](../.pic/Basic%20Verilog%20structures/modules/fig_10.drawio.png)
+![../.pic/Basic%20Verilog%20structures/modules/fig_10.drawio.svg](../.pic/Basic%20Verilog%20structures/modules/fig_10.drawio.svg)
