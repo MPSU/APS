@@ -6,7 +6,7 @@
   - [Содержание](#содержание)
   - [Ошибки связанные с САПР Vivado](#ошибки-связанные-с-сапр-vivado)
     - [Не запускается симуляция FATAL\_ERROR PrivateChannel Error creating client socket](#не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)
-    - [Не запускается симуляция boot filesystem remove Процесс не может получить доступ к файлу](#не-запускается-симуляция-boot-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
+    - [Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу](#не-запускается-симуляция-boost-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
     - [Вылетает Vivado при попытке открыть схему](#вылетает-vivado-при-попытке-открыть-схему)
     - [Не устанавливается Vivado Unable to open archive](#не-устанавливается-vivado-unable-to-open-archive)
   - [Ошибки синтаксиса языка SystemVerilog](#ошибки-синтаксиса-языка-systemverilog)
@@ -24,7 +24,7 @@
 
 ---
 
-### Не запускается симуляция boot filesystem remove Процесс не может получить доступ к файлу
+### Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу
 
 <details>
 
