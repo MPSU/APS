@@ -7,10 +7,10 @@
 
 # Введение
 
-- [Зачем читать введение в HDL и работу с ПЛИС](Introduction/README.md)
+- [О данном разделе](Introduction/README.md)
 - [Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
 - [Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
-
+- [Этапы реализации проекта в ПЛИС](Introduction/Implementation%20steps.md)
 ---
 
 # Лабораторные работы
@@ -52,7 +52,6 @@
 - [Структура директорий в проекте Vivado](Vivado%20Basics/Folder%20Structure%20In%20The%20Project.md)
 - [Как сгенерировать схему](Vivado%20Basics/How%20to%20open%20a%20schematic.md)
 - [Ошибки элаборации](Vivado%20Basics/Elaboration%20failed.md)
-- [Шаги имплементации](Vivado%20Basics/Implementation%20steps.md)
 - [Запуск симуляции](Vivado%20Basics/Run%20Simulation.md)
 - [Руководство по поиску ошибок](Vivado%20Basics/Debug%20manual.md)
 - [Руководство по прошивке ПЛИС](Vivado%20Basics/Program%20nexys%20a7.md)
