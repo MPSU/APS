@@ -5,7 +5,7 @@ module max_min(
   output logic [ 3:0] min
 );
 
-  always_comb @(*) begin
+  always_comb begin
     if(a > b) begin
       max = a;
       min = b;
