@@ -143,4 +143,4 @@ _Рисунок 9. Окно `Sources` во время обновления ие�
 
 ## Дополнительные материалы
 
-Более подробную информацию по окну `Sources` вы можете найти в руководстве пользователя Vivado: ["Vivado Design Suite User Guide: Using the Vivado IDE (UG893)"](https://docs.xilinx.com/r/en-US/ug893-vivado-ide/Using-the-Sources-Window) (раздел "Using the Sources Window").
+Более подробную информацию по окну `Sources` вы можете найти в руководстве пользователя Vivado: ["Vivado Design Suite User Guide: Using the Vivado IDE (UG893)"](https://docs.xilinx.com/r/en-US/ug893-vivado-ide) (раздел ["Using the Sources Window"](https://docs.xilinx.com/r/en-US/ug893-vivado-ide/Using-the-Sources-Window)).
