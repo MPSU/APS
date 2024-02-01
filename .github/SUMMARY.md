@@ -11,6 +11,7 @@
 - [Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
 - [Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
 - [Этапы реализации проекта в ПЛИС](Introduction/Implementation%20steps.md)
+
 ---
 
 # Лабораторные работы
@@ -47,7 +48,6 @@
 
 # Основы Vivado
 
-- [Руководство по установке Vivado](Vivado%20Basics/Install%20Vivado.md)
 - [Создание проекта в Vivado](Vivado%20Basics/Vivado%20trainer.md)
 - [Взаимодействие с окном исходников проекта Vivado](Vivado%20Basics/How%20to%20use%20Source%20Window.md)
 - [Как сгенерировать логическую схему](Vivado%20Basics/How%20to%20open%20a%20schematic.md)
@@ -56,8 +56,7 @@
 - [Руководство по поиску ошибок](Vivado%20Basics/Debug%20manual.md)
 - [Руководство по прошивке ПЛИС](Vivado%20Basics/How%20to%20program%20an%20fpga%20board.md)
 
-# Остальное
+# Дополнительные материалы
 
 - [RV32I - Стандартный набор целочисленных инструкций RISC-V](Other/rv32i.md)
 - [Список типичных ошибок при работе с Vivado и SystemVerilog](Other/FAQ.md)
-- [Студенческий сервер](Other/Students%20server.md)
