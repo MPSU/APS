@@ -41,6 +41,7 @@
 - [Мультиплексоры](Basic%20Verilog%20structures/Multiplexors.md)
 - [Регистры](Basic%20Verilog%20structures/Registers.md)
 - [Конкатенация](Basic%20Verilog%20structures/Concatenation.md)
+- [О различиях между блокирующими и неблокирующими присваиваниями](Basic%20Verilog%20structures/Assignments.md)
 - [Контроллеры](Basic%20Verilog%20structures/Controllers.md)
 - [Тестовое окружение](Basic%20Verilog%20structures/Testbench.md)
 
