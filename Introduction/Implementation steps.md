@@ -16,7 +16,7 @@
 
 Допустим, мы хотим реализовать следующую цифровую схему:
 
-![../.pic/Introduction/Implementation%20steps/impl_steps_ref_scheme.drawio.png](../.pic/Introduction/Implementation%20steps/impl_steps_ref_scheme.drawio.png)
+![../.pic/Introduction/Implementation%20steps/fig_01.drawio.png](../.pic/Introduction/Implementation%20steps/fig_01.drawio.png)
 
 Её можно описать следующим **SystemVerilog**-кодом:
 
@@ -38,7 +38,7 @@ endmodule
 
 Откроются следующие окна:
 
-![../.pic/Introduction/Implementation%20steps/impl_elaborated_netlist.png](../.pic/Introduction/Implementation%20steps/impl_elaborated_netlist.png)
+![../.pic/Introduction/Implementation%20steps/fig_02.png](../.pic/Introduction/Implementation%20steps/fig_02.png)
 
 В левом окне мы видим наш нетлист. В нижней части обозначены узлы графа (элементы **ab_i**, **res_i**, **xabc_i**, которые представляют собой **И**, **мультиплексор** и **Исключающее ИЛИ** соответственно. Имена этих элементов схожи с именами проводов, присваиванием которым мы создавали данные элементы)
 
@@ -56,7 +56,7 @@ endmodule
 
 После выполнения синтеза у нас появится возможность открыть новый схематик, сделаем это.
 
-![../.pic/Introduction/Implementation%20steps/impl_synthesised_netlist.png](../.pic/Introduction/Implementation%20steps/impl_synthesised_netlist.png)
+![../.pic/Introduction/Implementation%20steps/fig_03.png](../.pic/Introduction/Implementation%20steps/fig_03.png)
 
 Мы видим, что между входами/выходами схемы и её внутренней логикой появились новые примитивы — **буферы**. Они нужны, преобразовать уровень напряжения между ножками ПЛИС и внутренней логикой (условно говоря, на вход плис могут приходить сигналы с уровнем `3.3 В`, а внутри ПЛИС примитивы работают с сигналами уровня `1.2 В`).
 
@@ -198,17 +198,17 @@ set_property -dict { PACKAGE_PIN C12   IOSTANDARD LVCMOS33 } [get_ports { resetn
 
 После выполнения имплементации, нетлист и схема остаются неизменными, однако использованные для реализации схемы примитивы получают свой "адрес" внутри ПЛИС:
 
-![cell_add../.pic/Introduction/Implementation%20steps/impl_cell_address.pngress](../.pic/Introduction/Implementation%20steps/impl_cell_address.png)
+![cell_add../.pic/Introduction/Implementation%20steps/fig_04.png](../.pic/Introduction/Implementation%20steps/fig_04.png)
 
 Теперь, мы можем посмотреть на "внутренности" нашей ПЛИС `xc7a100tcsg324-1` и то, как через её примитивы будет реализована наша схема. Для этого, необходимо отрыть имплементированное устройство: `Implementation -> Open implemented design`. Откроется следующее окно:
 
-![../.pic/Introduction/Implementation%20steps/impl_fpga_device_full_view.png](../.pic/Introduction/Implementation%20steps/impl_fpga_device_full_view.png)
+![../.pic/Introduction/Implementation%20steps/fig_05.png](../.pic/Introduction/Implementation%20steps/fig_05.png)
 
 Может показаться очень страшным и непонятным, но это содержимое ПЛИС. Просто из-за огромного количества содержащихся в ней примитивов, она показана в таком масштабе, что все сливается в один цветной ковер. Большая часть этого окна неактивна (показана в темно-синих тонах) и это нормально, ведь мы реализовали крошечную цифровую схему, она и не должна занимать значительное количество ресурсов ПЛИС.
 
 Нас интересует "[бледно-голубая точка](https://ru.wikipedia.org/wiki/Pale_Blue_Dot)", расположенная в нижнем левом углу прямоугольника `X0Y1` (выделено красным). Если отмасштабировать эту зону, мы найдем используемый нами LUT:
 
-![../.pic/Introduction/Implementation%20steps/impl_fpga_device_zoomed_view.png](../.pic/Introduction/Implementation%20steps/impl_fpga_device_zoomed_view.png)
+![../.pic/Introduction/Implementation%20steps/fig_06.png](../.pic/Introduction/Implementation%20steps/fig_06.png)
 
 Кроме того, если поиграться со свойствами этого примитива, мы сможем найти нашу таблицу истинности, инициализирующую этот примитив.
 
