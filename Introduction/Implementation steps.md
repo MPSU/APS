@@ -16,7 +16,7 @@
 
 Допустим, мы хотим реализовать следующую цифровую схему:
 
-![../.pic/Introduction/Implementation%20steps/fig_01.drawio.png](../.pic/Introduction/Implementation%20steps/fig_01.drawio.png)
+![../.pic/Introduction/Implementation%20steps/fig_01.drawio.svg](../.pic/Introduction/Implementation%20steps/fig_01.drawio.svg)
 
 Её можно описать следующим **SystemVerilog**-кодом:
 

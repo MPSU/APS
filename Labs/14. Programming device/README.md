@@ -224,7 +224,7 @@ module rw_instr_mem(
 
 В основе работы модуля лежит конечный автомат со следующим графом перехода между состояниями:
 
-![../../.pic/Labs/lab_14_programming_device/fig_03.drawio.png](../../.pic/Labs/lab_14_programming_device/fig_03.drawio.png)
+![../../.pic/Labs/lab_14_programming_device/fig_03.drawio.svg](../../.pic/Labs/lab_14_programming_device/fig_03.drawio.svg)
 
 _Рисунок 3. Граф перехода между состояниями программатора._
 
@@ -473,7 +473,7 @@ endmodule
 
 ### Интеграция программатора в riscv_unit
 
-![../../.pic/Labs/lab_14_programming_device/fig_04.drawio.png](../../.pic/Labs/lab_14_programming_device/fig_04.drawio.png)
+![../../.pic/Labs/lab_14_programming_device/fig_04.drawio.svg](../../.pic/Labs/lab_14_programming_device/fig_04.drawio.svg)
 
 В первую очередь, необходимо заменить память инструкций и добавить новый модуль. После чего подключить программатор к памяти инструкций и мультиплексировать выход интерфейса памяти данных программатора с интерфейсом памяти данных LSU. Сигнал сброса процессора необходимо заменить на выход `core_reset_o`.
 
