@@ -85,7 +85,7 @@ module turnstile_fsm(
 
     assign is_locked = state;
 
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
       if(rst) begin
         state <= LOCKED;
       end
@@ -128,7 +128,7 @@ module turnstile_fsm(
     // (!push) && coin — условие перехода в состояние UNLOCKED
     assign green_light = (state == LOCKED) && (!push) && coin;
 
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
       if(rst) begin
         state <= LOCKED;
       end
@@ -175,13 +175,13 @@ module turnstile_fsm(
 
     always_comb begin
       if(push) begin
-        next_state <= LOCKED;
+        next_state = LOCKED;
       end
       else if (coin) begin
-        next_state <= UNLOCKED;
+        next_state = UNLOCKED;
       end
       else begin
-        next_state <= state;
+        next_state = state;
       end
     end
 ```
