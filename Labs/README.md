@@ -56,8 +56,8 @@
    1. Тракт данных ([06. Datapath](06.%20Datapath))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](09.%20LSU%20Integration))
    3. Интеграция подсистемы прерываний ([11. Interrupt Integration](11.%20Interrupt%20integration))
-7. Периферийные устройства ([12. Peripheral units](12.%20Peripheral%20units))
-8. Программирование ([13. Programming](13.%20Programming))
+7. Периферийные устройства ([13. Peripheral units](13.%20Peripheral%20units))
+8. Программирование ([14. Programming](14.%20Programming))
 
 ### ИВТ
 
@@ -73,8 +73,8 @@
 6.
    1. Контроллер прерываний ([10. Interrupt subsystem](10.%20Interrupt%20subsystem))
    2. Интеграция подсистемы прерываний ([11. Interrupt Integration](11.%20Interrupt%20integration))
-7. Периферийные устройства ([12. Peripheral units](12.%20Peripheral%20units))
-8. Программирование ([13. Programming](13.%20Programming))
+7. Периферийные устройства ([13. Peripheral units](13.%20Peripheral%20units))
+8. Программирование ([14. Programming](14.%20Programming))
 
 ## Обзор лабораторных работ
 
@@ -172,7 +172,7 @@
 
 ## 12. Периферийные устройства (PU)
 
-![../.pic/Labs/l9.png](../.pic/Labs/lab_12_peripheral_units.drawio.svg)
+![../.pic/Labs/l9.png](../.pic/Labs/lab_13_peripheral_units.drawio.svg)
 
 В данной лабораторной создаются и подключаются к общей шине и подсистеме прерывания контроллеры периферийных устройств: переключатели, светодиоды, клавиатура, семисегментные дисплеи а также контроллер uart.
 
@@ -188,7 +188,7 @@
 
 В рамках данной лабораторной работы мы немного упростим процесс передачи программы: вместо записи в ПЗУ, программатор будет записывать её сразу в память инструкций, минуя загрузчик.
 
-![../.pic/Labs/lab_14_programming_device/fig_04.drawio.svg](../.pic/Labs/lab_14_programming_device.drawio.svg)
+![../.pic/Labs/lab_15_programming_device/fig_04.drawio.svg](../.pic/Labs/lab_15_programming_device.drawio.svg)
 
 ## 15. Оценка производительности
 

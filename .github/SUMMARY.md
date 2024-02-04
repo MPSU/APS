@@ -28,10 +28,10 @@
 - [Лабораторная №10. Подсистема прерываний](Labs/10.%20Interrupt%20subsystem/README.md)
 - [Лабораторная №11. Интеграция подсистемы прерываний](Labs/11.%20Interrupt%20integration/README.md)
 - [Лабораторная №12. Дейзи-цепочка](Labs/12.%20Daisy%20chain/README.md)
-- [Лабораторная №12. Периферийные устройства](Labs/12.%20Peripheral%20units/README.md)
-- [Лабораторная №13. Программирование](Labs/13.%20Programming/README.md)
-- [Лабораторная №14. Программатор](Labs/14.%20Programming%20device/README.md)
-- [Лабораторная №15. Оценка производительности](Labs/15.%20Coremark/README.md)
+- [Лабораторная №13. Периферийные устройства](Labs/13.%20Peripheral%20units/README.md)
+- [Лабораторная №14. Программирование](Labs/14.%20Programming/README.md)
+- [Лабораторная №15. Программатор](Labs/15.%20Programming%20device/README.md)
+- [Лабораторная №16. Оценка производительности](Labs/16.%20Coremark/README.md)
 
 ---
 

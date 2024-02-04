@@ -28,8 +28,8 @@
    1. Тракт данных ([06. Datapath](Labs/06.%20Datapath))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](Labs/09.%20LSU%20Integration))
    3. Интеграция подсистемы прерываний ([11. Interrupt Integration](Labs/11.%20Interrupt%20integration))
-7. Периферийные устройства ([12. Peripheral units](Labs/12.%20Peripheral%20units))
-8. Программирование ([13. Programming](Labs/13.%20Programming))
+7. Периферийные устройства ([13. Peripheral units](Labs/13.%20Peripheral%20units))
+8. Программирование ([14. Programming](Labs/14.%20Programming))
 
 ### ИВТ
 
@@ -45,5 +45,5 @@
 6.
    1. Контроллер прерываний ([10. Interrupt subsystem](Labs/10.%20Interrupt%20subsystem))
    2. Интеграция подсистемы прерываний ([11. Interrupt Integration](Labs/11.%20Interrupt%20integration))
-7. Периферийные устройства ([12. Peripheral units](Labs/12.%20Peripheral%20units))
-8. Программирование ([13. Programming](Labs/13.%20Programming))
+7. Периферийные устройства ([13. Peripheral units](Labs/13.%20Peripheral%20units))
+8. Программирование ([14. Programming](Labs/14.%20Programming))
