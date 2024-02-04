@@ -1,3 +1,14 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: MIET
+// Engineer: Solodovnikov Andrei
+
+// Module Name:    tb_daisy_chain
+// Project Name:   RISCV_practicum
+// Target Devices: Nexys A7-100T
+// Description: tb for daisy chain
+//
+//////////////////////////////////////////////////////////////////////////////////
+
 module tb_daisy_chain();
 
 logic clk_i, rst_i, ready_i, irq_ret_i;
