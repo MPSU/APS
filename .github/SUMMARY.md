@@ -45,7 +45,6 @@
 - [Защелки](Basic%20Verilog%20structures/Latches.md)
 - [О различиях между блокирующими и неблокирующими присваиваниями](Basic%20Verilog%20structures/Assignments.md)
 - [Контроллеры](Basic%20Verilog%20structures/Controllers.md)
-- [Тестовое окружение](Basic%20Verilog%20structures/Testbench.md)
 
 ---
 
