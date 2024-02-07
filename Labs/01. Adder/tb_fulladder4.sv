@@ -44,6 +44,8 @@ module tb_fulladder4();
     initial begin
         $timeformat(-9, 2, " ns");
 
+        #1; // wait initial line_dump
+
         $display("START simulation of 4-bit fulladder.");
         $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
         $display("If you don't see the message then click the button 'Run All'");
