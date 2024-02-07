@@ -9,9 +9,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_fulladder();
-
-parameter TIME_OPERATION  = 100;
-parameter TEST_VALUES = 8;
+    timeunit      1ns;
+    timeprecision 1ps;
+    parameter TIME_OPERATION  = 100;
+    parameter TEST_VALUES = 8;
 
     wire tb_a_i;
     wire tb_b_i;
@@ -37,13 +38,16 @@ parameter TEST_VALUES = 8;
     assign tb_carry_i = running_line[2];
 
     initial begin
+        $timeformat(-9, 2, " ns");
+
         $display("START simulation of 1-bit fulladder.");
         $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
+        $display("If you don't see the message then click the button 'Run All'");
         for (i = 0; i < TEST_VALUES; i = i + 1) begin
             running_line = line_dump[i*5+:5];
             #TIME_OPERATION;
         end
-        $display("FINISH simulation");
+        $display("FINISH simulation, time == %t", $realtime);
         $display(
             "Now you should open the waveform window",
             "and visually prove correctness of the design"

@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_fulladder4();
+    timeunit      1ns;
+    timeprecision 1ps;
 
     parameter TIME_OPERATION  = 100;
     parameter TEST_VALUES = 400;
@@ -40,14 +42,16 @@ module tb_fulladder4();
     assign carry_o_dump = running_line[0];
 
     initial begin
+        $timeformat(-9, 2, " ns");
+
         $display("START simulation of 4-bit fulladder.");
         $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
-        for ( i = TEST_VALUES-1; i >=0 ; i = i - 1 )
-            begin
-                running_line = line_dump[i*14+:14];
-                #TIME_OPERATION;
-            end
-        $display("FINISH simulation");
+        $display("If you don't see the message then click the button 'Run All'");
+        for ( i = TEST_VALUES-1; i >=0 ; i = i - 1 ) begin
+            running_line = line_dump[i*14+:14];
+            #TIME_OPERATION;
+        end
+        $display("FINISH simulation, time == %t", $realtime);
         $display(
             "Now you should open the waveform window",
             "and visually prove correctness of the design"
