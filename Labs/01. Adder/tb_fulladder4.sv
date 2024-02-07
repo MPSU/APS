@@ -39,32 +39,20 @@ module tb_fulladder4();
     assign sum_dump = running_line[4:1];
     assign carry_o_dump = running_line[0];
 
-`ifdef __debug__
     initial begin
-        $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
-        for ( i = 0; i < TEST_VALUES; i = i + 1 )
-            begin
-                running_line = line_dump[i*14+:14];
-                #TIME_OPERATION;
-                 if( (tb_carry_o !== carry_o_dump) || (tb_sum_o !== sum_dump) ) begin
-                    $display("ERROR! carry_i = %b; (a)%h + (b)%h = ", tb_carry_i, tb_a_i, tb_b_i, "(carry_o)%b (sum_o)%h;", tb_carry_o, tb_sum_o, " carry_o_dump: %b, sum_dump: %h", carry_o_dump, sum_dump);
-                    err_count = err_count + 1'b1;
-                end
-            end
-        $display("Number of errors: %d", err_count);
-        if( !err_count )  $display("\nfulladder4 SUCCESS!!!\n");
-        $finish();
-    end
-`else
-    initial begin
+        $display("START simulation of 4-bit fulladder.");
+        $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
         for ( i = TEST_VALUES-1; i >=0 ; i = i - 1 )
             begin
                 running_line = line_dump[i*14+:14];
                 #TIME_OPERATION;
             end
-        $finish();
+        $display("FINISH simulation");
+        $display(
+            "Now you should open the waveform window",
+            "and visually prove correctness of the design"
+        );
     end
-`endif
 
     initial line_dump = {
     14'h1787,
