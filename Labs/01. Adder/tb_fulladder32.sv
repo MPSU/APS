@@ -42,7 +42,7 @@ module tb_fulladder32();
     assign carry_o_dump = running_line[32];
 
     initial begin
-        $timeformat(-9, 2, " ns");
+        $timeformat(-9, 2, " ns", 0);
 
         #1; // wait initial line_dump
 
@@ -50,11 +50,26 @@ module tb_fulladder32();
         $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
         $display("If you don't see the message then click the button 'Run All'");
         for ( i = 0; i < TEST_VALUES; i = i + 1 ) begin
+            bit fail;
+            fail = 1'b0;
             running_line = line_dump[i*98+:98];
             #TIME_OPERATION;
-            if( (tb_carry_o !== carry_o_dump) || (tb_sum_o !== sum_dump) ) begin
-                $display("ERROR! carry_i = %b; (a)%h + (b)%h = ", tb_carry_i, tb_a_i, tb_b_i, "(carry_o)%b (sum_o)%h;", tb_carry_o, tb_sum_o, " carry_o_dump: %b, sum_dump: %h", carry_o_dump, sum_dump, " time == %t", $realtime);
-                err_count = err_count + 1'b1;
+            if (tb_carry_o !== carry_o_dump) begin
+                $write("ERROR! time == %t. ", $realtime, "Carry mismatch. Received: carry = %b, but Expected: carry = %b. ",
+                    tb_carry_o, carry_o_dump);
+                fail = 1'b1;
+            end
+            if (tb_sum_o !== sum_dump) begin
+                if (!fail) $write("ERROR! time == %t. ", $realtime);
+                $write("Sum mismatch. Received: sum = 0x%x, but Expected: sum = 0x%x. ",
+                    tb_sum_o, sum_dump);
+                fail = 1'b1;
+            end
+
+            if (fail) begin
+                $display("It should be: 0x%x + 0x%x + %d = {sum: 0x%x, carry: %d}. ",
+                tb_a_i, tb_b_i, tb_carry_i, sum_dump, carry_o_dump);
+                ++err_count;
             end
         end
         $display("Number of errors: %d", err_count);
