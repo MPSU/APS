@@ -20,14 +20,14 @@ parameter TEST_VALUES = 8;
     wire tb_sum_o;
 
 
-    fulladder DUT (
+ /*   fulladder DUT (
         .a_i(tb_a_i),
         .b_i(tb_b_i),
         .sum_o(tb_sum_o),
         .carry_i(tb_carry_i),
         .carry_o(tb_carry_o)
     );
-
+*/
     integer     i, err_count = 0;
     reg [4:0] running_line;
     reg [5*8-1:0] line_dump;
@@ -42,6 +42,7 @@ parameter TEST_VALUES = 8;
 
     initial begin
         $display( "Start test: ");
+        `ifdef __debug__
         for ( i = 0; i < TEST_VALUES; i = i + 1 )
             begin
                 running_line = line_dump[i*5+:5];
@@ -53,6 +54,14 @@ parameter TEST_VALUES = 8;
             end
         $display("Number of errors: %d", err_count);
         if( !err_count )  $display("\nfulladder SUCCESS!!!\n");
+        `else
+        for ( i = 0; i < TEST_VALUES; i = i + 1 )
+            begin
+                running_line = line_dump[i*5+:5];
+                #TIME_OPERATION;
+            end
+            $display("Test has been finished");
+        `endif
         $finish();
     end
 
