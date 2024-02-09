@@ -39,9 +39,10 @@ module tb_fulladder4();
     assign sum_dump = running_line[4:1];
     assign carry_o_dump = running_line[0];
 
-`ifdef __debug__
+
     initial begin
         $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
+        `ifdef __debug__
         for ( i = 0; i < TEST_VALUES; i = i + 1 )
             begin
                 running_line = line_dump[i*14+:14];
@@ -53,18 +54,17 @@ module tb_fulladder4();
             end
         $display("Number of errors: %d", err_count);
         if( !err_count )  $display("\nfulladder4 SUCCESS!!!\n");
-        $finish();
-    end
-`else
-    initial begin
+        `else
         for ( i = TEST_VALUES-1; i >=0 ; i = i - 1 )
             begin
                 running_line = line_dump[i*14+:14];
                 #TIME_OPERATION;
             end
+        $display("Test has been finished");
+        `endif
         $finish();
     end
-`endif
+
 
     initial line_dump = {
     14'h1787,
