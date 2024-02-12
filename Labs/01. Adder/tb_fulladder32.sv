@@ -9,11 +9,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module tb_fulladder32();
-    timeunit      1ns;
-    timeprecision 1ps;
-
-    parameter TIME_OPERATION  = 100;
-    parameter TEST_VALUES = 3000;
+`define __debug__
+parameter TIME_OPERATION  = 100;
+parameter TEST_VALUES = 3000;
 
     wire [31:0] tb_a_i;
     wire [31:0] tb_b_i;
