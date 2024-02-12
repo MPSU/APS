@@ -15,15 +15,15 @@
 <details>
    <summary> Скриншот окна с выставленными фильтрами</summary>
 
-   ![Скриншот окна с выставленными фильтрами](../.pic/Vivado%20Basics/Vivado%20trainer/fpga_filter.png)
+   ![../.pic/Vivado%20Basics/Vivado%20trainer/fig_01.png](../.pic/Vivado%20Basics/Vivado%20trainer/fig_01.png)
 
 </details>
 
-7. В списке выбрать ПЛИС `xc7a100tcsg324-1` → Нажать Next
-8. Нажать Finish
-9. Закрыть Vivado
-10. Удалить папку
-11. Повторить все действия самостоятельно
+1. В списке выбрать ПЛИС `xc7a100tcsg324-1` → Нажать Next
+2. Нажать Finish
+3. Закрыть Vivado
+4. Удалить папку
+5. Повторить все действия самостоятельно
 
 ## Создание модуля на SystemVerilog
 
