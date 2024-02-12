@@ -17,13 +17,13 @@
 готовой к созданию битстрима (двоичного файла, предназначенного для конфигурации ПЛИС таким образом,
 чтобы она воспроизводила логику описанного вами модуля).
 
-![../../../.pic/Labs/board%20files/nexys_adder0.png](../../../.pic/Labs/board%20files/nexys_adder0.png)
+![../../../.pic/Labs/board%20files/nexys_adder_hierarchy.png](../../../.pic/Labs/board%20files/nexys_adder_hierarchy.png)
 
 _Рисунок 1. Пример иерархии проекта с модулем верхнего уровня `nexys_adder`._
 
 После этого наше устройство будет выглядеть, как представлено на _рис. 2_:
 
-![../../../.pic/Labs/board%20files/nexys_adder1.drawio.svg](../../../.pic/Labs/board%20files/nexys_adder1.drawio.svg)
+![../../../.pic/Labs/board%20files/nexys_adder_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_adder_structure.drawio.svg)
 
 _Рисунок 2. Структурная схема модуля `nexys_adder`._
 
@@ -46,7 +46,7 @@ _Рисунок 2. Структурная схема модуля `nexys_adder`.
 На _рис. 3_ показано сложение `(A=0x48) + (B=0x18) == 0x60` при нулевом входном переносе
 (нулевом, т.к. не нажата кнопка `BTND` aka сигнал `Pin`)
 
-![../../../.pic/Labs/board%20files/nexys_adder2.png](../../../.pic/Labs/board%20files/nexys_adder2.png)
+![../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.png](../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.png)
 
 _Рисунок 3. Использование сумматора для вычисления выражения `0x48 + 0x18` в ПЛИС._
 
