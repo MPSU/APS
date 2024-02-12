@@ -39,25 +39,32 @@ parameter TEST_VALUES = 3000;
     assign sum_dump = running_line[31:0];
     assign carry_o_dump = running_line[32];
 
+`ifdef __debug__
     initial begin
-        $timeformat(-9, 2, " ns");
-
-        $display("START simulation of 32-bit fulladder.");
-        $display("You should run simmulation until the message 'FINISH simulation' appears in the log.");
-        $display("If you don't see the message then click the button 'Run All'");
-        for ( i = 0; i < TEST_VALUES; i = i + 1 ) begin
-            running_line = line_dump[i*98+:98];
-            #TIME_OPERATION;
-            if( (tb_carry_o !== carry_o_dump) || (tb_sum_o !== sum_dump) ) begin
-                $display("ERROR! carry_i = %b; (a)%h + (b)%h = ", tb_carry_i, tb_a_i, tb_b_i, "(carry_o)%b (sum_o)%h;", tb_carry_o, tb_sum_o, " carry_o_dump: %b, sum_dump: %h", carry_o_dump, sum_dump, " time == %t", $realtime);
-                err_count = err_count + 1'b1;
+        $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
+        for ( i = 0; i < TEST_VALUES; i = i + 1 )
+            begin
+                running_line = line_dump[i*98+:98];
+                #TIME_OPERATION;
+                if( (tb_carry_o !== carry_o_dump) || (tb_sum_o !== sum_dump) ) begin
+                    $display("ERROR! carry_i = %b; (a)%h + (b)%h = ", tb_carry_i, tb_a_i, tb_b_i, "(carry_o)%b (sum_o)%h;", tb_carry_o, tb_sum_o, " carry_o_dump: %b, sum_dump: %h", carry_o_dump, sum_dump);
+                    err_count = err_count + 1'b1;
+                end
             end
-        end
         $display("Number of errors: %d", err_count);
         if( !err_count )  $display("\nfulladder32 SUCCESS!!!\n");
-        $display("FINISH simulation, time == %t", $realtime);
         $finish();
     end
+`else
+    initial begin
+        for ( i = 0; i < TEST_VALUES; i = i + 1 )
+            begin
+                #TIME_OPERATION;
+                running_line = line_dump[i*98+:98];
+            end
+        $finish();
+    end
+`endif
 initial line_dump = {
 98'h04854d49302257a06d29e93a6,
 98'h2c7c1598c1ae5ec36b8a9d171,
