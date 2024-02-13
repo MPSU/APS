@@ -25,7 +25,7 @@ _Рисунок 1. Расположение кнопки `Generate Bitstream`._
 1. Убедитесь, что выбран пункт `Open Hardware Manager` в окне `Bitstream` и нажмите на OK.
 2. Кликните `Open target` → `Auto Connect` → `Program device` → `Program`.
 
-![../.pic/Labs/board%20files/Program_Device2.png](../.pic/Labs/board%20files/Program_Device2.png)
+![../.pic/Vivado%20Basics/How%20to%20program%20an%20fpga%20board/fig_3.png](../.pic/Vivado%20Basics/How%20to%20program%20an%20fpga%20board/fig_3.png)
 
 _Рисунок 2. Последовательность действий для прошивки ПЛИС._
 
