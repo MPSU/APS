@@ -36,6 +36,3 @@ _Рисунок 1. Структурная схема модуля `nexys_adder`.
 ![../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.png](../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.png)
 
 _Рисунок 3. Использование сумматора для вычисления выражения `0x48 + 0x18` в ПЛИС._
-
-Дальше нужно создать битстрим и прошить его в ПЛИС по
-[инструкции](../../../Vivado%20Basics/How%20to%20program%20an%20fpga%20board.md).
