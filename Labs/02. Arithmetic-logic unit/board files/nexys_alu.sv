@@ -64,7 +64,7 @@ module nexys_alu(
   logic       an_en;
   assign an_next = {an_ff[$left(an_ff)-1:0], an_ff[$left(an_ff)]};
   assign an_en   = ~|counter_ff;
-  always_ff @(posedge clk_i) begin
+  always_ff @(posedge clk_i or negedge arstn_i) begin
     if      (!arstn_i) an_ff <= ~8'b1;
     else if (an_en)    an_ff <= an_next;
   end
