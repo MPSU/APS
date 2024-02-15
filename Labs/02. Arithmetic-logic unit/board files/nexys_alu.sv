@@ -13,13 +13,13 @@ module nexys_alu(
   output logic        dp_o,
   output logic [ 7:0] an_o
 );
-  logic negate_pin;
-  assign negate_pin = sw_i[5];
+  logic sign_on;
+  assign sign_on = sw_i[5];
 
-  logic negate_operand_a;
-  assign negate_operand_a = negate_pin;
-  logic negate_operand_b;
-  assign negate_operand_b = negate_pin;
+  logic sext_operand_a;
+  assign sext_operand_a = sign_on;
+  logic sext_operand_b;
+  assign sext_operand_b = sign_on;
 
   import alu_opcodes_pkg::*;
 
@@ -29,13 +29,13 @@ module nexys_alu(
   logic [31:0]              operand_b;
   always_comb begin
     operand_b = {27'b0, sw_i[10:6]};
-    if (negate_operand_b) operand_b = {{28{operand_b[4]}}, operand_b[3:0]};
+    if (sext_operand_b) operand_b = {{28{operand_b[4]}}, operand_b[3:0]};
   end
 
   logic [31:0]              operand_a;
   always_comb begin
     operand_a = {27'b0, sw_i[15:11]};
-    if (negate_operand_a) operand_a = {{28{operand_a[4]}}, operand_a[3:0]};
+    if (sext_operand_a) operand_a = {{28{operand_a[4]}}, operand_a[3:0]};
   end
 
   logic [31:0]              result;
@@ -91,7 +91,7 @@ module nexys_alu(
   endfunction
 
   logic  is_result_negative;
-  assign is_result_negative = result[$left(result)] & negate_pin;
+  assign is_result_negative = result[$left(result)] & sign_on;
   logic  is_operand_a_negative;
   assign is_operand_a_negative = operand_a[$left(operand_a)];
   logic  is_operand_b_negative;
