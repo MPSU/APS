@@ -26,17 +26,11 @@ module nexys_alu(
   logic [4:0] operator;
   assign      operator = sw_i[4:0];
 
-  logic [31:0]              operand_b;
-  always_comb begin
-    operand_b = {27'b0, sw_i[10:6]};
-    if (sext_operand_b) operand_b = {{28{operand_b[4]}}, operand_b[3:0]};
-  end
+  logic [31:0] operand_b;
+  assign       operand_b = {(sext_operand_b ? {27{sw_i[10]}} : 27'b0), sw_i[10: 6]};
 
-  logic [31:0]              operand_a;
-  always_comb begin
-    operand_a = {27'b0, sw_i[15:11]};
-    if (sext_operand_a) operand_a = {{28{operand_a[4]}}, operand_a[3:0]};
-  end
+  logic [31:0] operand_a;
+  assign       operand_a = {(sext_operand_a ? {27{sw_i[15]}} : 27'b0), sw_i[15:11]};
 
   logic [31:0]              result;
   logic                     flag;
