@@ -91,12 +91,31 @@ module nexys_alu(
   logic  is_operand_b_negative;
   assign is_operand_b_negative = operand_b[$left(operand_b)];
 
-  logic [11:0] result_sign_regard;
-  assign result_sign_regard    = is_result_negative    ? (~result[11:0] + 12'b1)  : (result[11:0]);
-  logic [ 4:0] operand_a_sign_regard;
+  logic [9:0] result_sign_regard;
+  assign result_sign_regard    = is_result_negative    ? (~result[9:0] + 10'b1)  : (result[9:0]);
+  logic [4:0] operand_a_sign_regard;
   assign operand_a_sign_regard = is_operand_a_negative ? (~operand_a[4:0] + 5'b1) : (operand_a[4:0]);
-  logic [ 4:0] operand_b_sign_regard;
+  logic [4:0] operand_b_sign_regard;
   assign operand_b_sign_regard = is_operand_b_negative ? (~operand_b[4:0] + 5'b1) : (operand_b[4:0]);
+
+  logic [12:0] bcd_result;
+  logic [ 5:0] bcd_operand_a;
+  logic [ 5:0] bcd_operand_b;
+
+  bin2bcd #($bits(result_sign_regard)) bin2bcd_result (
+    .bin (result_sign_regard),
+    .bcd (bcd_result        )
+  );
+
+  bin2bcd #($bits(operand_a_sign_regard)) bin2bcd_operand_a (
+    .bin (operand_a_sign_regard),
+    .bcd (bcd_operand_a        )
+  );
+
+  bin2bcd #($bits(operand_b_sign_regard)) bin2bcd_operand_b (
+    .bin (operand_b_sign_regard),
+    .bcd (bcd_operand_b        )
+  );
 
   localparam bit [6:0] MINUS = 7'b1111110;
   localparam bit [6:0] BLANK = 7'b1111111;
@@ -106,14 +125,14 @@ module nexys_alu(
     semseg = BLANK;
 
     unique case (1'b0)
-      an_ff[0]: semseg = hex2semseg(result_sign_regard[ 3:0]);
-      an_ff[1]: semseg = hex2semseg(result_sign_regard[ 7:4]);
-      an_ff[2]: semseg = hex2semseg(result_sign_regard[11:8]);
+      an_ff[0]: semseg = hex2semseg(bcd_result[ 3:0]);
+      an_ff[1]: semseg = hex2semseg(bcd_result[ 7:4]);
+      an_ff[2]: semseg = hex2semseg(bcd_result[11:8]);
       an_ff[3]: semseg = is_result_negative ? MINUS : BLANK;
-      an_ff[4]: semseg = hex2semseg(operand_b_sign_regard[3:0]);
-      an_ff[5]: semseg = (is_operand_b_negative ? MINUS : BLANK) & (operand_b_sign_regard[4] ? hex2semseg(4'b1) : BLANK);
+      an_ff[4]: semseg = hex2semseg(bcd_operand_b[3:0]);
+      an_ff[5]: semseg = (is_operand_b_negative ? MINUS : BLANK) & (|bcd_operand_b[5:4] ? hex2semseg({2'b0, bcd_operand_b[5:4]}) : BLANK);
       an_ff[6]: semseg = hex2semseg(operand_a_sign_regard[3:0]);
-      an_ff[7]: semseg = (is_operand_a_negative ? MINUS : BLANK) & (operand_a_sign_regard[4] ? hex2semseg(4'b1) : BLANK);
+      an_ff[7]: semseg = (is_operand_a_negative ? MINUS : BLANK) & (|bcd_operand_a[5:4] ? hex2semseg({2'b0, bcd_operand_a[5:4]}) : BLANK);
     endcase
   end
 
@@ -124,5 +143,27 @@ module nexys_alu(
   assign led_o[15]   = flag;
 
   assign an_o = an_ff;
+
+endmodule
+
+// parametric Verilog implementation of the double dabble binary to BCD converter
+// for the complete project, see
+// https://github.com/AmeerAbdelhadi/Binary-to-BCD-Converter
+
+module bin2bcd
+ #( parameter                W = 18)  // input width
+  ( input      [W-1      :0] bin   ,  // binary
+    output reg [W+(W-4)/3:0] bcd   ); // bcd {...,thousands,hundreds,tens,ones}
+
+  integer i,j;
+
+  always @(bin) begin
+    for(i = 0; i <= W+(W-4)/3; i = i+1) bcd[i] = 0;     // initialize with zeros
+    bcd[W-1:0] = bin;                                   // initialize with input vector
+    for(i = 0; i <= W-4; i = i+1)                       // iterate on structure depth
+      for(j = 0; j <= i/3; j = j+1)                     // iterate on structure width
+        if (bcd[W-i+4*j -: 4] > 4)                      // if > 4
+          bcd[W-i+4*j -: 4] = bcd[W-i+4*j -: 4] + 4'd3; // add 3
+  end
 
 endmodule
