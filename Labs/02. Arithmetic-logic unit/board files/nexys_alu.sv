@@ -131,7 +131,7 @@ module nexys_alu(
       an_ff[3]: semseg = is_result_negative ? MINUS : BLANK;
       an_ff[4]: semseg = hex2semseg(bcd_operand_b[3:0]);
       an_ff[5]: semseg = (is_operand_b_negative ? MINUS : BLANK) & (|bcd_operand_b[5:4] ? hex2semseg({2'b0, bcd_operand_b[5:4]}) : BLANK);
-      an_ff[6]: semseg = hex2semseg(operand_a_sign_regard[3:0]);
+      an_ff[6]: semseg = hex2semseg(bcd_operand_a[3:0]);
       an_ff[7]: semseg = (is_operand_a_negative ? MINUS : BLANK) & (|bcd_operand_a[5:4] ? hex2semseg({2'b0, bcd_operand_a[5:4]}) : BLANK);
     endcase
   end
