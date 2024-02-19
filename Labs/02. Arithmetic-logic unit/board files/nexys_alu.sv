@@ -2,7 +2,7 @@
 // Company: MIET
 // Engineer: Alexander Kharlamov
 
-// Module Name:    tb_fulladder4
+// Module Name:    nexys_alu
 // Project Name:   RISCV_practicum
 // Target Devices: Nexys A7-100T
 // Description: wrapper for alu synthesis
