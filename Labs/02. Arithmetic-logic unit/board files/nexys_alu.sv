@@ -91,14 +91,14 @@ module nexys_alu(
   logic  is_operand_b_negative;
   assign is_operand_b_negative = operand_b[$left(operand_b)];
 
-  logic [9:0] result_sign_regard;
-  assign result_sign_regard    = is_result_negative    ? (~result[9:0] + 10'b1)  : (result[9:0]);
+  logic [31:0] result_sign_regard;
+  assign result_sign_regard    = is_result_negative    ? (~result + 32'b1)  : result;
   logic [4:0] operand_a_sign_regard;
   assign operand_a_sign_regard = is_operand_a_negative ? (~operand_a[4:0] + 5'b1) : (operand_a[4:0]);
   logic [4:0] operand_b_sign_regard;
   assign operand_b_sign_regard = is_operand_b_negative ? (~operand_b[4:0] + 5'b1) : (operand_b[4:0]);
 
-  logic [12:0] bcd_result;
+  logic [41:0] bcd_result;
   logic [ 5:0] bcd_operand_a;
   logic [ 5:0] bcd_operand_b;
 
