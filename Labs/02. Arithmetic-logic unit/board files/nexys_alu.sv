@@ -108,23 +108,23 @@ module nexys_alu(
   logic [4:0] operand_b_sign_regard;
   assign operand_b_sign_regard = is_operand_b_negative ? (~operand_b[4:0] + 5'b1) : (operand_b[4:0]);
 
-  logic [41:0] bcd_result;
-  logic [ 5:0] bcd_operand_a;
-  logic [ 5:0] bcd_operand_b;
+  logic [63:0] bcd_result;
+  logic [11:0] bcd_operand_a;
+  logic [11:0] bcd_operand_b;
 
   bin2bcd #($bits(result_sign_regard)) bin2bcd_result (
-    .bin (result_sign_regard),
-    .bcd (bcd_result        )
+    .bin_i (result_sign_regard),
+    .bcd_o (bcd_result        )
   );
 
   bin2bcd #($bits(operand_a_sign_regard)) bin2bcd_operand_a (
-    .bin (operand_a_sign_regard),
-    .bcd (bcd_operand_a        )
+    .bin_i (operand_a_sign_regard),
+    .bcd_o (bcd_operand_a        )
   );
 
   bin2bcd #($bits(operand_b_sign_regard)) bin2bcd_operand_b (
-    .bin (operand_b_sign_regard),
-    .bcd (bcd_operand_b        )
+    .bin_i (operand_b_sign_regard),
+    .bcd_o (bcd_operand_b        )
   );
 
   localparam bit [6:0] MINUS = 7'b1111110;
@@ -156,24 +156,24 @@ module nexys_alu(
 
 endmodule
 
-// parametric Verilog implementation of the double dabble binary to BCD converter
-// for the complete project, see
-// https://github.com/AmeerAbdelhadi/Binary-to-BCD-Converter
+module bin2bcd #(
+  parameter  int IN_WIDTH         = 32,
+  localparam int OUT_WIDTH_DIGITS = (2 * IN_WIDTH + 3) / 4, // each byte is represented as 2 digits.
+                                                            //   And ceiling
+  localparam int OUT_WIDTH        = 4 * OUT_WIDTH_DIGITS
+) (
+  input  logic [IN_WIDTH -1:0] bin_i,
+  output logic [OUT_WIDTH-1:0] bcd_o
+);
 
-module bin2bcd
- #( parameter                W = 18)  // input width
-  ( input      [W-1      :0] bin   ,  // binary
-    output reg [W+(W-4)/3:0] bcd   ); // bcd {...,thousands,hundreds,tens,ones}
-
-  integer i,j;
-
-  always @(bin) begin
-    for(i = 0; i <= W+(W-4)/3; i = i+1) bcd[i] = 0;     // initialize with zeros
-    bcd[W-1:0] = bin;                                   // initialize with input vector
-    for(i = 0; i <= W-4; i = i+1)                       // iterate on structure depth
-      for(j = 0; j <= i/3; j = j+1)                     // iterate on structure width
-        if (bcd[W-i+4*j -: 4] > 4)                      // if > 4
-          bcd[W-i+4*j -: 4] = bcd[W-i+4*j -: 4] + 4'd3; // add 3
+  always @(bin_i) begin
+    bcd_o = '0;
+    for (int unsigned bit_number = 0; bit_number < IN_WIDTH; ++bit_number) begin                 // Iterate once for each bit in input number
+      for (int unsigned digit_num = 0; digit_num < OUT_WIDTH_DIGITS; ++digit_num) begin
+        if (bcd_o[4*digit_num+:4] >= 4'd5) bcd_o[4*digit_num+:4] = bcd_o[4*digit_num+:4] + 4'd3; // If any BCD digit is >= 5, add three
+      end
+      bcd_o = {bcd_o[$left(bcd_o)-1:0], bin_i[$left(bin_i)-bit_number]};                         // Shift one bit, and shift in proper bit from input
+    end
   end
 
 endmodule
