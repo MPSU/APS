@@ -58,7 +58,7 @@ module tb_fulladder32();
       repeat(1e4) begin
         tb_a_i     = $urandom();
         tb_b_i     = $urandom();
-        tb_carry_i = $urandom(1);
+        tb_carry_i = $urandom_range(1);
         @(posedge clk);
       end
     endtask

@@ -311,4 +311,10 @@ module fulladder32(
     3. Запустите моделирование.
     4. Проверьте содержимое TCL-консоли. Убедитесь в появлении сообщения о завершении теста. В случае, если в tcl-консоли написано `CLICK THE BUTTON 'Run All'`, вам необходимо нажать соответствующую кнопку на панели моделирования.
     5. Если в tcl-консоли были сообщения об ошибках, разберитесь в причине ошибок по временной диаграмме и [исправьте их](../../Vivado%20Basics/Debug%20manual.md).
-11. Проверьте работоспособность вашей цифровой схемы в ПЛИС. Для этого перейдите в папку [`board files`](https://github.com/MPSU/APS/tree/master/Labs/01.%20Adder/board%20files).
+11. Проверьте работоспособность вашей цифровой схемы в ПЛИС. Для этого:
+    1. Добавьте файлы из папки [`board files`](https://github.com/MPSU/APS/tree/master/Labs/01.%20Adder/board%20files) в проект.
+       1. Файл [nexys_adder.sv](https://github.com/MPSU/APS/tree/master/Labs/01.%20Adder/board%20files/nexys_adder.sv) необходимо добавить в `Design Sources` проекта.
+       2. Файл [nexys_a7_100t.xdc](https://github.com/MPSU/APS/tree/master/Labs/01.%20Adder/board%20files/nexys_a7_100t.xdc) необходимо добавить в `Constraints` проекта.
+    2. Выберите `nexys_adder` в качестве модуля верхнего уровня (`top-level`).
+    3. Выполните генерацию битстрима и сконфигурируйте ПЛИС. Для этого воспользуйтесь [следующей инструкцией](../../Vivado%20Basics/How%20to%20program%20an%20fpga%20board.md).
+    4. Описание логики работы модуля верхнего уровня и связи периферии ПЛИС с реализованным модулем находится в папке [`board files`](https://github.com/MPSU/APS/tree/master/Labs/01.%20Adder/board%20files).
