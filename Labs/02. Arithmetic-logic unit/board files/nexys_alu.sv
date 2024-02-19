@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: MIET
+// Engineer: Alexander Kharlamov
+
+// Module Name:    tb_fulladder4
+// Project Name:   RISCV_practicum
+// Target Devices: Nexys A7-100T
+// Description: wrapper for alu synthesis
+//////////////////////////////////////////////////////////////////////////////////
+
 module nexys_alu(
   input  logic        clk_i,
   input  logic        arstn_i,
