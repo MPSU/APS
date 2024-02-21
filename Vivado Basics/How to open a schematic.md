@@ -12,7 +12,7 @@ _Рисунок 1. Расположение кнопки `Schematic`._
 
 ![../.pic/Vivado%20Basics/How%20to%20open%20a%20schematic/fig_2.png](../.pic/Vivado%20Basics/How%20to%20open%20a%20schematic/fig_2.png)
 
-_Рисунок 2. Окно `Elaborate Design`.
+_Рисунок 2. Окно `Elaborate Design`._
 
 После нажатия на `OK`, появится окно `Open Elaborated Design`, которое автоматически пропадет по завершению процесса. В случае если вы компилируете крупный проект и хотите продолжить работу во время компиляции, вы можете нажать на кнопку `Background`.
 
