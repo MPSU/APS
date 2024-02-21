@@ -1,15 +1,13 @@
 /* -----------------------------------------------------------------------------
 * Project Name   : Architectures of Processor Systems (APS) lab work
-* File           : nexys_alu.sv
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Alexander Kharlamov
 * Email(s)       : sasha_xarlamov@org.miet.ru
 
-See LICENSE file for licensing details.
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-
 module nexys_alu(
   input  logic        clk_i,
   input  logic        arstn_i,

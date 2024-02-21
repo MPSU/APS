@@ -1,13 +1,13 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: MIET
-// Engineer: Andrei Solodovnikov
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Andrei Solodovnikov
+* Email(s)       : hepoh@org.miet.ru
 
-// Module Name:    ext_mem
-// Project Name:   RISCV_practicum
-// Target Devices: Nexys A7-100T
-// Description: external memory with byte_enable support
-//
-//////////////////////////////////////////////////////////////////////////////////
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module ext_mem(
   input  logic        clk_i,
   input  logic        mem_req_i,

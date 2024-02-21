@@ -1,3 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: Digilent Inc.
+// Engineer: Thomas Kappenman
+//
+// Create Date: 03/03/2015 09:33:36 PM
+// Design Name:
+// Module Name: PS2Receiver
+// Project Name: Nexys4DDR Keyboard Demo
+// Target Devices: Nexys4DDR
+// Tool Versions:
+// Description: PS2 Receiver module used to shift in keycodes from a keyboard plugged into the PS2 port
+//
+// Dependencies:
+//
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// Modified in 2023 by engineers of
+// National Research University of Electronic Technology
+// Nikita Bulavin and Andrei Solodovnikov
+//
+//////////////////////////////////////////////////////////////////////////////////
+
 module PS2Receiver(
   input  logic        clk_i,
   input  logic        rst_i,

@@ -1,12 +1,22 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module nexys_CYBERcobra_dz(
     input CLK100,
     input resetn,
     input BTND,
     input  [15:0] SW,
-    output CA, CB, CC, CD, CE, CF, CG, 
+    output CA, CB, CC, CD, CE, CF, CG,
     output [7:0] AN
     );
-    
+
     CYBERcobra dut(
     .clk_i(btn),
     .rst_i(!resetn),

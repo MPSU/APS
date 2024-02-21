@@ -1,11 +1,21 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module nexys_riscv_unit(
     input CLK100,
     input resetn,
     input BTND,
-    output CA, CB, CC, CD, CE, CF, CG, 
+    output CA, CB, CC, CD, CE, CF, CG,
     output [7:0] AN
     );
-    
+
     riscv_unit unit(
     .clk_i(btn),
     .rst_i(!resetn)
@@ -14,7 +24,7 @@ module nexys_riscv_unit(
   wire [31:0] instr_addr;
   wire [31:0] instr;
   reg   btn;
-  
+
   assign instr_addr = unit.core.instr_addr_o;
   assign instr = unit.core.instr_i;
 
@@ -140,7 +150,7 @@ module nexys_riscv_unit(
             endcase
          end
      end
-     
+
   end
 
 endmodule

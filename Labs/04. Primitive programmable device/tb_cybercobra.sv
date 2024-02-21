@@ -1,22 +1,22 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: MIET
-// Engineer: Nikita Bulavin
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
 
-// Module Name:    tb_cybercobra
-// Project Name:   RISCV_practicum
-// Target Devices: Nexys A7-100T
-// Description: tb for CYBERcobra 3000 Pro 2.1
-//////////////////////////////////////////////////////////////////////////////////
-
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module tb_CYBERcobra();
-    
+
     CYBERcobra dut(
     .clk_i(clk),
     .rst_i(rstn),
     .sw_i (sw_i ),
     .out_o(OUT)
     );
-    
+
     wire [31:0] OUT;
     reg clk;
     reg rstn;
@@ -24,8 +24,8 @@ module tb_CYBERcobra();
 
     initial clk <= 0;
     always #5 clk = ~clk;
-    
-    initial begin 
+
+    initial begin
     $display( "\nStart test: \n\n===============================================\nAdd CYBERcobra signals to the waveform and then\nCLICK THE BUTTON 'Run All'\n===============================================\n"); $stop();
     rstn = 1'b1;
     #10;
@@ -37,5 +37,5 @@ module tb_CYBERcobra();
     $display("\n The test is over \n See the internal signals of the CYBERcobra on the waveform \n");
     $finish;
     end
-    
+
 endmodule

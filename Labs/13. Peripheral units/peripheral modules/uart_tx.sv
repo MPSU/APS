@@ -8,6 +8,16 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
+// This file has been taken from https://github.com/pulp-platform/apb_uart_sv
+// and modified by Andrei Solodovnikov in order to be used in
+// Architectures of Processor Systems (APS) lab work project
+
+// Changelog:
+// some of the input signals has been hardcoded to constant values
+// cfg_div_i input has been replaced by baudrate_i input signal.
+// The signal cfg_div_i is now controled by baudrate_i input, and this control
+// logic is work from assumption that clk_i is 10 MHz.
+
 module uart_tx (
         input  logic            clk_i,
         input  logic            rst_i,

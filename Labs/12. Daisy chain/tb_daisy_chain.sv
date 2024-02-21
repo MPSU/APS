@@ -1,14 +1,13 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: MIET
-// Engineer: Solodovnikov Andrei
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Andrei Solodovnikov
+* Email(s)       : hepoh@org.miet.ru
 
-// Module Name:    tb_daisy_chain
-// Project Name:   RISCV_practicum
-// Target Devices: Nexys A7-100T
-// Description: tb for daisy chain
-//
-//////////////////////////////////////////////////////////////////////////////////
-
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module tb_daisy_chain();
 
 logic clk_i, rst_i, ready_i, irq_ret_i;

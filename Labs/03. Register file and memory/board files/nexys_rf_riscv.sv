@@ -1,14 +1,24 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module nexys_rf_riscv(
     input CLK100,
     input resetn,
-    input BTND, BTNU, BTNL, BTNR, BTNC, 
+    input BTND, BTNU, BTNL, BTNR, BTNC,
     input  [15:0] SW,
     output [15:0] LED,
     output CA, CB, CC, CD, CE, CF, CG, DP,
     output [7:0] AN,
     output LED16_B, LED16_G, LED16_R, LED17_B, LED17_G, LED17_R
     );
-    
+
 wire [31:0]     WD3;
 wire            WE;
 wire [31:0]     RD1;
@@ -75,40 +85,40 @@ always @(posedge CLK100) begin
         a1 <= BTNL? SW[4:0]: a1;
         a2 <= BTNC? SW[4:0]: a2;
         a3 <= BTNR? SW[4:0]: a3;
-        
+
         rd1 <= BTNU? RD1: rd1;
         rd2 <= BTNU? RD2: rd2;
-        
+
         case (1'b0)
-            ANreg[0]: begin 
+            ANreg[0]: begin
                 semseg <= (rd2) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[1]: begin 
+            ANreg[1]: begin
                 semseg <= (rd2 / 'h10) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[2]: begin 
+            ANreg[2]: begin
                 semseg <= (rd2 / 'h100) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[3]: begin 
+            ANreg[3]: begin
                 semseg <= (rd2 / 'h1000) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[4]: begin 
+            ANreg[4]: begin
                 semseg <= (rd1) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[5]: begin 
+            ANreg[5]: begin
                 semseg <= (rd1 / 'h10) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[6]: begin 
+            ANreg[6]: begin
                 semseg <= (rd1 / 'h100) % 5'h10;
                 //DPr <= 1'b1;
             end
-            ANreg[7]: begin 
+            ANreg[7]: begin
                 semseg <= (rd1 / 'h1000) % 5'h10;
                 //DPr <= 1'b1;
             end

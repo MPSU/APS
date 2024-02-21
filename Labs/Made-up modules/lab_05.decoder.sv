@@ -1,13 +1,13 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: MIET
-// Engineer: Alexey Kozin
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Alexey Kozin
+* Email(s)       : @edu.miet.ru
 
-// Module Name: decoder_riscv
-// Project Name: RISCV_practicum
-// Target Devices: Nexys A7-100T
-// Description: main decoder for risc-v processor
-//////////////////////////////////////////////////////////////////////////////////
-
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module gpr_we_table (gis_ew_rpg, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     output logic gis_ew_rpg;
     input edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2;

@@ -1,3 +1,13 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Andrei Solodovnikov
+* Email(s)       : hepoh@org.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 package riscv_pkg;
 
   import alu_opcodes_pkg::*;

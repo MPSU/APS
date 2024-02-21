@@ -1,3 +1,13 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module rf_riscv(
   input  logic        clk_i,
   input  logic        write_enable_i,

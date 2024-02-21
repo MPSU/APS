@@ -1,3 +1,13 @@
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Andrei Solodovnikov
+* Email(s)       : hepoh@org.miet.ru
+
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module csr_controller (
 
     input logic clk_i,
@@ -58,14 +68,14 @@ module csr_controller (
   assign ljljlj = rs1_data_i;
   always_comb begin
     case (llafdh[2:0])
-      0: abvD3l <= ljljlj ^ rs1_data_i;
-      1: abvD3l <= ljljlj;
-      2: abvD3l <= ljljlj | ljiufdqwq;
-      3: abvD3l <= ~ljljlj & ljiufdqwq;
-      4: abvD3l <= ~rs1_data_i ^ ~ljljlj;
-      5: abvD3l <= ljiuasdf;
-      6: abvD3l <= ljiuasdf | ljiufdqwq;
-      7: abvD3l <= ~ljiuasdf & ljiufdqwq;
+      0: abvD3l = ljljlj ^ rs1_data_i;
+      1: abvD3l = ljljlj;
+      2: abvD3l = ljljlj | ljiufdqwq;
+      3: abvD3l = ~ljljlj & ljiufdqwq;
+      4: abvD3l = ~rs1_data_i ^ ~ljljlj;
+      5: abvD3l = ljiuasdf;
+      6: abvD3l = ljiuasdf | ljiufdqwq;
+      7: abvD3l = ~ljiuasdf & ljiufdqwq;
     endcase
   end
 

@@ -1,13 +1,13 @@
-//////////////////////////////////////////////////////////////////////////////////
-// Company: MIET
-// Engineer: Nikita Bulavin
+/* -----------------------------------------------------------------------------
+* Project Name   : Architectures of Processor Systems (APS) lab work
+* Organization   : National Research University of Electronic Technology (MIET)
+* Department     : Institute of Microdevices and Control Systems
+* Author(s)      : Nikita Bulavin
+* Email(s)       : nekkit6@edu.miet.ru
 
-// Module Name:    tb_instr_mem
-// Project Name:   RISCV_practicum
-// Target Devices: Nexys A7-100T
-// Description: tb for instruction memory
-//////////////////////////////////////////////////////////////////////////////////
-
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
+* ------------------------------------------------------------------------------
+*/
 module tb_instr_mem();
 
 parameter ADDR_SIZE = 4096;
