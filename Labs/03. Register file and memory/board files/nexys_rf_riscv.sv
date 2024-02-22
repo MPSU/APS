@@ -147,7 +147,7 @@ module nexys_rf_riscv(
 
   logic  we_ff;
   logic  we_next;
-  assign we_next = wd_en ? 1'b1 : 1'b0;
+  assign we_next = wd_en;
   always_ff @(posedge clk_i or negedge arstn_i) begin
     if (!arstn_i) we_ff <= 1'b0;
     else          we_ff <= we_next;
