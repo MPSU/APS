@@ -5,7 +5,7 @@
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Alexey Kozin
-* Email(s)       : lesha.kozin.01@mail.ru
+* Email(s)       : akozin@edu.miet.ru
 
 See LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
