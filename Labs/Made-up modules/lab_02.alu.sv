@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 /* -----------------------------------------------------------------------------
 * Project Name   : Architectures of Processor Systems (APS) lab work
 * File           : alu_riscv.sv
