@@ -16,7 +16,7 @@
 
 Управление регистровым файлом.
 
-![../../../.pic/Labs/board%20files/nexys_rf1.jpg](../../../.pic/Labs/board%20files/nexys_rf1.jpg)
+![../../../.pic/Labs/board%20files/nexys_rf_riscv_control.drawio.svg](../../../.pic/Labs/board%20files/nexys_rf_riscv_control.drawio.svg)
 
 Ниже показан пример последовательности действий для работы с платой.
 
