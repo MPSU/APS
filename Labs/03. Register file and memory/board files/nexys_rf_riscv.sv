@@ -115,7 +115,7 @@ module nexys_rf_riscv(
   logic [4:0]      ra2_next;
   assign           ra2_next = addresses_next[1];
   logic            addresses_en;
-  assign           addresses_en = btnr_i;
+  assign           addresses_en = btnd_i;
   always_ff @(posedge clk_i or negedge arstn_i) begin
     if (!arstn_i) begin
       wa_ff  <= '0;
@@ -133,7 +133,7 @@ module nexys_rf_riscv(
 
   logic [15:0] wd_ff;
   logic        wd_en;
-  assign       wd_en = btnd_i;
+  assign       wd_en = btnr_i;
   logic [15:0] wd_next;
   assign       wd_next = sw_i;
   always_ff @(posedge clk_i or negedge arstn_i) begin
