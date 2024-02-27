@@ -113,9 +113,9 @@ always_comb begin
 end
 
 always_comb begin
-  if(S==0) begin  // Нельзя выполнять операцию присваивания
+  if(S==0) begin // Нельзя выполнять операцию присваивания
     Y = D0;      // для одного сигнала (Y) в нескольких
-  end             // блоках always!
+  end            // блоках always!
 end
 ```
 
