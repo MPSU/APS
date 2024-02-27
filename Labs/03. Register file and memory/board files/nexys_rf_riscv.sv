@@ -131,28 +131,8 @@ module nexys_rf_riscv(
   assign ra1 = ra1_ff;
   assign ra2 = ra2_ff;
 
-  logic [15:0] wd_ff;
-  logic        wd_en;
-  assign       wd_en = btnr_i;
-  logic [15:0] wd_next;
-  assign       wd_next = sw_i;
-  always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (!arstn_i) begin
-      wd_ff <= '0;
-    end else if (wd_en) begin
-      wd_ff <= wd_next;
-    end
-  end
-  assign wd = {16'b0, wd_ff};
-
-  logic  we_ff;
-  logic  we_next;
-  assign we_next = wd_en;
-  always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (!arstn_i) we_ff <= 1'b0;
-    else          we_ff <= we_next;
-  end
-  assign we = we_ff;
+  assign wd = {16'b0, sw_i};
+  assign we = btnr_i;
 
   assign {ca_o, cb_o, cc_o, cd_o, ce_o, cf_o, cg_o} = semseg;
   assign dp_o = 1'b1;
