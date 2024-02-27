@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_miriscv_alu();
+module tb_alu();
 
 import alu_opcodes_pkg::*;
 
