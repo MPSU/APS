@@ -9,7 +9,7 @@
 See LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_miriscv_alu();
+module tb_alu();
 
 import alu_opcodes_pkg::*;
 
@@ -52,7 +52,6 @@ alu_riscv_ref REF
 
 integer     i, err_cnt = 0;
 reg [8*9:1] operator_type;
-reg [103*10000:0] line_dump;
 
 initial
   begin
