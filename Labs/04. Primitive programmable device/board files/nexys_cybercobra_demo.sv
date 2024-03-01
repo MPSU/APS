@@ -52,6 +52,16 @@ typedef enum {
   CH_SPACE
 } Char;
 
+typedef struct {
+  logic ca;
+  logic cb;
+  logic cc;
+  logic cd;
+  logic ce;
+  logic cf;
+  logic cg;
+} Semseg;
+
 module nexys_CYBERcobra(
   input  logic        clk_i,
   input  logic        arstn_i,
@@ -77,25 +87,6 @@ module nexys_CYBERcobra(
     .sw_i (sw_i      ),
     .out_o(cobra_out )
   );
-
-  localparam int COUNTER_WIDTH = 10;
-  logic [COUNTER_WIDTH-1:0] counter_next;
-  logic [COUNTER_WIDTH-1:0] counter_ff;
-  assign counter_next = counter_ff + COUNTER_WIDTH'('b1);
-  always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (!arstn_i) counter_ff <= '0;
-    else          counter_ff <= counter_next;
-  end
-
-  logic [7:0] an_ff;
-  logic [7:0] an_next;
-  logic       an_en;
-  assign an_next = {an_ff[$left(an_ff)-1:0], an_ff[$left(an_ff)]};
-  assign an_en   = ~|counter_ff;
-  always_ff @(posedge clk_i or negedge arstn_i) begin
-    if      (!arstn_i) an_ff <= ~8'b1;
-    else if (an_en)    an_ff <= an_next;
-  end
 
   logic [31:0] instr_addr;
   logic [31:0] instr;
@@ -164,43 +155,24 @@ module nexys_CYBERcobra(
       alu_op_chars
   };
 
-  typedef struct {
-    logic ca;
-    logic cb;
-    logic cc;
-    logic cd;
-    logic ce;
-    logic cf;
-    logic cg;
-  } Semseg;
   Semseg all_semsegs[0:7];
 
   for (genvar semseg_num = 0; semseg_num < 8; ++semseg_num) begin : CHAR2SEMSEG_GEN
     char2semseg char2semseg (
-      .char_i (all_chars[semseg_num]     ),
-      .ca_o   (all_semsegs[semseg_num].ca),
-      .cb_o   (all_semsegs[semseg_num].cb),
-      .cc_o   (all_semsegs[semseg_num].cc),
-      .cd_o   (all_semsegs[semseg_num].cd),
-      .ce_o   (all_semsegs[semseg_num].ce),
-      .cf_o   (all_semsegs[semseg_num].cf),
-      .cg_o   (all_semsegs[semseg_num].cg)
+      .char_i   (all_chars  [semseg_num]),
+      .semseg_o (all_semsegs[semseg_num])
     );
   end
 
   Semseg current_semseg;
-  always_comb begin
-    unique case (1'b0)
-      an_ff[0]: current_semseg = all_semsegs[0];
-      an_ff[1]: current_semseg = all_semsegs[1];
-      an_ff[2]: current_semseg = all_semsegs[2];
-      an_ff[3]: current_semseg = all_semsegs[3];
-      an_ff[4]: current_semseg = all_semsegs[4];
-      an_ff[5]: current_semseg = all_semsegs[5];
-      an_ff[6]: current_semseg = all_semsegs[6];
-      an_ff[7]: current_semseg = all_semsegs[7];
-    endcase
-  end
+  logic [7:0] an;
+  semseg semseg (
+    .clk100m_i        (clk_i         ),
+    .arstn_i          (arstn_i       ),
+    .all_semsegs_i    (all_semsegs   ),
+    .current_semseg_o (current_semseg),
+    .an_o             (an            )
+  );
 
   assign ca_o = current_semseg.ca;
   assign cb_o = current_semseg.cb;
@@ -211,7 +183,7 @@ module nexys_CYBERcobra(
   assign cg_o = current_semseg.cg;
   assign dp_o = 1'b1;
 
-  assign an_o = an_ff;
+  assign an_o = an;
 
   assign led_o = cobra_out[15:0];
 
@@ -276,14 +248,8 @@ endmodule
 module char2semseg #(
   parameter bit HEX_ONLY = 1'b0
 ) (
-  input  Char  char_i,
-  output logic ca_o,
-  output logic cb_o,
-  output logic cc_o,
-  output logic cd_o,
-  output logic ce_o,
-  output logic cf_o,
-  output logic cg_o
+  input  Char   char_i,
+  output Semseg semseg_o
 );
 
   localparam bit [6:0] BLANK = '1;
@@ -311,6 +277,8 @@ module char2semseg #(
     endcase
   end
 
+  logic [6:0] semseg;
+
 if (!HEX_ONLY) begin : HEX_ONLY_CHARS_GEN
   logic [6:0] other_chars;
   always_comb begin
@@ -332,9 +300,66 @@ if (!HEX_ONLY) begin : HEX_ONLY_CHARS_GEN
     endcase
   end
 
-  assign {cg_o, cf_o, ce_o, cd_o, cc_o, cb_o, ca_o} = hex & other_chars;
+  assign semseg = hex & other_chars;
 end else begin : ALL_CHARS
-  assign {cg_o, cf_o, ce_o, cd_o, cc_o, cb_o, ca_o} = hex;
+  assign semseg = hex;
 end
+
+  assign semseg_o.ca = semseg[0];
+  assign semseg_o.cb = semseg[1];
+  assign semseg_o.cc = semseg[2];
+  assign semseg_o.cd = semseg[3];
+  assign semseg_o.ce = semseg[4];
+  assign semseg_o.cf = semseg[5];
+  assign semseg_o.cg = semseg[6];
+
+endmodule
+
+module semseg #(
+  parameter int unsigned SEMSEGS_NUM = 8
+) (
+  input  Semseg all_semsegs_i[0:SEMSEGS_NUM-1],
+  input  logic  clk100m_i,
+  input  logic  arstn_i,
+  output Semseg current_semseg_o,
+  output logic [7:0] an_o
+);
+  logic  clk_i;
+  assign clk_i = clk100m_i;
+
+  localparam int COUNTER_WIDTH = 10;
+  logic [COUNTER_WIDTH-1:0] counter_next;
+  logic [COUNTER_WIDTH-1:0] counter_ff;
+  assign counter_next = counter_ff + COUNTER_WIDTH'('b1);
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (!arstn_i) counter_ff <= '0;
+    else          counter_ff <= counter_next;
+  end
+
+  logic [7:0] an_ff;
+  logic [7:0] an_next;
+  logic       an_en;
+  assign an_next = {an_ff[$left(an_ff)-1:0], an_ff[$left(an_ff)]};
+  assign an_en   = ~|counter_ff;
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i) an_ff <= ~8'b1;
+    else if (an_en)    an_ff <= an_next;
+  end
+
+  Semseg current_semseg;
+  always_comb begin
+    unique case (1'b0)
+      an_ff[0]: current_semseg = all_semsegs_i[0];
+      an_ff[1]: current_semseg = all_semsegs_i[1];
+      an_ff[2]: current_semseg = all_semsegs_i[2];
+      an_ff[3]: current_semseg = all_semsegs_i[3];
+      an_ff[4]: current_semseg = all_semsegs_i[4];
+      an_ff[5]: current_semseg = all_semsegs_i[5];
+      an_ff[6]: current_semseg = all_semsegs_i[6];
+      an_ff[7]: current_semseg = all_semsegs_i[7];
+    endcase
+  end
+
+  assign an_o = an_ff;
 
 endmodule
