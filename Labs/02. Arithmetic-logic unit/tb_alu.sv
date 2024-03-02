@@ -6,7 +6,7 @@
 * Author(s)      : Daniil Strelkov
 * Email(s)       : 8190948@edu.miet.ru
 
-See LICENSE file for licensing details.
+See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 module tb_alu();
