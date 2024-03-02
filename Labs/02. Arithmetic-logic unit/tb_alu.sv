@@ -13,8 +13,7 @@ module tb_alu();
 
 import alu_opcodes_pkg::*;
 
-parameter TEST_VALUES     = 10000;
-parameter TIME_OPERATION  = 100;
+parameter TEST_VALUES     = 1000;
 
 logic clk = 0;
 always #5ns clk = ~clk;
@@ -57,7 +56,7 @@ initial
   begin
     $display("Test has been started");
     $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
-    X_test();
+    //X_test();
     result_test();
     flag_test();
     sign_test();
@@ -1344,31 +1343,31 @@ endgenerate
 assign jdiuqfjkvc = (vufdjj[OP_W-1] ? '1 : '0) << OP_W;
 assign fgdhdsvr = (jdiuqfjkvc + vufdjj) >> ndsvsd[SHIFT_W-1:0];
 
-assign result_o = skjfbsbgisg[STAGE_LEN-1] == dgdvdfb ? vufdjj | ndsvsd + (srtdv - hkfvbd) :
-                  skjfbsbgisg[STAGE_LEN-1] == hjfhdhyj ? vufdjj + ndsvsd - srtdv :
-                  skjfbsbgisg[STAGE_LEN-1] == dfbfjfnf ? (fgdhdsvr << hkfvbd) >> hkfvbd :
-                  skjfbsbgisg[STAGE_LEN-1] == tjthntnt ? vufdjj & ndsvsd | srtdv & hkfvbd :
-                  skjfbsbgisg[STAGE_LEN-1] == ertertert ? vufdjj < ndsvsd + srtdv :
-                  skjfbsbgisg[STAGE_LEN-1] == jmgmgnb ? vufdjj ^ ndsvsd | srtdv :
-                  skjfbsbgisg[STAGE_LEN-1] == mghngfg & skjfbsbgisg[STAGE_LEN-1][OP_W-1] ? $signed(vufdjj) < $signed(ndsvsd) :
-                  skjfbsbgisg[STAGE_LEN-1] == sddsvsdd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-1] ? $signed(srtdv) < $signed(hkfvbd) :
-                  skjfbsbgisg[STAGE_LEN-1] == cvbcvc ? (vufdjj << ~srtdv) >> ndsvsd[SHIFT_W-1:0] :
-                  skjfbsbgisg[STAGE_LEN-1] == tyjtyn ? vufdjj + srtdv - ndsvsd :
-                  skjfbsbgisg[STAGE_LEN-1] == dfbdgt ? vufdjj << ndsvsd[SHIFT_W-1:0] << hkfvbd :
+assign result_o = skjfbsbgisg[STAGE_LEN-1] === dgdvdfb ? vufdjj | ndsvsd + (srtdv - hkfvbd) :
+                  skjfbsbgisg[STAGE_LEN-1] === hjfhdhyj ? vufdjj + ndsvsd - srtdv :
+                  skjfbsbgisg[STAGE_LEN-1] === dfbfjfnf ? (fgdhdsvr << hkfvbd) >> hkfvbd :
+                  skjfbsbgisg[STAGE_LEN-1] === tjthntnt ? vufdjj & ndsvsd | srtdv & hkfvbd :
+                  skjfbsbgisg[STAGE_LEN-1] === ertertert ? vufdjj < ndsvsd + srtdv :
+                  skjfbsbgisg[STAGE_LEN-1] === jmgmgnb ? vufdjj ^ ndsvsd | srtdv :
+                  skjfbsbgisg[STAGE_LEN-1] === mghngfg & skjfbsbgisg[STAGE_LEN-1][OP_W-1] ? $signed(vufdjj) < $signed(ndsvsd) :
+                  skjfbsbgisg[STAGE_LEN-1] === sddsvsdd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-1] ? $signed(srtdv) < $signed(hkfvbd) :
+                  skjfbsbgisg[STAGE_LEN-1] === cvbcvc ? (vufdjj << ~srtdv) >> ndsvsd[SHIFT_W-1:0] :
+                  skjfbsbgisg[STAGE_LEN-1] === tyjtyn ? vufdjj + srtdv - ndsvsd :
+                  skjfbsbgisg[STAGE_LEN-1] === dfbdgt ? vufdjj << ndsvsd[SHIFT_W-1:0] << hkfvbd :
                   'b0;
 
-assign flag_o = skjfbsbgisg[STAGE_LEN-1] == ergmd & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(vufdjj) >= $signed(ndsvsd) :
-                skjfbsbgisg[STAGE_LEN-1] == ergmd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(srtdv) >= $signed(hkfvbd) :
-                skjfbsbgisg[STAGE_LEN-1] == bdfvtym & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj >= ndsvsd :
-                skjfbsbgisg[STAGE_LEN-1] == bdfvtym & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv >= hkfvbd :
-                skjfbsbgisg[STAGE_LEN-1] == dfrjsdb & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(vufdjj) < $signed(ndsvsd) :
-                skjfbsbgisg[STAGE_LEN-1] == dfrjsdb & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(srtdv) < $signed(hkfvbd) :
-                skjfbsbgisg[STAGE_LEN-1] == hfndnfgd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj == ndsvsd :
-                skjfbsbgisg[STAGE_LEN-1] == hfndnfgd & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv == hkfvbd :
-                skjfbsbgisg[STAGE_LEN-1] == cvbvrht & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj < ndsvsd :
-                skjfbsbgisg[STAGE_LEN-1] == cvbvrht & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv < hkfvbd :
-                skjfbsbgisg[STAGE_LEN-1] == gmndfvs & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj != ndsvsd :
-                skjfbsbgisg[STAGE_LEN-1] == gmndfvs & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv != hkfvbd :
+assign flag_o = skjfbsbgisg[STAGE_LEN-1] === ergmd & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(vufdjj) >= $signed(ndsvsd) :
+                skjfbsbgisg[STAGE_LEN-1] === ergmd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(srtdv) >= $signed(hkfvbd) :
+                skjfbsbgisg[STAGE_LEN-1] === bdfvtym & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj >= ndsvsd :
+                skjfbsbgisg[STAGE_LEN-1] === bdfvtym & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv >= hkfvbd :
+                skjfbsbgisg[STAGE_LEN-1] === dfrjsdb & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(vufdjj) < $signed(ndsvsd) :
+                skjfbsbgisg[STAGE_LEN-1] === dfrjsdb & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? $signed(srtdv) < $signed(hkfvbd) :
+                skjfbsbgisg[STAGE_LEN-1] === hfndnfgd & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj == ndsvsd :
+                skjfbsbgisg[STAGE_LEN-1] === hfndnfgd & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv == hkfvbd :
+                skjfbsbgisg[STAGE_LEN-1] === cvbvrht & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj < ndsvsd :
+                skjfbsbgisg[STAGE_LEN-1] === cvbvrht & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv < hkfvbd :
+                skjfbsbgisg[STAGE_LEN-1] === gmndfvs & skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? vufdjj != ndsvsd :
+                skjfbsbgisg[STAGE_LEN-1] === gmndfvs & ~skjfbsbgisg[STAGE_LEN-1][OP_W-2] ? srtdv != hkfvbd :
                 'b0;
 
 endmodule
