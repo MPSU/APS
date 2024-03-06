@@ -14,7 +14,7 @@ _Рисунок 1. Структурная схема модуля `nexys_rf_risc
 
 Периферия показана на _рис. 2_.
 
-![../../../.pic/Labs/board%20files/nexys_rf_riscv_control.inkscape.svg](../../../.pic/Labs/board%20files/nexys_rf_riscv_control.inkscape.svg)
+![../../../.pic/Labs/board%20files/nexys_rf_riscv_control.drawio.svg](../../../.pic/Labs/board%20files/nexys_rf_riscv_control.drawio.svg)
 
 _Рисунок 2. Периферия, доступная прототипу._
 
