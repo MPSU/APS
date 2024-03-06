@@ -165,10 +165,10 @@ module case_mux_ex(
 );
   always_comb begin
     case(S)
-      3'b00:   Y = A;
-      3'b01:   Y = C | B;      // в блоке case можно мультиплексировать
+      3'b000:  Y = A;
+      3'b001:  Y = C | B;      // в блоке case можно мультиплексировать
                                // не только провода, но и логические выражения
-      3'b10:   Y = (C|B) & D;
+      3'b010:  Y = (C|B) & D;
       /*
         Обратите внимание, что разрядность сигнала S — 3 бита.
         Это означает, что есть 8 комбинаций его разрядов.
@@ -225,4 +225,4 @@ assign one_bit_result = bus1024[select];
 
 Как, по-вашему, описать на языке SystemVerilog схему, приведённую ниже?
 
-![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg)
+![../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg)
