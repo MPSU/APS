@@ -81,17 +81,30 @@ module nexys_CYBERcobra(
 
   logic [31:0] cobra_out;
 
-  logic btnd;
-  always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (!arstn_i) btnd <= 1'b0;
-    else          btnd <= btnd_i;
-  end
+  logic btnd_sync;
+  sync sync (
+    .clk_i             ,
+    .data_i (btnd_i   ),
+    .data_o (btnd_sync)
+  );
+  logic btnd_debounce;
+  debounce debounce (
+    .clk_i                 ,
+    .arstn_i               ,
+    .data_i (btnd_sync    ),
+    .data_o (btnd_debounce)
+  );
+  logic bufg_clk;
+  BUFG dut_bufg(
+    .I (btnd_debounce),
+    .O (bufg_clk     )
+  );
 
   CYBERcobra dut (
-    .clk_i (btnd     ),
-    .rst_i (!arstn_i ),
-    .sw_i  (sw_i     ),
-    .out_o (cobra_out)
+    .clk_i (bufg_clk     ),
+    .rst_i (!arstn_i     ),
+    .sw_i  (sw_i         ),
+    .out_o (cobra_out    )
   );
 
   logic [31:0] instr_addr;
@@ -356,5 +369,50 @@ module semseg_one2many #(
   assign current_semseg_o = current_semseg;
 
   assign an_o = an_ff;
+
+endmodule
+
+module debounce #(
+  parameter int unsigned MAX_COUNT = 10000
+) (
+  input  logic clk_i,
+  input  logic arstn_i,
+  input  logic data_i,
+  output logic data_o
+);
+
+  localparam int COUNTER_WIDTH = $clog2(MAX_COUNT);
+  logic [COUNTER_WIDTH-1:0] counter_next;
+  logic [COUNTER_WIDTH-1:0] counter_ff;
+  assign counter_next = (data_o != data_i) ? counter_ff - COUNTER_WIDTH'('b1) :
+                                             COUNTER_WIDTH'(MAX_COUNT);
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i)         counter_ff <= COUNTER_WIDTH'(MAX_COUNT);
+    else                       counter_ff <= counter_next;
+  end
+
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i)     data_o <= '0;
+    else if (~|counter_ff) data_o <= data_i;
+  end
+
+endmodule
+
+module sync #(
+  parameter int unsigned SYNC_STAGES = 3
+) (
+  input  logic clk_i,
+  input  logic data_i,
+  output logic data_o
+);
+
+  logic [SYNC_STAGES-1:0] sync_buffer_ff;
+  logic [SYNC_STAGES-1:0] sync_buffer_next;
+  assign                  sync_buffer_next = {sync_buffer_ff[$left(sync_buffer_ff)-1:0], data_i};
+  always_ff @(posedge clk_i) begin
+    sync_buffer_ff <= sync_buffer_next;
+  end
+
+  assign data_o = sync_buffer_ff[$left(sync_buffer_ff)];
 
 endmodule
