@@ -81,17 +81,25 @@ module nexys_CYBERcobra(
 
   logic [31:0] cobra_out;
 
+  logic btnd;
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (!arstn_i) btnd <= 1'b0;
+    else          btnd <= btnd_i;
+  end
+
   CYBERcobra dut (
-    .clk_i(btnd_i    ),
-    .rst_i(!arstn_i  ),
-    .sw_i (sw_i      ),
-    .out_o(cobra_out )
+    .clk_i (btnd     ),
+    .rst_i (!arstn_i ),
+    .sw_i  (sw_i     ),
+    .out_o (cobra_out)
   );
 
   logic [31:0] instr_addr;
   logic [31:0] instr;
-  assign instr_addr = dut.instr_mem.addr_i;
-  assign instr      = dut.instr_mem.read_data_o;
+  assign instr_addr = dut.pc;
+  assign instr      = dut.instr;
+
+  import alu_opcodes_pkg::*;
 
   Instruction_type         instr_type;
   logic [ALU_OP_WIDTH-1:0] alu_op;
@@ -103,51 +111,49 @@ module nexys_CYBERcobra(
     .illegal_instr_o (illegal_instr)
   );
 
-  Char [1:0] instr_type_chars;
+  Char instr_type_chars[0:1];
   always_comb begin
-    instr_type_chars = {2{CH_SPACE}};
+    instr_type_chars = '{2{CH_SPACE}};
 
     unique case (instr_type)
-      INSTR_COMPUTATIONAL: instr_type_chars = {CH_C, CH_P};
-      INSTR_BRANCH       : instr_type_chars = {CH_b, CH_r};
-      INSTR_CONST        : instr_type_chars = {CH_C, CH_n};
-      INSTR_PERIPHERY    : instr_type_chars = {CH_P, CH_E};
-      INSTR_JUMP         : instr_type_chars = {CH_J, CH_u};
-      INSTR_NOP          : instr_type_chars = {CH_n, CH_o};
+      INSTR_COMPUTATIONAL: instr_type_chars = '{CH_C, CH_P};
+      INSTR_BRANCH       : instr_type_chars = '{CH_b, CH_r};
+      INSTR_CONST        : instr_type_chars = '{CH_C, CH_n};
+      INSTR_PERIPHERY    : instr_type_chars = '{CH_P, CH_E};
+      INSTR_JUMP         : instr_type_chars = '{CH_J, CH_u};
+      INSTR_NOP          : instr_type_chars = '{CH_n, CH_o};
     endcase
 
-    if (illegal_instr) instr_type_chars = {CH_i, CH_L};
+    if (illegal_instr) instr_type_chars = '{CH_i, CH_L};
   end
 
-  import alu_opcodes_pkg::*;
-
-  Char [3:0] alu_op_chars;
+  Char alu_op_chars[0:3];
   always_comb begin
-    alu_op_chars = {4{CH_SPACE}};
+    alu_op_chars = '{4{CH_SPACE}};
 
     case (alu_op)
-      ALU_ADD : alu_op_chars[3:1] = {CH_A, CH_d, CH_d};
-      ALU_SUB : alu_op_chars[3:1] = {CH_S, CH_u, CH_b};
-      ALU_XOR : alu_op_chars[3:1] = {CH_X, CH_o, CH_r};
-      ALU_OR  : alu_op_chars[3:2] = {CH_o, CH_r};
-      ALU_AND : alu_op_chars[3:1] = {CH_A, CH_n, CH_d};
-      ALU_SRA : alu_op_chars[3:1] = {CH_S, CH_r, CH_A};
-      ALU_SRL : alu_op_chars[3:1] = {CH_S, CH_r, CH_L};
-      ALU_SLL : alu_op_chars[3:1] = {CH_S, CH_L, CH_L};
-      ALU_LTS : alu_op_chars[3:1] = {CH_L, CH_t, CH_S};
-      ALU_LTU : alu_op_chars[3:1] = {CH_L, CH_t, CH_u};
-      ALU_GES : alu_op_chars[3:1] = {CH_G, CH_E, CH_S};
-      ALU_GEU : alu_op_chars[3:1] = {CH_G, CH_E, CH_u};
-      ALU_EQ  : alu_op_chars[3:2] = {CH_E, CH_q};
-      ALU_NE  : alu_op_chars[3:2] = {CH_n, CH_E};
-      ALU_SLTS: alu_op_chars      = {CH_S, CH_L, CH_t, CH_S};
-      ALU_SLTU: alu_op_chars      = {CH_S, CH_L, CH_t, CH_u};
+      ALU_ADD : alu_op_chars[0:2] = '{CH_A, CH_d, CH_d};
+      ALU_SUB : alu_op_chars[0:2] = '{CH_S, CH_u, CH_b};
+      ALU_XOR : alu_op_chars[0:2] = '{CH_X, CH_o, CH_r};
+      ALU_OR  : alu_op_chars[0:1] = '{CH_o, CH_r};
+      ALU_AND : alu_op_chars[0:2] = '{CH_A, CH_n, CH_d};
+      ALU_SRA : alu_op_chars[0:2] = '{CH_S, CH_r, CH_A};
+      ALU_SRL : alu_op_chars[0:2] = '{CH_S, CH_r, CH_L};
+      ALU_SLL : alu_op_chars[0:2] = '{CH_S, CH_L, CH_L};
+      ALU_LTS : alu_op_chars[0:2] = '{CH_L, CH_t, CH_S};
+      ALU_LTU : alu_op_chars[0:2] = '{CH_L, CH_t, CH_u};
+      ALU_GES : alu_op_chars[0:2] = '{CH_G, CH_E, CH_S};
+      ALU_GEU : alu_op_chars[0:2] = '{CH_G, CH_E, CH_u};
+      ALU_EQ  : alu_op_chars[0:1] = '{CH_E, CH_q};
+      ALU_NE  : alu_op_chars[0:1] = '{CH_n, CH_E};
+      ALU_SLTS: alu_op_chars      = '{CH_S, CH_L, CH_t, CH_S};
+      ALU_SLTU: alu_op_chars      = '{CH_S, CH_L, CH_t, CH_u};
 
       default : ;
     endcase
   end
 
-  Char [7:0] all_chars;
+  Char all_chars[0:7];
   assign all_chars = {
       Char'(instr_addr[7:4]),
       Char'(instr_addr[3:0]),
@@ -166,7 +172,7 @@ module nexys_CYBERcobra(
 
   Semseg current_semseg;
   logic [7:0] an;
-  semseg semseg (
+  semseg_one2many semseg_one2many (
     .clk100m_i        (clk_i         ),
     .arstn_i          (arstn_i       ),
     .all_semsegs_i    (all_semsegs   ),
@@ -189,7 +195,9 @@ module nexys_CYBERcobra(
 
 endmodule
 
-module nexys_CYBERcobra_decoder (
+module nexys_CYBERcobra_decoder
+  import alu_opcodes_pkg::*;
+(
   input  logic [31:0]             instr_i,
   output Instruction_type         instr_type_o,
   output logic [ALU_OP_WIDTH-1:0] alu_op_o,
@@ -254,56 +262,41 @@ module char2semseg #(
 
   localparam bit [6:0] BLANK = '1;
 
-  logic [6:0] hex;
-  always_comb begin
-    unique case (char_i[3:0])
-      4'h0: hex = 7'h3F;
-      4'h1: hex = 7'h06;
-      4'h2: hex = 7'h5B;
-      4'h3: hex = 7'h4F;
-      4'h4: hex = 7'h66;
-      4'h5: hex = 7'h6D;
-      4'h6: hex = 7'h7D;
-      4'h7: hex = 7'h07;
-      4'h8: hex = 7'h7F;
-      4'h9: hex = 7'h6F;
-      4'hA: hex = 7'h77;
-      4'hb: hex = 7'h7C;
-      4'hC: hex = 7'h39;
-      4'hd: hex = 7'h5E;
-      4'hE: hex = 7'h79;
-      4'hF: hex = 7'h71;
-      default: hex = BLANK;
-    endcase
-  end
-
   logic [6:0] semseg;
-
-if (!HEX_ONLY) begin : HEX_ONLY_CHARS_GEN
-  logic [6:0] other_chars;
   always_comb begin
     case (char_i)
-      CH_G    : other_chars = 7'h3D;
-      CH_L    : other_chars = 7'h38;
-      CH_n    : other_chars = 7'h54;
-      CH_o    : other_chars = 7'h5C;
-      CH_r    : other_chars = 7'h50;
-      CH_S    : other_chars = 7'h6D;
-      CH_t    : other_chars = 7'h78;
-      CH_u    : other_chars = 7'h1C;
-      CH_X    : other_chars = 7'h49;
-      CH_P    : other_chars = 7'h73;
-      CH_J    : other_chars = 7'h1E;
-      CH_q    : other_chars = 7'h67;
-      CH_i    : other_chars = 7'h04;
-      default : other_chars = BLANK;
+      CH_0    : semseg = ~7'h3F;
+      CH_1    : semseg = ~7'h06;
+      CH_2    : semseg = ~7'h5B;
+      CH_3    : semseg = ~7'h4F;
+      CH_4    : semseg = ~7'h66;
+      CH_5    : semseg = ~7'h6D;
+      CH_6    : semseg = ~7'h7D;
+      CH_7    : semseg = ~7'h07;
+      CH_8    : semseg = ~7'h7F;
+      CH_9    : semseg = ~7'h6F;
+      CH_A    : semseg = ~7'h77;
+      CH_b    : semseg = ~7'h7C;
+      CH_C    : semseg = ~7'h39;
+      CH_d    : semseg = ~7'h5E;
+      CH_E    : semseg = ~7'h79;
+      CH_F    : semseg = ~7'h71;
+      CH_G    : semseg = ~7'h3D;
+      CH_L    : semseg = ~7'h38;
+      CH_n    : semseg = ~7'h54;
+      CH_o    : semseg = ~7'h5C;
+      CH_r    : semseg = ~7'h50;
+      CH_S    : semseg = ~7'h6D;
+      CH_t    : semseg = ~7'h78;
+      CH_u    : semseg = ~7'h1C;
+      CH_X    : semseg = ~7'h49;
+      CH_P    : semseg = ~7'h73;
+      CH_J    : semseg = ~7'h1E;
+      CH_q    : semseg = ~7'h67;
+      CH_i    : semseg = ~7'h04;
+      default : semseg = BLANK;
     endcase
   end
-
-  assign semseg = hex & other_chars;
-end else begin : ALL_CHARS
-  assign semseg = hex;
-end
 
   assign semseg_o.ca = semseg[0];
   assign semseg_o.cb = semseg[1];
@@ -315,7 +308,7 @@ end
 
 endmodule
 
-module semseg #(
+module semseg_one2many #(
   parameter int unsigned SEMSEGS_NUM = 8
 ) (
   input  Semseg all_semsegs_i[0:SEMSEGS_NUM-1],
@@ -349,16 +342,18 @@ module semseg #(
   Semseg current_semseg;
   always_comb begin
     unique case (1'b0)
-      an_ff[0]: current_semseg = all_semsegs_i[0];
-      an_ff[1]: current_semseg = all_semsegs_i[1];
-      an_ff[2]: current_semseg = all_semsegs_i[2];
-      an_ff[3]: current_semseg = all_semsegs_i[3];
-      an_ff[4]: current_semseg = all_semsegs_i[4];
-      an_ff[5]: current_semseg = all_semsegs_i[5];
-      an_ff[6]: current_semseg = all_semsegs_i[6];
-      an_ff[7]: current_semseg = all_semsegs_i[7];
+      an_ff[0]: current_semseg = all_semsegs_i[7];
+      an_ff[1]: current_semseg = all_semsegs_i[6];
+      an_ff[2]: current_semseg = all_semsegs_i[5];
+      an_ff[3]: current_semseg = all_semsegs_i[4];
+      an_ff[4]: current_semseg = all_semsegs_i[3];
+      an_ff[5]: current_semseg = all_semsegs_i[2];
+      an_ff[6]: current_semseg = all_semsegs_i[1];
+      an_ff[7]: current_semseg = all_semsegs_i[0];
     endcase
   end
+
+  assign current_semseg_o = current_semseg;
 
   assign an_o = an_ff;
 
