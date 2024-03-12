@@ -60,6 +60,7 @@ typedef struct {
   logic ce;
   logic cf;
   logic cg;
+  logic dp;
 } Semseg;
 
 module nexys_CYBERcobra(
@@ -168,7 +169,6 @@ module nexys_CYBERcobra(
   assign all_chars[4:7] = illegal_instr ? ILL_INSTR_MSG : op_chars;
 
   Semseg all_semsegs[0:7];
-
   for (genvar semseg_num = 0; semseg_num < 8; ++semseg_num) begin : CHAR2SEMSEG_GEN
     char2semseg char2semseg (
       .char_i   (all_chars  [semseg_num]),
@@ -176,14 +176,27 @@ module nexys_CYBERcobra(
     );
   end
 
+
+  Semseg all_semsegs_dotted[0:7];
+  assign all_semsegs_dotted[0]   = all_semsegs[0];
+  assign all_semsegs_dotted[2:7] = all_semsegs[2:7];
+  assign all_semsegs_dotted[1].ca = all_semsegs[1].ca;
+  assign all_semsegs_dotted[1].cb = all_semsegs[1].cb;
+  assign all_semsegs_dotted[1].cc = all_semsegs[1].cc;
+  assign all_semsegs_dotted[1].cd = all_semsegs[1].cd;
+  assign all_semsegs_dotted[1].ce = all_semsegs[1].ce;
+  assign all_semsegs_dotted[1].cf = all_semsegs[1].cf;
+  assign all_semsegs_dotted[1].cg = all_semsegs[1].cg;
+  assign all_semsegs_dotted[1].dp = 1'b0;
+
   Semseg current_semseg;
   logic [7:0] an;
   semseg_one2many semseg_one2many (
-    .clk100m_i        (clk_i         ),
-    .arstn_i          (arstn_i       ),
-    .all_semsegs_i    (all_semsegs   ),
-    .current_semseg_o (current_semseg),
-    .an_o             (an            )
+    .clk100m_i        (clk_i             ),
+    .arstn_i          (arstn_i           ),
+    .all_semsegs_i    (all_semsegs_dotted),
+    .current_semseg_o (current_semseg    ),
+    .an_o             (an                )
   );
 
   assign ca_o = current_semseg.ca;
@@ -193,7 +206,7 @@ module nexys_CYBERcobra(
   assign ce_o = current_semseg.ce;
   assign cf_o = current_semseg.cf;
   assign cg_o = current_semseg.cg;
-  assign dp_o = 1'b1;
+  assign dp_o = current_semseg.dp;
 
   assign an_o = an;
 
@@ -331,6 +344,7 @@ module char2semseg #(
   assign semseg_o.ce = semseg[4];
   assign semseg_o.cf = semseg[5];
   assign semseg_o.cg = semseg[6];
+  assign semseg_o.dp = 1'b1;
 
 endmodule
 
