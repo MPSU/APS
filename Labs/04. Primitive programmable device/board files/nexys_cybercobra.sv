@@ -155,7 +155,6 @@ module nexys_CYBERcobra(
       INSTR_NOP : op_chars[0:2] = '{CH_n, CH_o, CH_P};
       INSTR_IN  : op_chars[0:1] = '{CH_i, CH_n};
     endcase
-    if (illegal_instr) op_chars[0:2] = '{CH_i, CH_L, CH_L};
   end
 
   Char all_chars[0:7];
@@ -165,7 +164,8 @@ module nexys_CYBERcobra(
       Char'(instr_addr[7:4]),
       Char'(instr_addr[3:0])
   };
-  assign all_chars[4:7] = op_chars;
+  localparam Char ILL_INSTR_MSG[0:3] = '{CH_i, CH_L, CH_L, CH_SPACE};
+  assign all_chars[4:7] = illegal_instr ? ILL_INSTR_MSG : op_chars;
 
   Semseg all_semsegs[0:7];
 
