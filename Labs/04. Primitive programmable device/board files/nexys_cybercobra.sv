@@ -10,12 +10,11 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 
 typedef enum {
-  INSTR_COMPUTATIONAL, // computational
-  INSTR_BRANCH,
-  INSTR_CONST,         // const load
-  INSTR_PERIPHERY,     // periphery load
-  INSTR_JUMP,
-  INSTR_NOP            // ws == 3
+  INSTR_ALU   , // branch and computational
+  INSTR_LI    , // const load
+  INSTR_IN    , // periphery load
+  INSTR_JUMP  ,
+  INSTR_NOP     // ws == 3
 } Instruction_type;
 
 typedef enum {
@@ -48,6 +47,7 @@ typedef enum {
   CH_J,
   CH_q,
   CH_i,
+  CH_m,
 
   CH_SPACE
 } Char;
@@ -124,55 +124,48 @@ module nexys_CYBERcobra(
     .illegal_instr_o (illegal_instr)
   );
 
-  Char instr_type_chars[0:1];
+  Char op_chars[0:3];
   always_comb begin
-    instr_type_chars = '{2{CH_SPACE}};
+    op_chars = '{4{CH_SPACE}};
 
-    unique case (instr_type)
-      INSTR_COMPUTATIONAL: instr_type_chars = '{CH_C, CH_P};
-      INSTR_BRANCH       : instr_type_chars = '{CH_b, CH_r};
-      INSTR_CONST        : instr_type_chars = '{CH_C, CH_n};
-      INSTR_PERIPHERY    : instr_type_chars = '{CH_P, CH_E};
-      INSTR_JUMP         : instr_type_chars = '{CH_J, CH_u};
-      INSTR_NOP          : instr_type_chars = '{CH_n, CH_o};
+    case (instr_type)
+      INSTR_ALU:
+        case (alu_op)
+          ALU_ADD : op_chars[0:2] = '{CH_A, CH_d, CH_d};
+          ALU_SUB : op_chars[0:2] = '{CH_S, CH_u, CH_b};
+          ALU_XOR : op_chars[0:2] = '{CH_X, CH_o, CH_r};
+          ALU_OR  : op_chars[0:1] = '{CH_o, CH_r};
+          ALU_AND : op_chars[0:2] = '{CH_A, CH_n, CH_d};
+          ALU_SRA : op_chars[0:2] = '{CH_S, CH_r, CH_A};
+          ALU_SRL : op_chars[0:2] = '{CH_S, CH_r, CH_L};
+          ALU_SLL : op_chars[0:2] = '{CH_S, CH_L, CH_L};
+          ALU_LTS : op_chars[0:2] = '{CH_L, CH_t, CH_S};
+          ALU_LTU : op_chars[0:2] = '{CH_L, CH_t, CH_u};
+          ALU_GES : op_chars[0:2] = '{CH_G, CH_E, CH_S};
+          ALU_GEU : op_chars[0:2] = '{CH_G, CH_E, CH_u};
+          ALU_EQ  : op_chars[0:1] = '{CH_E, CH_q};
+          ALU_NE  : op_chars[0:1] = '{CH_n, CH_E};
+          ALU_SLTS: op_chars      = '{CH_S, CH_L, CH_t, CH_S};
+          ALU_SLTU: op_chars      = '{CH_S, CH_L, CH_t, CH_u};
+
+          default : ;
+        endcase
+      INSTR_LI  : op_chars[0:1] = '{CH_L, CH_i};
+      INSTR_JUMP: op_chars      = '{CH_J, CH_u, CH_m, CH_P};
+      INSTR_NOP : op_chars[0:2] = '{CH_n, CH_o, CH_P};
+      INSTR_IN  : op_chars[0:1] = '{CH_i, CH_n};
     endcase
-
-    if (illegal_instr) instr_type_chars = '{CH_i, CH_L};
-  end
-
-  Char alu_op_chars[0:3];
-  always_comb begin
-    alu_op_chars = '{4{CH_SPACE}};
-
-    case (alu_op)
-      ALU_ADD : alu_op_chars[0:2] = '{CH_A, CH_d, CH_d};
-      ALU_SUB : alu_op_chars[0:2] = '{CH_S, CH_u, CH_b};
-      ALU_XOR : alu_op_chars[0:2] = '{CH_X, CH_o, CH_r};
-      ALU_OR  : alu_op_chars[0:1] = '{CH_o, CH_r};
-      ALU_AND : alu_op_chars[0:2] = '{CH_A, CH_n, CH_d};
-      ALU_SRA : alu_op_chars[0:2] = '{CH_S, CH_r, CH_A};
-      ALU_SRL : alu_op_chars[0:2] = '{CH_S, CH_r, CH_L};
-      ALU_SLL : alu_op_chars[0:2] = '{CH_S, CH_L, CH_L};
-      ALU_LTS : alu_op_chars[0:2] = '{CH_L, CH_t, CH_S};
-      ALU_LTU : alu_op_chars[0:2] = '{CH_L, CH_t, CH_u};
-      ALU_GES : alu_op_chars[0:2] = '{CH_G, CH_E, CH_S};
-      ALU_GEU : alu_op_chars[0:2] = '{CH_G, CH_E, CH_u};
-      ALU_EQ  : alu_op_chars[0:1] = '{CH_E, CH_q};
-      ALU_NE  : alu_op_chars[0:1] = '{CH_n, CH_E};
-      ALU_SLTS: alu_op_chars      = '{CH_S, CH_L, CH_t, CH_S};
-      ALU_SLTU: alu_op_chars      = '{CH_S, CH_L, CH_t, CH_u};
-
-      default : ;
-    endcase
+    if (illegal_instr) op_chars[0:2] = '{CH_i, CH_L, CH_L};
   end
 
   Char all_chars[0:7];
-  assign all_chars = {
+  assign all_chars[0:3] = {
+      Char'(led_o[15:8])    ,
+      Char'(led_o[ 7:0])    ,
       Char'(instr_addr[7:4]),
-      Char'(instr_addr[3:0]),
-      instr_type_chars,
-      alu_op_chars
+      Char'(instr_addr[3:0])
   };
+  assign all_chars[4:7] = op_chars;
 
   Semseg all_semsegs[0:7];
 
@@ -225,18 +218,21 @@ module nexys_CYBERcobra_decoder
   assign b  = instr_i[30];
   assign ws = instr_i[29:28];
 
+  logic  is_branch_instr;
+  assign is_branch_instr = b;
+
   always_comb begin
     instr_type_o    = INSTR_NOP;
 
     if (j) begin
       instr_type_o = INSTR_JUMP;
     end else if (b) begin
-      instr_type_o = INSTR_BRANCH;
+      instr_type_o    = INSTR_ALU;
     end else begin
       case (ws)
-        2'd0: instr_type_o    = INSTR_CONST;
-        2'd1: instr_type_o    = INSTR_COMPUTATIONAL;
-        2'd2: instr_type_o    = INSTR_PERIPHERY;
+        2'd0: instr_type_o    = INSTR_LI;
+        2'd1: instr_type_o    = INSTR_ALU;
+        2'd2: instr_type_o    = INSTR_IN;
         2'd3: instr_type_o    = INSTR_NOP;
       endcase
     end
@@ -246,24 +242,40 @@ module nexys_CYBERcobra_decoder
 
   import alu_opcodes_pkg::*;
 
-  assign illegal_instr_o = (instr_type_o inside {INSTR_COMPUTATIONAL, INSTR_BRANCH}) &&
-      !(alu_op_o inside{
-          ALU_ADD ,
-          ALU_SUB ,
-          ALU_XOR ,
-          ALU_OR  ,
-          ALU_AND ,
-          ALU_SRA ,
-          ALU_SRL ,
-          ALU_SLL ,
-          ALU_LTS ,
-          ALU_LTU ,
-          ALU_GES ,
-          ALU_GEU ,
-          ALU_EQ  ,
-          ALU_NE  ,
-          ALU_SLTS,
-          ALU_SLTU});
+  typedef enum {
+    ALU_OP_BRANCH,
+    ALU_OP_COMPUTATIONAL,
+    ALU_OP_ILLEGAL
+  } Alu_op_type;
+  Alu_op_type alu_op_type;
+  always_comb begin
+    alu_op_type = ALU_OP_ILLEGAL;
+
+    case (alu_op_o) inside
+      ALU_LTS,
+      ALU_LTU,
+      ALU_GES,
+      ALU_GEU,
+      ALU_EQ ,
+      ALU_NE : alu_op_type = ALU_OP_BRANCH;
+
+      ALU_ADD ,
+      ALU_SUB ,
+      ALU_XOR ,
+      ALU_OR  ,
+      ALU_AND ,
+      ALU_SRA ,
+      ALU_SRL ,
+      ALU_SLL ,
+      ALU_SLTS,
+      ALU_SLTU: alu_op_type = ALU_OP_COMPUTATIONAL;
+
+      default : alu_op_type = ALU_OP_ILLEGAL;
+    endcase
+  end
+
+  assign illegal_instr_o = (instr_type_o == INSTR_ALU) && ((alu_op_type == ALU_OP_ILLEGAL) ||
+      ((alu_op_type == ALU_OP_BRANCH) ^ is_branch_instr));
 endmodule
 
 module char2semseg #(
@@ -307,6 +319,7 @@ module char2semseg #(
       CH_J    : semseg = ~7'h1E;
       CH_q    : semseg = ~7'h67;
       CH_i    : semseg = ~7'h04;
+      CH_m    : semseg = ~7'h55;
       default : semseg = BLANK;
     endcase
   end
