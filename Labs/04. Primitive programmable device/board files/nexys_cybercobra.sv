@@ -159,8 +159,8 @@ module nexys_CYBERcobra(
 
   Char all_chars[0:7];
   assign all_chars[0:3] = {
-      Char'(led_o[15:8])    ,
-      Char'(led_o[ 7:0])    ,
+      Char'(led_o[7:4])     ,
+      Char'(led_o[3:0])     ,
       Char'(instr_addr[7:4]),
       Char'(instr_addr[3:0])
   };
