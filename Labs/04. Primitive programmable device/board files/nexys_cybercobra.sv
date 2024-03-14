@@ -2,13 +2,12 @@
 * Project Name   : Architectures of Processor Systems (APS) lab work
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
-* Author(s)      : Nikita Bulavin
-* Email(s)       : nekkit6@edu.miet.ru
+* Author(s)      : Alexander Kharlamov
+* Email(s)       : sasha_xarlamov@org.miet.ru
 
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-
 typedef enum {
   INSTR_ALU   , // branch and computational
   INSTR_LI    , // const load
