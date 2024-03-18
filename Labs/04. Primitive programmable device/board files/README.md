@@ -40,44 +40,26 @@ _Рисунок 1. Структурная схема модуля `nexys_CYBERco
 
 ## Операции, отображаемые прототипом
 
-Алфавит представлен ниже:
+Алфавит представлен на _рис. 2_:
 
--   A — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/A.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/A.svg' width='17em'>
--   b — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/b.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/b.svg' width='17em'>
--   C — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/C.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/C.svg' width='17em'>
--   d — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' width='17em'>
--   E — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/E.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/E.svg' width='17em'>
--   F — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/F.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/F.svg' width='17em'>
--   G — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/G.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/G.svg' width='17em'>
--   L — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' width='17em'>
--   n — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' width='17em'>
--   o — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/o.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/o.svg' width='17em'>
--   r — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/r.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/r.svg' width='17em'>
--   S — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/S.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/S.svg' width='17em'>
--   t — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/t.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/t.svg' width='17em'>
--   u — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/u.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/u.svg' width='17em'>
--   X — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/X.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/X.svg' width='17em'>
--   P — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' width='17em'>
--   J — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/J.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/J.svg' width='17em'>
--   q — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/q.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/q.svg' width='17em'>
--   i — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' width='17em'>
--   m — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/m.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/m.svg' width='17em'>
--   space — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'>
+!['../../../.pic/Labs/board%20files/semseg_alphabet.png'](../../../.pic/Labs/board%20files/semseg_alphabet.png)
+
+_Рисунок 2. Алфавит, отображаемый прототипом на семисегментных индикаторах._
 
 Соответствие типа инструкции отображаемой операции:
 
-1.  Вычислительные — отображается вычислительная операция, исполняемая на АЛУ (например, <img src='../../../.pic/Labs/board%20files/semseg_alphabet/A.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/A.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/d.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'>).
-1.  Инструкция загрузки константы  — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'> (**l**oad **i**mmediate)
-1.  Инструкция загрузки из внешних устройств — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'> (**in**put)
-1.  Безусловный переход — <img src='../../../.pic/Labs/board%20files/semseg_alphabet/J.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/J.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/u.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/u.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/m.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/m.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' width='17em'>
-1.  Инструкций условного перехода — отображается операция вычисления флага, исполняемая на АЛУ (например, <img src='../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/E.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/E.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/S.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/S.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'>).
+1.  Вычислительные — отображается вычислительная операция, исполняемая на АЛУ (например, ADD).
+1.  Инструкция загрузки константы — **l**oad **i**mmediate.
+1.  Инструкция загрузки из внешних устройств — **in**put.
+1.  Безусловный переход — jump
+1.  Инструкций условного перехода — отображается операция вычисления флага, исполняемая на АЛУ (например, LES).
 
-Во время исполнения вычислительных инструкций и инструкций условного перехода могут встретиться нелегальные операции (отображается как <img src='../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/i.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/L.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'>, **ill**egal). Операция считается нелегальной в следующих случаях:
+Во время исполнения вычислительных инструкций и инструкций условного перехода могут встретиться нелегальные операции (отображается как **ill**egal). Операция считается нелегальной в следующих случаях:
 
 -   Если в поле инструкции, отвечающем за операция АЛУ, указана битовая последовательность, не входящая в диапазон допустимых значений.
 -   Если инструкций является вычислительной, но в поле инструкции, отвечающем за операция АЛУ, указана битовая последовательность, соответствующая операции, вычисляющей флаг. И обратный случай.
 
-Инструкция `0 0 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxx` отображается как <img src='../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/n.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/o.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/o.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/P.svg' width='17em'><img src='../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' alt= '../../../.pic/Labs/board%20files/semseg_alphabet/space.svg' width='17em'> (**n**o **op**eration).
+Инструкция `0 0 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxx` отображается как **n**o **op**eration.
 
 ## Демонстрационная программа
 
