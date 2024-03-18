@@ -29,7 +29,7 @@ typedef enum {
   CH_9,
   CH_A,
   CH_b,
-  CH_C,
+  CH_c,
   CH_d,
   CH_E,
   CH_F,
@@ -312,9 +312,9 @@ module char2semseg #(
       CH_7    : semseg = ~7'h07;
       CH_8    : semseg = ~7'h7F;
       CH_9    : semseg = ~7'h6F;
-      CH_A    : semseg = ~7'h77;
+      CH_A    : semseg = ~7'h5F;
       CH_b    : semseg = ~7'h7C;
-      CH_C    : semseg = ~7'h39;
+      CH_c    : semseg = ~7'h58;
       CH_d    : semseg = ~7'h5E;
       CH_E    : semseg = ~7'h79;
       CH_F    : semseg = ~7'h71;
@@ -323,15 +323,15 @@ module char2semseg #(
       CH_n    : semseg = ~7'h54;
       CH_o    : semseg = ~7'h5C;
       CH_r    : semseg = ~7'h50;
-      CH_S    : semseg = ~7'h6D;
+      CH_S    : semseg = ~7'h64;
       CH_t    : semseg = ~7'h78;
       CH_u    : semseg = ~7'h1C;
-      CH_X    : semseg = ~7'h49;
+      CH_X    : semseg = ~7'h76;
       CH_P    : semseg = ~7'h73;
       CH_J    : semseg = ~7'h1E;
       CH_q    : semseg = ~7'h67;
-      CH_i    : semseg = ~7'h04;
-      CH_m    : semseg = ~7'h55;
+      CH_i    : semseg = ~7'h30;
+      CH_m    : semseg = ~7'h77;
       default : semseg = BLANK;
     endcase
   end
