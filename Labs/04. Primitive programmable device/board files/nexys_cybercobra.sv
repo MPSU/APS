@@ -109,8 +109,8 @@ module nexys_CYBERcobra(
 
   logic [31:0] instr_addr;
   logic [31:0] instr;
-  assign instr_addr = dut.instr_mem.addr_i;
-  assign instr      = dut.instr_mem.read_data_o;
+  assign instr_addr = dut.instrmem.addr_i;
+  assign instr      = dut.instrmem.read_data_o;
 
   import alu_opcodes_pkg::*;
 
