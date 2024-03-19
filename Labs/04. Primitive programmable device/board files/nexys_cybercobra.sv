@@ -89,10 +89,10 @@ module nexys_CYBERcobra(
   );
   logic btnd_debounce;
   debounce debounce (
-    .clk_i                 ,
-    .arstn_i               ,
-    .data_i (btnd_sync    ),
-    .data_o (btnd_debounce)
+    .clk_i                  ,
+    .arstn_i (1'b1         ),
+    .data_i  (btnd_sync    ),
+    .data_o  (btnd_debounce)
   );
   logic bufg_clk;
   BUFG dut_bufg(
