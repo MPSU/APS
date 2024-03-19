@@ -112,8 +112,8 @@ module nexys_riscv_unit(
 
   logic       illegal_instr;
 
-  logic [4:0] opcode;
-  assign      opcode = instr[6:2];
+  logic [6:0] opcode;
+  assign      opcode = instr[6:0];
 
   Char op_chars[0:3];
   import riscv_pkg::*;
@@ -121,19 +121,19 @@ module nexys_riscv_unit(
     op_chars = '{4{CH_SPACE}};
 
     case (opcode)
-      LOAD_OPCODE    : op_chars      = '{CH_L, CH_o, CH_A, CH_d};
-      MISC_MEM_OPCODE: op_chars      = '{CH_m, CH_i, CH_S, CH_c};
-      OP_IMM_OPCODE  : op_chars      = '{CH_o, CH_P, CH_i, CH_m};
-      AUIPC_OPCODE   : op_chars      = '{CH_A, CH_u, CH_i, CH_P};
-      STORE_OPCODE   : op_chars      = '{CH_S, CH_t, CH_o, CH_r};
-      OP_OPCODE      : op_chars[0:1] = '{CH_o, CH_P};
-      LUI_OPCODE     : op_chars[0:2] = '{CH_L, CH_u, CH_i};
-      BRANCH_OPCODE  : op_chars      = '{CH_b, CH_r, CH_c, CH_h};
-      JALR_OPCODE    : op_chars      = '{CH_J, CH_A, CH_L, CH_r};
-      JAL_OPCODE     : op_chars[0:2] = '{CH_J, CH_A, CH_L};
-      SYSTEM_OPCODE  : op_chars[0:2] = '{CH_S, CH_y, CH_S};
+      {LOAD_OPCODE    , 2'b11}: op_chars      = '{CH_L, CH_o, CH_A, CH_d};
+      {MISC_MEM_OPCODE, 2'b11}: op_chars      = '{CH_m, CH_i, CH_S, CH_c};
+      {OP_IMM_OPCODE  , 2'b11}: op_chars      = '{CH_o, CH_P, CH_i, CH_m};
+      {AUIPC_OPCODE   , 2'b11}: op_chars      = '{CH_A, CH_u, CH_i, CH_P};
+      {STORE_OPCODE   , 2'b11}: op_chars      = '{CH_S, CH_t, CH_o, CH_r};
+      {OP_OPCODE      , 2'b11}: op_chars[0:1] = '{CH_o, CH_P};
+      {LUI_OPCODE     , 2'b11}: op_chars[0:2] = '{CH_L, CH_u, CH_i};
+      {BRANCH_OPCODE  , 2'b11}: op_chars      = '{CH_b, CH_r, CH_c, CH_h};
+      {JALR_OPCODE    , 2'b11}: op_chars      = '{CH_J, CH_A, CH_L, CH_r};
+      {JAL_OPCODE     , 2'b11}: op_chars[0:2] = '{CH_J, CH_A, CH_L};
+      {SYSTEM_OPCODE  , 2'b11}: op_chars[0:2] = '{CH_S, CH_y, CH_S};
 
-      default        : op_chars[0:2] = '{CH_i, CH_L, CH_L};
+      default                 : op_chars[0:2] = '{CH_i, CH_L, CH_L};
     endcase
   end
 
