@@ -146,22 +146,22 @@ module nexys_riscv_unit(
   };
   assign all_chars[4:7] = op_chars;
 
-  Semseg all_semsegs[0:7];
-  for (genvar semseg_num = 0; semseg_num < 8; ++semseg_num) begin : CHAR2SEMSEG_GEN
-    char2semseg char2semseg (
-      .char_i   (all_chars  [semseg_num]),
-      .semseg_o (all_semsegs[semseg_num])
-    );
-  end
+  Char current_char;
+  logic [7:0] an;
+  semseg_one2many #(
+    .DATA_T (Char)
+  ) semseg_one2many (
+    .clk100m_i        (clk_i       ),
+    .arstn_i          (arstn_i     ),
+    .all_semsegs_i    (all_chars   ),
+    .current_semseg_o (current_char),
+    .an_o             (an          )
+  );
 
   Semseg current_semseg;
-  logic [7:0] an;
-  semseg_one2many semseg_one2many (
-    .clk100m_i        (clk_i         ),
-    .arstn_i          (arstn_i       ),
-    .all_semsegs_i    (all_semsegs   ),
-    .current_semseg_o (current_semseg),
-    .an_o             (an            )
+  char2semseg char2semseg (
+    .char_i   (current_char  ),
+    .semseg_o (current_semseg)
   );
 
   assign ca_o = current_semseg.ca;
@@ -237,12 +237,13 @@ module char2semseg #(
 endmodule
 
 module semseg_one2many #(
-  parameter int unsigned SEMSEGS_NUM = 8
+  parameter int unsigned SEMSEGS_NUM = 8,
+  parameter type         DATA_T
 ) (
-  input  Semseg all_semsegs_i[0:SEMSEGS_NUM-1],
+  input  DATA_T all_semsegs_i[0:SEMSEGS_NUM-1],
   input  logic  clk100m_i,
   input  logic  arstn_i,
-  output Semseg current_semseg_o,
+  output DATA_T current_semseg_o,
   output logic [7:0] an_o
 );
   logic  clk_i;
@@ -267,7 +268,7 @@ module semseg_one2many #(
     else if (an_en)    an_ff <= an_next;
   end
 
-  Semseg current_semseg;
+  DATA_T current_semseg;
   always_comb begin
     unique case (1'b0)
       an_ff[0]: current_semseg = all_semsegs_i[7];
