@@ -2,155 +2,332 @@
 * Project Name   : Architectures of Processor Systems (APS) lab work
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
-* Author(s)      : Nikita Bulavin
-* Email(s)       : nekkit6@edu.miet.ru
+* Author(s)      : Alexander Kharlamov
+* Email(s)       : sasha_xarlamov@org.miet.ru
 
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
+typedef enum {
+  INSTR_ALU   , // branch and computational
+  INSTR_LI    , // const load
+  INSTR_IN    , // periphery load
+  INSTR_JUMP  ,
+  INSTR_NOP     // ws == 3
+} Instruction_type;
+
+typedef enum {
+  CH_0 = 0,
+  CH_1,
+  CH_2,
+  CH_3,
+  CH_4,
+  CH_5,
+  CH_6,
+  CH_7,
+  CH_8,
+  CH_9,
+  CH_A,
+  CH_b,
+  CH_c,
+  CH_d,
+  CH_E,
+  CH_F,
+  CH_G,
+  CH_L,
+  CH_n,
+  CH_o,
+  CH_r,
+  CH_S,
+  CH_t,
+  CH_u,
+  CH_X,
+  CH_P,
+  CH_J,
+  CH_q,
+  CH_i,
+  CH_m,
+  CH_y,
+  CH_h,
+
+  CH_SPACE
+} Char;
+
+typedef struct {
+  logic ca;
+  logic cb;
+  logic cc;
+  logic cd;
+  logic ce;
+  logic cf;
+  logic cg;
+  logic dp;
+} Semseg;
+
 module nexys_riscv_unit(
-    input CLK100,
-    input resetn,
-    input BTND,
-    output CA, CB, CC, CD, CE, CF, CG,
-    output [7:0] AN
-    );
+  input  logic        clk_i,
+  input  logic        arstn_i,
+  input  logic        btnd_i,
+  output logic        ca_o,
+  output logic        cb_o,
+  output logic        cc_o,
+  output logic        cd_o,
+  output logic        ce_o,
+  output logic        cf_o,
+  output logic        cg_o,
+  output logic        dp_o,
+  output logic [ 7:0] an_o
+);
 
-    riscv_unit unit(
-    .clk_i(btn),
-    .rst_i(!resetn)
-    );
+  logic btnd_sync;
+  sync sync (
+    .clk_i             ,
+    .data_i (btnd_i   ),
+    .data_o (btnd_sync)
+  );
+  logic btnd_debounce;
+  debounce debounce (
+    .clk_i                 ,
+    .arstn_i               ,
+    .data_i (btnd_sync    ),
+    .data_o (btnd_debounce)
+  );
+  logic bufg_clk;
+  BUFG dut_bufg(
+    .I (btnd_debounce),
+    .O (bufg_clk     )
+  );
 
-  wire [31:0] instr_addr;
-  wire [31:0] instr;
-  reg   btn;
+  riscv_unit unit(
+    .clk_i (bufg_clk),
+    .rst_i (!arstn_i)
+  );
 
+  logic [31:0] instr_addr;
+  logic [31:0] instr;
   assign instr_addr = unit.core.instr_addr_o;
   assign instr = unit.core.instr_i;
 
-  localparam pwm = 1000;
-  reg [9:0] counter;
-  reg [7:0] semseg;
-  reg [7:0] ANreg;
-  reg CAr, CBr, CCr, CDr, CEr, CFr, CGr;
+  import alu_opcodes_pkg::*;
 
-  assign AN[7:0] = ANreg[7:0];
-  assign {CA, CB, CC, CD, CE, CF, CG} = {CAr, CBr, CCr, CDr, CEr, CFr, CGr};
+  logic       illegal_instr;
 
+  logic [4:0] opcode;
+  assign      opcode = instr[6:2];
 
-  always @(posedge CLK100) begin
-    if (!resetn) begin
-        counter <= 'b0;
-        ANreg[7:0] <= 8'b11111111;
-        {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111111;
-        btn <= BTND;
-    end
-    else begin
-        btn <= BTND;
-        if (counter < pwm) counter = counter + 'b1;
-        else begin
-            counter = 'b0;
-            ANreg[1] <= ANreg[0];
-            ANreg[2] <= ANreg[1];
-            ANreg[3] <= ANreg[2];
-            ANreg[4] <= ANreg[3];
-            ANreg[5] <= ANreg[4];
-            ANreg[6] <= ANreg[5];
-            ANreg[7] <= ANreg[6];
-            ANreg[0] <= !(ANreg[6:0] == 7'b1111111);
-        end
-        if(|(~ANreg[5:4])) begin
-            case (1'b0)
-                ANreg[4]: semseg <= instr_addr[3:0];
-                ANreg[5]: semseg <= instr_addr[7:4];
-            endcase
-            case (semseg)
-                4'h0: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000001;
-                4'h1: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1001111;
-                4'h2: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0010010;
-                4'h3: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000110;
-                4'h4: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1001100;
-                4'h5: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0100100;
-                4'h6: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0100000;
-                4'h7: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001111;
-                4'h8: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000000;
-                4'h9: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000100;
-                4'hA: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001000;
-                4'hB: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1100000;
-                4'hC: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0110001;
-                4'hD: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000010;
-                4'hE: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0110000;
-                4'hF: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0111000;
-                default: {CAr,CBr,CCr,CDr, CEr, CFr, CGr} <= 7'b0111111;
-            endcase
-        end else begin
-            case (1'b0)
-                ANreg[7]: begin
-                    {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0011000;
-                end
-                ANreg[6]: begin
-                    {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0110001;
-                end
-                ANreg[3]: begin
-                    case(instr[6:2])
-                        5'b01101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111111; //LUI   -
-                        5'b00101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001000; //AUIP  A
-                        5'b11011:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111111; //JAL   -
-                        5'b11001:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000111; //JALR  J
-                        5'b11000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1100000; //brch  b
-                        5'b00000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //LOAd  L
-                        5'b01000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0100100; //STOr  S
-                        5'b00100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000001; //OPIM  O
-                        5'b01100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111111; //OP    -
-                        default: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111001; //ILLE  I
-                    endcase
-                end
-                ANreg[2]: begin
-                    case(instr[6:2])
-                        5'b01101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //LUI   L
-                        5'b00101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000001; //AUIP  U
-                        5'b11011:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000111; //JAL   J
-                        5'b11001:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001000; //JALR  A
-                        5'b11000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111010; //brch  r
-                        5'b00000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000001; //LOAd  O
-                        5'b01000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110000; //StOr  t
-                        5'b00100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0011000; //OPIM  P
-                        5'b01100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111111; //OP    -
-                        default: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //ILLE  L
-                    endcase
-                end
-                ANreg[1]: begin
-                    case(instr[6:2])
-                        5'b01101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000001; //LUI   U
-                        5'b00101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111001; //AUIP  I
-                        5'b11011:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001000; //JAL   A
-                        5'b11001:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //JALR  L
-                        5'b11000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110010; //brch  c
-                        5'b00000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0001000; //LOAd  A
-                        5'b01000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000001; //STOr  O
-                        5'b00100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111001; //OPIM  I
-                        5'b01100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0000001; //OP    O
-                        default: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //ILLE  L
-                    endcase
-                end
-                ANreg[0]: begin
-                    case(instr[6:2])
-                        5'b01101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111001; //LUI   I
-                        5'b00101:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0011000; //AUIP  P
-                        5'b11011:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1110001; //JAL   L
-                        5'b11001:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111010; //JALr  r
-                        5'b11000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1101000; //brch  h
-                        5'b00000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1000010; //LOAd  d
-                        5'b01000:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b1111010; //STOr  r
-                        5'b00100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0101010; //OPIM  M
-                        5'b01100:{CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0011000; //OP    P
-                        default: {CAr, CBr, CCr, CDr, CEr, CFr, CGr} <= 7'b0110000; //ILLE  E
-                    endcase
-                end
-            endcase
-         end
-     end
+  Char op_chars[0:3];
+  import riscv_pkg::*;
+  always_comb begin
+    op_chars = '{4{CH_SPACE}};
 
+    case (opcode)
+      LOAD_OPCODE    : op_chars      = '{CH_L, CH_o, CH_A, CH_d};
+      MISC_MEM_OPCODE: op_chars      = '{CH_m, CH_i, CH_S, CH_c};
+      OP_IMM_OPCODE  : op_chars      = '{CH_o, CH_P, CH_i, CH_m};
+      AUIPC_OPCODE   : op_chars      = '{CH_A, CH_u, CH_i, CH_P};
+      STORE_OPCODE   : op_chars      = '{CH_S, CH_t, CH_o, CH_r};
+      OP_OPCODE      : op_chars[0:1] = '{CH_o, CH_P};
+      LUI_OPCODE     : op_chars[0:2] = '{CH_L, CH_u, CH_i};
+      BRANCH_OPCODE  : op_chars      = '{CH_b, CH_r, CH_c, CH_h};
+      JALR_OPCODE    : op_chars      = '{CH_J, CH_A, CH_L, CH_r};
+      JAL_OPCODE     : op_chars[0:2] = '{CH_J, CH_A, CH_L};
+      SYSTEM_OPCODE  : op_chars[0:2] = '{CH_S, CH_y, CH_S};
+
+      default        : op_chars[0:2] = '{CH_i, CH_L, CH_L};
+    endcase
   end
+
+  Char all_chars[0:7];
+  assign all_chars[0:3] = {
+      Char'(instr_addr[15:12]),
+      Char'(instr_addr[11: 8]),
+      Char'(instr_addr[ 7: 4]),
+      Char'(instr_addr[ 3: 0])
+  };
+  assign all_chars[4:7] = op_chars;
+
+  Semseg all_semsegs[0:7];
+  for (genvar semseg_num = 0; semseg_num < 8; ++semseg_num) begin : CHAR2SEMSEG_GEN
+    char2semseg char2semseg (
+      .char_i   (all_chars  [semseg_num]),
+      .semseg_o (all_semsegs[semseg_num])
+    );
+  end
+
+  Semseg current_semseg;
+  logic [7:0] an;
+  semseg_one2many semseg_one2many (
+    .clk100m_i        (clk_i         ),
+    .arstn_i          (arstn_i       ),
+    .all_semsegs_i    (all_semsegs   ),
+    .current_semseg_o (current_semseg),
+    .an_o             (an            )
+  );
+
+  assign ca_o = current_semseg.ca;
+  assign cb_o = current_semseg.cb;
+  assign cc_o = current_semseg.cc;
+  assign cd_o = current_semseg.cd;
+  assign ce_o = current_semseg.ce;
+  assign cf_o = current_semseg.cf;
+  assign cg_o = current_semseg.cg;
+  assign dp_o = current_semseg.dp;
+
+  assign an_o = an;
+
+endmodule
+
+module char2semseg #(
+  parameter bit HEX_ONLY = 1'b0
+) (
+  input  Char   char_i,
+  output Semseg semseg_o
+);
+
+  localparam bit [6:0] BLANK = '1;
+
+  logic [6:0] semseg;
+  always_comb begin
+    case (char_i)
+      CH_0    : semseg = ~7'h3F;
+      CH_1    : semseg = ~7'h06;
+      CH_2    : semseg = ~7'h5B;
+      CH_3    : semseg = ~7'h4F;
+      CH_4    : semseg = ~7'h66;
+      CH_5    : semseg = ~7'h6D;
+      CH_6    : semseg = ~7'h7D;
+      CH_7    : semseg = ~7'h07;
+      CH_8    : semseg = ~7'h7F;
+      CH_9    : semseg = ~7'h6F;
+      CH_A    : semseg = ~7'h5F;
+      CH_b    : semseg = ~7'h7C;
+      CH_c    : semseg = ~7'h58;
+      CH_d    : semseg = ~7'h5E;
+      CH_E    : semseg = ~7'h79;
+      CH_F    : semseg = ~7'h71;
+      CH_G    : semseg = ~7'h3D;
+      CH_L    : semseg = ~7'h38;
+      CH_n    : semseg = ~7'h54;
+      CH_o    : semseg = ~7'h5C;
+      CH_r    : semseg = ~7'h50;
+      CH_S    : semseg = ~7'h64;
+      CH_t    : semseg = ~7'h78;
+      CH_u    : semseg = ~7'h1C;
+      CH_X    : semseg = ~7'h76;
+      CH_P    : semseg = ~7'h73;
+      CH_J    : semseg = ~7'h1E;
+      CH_q    : semseg = ~7'h67;
+      CH_i    : semseg = ~7'h30;
+      CH_m    : semseg = ~7'h77;
+      CH_y    : semseg = ~7'h6E;
+      CH_h    : semseg = ~7'h74;
+      default : semseg = BLANK;
+    endcase
+  end
+
+  assign semseg_o.ca = semseg[0];
+  assign semseg_o.cb = semseg[1];
+  assign semseg_o.cc = semseg[2];
+  assign semseg_o.cd = semseg[3];
+  assign semseg_o.ce = semseg[4];
+  assign semseg_o.cf = semseg[5];
+  assign semseg_o.cg = semseg[6];
+  assign semseg_o.dp = 1'b1;
+
+endmodule
+
+module semseg_one2many #(
+  parameter int unsigned SEMSEGS_NUM = 8
+) (
+  input  Semseg all_semsegs_i[0:SEMSEGS_NUM-1],
+  input  logic  clk100m_i,
+  input  logic  arstn_i,
+  output Semseg current_semseg_o,
+  output logic [7:0] an_o
+);
+  logic  clk_i;
+  assign clk_i = clk100m_i;
+
+  localparam int COUNTER_WIDTH = 10;
+  logic [COUNTER_WIDTH-1:0] counter_next;
+  logic [COUNTER_WIDTH-1:0] counter_ff;
+  assign counter_next = counter_ff + COUNTER_WIDTH'('b1);
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (!arstn_i) counter_ff <= '0;
+    else          counter_ff <= counter_next;
+  end
+
+  logic [7:0] an_ff;
+  logic [7:0] an_next;
+  logic       an_en;
+  assign an_next = {an_ff[$left(an_ff)-1:0], an_ff[$left(an_ff)]};
+  assign an_en   = ~|counter_ff;
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i) an_ff <= ~8'b1;
+    else if (an_en)    an_ff <= an_next;
+  end
+
+  Semseg current_semseg;
+  always_comb begin
+    unique case (1'b0)
+      an_ff[0]: current_semseg = all_semsegs_i[7];
+      an_ff[1]: current_semseg = all_semsegs_i[6];
+      an_ff[2]: current_semseg = all_semsegs_i[5];
+      an_ff[3]: current_semseg = all_semsegs_i[4];
+      an_ff[4]: current_semseg = all_semsegs_i[3];
+      an_ff[5]: current_semseg = all_semsegs_i[2];
+      an_ff[6]: current_semseg = all_semsegs_i[1];
+      an_ff[7]: current_semseg = all_semsegs_i[0];
+    endcase
+  end
+
+  assign current_semseg_o = current_semseg;
+
+  assign an_o = an_ff;
+
+endmodule
+
+module debounce #(
+  parameter int unsigned MAX_COUNT = 10000
+) (
+  input  logic clk_i,
+  input  logic arstn_i,
+  input  logic data_i,
+  output logic data_o
+);
+
+  localparam int COUNTER_WIDTH = $clog2(MAX_COUNT);
+  logic [COUNTER_WIDTH-1:0] counter_next;
+  logic [COUNTER_WIDTH-1:0] counter_ff;
+  assign counter_next = (data_o != data_i) ? counter_ff - COUNTER_WIDTH'('b1) :
+                                             COUNTER_WIDTH'(MAX_COUNT);
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i)         counter_ff <= COUNTER_WIDTH'(MAX_COUNT);
+    else                       counter_ff <= counter_next;
+  end
+
+  always_ff @(posedge clk_i or negedge arstn_i) begin
+    if      (!arstn_i)     data_o <= '0;
+    else if (~|counter_ff) data_o <= data_i;
+  end
+
+endmodule
+
+module sync #(
+  parameter int unsigned SYNC_STAGES = 3
+) (
+  input  logic clk_i,
+  input  logic data_i,
+  output logic data_o
+);
+
+  logic [SYNC_STAGES-1:0] sync_buffer_ff;
+  logic [SYNC_STAGES-1:0] sync_buffer_next;
+  assign                  sync_buffer_next = {sync_buffer_ff[$left(sync_buffer_ff)-1:0], data_i};
+  always_ff @(posedge clk_i) begin
+    sync_buffer_ff <= sync_buffer_next;
+  end
+
+  assign data_o = sync_buffer_ff[$left(sync_buffer_ff)];
 
 endmodule
