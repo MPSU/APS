@@ -395,7 +395,7 @@ always_comb begin
   endcase
 end
 
-logic  read_data_next;
+logic [31:0] read_data_next;
 always_comb begin
   case ({req_i, read_data_addr_bit, soft_reset_addr_cmp, write_enable_i, soft_reset_write_data_cmp})
     5'b00000: read_data_next = read_data_o;
