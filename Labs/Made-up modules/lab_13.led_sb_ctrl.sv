@@ -40,49 +40,109 @@ assign led_mode_write_data_cmp = write_data_i <= 32'd1;
 
 logic led_mode_en;
 always_comb begin
-  case ({led_mode_write_data_cmp, led_mode_addr_cmp, write_enable_i, soft_reset, req_i})
-    5'b00000: led_mode_en = 1'b0;
-    5'b00001: led_mode_en = 1'b0;
-    5'b00010: led_mode_en = 1'b1;
-    5'b00011: led_mode_en = 1'b1;
-    5'b00100: led_mode_en = 1'b0;
-    5'b00101: led_mode_en = 1'b0;
-    5'b00110: led_mode_en = 1'b1;
-    5'b00111: led_mode_en = 1'b1;
-    5'b01000: led_mode_en = 1'b0;
-    5'b01001: led_mode_en = 1'b0;
-    5'b01010: led_mode_en = 1'b1;
-    5'b01011: led_mode_en = 1'b1;
-    5'b01100: led_mode_en = 1'b0;
-    5'b01101: led_mode_en = 1'b0;
-    5'b01110: led_mode_en = 1'b1;
-    5'b01111: led_mode_en = 1'b1;
-    5'b10000: led_mode_en = 1'b0;
-    5'b10001: led_mode_en = 1'b0;
-    5'b10010: led_mode_en = 1'b1;
-    5'b10011: led_mode_en = 1'b1;
-    5'b10100: led_mode_en = 1'b0;
-    5'b10101: led_mode_en = 1'b0;
-    5'b10110: led_mode_en = 1'b1;
-    5'b10111: led_mode_en = 1'b1;
-    5'b11000: led_mode_en = 1'b0;
-    5'b11001: led_mode_en = 1'b0;
-    5'b11010: led_mode_en = 1'b1;
-    5'b11011: led_mode_en = 1'b1;
-    5'b11100: led_mode_en = 1'b0;
-    5'b11101: led_mode_en = 1'b1;
-    5'b11110: led_mode_en = 1'b1;
-    5'b11111: led_mode_en = 1'b1;
+  case ({soft_reset_addr_cmp, led_mode_write_data_cmp, led_mode_addr_cmp, write_enable_i, req_i, soft_reset_write_data_cmp})
+    6'b000000: led_mode_en = 1'b0;
+    6'b000001: led_mode_en = 1'b0;
+    6'b000010: led_mode_en = 1'b0;
+    6'b000011: led_mode_en = 1'b0;
+    6'b000100: led_mode_en = 1'b0;
+    6'b000101: led_mode_en = 1'b0;
+    6'b000110: led_mode_en = 1'b0;
+    6'b000111: led_mode_en = 1'b0;
+    6'b001000: led_mode_en = 1'b0;
+    6'b001001: led_mode_en = 1'b0;
+    6'b001010: led_mode_en = 1'b0;
+    6'b001011: led_mode_en = 1'b0;
+    6'b001100: led_mode_en = 1'b0;
+    6'b001101: led_mode_en = 1'b0;
+    6'b001110: led_mode_en = 1'b0;
+    6'b001111: led_mode_en = 1'b0;
+    6'b010000: led_mode_en = 1'b0;
+    6'b010001: led_mode_en = 1'b0;
+    6'b010010: led_mode_en = 1'b0;
+    6'b010011: led_mode_en = 1'b0;
+    6'b010100: led_mode_en = 1'b0;
+    6'b010101: led_mode_en = 1'b0;
+    6'b010110: led_mode_en = 1'b0;
+    6'b010111: led_mode_en = 1'b0;
+    6'b011000: led_mode_en = 1'b0;
+    6'b011001: led_mode_en = 1'b0;
+    6'b011010: led_mode_en = 1'b0;
+    6'b011011: led_mode_en = 1'b0;
+    6'b011100: led_mode_en = 1'b0;
+    6'b011101: led_mode_en = 1'b0;
+    6'b011110: led_mode_en = 1'b1;
+    6'b011111: led_mode_en = 1'b1;
+    6'b100000: led_mode_en = 1'b0;
+    6'b100001: led_mode_en = 1'b0;
+    6'b100010: led_mode_en = 1'b0;
+    6'b100011: led_mode_en = 1'b0;
+    6'b100100: led_mode_en = 1'b0;
+    6'b100101: led_mode_en = 1'b0;
+    6'b100110: led_mode_en = 1'b0;
+    6'b100111: led_mode_en = 1'b1; // reset
+    6'b101000: led_mode_en = 1'b0;
+    6'b101001: led_mode_en = 1'b0;
+    6'b101010: led_mode_en = 1'b0;
+    6'b101011: led_mode_en = 1'b0;
+    6'b101100: led_mode_en = 1'b0;
+    6'b101101: led_mode_en = 1'b0;
+    6'b101110: led_mode_en = 1'b0;
+    6'b101111: led_mode_en = 1'b1; // reset
+    6'b110000: led_mode_en = 1'b0;
+    6'b110001: led_mode_en = 1'b0;
+    6'b110010: led_mode_en = 1'b0;
+    6'b110011: led_mode_en = 1'b0;
+    6'b110100: led_mode_en = 1'b0;
+    6'b110101: led_mode_en = 1'b0;
+    6'b110110: led_mode_en = 1'b0;
+    6'b110111: led_mode_en = 1'b1; // reset
+    6'b111000: led_mode_en = 1'b0;
+    6'b111001: led_mode_en = 1'b0;
+    6'b111010: led_mode_en = 1'b0;
+    6'b111011: led_mode_en = 1'b0;
+    6'b111100: led_mode_en = 1'b0;
+    6'b111101: led_mode_en = 1'b0;
+    6'b111110: led_mode_en = 1'b1;
+    6'b111111: led_mode_en = 1'b1; // reset
   endcase
 end
 
 logic  led_mode_next;
 always_comb begin
-  case ({write_data_i[0], soft_reset})
-    2'b00: led_mode_next = 1'b0;
-    2'b01: led_mode_next = 1'b0;
-    2'b10: led_mode_next = 1'b1;
-    2'b11: led_mode_next = 1'b0;
+  case ({req_i, write_data_i[0], write_enable_i, soft_reset_addr_cmp, soft_reset_write_data_cmp})
+    5'b00000: led_mode_next = 1'b0;
+    5'b00001: led_mode_next = 1'b0;
+    5'b00010: led_mode_next = 1'b0;
+    5'b00011: led_mode_next = 1'b0;
+    5'b00100: led_mode_next = 1'b0;
+    5'b00101: led_mode_next = 1'b0;
+    5'b00110: led_mode_next = 1'b0;
+    5'b00111: led_mode_next = 1'b0;
+    5'b01000: led_mode_next = 1'b1;
+    5'b01001: led_mode_next = 1'b1;
+    5'b01010: led_mode_next = 1'b1;
+    5'b01011: led_mode_next = 1'b1;
+    5'b01100: led_mode_next = 1'b1;
+    5'b01101: led_mode_next = 1'b1;
+    5'b01110: led_mode_next = 1'b1;
+    5'b01111: led_mode_next = 1'b1;
+    5'b10000: led_mode_next = 1'b0;
+    5'b10001: led_mode_next = 1'b0;
+    5'b10010: led_mode_next = 1'b0;
+    5'b10011: led_mode_next = 1'b0;
+    5'b10100: led_mode_next = 1'b0;
+    5'b10101: led_mode_next = 1'b0;
+    5'b10110: led_mode_next = 1'b0;
+    5'b10111: led_mode_next = 1'b0; // reset
+    5'b11000: led_mode_next = 1'b1;
+    5'b11001: led_mode_next = 1'b1;
+    5'b11010: led_mode_next = 1'b1;
+    5'b11011: led_mode_next = 1'b1;
+    5'b11100: led_mode_next = 1'b1;
+    5'b11101: led_mode_next = 1'b1;
+    5'b11110: led_mode_next = 1'b1;
+    5'b11111: led_mode_next = 1'b0; // reset
   endcase
 end
 
