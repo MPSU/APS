@@ -320,19 +320,125 @@ always_ff @(posedge clk_i) begin
   end
 end
 
+logic  read_data_addr_cmp;
+assign read_data_addr_cmp = ~|{addr_i[31:3], addr_i[1:0]};
+logic  read_data_addr_bit;
+assign read_data_addr_bit = addr_i[2];
+
+logic read_data_en;
+always_comb begin
+  case ({read_data_addr_bit, req_i, soft_reset_addr_cmp, write_enable_i, read_data_addr_cmp, soft_reset_write_data_cmp})
+    6'b000000: read_data_en = 1'b0;
+    6'b000001: read_data_en = 1'b0;
+    6'b000010: read_data_en = 1'b0;
+    6'b000011: read_data_en = 1'b0;
+    6'b000100: read_data_en = 1'b0;
+    6'b000101: read_data_en = 1'b0;
+    6'b000110: read_data_en = 1'b0;
+    6'b000111: read_data_en = 1'b0;
+    6'b001000: read_data_en = 1'b0;
+    6'b001001: read_data_en = 1'b0;
+    6'b001010: read_data_en = 1'b0;
+    6'b001011: read_data_en = 1'b0;
+    6'b001100: read_data_en = 1'b0;
+    6'b001101: read_data_en = 1'b0;
+    6'b001110: read_data_en = 1'b0;
+    6'b001111: read_data_en = 1'b0;
+    6'b010000: read_data_en = 1'b0;
+    6'b010001: read_data_en = 1'b0;
+    6'b010010: read_data_en = 1'b1;
+    6'b010011: read_data_en = 1'b1;
+    6'b010100: read_data_en = 1'b0;
+    6'b010101: read_data_en = 1'b0;
+    6'b010110: read_data_en = 1'b0;
+    6'b010111: read_data_en = 1'b0;
+    6'b011000: read_data_en = 1'b0;
+    6'b011001: read_data_en = 1'b0;
+    6'b011010: read_data_en = 1'b1;
+    6'b011011: read_data_en = 1'b1;
+    6'b011100: read_data_en = 1'b0;
+    6'b011101: read_data_en = 1'b1; // reset
+    6'b011110: read_data_en = 1'b0;
+    6'b011111: read_data_en = 1'b1; // reset
+    6'b100000: read_data_en = 1'b0;
+    6'b100001: read_data_en = 1'b0;
+    6'b100010: read_data_en = 1'b0;
+    6'b100011: read_data_en = 1'b0;
+    6'b100100: read_data_en = 1'b0;
+    6'b100101: read_data_en = 1'b0;
+    6'b100110: read_data_en = 1'b0;
+    6'b100111: read_data_en = 1'b0;
+    6'b101000: read_data_en = 1'b0;
+    6'b101001: read_data_en = 1'b0;
+    6'b101010: read_data_en = 1'b0;
+    6'b101011: read_data_en = 1'b0;
+    6'b101100: read_data_en = 1'b0;
+    6'b101101: read_data_en = 1'b0;
+    6'b101110: read_data_en = 1'b0;
+    6'b101111: read_data_en = 1'b0;
+    6'b110000: read_data_en = 1'b0;
+    6'b110001: read_data_en = 1'b0;
+    6'b110010: read_data_en = 1'b1;
+    6'b110011: read_data_en = 1'b1;
+    6'b110100: read_data_en = 1'b0;
+    6'b110101: read_data_en = 1'b0;
+    6'b110110: read_data_en = 1'b0;
+    6'b110111: read_data_en = 1'b0;
+    6'b111000: read_data_en = 1'b0;
+    6'b111001: read_data_en = 1'b0;
+    6'b111010: read_data_en = 1'b1;
+    6'b111011: read_data_en = 1'b1;
+    6'b111100: read_data_en = 1'b0;
+    6'b111101: read_data_en = 1'b1; // reset
+    6'b111110: read_data_en = 1'b0;
+    6'b111111: read_data_en = 1'b1; // reset
+  endcase
+end
+
+logic  read_data_next;
+always_comb begin
+  case ({req_i, read_data_addr_bit, soft_reset_addr_cmp, write_enable_i, soft_reset_write_data_cmp})
+    5'b00000: read_data_next = read_data_o;
+    5'b00001: read_data_next = read_data_o;
+    5'b00010: read_data_next = read_data_o;
+    5'b00011: read_data_next = read_data_o;
+    5'b00100: read_data_next = read_data_o;
+    5'b00101: read_data_next = read_data_o;
+    5'b00110: read_data_next = read_data_o;
+    5'b00111: read_data_next = read_data_o;
+    5'b01000: read_data_next = read_data_o;
+    5'b01001: read_data_next = read_data_o;
+    5'b01010: read_data_next = read_data_o;
+    5'b01011: read_data_next = read_data_o;
+    5'b01100: read_data_next = read_data_o;
+    5'b01101: read_data_next = read_data_o;
+    5'b01110: read_data_next = read_data_o;
+    5'b01111: read_data_next = read_data_o;
+    5'b10000: read_data_next = {16'd0,led_val};
+    5'b10001: read_data_next = {16'd0,led_val};
+    5'b10010: read_data_next = read_data_o;
+    5'b10011: read_data_next = read_data_o;
+    5'b10100: read_data_next = {16'd0,led_val};
+    5'b10101: read_data_next = {16'd0,led_val};
+    5'b10110: read_data_next = read_data_o;
+    5'b10111: read_data_next = '0; // reset
+    5'b11000: read_data_next = {31'd0,led_mode};
+    5'b11001: read_data_next = {31'd0,led_mode};
+    5'b11010: read_data_next = read_data_o;
+    5'b11011: read_data_next = read_data_o;
+    5'b11100: read_data_next = {31'd0,led_mode};
+    5'b11101: read_data_next = {31'd0,led_mode};
+    5'b11110: read_data_next = read_data_o;
+    5'b11111: read_data_next = '0; // reset
+  endcase
+end
+
 always_ff @(posedge clk_i) begin
-  if(rst_i | soft_reset) begin
+  if(rst_i) begin
     read_data_o <= 32'd0;
   end
-  else if(!req_i | write_enable_i) begin
-    read_data_o <= read_data_o;
-  end
-  else begin
-    case(addr_i)
-      32'd0: read_data_o <= {16'd0,led_val};
-      32'd4: read_data_o <= {31'd0,led_mode};
-      default: read_data_o <= read_data_o;
-    endcase
+  else if(read_data_en) begin
+    read_data_o <= read_data_next;
   end
 end
 
