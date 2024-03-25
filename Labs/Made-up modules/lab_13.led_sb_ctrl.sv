@@ -34,9 +34,16 @@ assign led_mode_addr_cmp = addr_i == 32'd4;
 logic  led_mode_write_data_cmp;
 assign led_mode_write_data_cmp = write_data_i <= 32'd1;
 
+logic  write_enable;
+assign write_enable = write_enable_i;
+logic  req;
+assign req = req_i;
+logic  write_data_bit;
+assign write_data_bit = write_data_i[0];
+
 logic led_mode_en;
 always_comb begin
-  case ({soft_reset_addr_cmp, led_mode_write_data_cmp, led_mode_addr_cmp, write_enable_i, req_i, soft_reset_write_data_cmp})
+  case ({soft_reset_addr_cmp, led_mode_write_data_cmp, led_mode_addr_cmp, write_enable, req, soft_reset_write_data_cmp})
     6'b000000: led_mode_en = 1'b0;
     6'b000001: led_mode_en = 1'b0;
     6'b000010: led_mode_en = 1'b0;
@@ -106,7 +113,7 @@ end
 
 logic  led_mode_next;
 always_comb begin
-  case ({req_i, write_data_i[0], write_enable_i, soft_reset_addr_cmp, soft_reset_write_data_cmp})
+  case ({req, write_data_bit, write_enable, soft_reset_addr_cmp, soft_reset_write_data_cmp})
     5'b00000: led_mode_next = 1'b0;
     5'b00001: led_mode_next = 1'b0;
     5'b00010: led_mode_next = 1'b0;
@@ -155,7 +162,7 @@ assign cntr_cmp = cntr < 32'd20_000_000;
 
 logic [31:0] cntr_next;
 always_comb begin
-  case ({cntr_cmp, req_i, write_enable_i, soft_reset_addr_cmp, led_mode, soft_reset_write_data_cmp})
+  case ({cntr_cmp, req, write_enable, soft_reset_addr_cmp, led_mode, soft_reset_write_data_cmp})
     6'b000000: cntr_next = '0;
     6'b000001: cntr_next = '0;
     6'b000010: cntr_next = '0;
@@ -239,7 +246,7 @@ assign write_data_cmp = write_data_i[31:16] == 16'd0;
 
 logic led_val_en;
 always_comb begin
-  case ({req_i, write_enable_i, soft_reset_addr_cmp, soft_reset_write_data_cmp, led_val_addr_cmp, write_data_cmp})
+  case ({req, write_enable, soft_reset_addr_cmp, soft_reset_write_data_cmp, led_val_addr_cmp, write_data_cmp})
     6'b000000: led_val_en = 1'b0;
     6'b000001: led_val_en = 1'b0;
     6'b000010: led_val_en = 1'b0;
@@ -312,7 +319,7 @@ always_ff @(posedge clk_i) begin
     led_val <= 16'd0;
   end
   else if(led_val_en) begin
-    led_val <= write_data_i[15:0] & {16{~(req_i & write_enable_i & soft_reset_addr_cmp & write_data_i[0] & soft_reset_write_data_cmp)}};
+    led_val <= write_data_i[15:0] & {16{~(req & write_enable & soft_reset_addr_cmp & write_data_bit & soft_reset_write_data_cmp)}};
   end
 end
 
@@ -323,7 +330,7 @@ assign read_data_addr_bit = addr_i[2];
 
 logic read_data_en;
 always_comb begin
-  case ({read_data_addr_bit, req_i, soft_reset_addr_cmp, write_enable_i, read_data_addr_cmp, soft_reset_write_data_cmp})
+  case ({read_data_addr_bit, req, soft_reset_addr_cmp, write_enable, read_data_addr_cmp, soft_reset_write_data_cmp})
     6'b000000: read_data_en = 1'b0;
     6'b000001: read_data_en = 1'b0;
     6'b000010: read_data_en = 1'b0;
@@ -393,7 +400,7 @@ end
 
 logic [31:0] read_data_next;
 always_comb begin
-  case ({req_i, read_data_addr_bit, soft_reset_addr_cmp, write_enable_i, soft_reset_write_data_cmp})
+  case ({req, read_data_addr_bit, soft_reset_addr_cmp, write_enable, soft_reset_write_data_cmp})
     5'b00000: read_data_next = read_data_o;
     5'b00001: read_data_next = read_data_o;
     5'b00010: read_data_next = read_data_o;
