@@ -236,15 +236,87 @@ always_ff @(posedge clk_i) begin
   end
 end
 
+logic  led_val_addr_cmp;
+assign led_val_addr_cmp = addr_i == 32'd0;
+logic  write_data_cmp;
+assign write_data_cmp = write_data_i[31:16] == 16'd0;
+
+logic led_val_en;
+always_comb begin
+  case ({req_i, write_enable_i, soft_reset_addr_cmp, soft_reset_write_data_cmp, led_val_addr_cmp, write_data_cmp})
+    6'b000000: led_val_en = 1'b0;
+    6'b000001: led_val_en = 1'b0;
+    6'b000010: led_val_en = 1'b0;
+    6'b000011: led_val_en = 1'b1;
+    6'b000100: led_val_en = 1'b0;
+    6'b000101: led_val_en = 1'b0;
+    6'b000110: led_val_en = 1'b0;
+    6'b000111: led_val_en = 1'b1;
+    6'b001000: led_val_en = 1'b0;
+    6'b001001: led_val_en = 1'b0;
+    6'b001010: led_val_en = 1'b0;
+    6'b001011: led_val_en = 1'b1;
+    6'b001100: led_val_en = 1'b0;
+    6'b001101: led_val_en = 1'b0;
+    6'b001110: led_val_en = 1'b0;
+    6'b001111: led_val_en = 1'b1;
+    6'b010000: led_val_en = 1'b0;
+    6'b010001: led_val_en = 1'b0;
+    6'b010010: led_val_en = 1'b0;
+    6'b010011: led_val_en = 1'b1;
+    6'b010100: led_val_en = 1'b0;
+    6'b010101: led_val_en = 1'b0;
+    6'b010110: led_val_en = 1'b0;
+    6'b010111: led_val_en = 1'b1;
+    6'b011000: led_val_en = 1'b0;
+    6'b011001: led_val_en = 1'b0;
+    6'b011010: led_val_en = 1'b0;
+    6'b011011: led_val_en = 1'b1;
+    6'b011100: led_val_en = 1'b0;
+    6'b011101: led_val_en = 1'b0;
+    6'b011110: led_val_en = 1'b0;
+    6'b011111: led_val_en = 1'b1;
+    6'b100000: led_val_en = 1'b0;
+    6'b100001: led_val_en = 1'b0;
+    6'b100010: led_val_en = 1'b0;
+    6'b100011: led_val_en = 1'b1;
+    6'b100100: led_val_en = 1'b0;
+    6'b100101: led_val_en = 1'b0;
+    6'b100110: led_val_en = 1'b0;
+    6'b100111: led_val_en = 1'b1;
+    6'b101000: led_val_en = 1'b0;
+    6'b101001: led_val_en = 1'b0;
+    6'b101010: led_val_en = 1'b0;
+    6'b101011: led_val_en = 1'b1;
+    6'b101100: led_val_en = 1'b0;
+    6'b101101: led_val_en = 1'b0;
+    6'b101110: led_val_en = 1'b0;
+    6'b101111: led_val_en = 1'b1;
+    6'b110000: led_val_en = 1'b0;
+    6'b110001: led_val_en = 1'b0;
+    6'b110010: led_val_en = 1'b0;
+    6'b110011: led_val_en = 1'b1;
+    6'b110100: led_val_en = 1'b0;
+    6'b110101: led_val_en = 1'b0;
+    6'b110110: led_val_en = 1'b0;
+    6'b110111: led_val_en = 1'b1;
+    6'b111000: led_val_en = 1'b0;
+    6'b111001: led_val_en = 1'b0;
+    6'b111010: led_val_en = 1'b0;
+    6'b111011: led_val_en = 1'b1;
+    6'b111100: led_val_en = 1'b1; // reset
+    6'b111101: led_val_en = 1'b1; // reset
+    6'b111110: led_val_en = 1'b1; // reset
+    6'b111111: led_val_en = 1'b1; // reset
+  endcase
+end
+
 always_ff @(posedge clk_i) begin
-  if(rst_i | soft_reset) begin
+  if(rst_i) begin
     led_val <= 16'd0;
   end
-  else if(req_i & write_enable_i & (addr_i == 32'd0) & (write_data_i[31:16] == 16'd0)) begin
-    led_val <= write_data_i[15:0];
-  end
-  else begin
-    led_val <= led_val;
+  else if(led_val_en) begin
+    led_val <= write_data_i[15:0] & {16{~(req_i & write_enable_i & soft_reset_addr_cmp & write_data_i[0] & soft_reset_write_data_cmp)}};
   end
 end
 
