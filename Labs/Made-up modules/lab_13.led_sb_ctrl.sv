@@ -20,15 +20,11 @@ logic         led_mode;
 
 logic [31:0]  cntr;
 
-logic soft_reset;
-
 logic  soft_reset_addr_cmp;
 assign soft_reset_addr_cmp = addr_i == 32'h24;
 
 logic  soft_reset_write_data_cmp;
 assign soft_reset_write_data_cmp = write_data_i == 1'b1;
-
-assign soft_reset = req_i & write_enable_i & soft_reset_addr_cmp & soft_reset_write_data_cmp;
 
 assign led_o = cntr < 32'd10_000_000 ? led_val : 32'd0;
 
