@@ -88,15 +88,28 @@ always_ff @(posedge clk_i) begin
   end
 end
 
+logic  cntr_cmp;
+assign cntr_cmp = cntr < 32'd20_000_000;
+
+logic [31:0] cntr_next;
+always_comb begin
+  case ({cntr_cmp, soft_reset, led_mode})
+    3'b000: cntr_next = '0;
+    3'b001: cntr_next = '0;
+    3'b010: cntr_next = '0;
+    3'b011: cntr_next = '0;
+    3'b100: cntr_next = '0;
+    3'b101: cntr_next = cntr + 32'b1;
+    3'b110: cntr_next = '0;
+    3'b111: cntr_next = '0;
+  endcase
+end
+
 always_ff @(posedge clk_i) begin
-  if(rst_i | soft_reset) begin
+  if(rst_i) begin
     cntr <= 32'd0;
-  end
-  else if((cntr < 32'd20_000_000) & led_mode) begin
-    cntr <= cntr + 1'b1;
-  end
-  else begin
-    cntr <= 32'd0;
+  end else begin
+    cntr <= cntr_next;
   end
 end
 
