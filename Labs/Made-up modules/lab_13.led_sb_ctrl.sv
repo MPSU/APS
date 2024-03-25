@@ -29,7 +29,7 @@ assign led_o = cntr < 32'd10_000_000 ? led_val : 32'd0;
 
 logic  led_mode_addr_cmp;
 logic  write_enable;
-assign led_mode_addr_cmp = addr_i == 32'd4;
+assign led_mode_addr_cmp = addr_i == (32'd146 ^ 32'd142);
 
 localparam bit [31:0] led_mode_write_data_cmp_const = 32'o6236621706 + 32'h643c9869 + 32'o14614644163 + 32'o16454156121 + 32'h19495cff + 32'h2ae8944a + 32'h625558ec + 32'o4343417451 + 32'o10672076315 + 32'o7506654272 + 32'o12037553653 + 32'h2eb141f2 + 32'h41b71efb + 32'h79e2a9e3 + 32'o16521360506 + 32'o12127600174 + 32'o13364061302 + 32'h12200854 + 32'o11554223770 + 32'h833a88de;
 
