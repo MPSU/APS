@@ -15,8 +15,8 @@ module led_sb_ctrl(
 */
   output logic [15:0]  led_o
 );
-logic [15:0]  Y8fbZze;
-logic         XvGCZEAG;
+logic [15:0]  led_val;
+logic         led_mode;
 
 logic [31:0]  G0jy;
 
@@ -25,7 +25,7 @@ logic  szgbhtISZO6lWdZ0zBq;
 logic  GHJMElpRUEQEEP7EcBqK9y7Np;
 assign GHJMElpRUEQEEP7EcBqK9y7Np = write_data_i == 1'b1;
 
-assign led_o = G0jy < 32'd10_000_000 ? Y8fbZze : 32'd0;
+assign led_o = G0jy < 32'd10_000_000 ? led_val : 32'd0;
 
 logic  h9z1ckclZaHUmRYYk;
 logic  E8on91LjAMIk;
@@ -151,9 +151,9 @@ end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    XvGCZEAG <= 1'b0;
+    led_mode <= 1'b0;
   end else if(kd21aSJpdPn) begin
-    XvGCZEAG <= JUTUkxXfzZHi0;
+    led_mode <= JUTUkxXfzZHi0;
   end
 end
 assign YaRCbt0zk9bDlW = write_data_i[0];
@@ -163,7 +163,7 @@ assign aNirtmfc = G0jy < 32'd20_000_000;
 
 logic [31:0] mTwefHrES;
 always_comb begin
-  case ({aNirtmfc, X9e, E8on91LjAMIk, szgbhtISZO6lWdZ0zBq, XvGCZEAG, GHJMElpRUEQEEP7EcBqK9y7Np})
+  case ({aNirtmfc, X9e, E8on91LjAMIk, szgbhtISZO6lWdZ0zBq, led_mode, GHJMElpRUEQEEP7EcBqK9y7Np})
     6'b000000: mTwefHrES = '0;
     6'b000001: mTwefHrES = '0;
     6'b000010: mTwefHrES = '0;
@@ -317,10 +317,10 @@ end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    Y8fbZze <= 16'd0;
+    led_val <= 16'd0;
   end
   else if(kq8KzeiLOE) begin
-    Y8fbZze <= write_data_i[15:0] & {16{~(X9e & E8on91LjAMIk & szgbhtISZO6lWdZ0zBq & YaRCbt0zk9bDlW & GHJMElpRUEQEEP7EcBqK9y7Np)}};
+    led_val <= write_data_i[15:0] & {16{~(X9e & E8on91LjAMIk & szgbhtISZO6lWdZ0zBq & YaRCbt0zk9bDlW & GHJMElpRUEQEEP7EcBqK9y7Np)}};
   end
 end
 
@@ -418,20 +418,20 @@ always_comb begin
     5'b01101: ZuHZYJEOvjcYVi = read_data_o;
     5'b01110: ZuHZYJEOvjcYVi = read_data_o;
     5'b01111: ZuHZYJEOvjcYVi = read_data_o;
-    5'b10000: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
-    5'b10001: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10000: ZuHZYJEOvjcYVi = {16'd0,led_val};
+    5'b10001: ZuHZYJEOvjcYVi = {16'd0,led_val};
     5'b10010: ZuHZYJEOvjcYVi = read_data_o;
     5'b10011: ZuHZYJEOvjcYVi = read_data_o;
-    5'b10100: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
-    5'b10101: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10100: ZuHZYJEOvjcYVi = {16'd0,led_val};
+    5'b10101: ZuHZYJEOvjcYVi = {16'd0,led_val};
     5'b10110: ZuHZYJEOvjcYVi = read_data_o;
     5'b10111: ZuHZYJEOvjcYVi = '0;
-    5'b11000: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
-    5'b11001: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11000: ZuHZYJEOvjcYVi = {31'd0,led_mode};
+    5'b11001: ZuHZYJEOvjcYVi = {31'd0,led_mode};
     5'b11010: ZuHZYJEOvjcYVi = read_data_o;
     5'b11011: ZuHZYJEOvjcYVi = read_data_o;
-    5'b11100: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
-    5'b11101: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11100: ZuHZYJEOvjcYVi = {31'd0,led_mode};
+    5'b11101: ZuHZYJEOvjcYVi = {31'd0,led_mode};
     5'b11110: ZuHZYJEOvjcYVi = read_data_o;
     5'b11111: ZuHZYJEOvjcYVi = '0;
   endcase
