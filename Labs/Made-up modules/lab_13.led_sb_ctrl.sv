@@ -83,7 +83,7 @@ always_comb begin
     6'b100100: led_mode_en = 1'b0;
     6'b100101: led_mode_en = 1'b0;
     6'b100110: led_mode_en = 1'b0;
-    6'b100111: led_mode_en = 1'b1; // reset
+    6'b100111: led_mode_en = 1'b1;
     6'b101000: led_mode_en = 1'b0;
     6'b101001: led_mode_en = 1'b0;
     6'b101010: led_mode_en = 1'b0;
@@ -91,7 +91,7 @@ always_comb begin
     6'b101100: led_mode_en = 1'b0;
     6'b101101: led_mode_en = 1'b0;
     6'b101110: led_mode_en = 1'b0;
-    6'b101111: led_mode_en = 1'b1; // reset
+    6'b101111: led_mode_en = 1'b1;
     6'b110000: led_mode_en = 1'b0;
     6'b110001: led_mode_en = 1'b0;
     6'b110010: led_mode_en = 1'b0;
@@ -99,7 +99,7 @@ always_comb begin
     6'b110100: led_mode_en = 1'b0;
     6'b110101: led_mode_en = 1'b0;
     6'b110110: led_mode_en = 1'b0;
-    6'b110111: led_mode_en = 1'b1; // reset
+    6'b110111: led_mode_en = 1'b1;
     6'b111000: led_mode_en = 1'b0;
     6'b111001: led_mode_en = 1'b0;
     6'b111010: led_mode_en = 1'b0;
@@ -107,7 +107,7 @@ always_comb begin
     6'b111100: led_mode_en = 1'b0;
     6'b111101: led_mode_en = 1'b0;
     6'b111110: led_mode_en = 1'b1;
-    6'b111111: led_mode_en = 1'b1; // reset
+    6'b111111: led_mode_en = 1'b1;
   endcase
 end
 
@@ -137,7 +137,7 @@ always_comb begin
     5'b10100: led_mode_next = 1'b0;
     5'b10101: led_mode_next = 1'b0;
     5'b10110: led_mode_next = 1'b0;
-    5'b10111: led_mode_next = 1'b0; // reset
+    5'b10111: led_mode_next = 1'b0;
     5'b11000: led_mode_next = 1'b1;
     5'b11001: led_mode_next = 1'b1;
     5'b11010: led_mode_next = 1'b1;
@@ -145,7 +145,7 @@ always_comb begin
     5'b11100: led_mode_next = 1'b1;
     5'b11101: led_mode_next = 1'b1;
     5'b11110: led_mode_next = 1'b1;
-    5'b11111: led_mode_next = 1'b0; // reset
+    5'b11111: led_mode_next = 1'b0;
   endcase
 end
 
@@ -193,9 +193,9 @@ always_comb begin
     6'b011010: cntr_next = '0;
     6'b011011: cntr_next = '0;
     6'b011100: cntr_next = '0;
-    6'b011101: cntr_next = '0; // reset
+    6'b011101: cntr_next = '0;
     6'b011110: cntr_next = '0;
-    6'b011111: cntr_next = '0; // reset
+    6'b011111: cntr_next = '0;
 
     6'b100000: cntr_next = '0;
     6'b100001: cntr_next = '0;
@@ -226,9 +226,9 @@ always_comb begin
     6'b111010: cntr_next = cntr + 32'b1;
     6'b111011: cntr_next = cntr + 32'b1;
     6'b111100: cntr_next = '0;
-    6'b111101: cntr_next = '0; // reset
+    6'b111101: cntr_next = '0;
     6'b111110: cntr_next = cntr + 32'b1;
-    6'b111111: cntr_next = '0; // reset
+    6'b111111: cntr_next = '0;
   endcase
 end
 
@@ -308,10 +308,10 @@ always_comb begin
     6'b111001: led_val_en = 1'b0;
     6'b111010: led_val_en = 1'b0;
     6'b111011: led_val_en = 1'b1;
-    6'b111100: led_val_en = 1'b1; // reset
-    6'b111101: led_val_en = 1'b1; // reset
-    6'b111110: led_val_en = 1'b1; // reset
-    6'b111111: led_val_en = 1'b1; // reset
+    6'b111100: led_val_en = 1'b1;
+    6'b111101: led_val_en = 1'b1;
+    6'b111110: led_val_en = 1'b1;
+    6'b111111: led_val_en = 1'b1;
   endcase
 end
 
@@ -361,9 +361,9 @@ always_comb begin
     6'b011010: read_data_en = 1'b1;
     6'b011011: read_data_en = 1'b1;
     6'b011100: read_data_en = 1'b0;
-    6'b011101: read_data_en = 1'b1; // reset
+    6'b011101: read_data_en = 1'b1;
     6'b011110: read_data_en = 1'b0;
-    6'b011111: read_data_en = 1'b1; // reset
+    6'b011111: read_data_en = 1'b1;
     6'b100000: read_data_en = 1'b0;
     6'b100001: read_data_en = 1'b0;
     6'b100010: read_data_en = 1'b0;
@@ -393,9 +393,9 @@ always_comb begin
     6'b111010: read_data_en = 1'b1;
     6'b111011: read_data_en = 1'b1;
     6'b111100: read_data_en = 1'b0;
-    6'b111101: read_data_en = 1'b1; // reset
+    6'b111101: read_data_en = 1'b1;
     6'b111110: read_data_en = 1'b0;
-    6'b111111: read_data_en = 1'b1; // reset
+    6'b111111: read_data_en = 1'b1;
   endcase
 end
 
@@ -425,7 +425,7 @@ always_comb begin
     5'b10100: read_data_next = {16'd0,led_val};
     5'b10101: read_data_next = {16'd0,led_val};
     5'b10110: read_data_next = read_data_o;
-    5'b10111: read_data_next = '0; // reset
+    5'b10111: read_data_next = '0;
     5'b11000: read_data_next = {31'd0,led_mode};
     5'b11001: read_data_next = {31'd0,led_mode};
     5'b11010: read_data_next = read_data_o;
@@ -433,7 +433,7 @@ always_comb begin
     5'b11100: read_data_next = {31'd0,led_mode};
     5'b11101: read_data_next = {31'd0,led_mode};
     5'b11110: read_data_next = read_data_o;
-    5'b11111: read_data_next = '0; // reset
+    5'b11111: read_data_next = '0;
   endcase
 end
 
