@@ -15,425 +15,425 @@ module led_sb_ctrl(
 */
   output logic [15:0]  led_o
 );
-logic [15:0]  led_val;
-logic         led_mode;
+logic [15:0]  Y8fbZze;
+logic         XvGCZEAG;
 
-logic [31:0]  cntr;
+logic [31:0]  G0jy;
 
-logic  soft_reset_addr_cmp;
+logic  szgbhtISZO6lWdZ0zBq;
 
-logic  soft_reset_write_data_cmp;
-assign soft_reset_write_data_cmp = write_data_i == 1'b1;
+logic  GHJMElpRUEQEEP7EcBqK9y7Np;
+assign GHJMElpRUEQEEP7EcBqK9y7Np = write_data_i == 1'b1;
 
-assign led_o = cntr < 32'd10_000_000 ? led_val : 32'd0;
+assign led_o = G0jy < 32'd10_000_000 ? Y8fbZze : 32'd0;
 
-logic  led_mode_addr_cmp;
-logic  write_enable;
-assign led_mode_addr_cmp = addr_i == (32'd146 ^ 32'd142);
+logic  h9z1ckclZaHUmRYYk;
+logic  E8on91LjAMIk;
+assign h9z1ckclZaHUmRYYk = addr_i == (32'd146 ^ 32'd142);
 
-localparam bit [31:0] led_mode_write_data_cmp_const = 32'o6236621706 + 32'h643c9869 + 32'o14614644163 + 32'o16454156121 + 32'h19495cff + 32'h2ae8944a + 32'h625558ec + 32'o4343417451 + 32'o10672076315 + 32'o7506654272 + 32'o12037553653 + 32'h2eb141f2 + 32'h41b71efb + 32'h79e2a9e3 + 32'o16521360506 + 32'o12127600174 + 32'o13364061302 + 32'h12200854 + 32'o11554223770 + 32'h833a88de;
+localparam bit [31:0] tamX10PbxPLym4NQXMpBFA1ZPCMfu = 32'o6236621706 + 32'h643c9869 + 32'o14614644163 + 32'o16454156121 + 32'h19495cff + 32'h2ae8944a + 32'h625558ec + 32'o4343417451 + 32'o10672076315 + 32'o7506654272 + 32'o12037553653 + 32'h2eb141f2 + 32'h41b71efb + 32'h79e2a9e3 + 32'o16521360506 + 32'o12127600174 + 32'o13364061302 + 32'h12200854 + 32'o11554223770 + 32'h833a88de;
 
-logic  led_mode_write_data_cmp;
-assign write_enable = write_enable_i;
-assign led_mode_write_data_cmp = write_data_i <= led_mode_write_data_cmp_const;
+logic  d2Vdz1otfNKET9pkgF4b2ur;
+assign E8on91LjAMIk = write_enable_i;
+assign d2Vdz1otfNKET9pkgF4b2ur = write_data_i <= tamX10PbxPLym4NQXMpBFA1ZPCMfu;
 
-logic  req;
-assign req = req_i;
-logic  write_data_bit;
+logic  X9e;
+assign X9e = req_i;
+logic  YaRCbt0zk9bDlW;
 
-logic led_mode_en;
+logic kd21aSJpdPn;
 always_comb begin
-  case ({soft_reset_addr_cmp, led_mode_write_data_cmp, led_mode_addr_cmp, write_enable, req, soft_reset_write_data_cmp})
-    6'b000000: led_mode_en = 1'b0;
-    6'b000001: led_mode_en = 1'b0;
-    6'b000010: led_mode_en = 1'b0;
-    6'b000011: led_mode_en = 1'b0;
-    6'b000100: led_mode_en = 1'b0;
-    6'b000101: led_mode_en = 1'b0;
-    6'b000110: led_mode_en = 1'b0;
-    6'b000111: led_mode_en = 1'b0;
-    6'b001000: led_mode_en = 1'b0;
-    6'b001001: led_mode_en = 1'b0;
-    6'b001010: led_mode_en = 1'b0;
-    6'b001011: led_mode_en = 1'b0;
-    6'b001100: led_mode_en = 1'b0;
-    6'b001101: led_mode_en = 1'b0;
-    6'b001110: led_mode_en = 1'b0;
-    6'b001111: led_mode_en = 1'b0;
-    6'b010000: led_mode_en = 1'b0;
-    6'b010001: led_mode_en = 1'b0;
-    6'b010010: led_mode_en = 1'b0;
-    6'b010011: led_mode_en = 1'b0;
-    6'b010100: led_mode_en = 1'b0;
-    6'b010101: led_mode_en = 1'b0;
-    6'b010110: led_mode_en = 1'b0;
-    6'b010111: led_mode_en = 1'b0;
-    6'b011000: led_mode_en = 1'b0;
-    6'b011001: led_mode_en = 1'b0;
-    6'b011010: led_mode_en = 1'b0;
-    6'b011011: led_mode_en = 1'b0;
-    6'b011100: led_mode_en = 1'b0;
-    6'b011101: led_mode_en = 1'b0;
-    6'b011110: led_mode_en = 1'b1;
-    6'b011111: led_mode_en = 1'b1;
-    6'b100000: led_mode_en = 1'b0;
-    6'b100001: led_mode_en = 1'b0;
-    6'b100010: led_mode_en = 1'b0;
-    6'b100011: led_mode_en = 1'b0;
-    6'b100100: led_mode_en = 1'b0;
-    6'b100101: led_mode_en = 1'b0;
-    6'b100110: led_mode_en = 1'b0;
-    6'b100111: led_mode_en = 1'b1;
-    6'b101000: led_mode_en = 1'b0;
-    6'b101001: led_mode_en = 1'b0;
-    6'b101010: led_mode_en = 1'b0;
-    6'b101011: led_mode_en = 1'b0;
-    6'b101100: led_mode_en = 1'b0;
-    6'b101101: led_mode_en = 1'b0;
-    6'b101110: led_mode_en = 1'b0;
-    6'b101111: led_mode_en = 1'b1;
-    6'b110000: led_mode_en = 1'b0;
-    6'b110001: led_mode_en = 1'b0;
-    6'b110010: led_mode_en = 1'b0;
-    6'b110011: led_mode_en = 1'b0;
-    6'b110100: led_mode_en = 1'b0;
-    6'b110101: led_mode_en = 1'b0;
-    6'b110110: led_mode_en = 1'b0;
-    6'b110111: led_mode_en = 1'b1;
-    6'b111000: led_mode_en = 1'b0;
-    6'b111001: led_mode_en = 1'b0;
-    6'b111010: led_mode_en = 1'b0;
-    6'b111011: led_mode_en = 1'b0;
-    6'b111100: led_mode_en = 1'b0;
-    6'b111101: led_mode_en = 1'b0;
-    6'b111110: led_mode_en = 1'b1;
-    6'b111111: led_mode_en = 1'b1;
+  case ({szgbhtISZO6lWdZ0zBq, d2Vdz1otfNKET9pkgF4b2ur, h9z1ckclZaHUmRYYk, E8on91LjAMIk, X9e, GHJMElpRUEQEEP7EcBqK9y7Np})
+    6'b000000: kd21aSJpdPn = 1'b0;
+    6'b000001: kd21aSJpdPn = 1'b0;
+    6'b000010: kd21aSJpdPn = 1'b0;
+    6'b000011: kd21aSJpdPn = 1'b0;
+    6'b000100: kd21aSJpdPn = 1'b0;
+    6'b000101: kd21aSJpdPn = 1'b0;
+    6'b000110: kd21aSJpdPn = 1'b0;
+    6'b000111: kd21aSJpdPn = 1'b0;
+    6'b001000: kd21aSJpdPn = 1'b0;
+    6'b001001: kd21aSJpdPn = 1'b0;
+    6'b001010: kd21aSJpdPn = 1'b0;
+    6'b001011: kd21aSJpdPn = 1'b0;
+    6'b001100: kd21aSJpdPn = 1'b0;
+    6'b001101: kd21aSJpdPn = 1'b0;
+    6'b001110: kd21aSJpdPn = 1'b0;
+    6'b001111: kd21aSJpdPn = 1'b0;
+    6'b010000: kd21aSJpdPn = 1'b0;
+    6'b010001: kd21aSJpdPn = 1'b0;
+    6'b010010: kd21aSJpdPn = 1'b0;
+    6'b010011: kd21aSJpdPn = 1'b0;
+    6'b010100: kd21aSJpdPn = 1'b0;
+    6'b010101: kd21aSJpdPn = 1'b0;
+    6'b010110: kd21aSJpdPn = 1'b0;
+    6'b010111: kd21aSJpdPn = 1'b0;
+    6'b011000: kd21aSJpdPn = 1'b0;
+    6'b011001: kd21aSJpdPn = 1'b0;
+    6'b011010: kd21aSJpdPn = 1'b0;
+    6'b011011: kd21aSJpdPn = 1'b0;
+    6'b011100: kd21aSJpdPn = 1'b0;
+    6'b011101: kd21aSJpdPn = 1'b0;
+    6'b011110: kd21aSJpdPn = 1'b1;
+    6'b011111: kd21aSJpdPn = 1'b1;
+    6'b100000: kd21aSJpdPn = 1'b0;
+    6'b100001: kd21aSJpdPn = 1'b0;
+    6'b100010: kd21aSJpdPn = 1'b0;
+    6'b100011: kd21aSJpdPn = 1'b0;
+    6'b100100: kd21aSJpdPn = 1'b0;
+    6'b100101: kd21aSJpdPn = 1'b0;
+    6'b100110: kd21aSJpdPn = 1'b0;
+    6'b100111: kd21aSJpdPn = 1'b1;
+    6'b101000: kd21aSJpdPn = 1'b0;
+    6'b101001: kd21aSJpdPn = 1'b0;
+    6'b101010: kd21aSJpdPn = 1'b0;
+    6'b101011: kd21aSJpdPn = 1'b0;
+    6'b101100: kd21aSJpdPn = 1'b0;
+    6'b101101: kd21aSJpdPn = 1'b0;
+    6'b101110: kd21aSJpdPn = 1'b0;
+    6'b101111: kd21aSJpdPn = 1'b1;
+    6'b110000: kd21aSJpdPn = 1'b0;
+    6'b110001: kd21aSJpdPn = 1'b0;
+    6'b110010: kd21aSJpdPn = 1'b0;
+    6'b110011: kd21aSJpdPn = 1'b0;
+    6'b110100: kd21aSJpdPn = 1'b0;
+    6'b110101: kd21aSJpdPn = 1'b0;
+    6'b110110: kd21aSJpdPn = 1'b0;
+    6'b110111: kd21aSJpdPn = 1'b1;
+    6'b111000: kd21aSJpdPn = 1'b0;
+    6'b111001: kd21aSJpdPn = 1'b0;
+    6'b111010: kd21aSJpdPn = 1'b0;
+    6'b111011: kd21aSJpdPn = 1'b0;
+    6'b111100: kd21aSJpdPn = 1'b0;
+    6'b111101: kd21aSJpdPn = 1'b0;
+    6'b111110: kd21aSJpdPn = 1'b1;
+    6'b111111: kd21aSJpdPn = 1'b1;
   endcase
 end
 
-logic  led_mode_next;
+logic  JUTUkxXfzZHi0;
 always_comb begin
-  case ({req, write_data_bit, write_enable, soft_reset_addr_cmp, soft_reset_write_data_cmp})
-    5'b00000: led_mode_next = 1'b0;
-    5'b00001: led_mode_next = 1'b0;
-    5'b00010: led_mode_next = 1'b0;
-    5'b00011: led_mode_next = 1'b0;
-    5'b00100: led_mode_next = 1'b0;
-    5'b00101: led_mode_next = 1'b0;
-    5'b00110: led_mode_next = 1'b0;
-    5'b00111: led_mode_next = 1'b0;
-    5'b01000: led_mode_next = 1'b1;
-    5'b01001: led_mode_next = 1'b1;
-    5'b01010: led_mode_next = 1'b1;
-    5'b01011: led_mode_next = 1'b1;
-    5'b01100: led_mode_next = 1'b1;
-    5'b01101: led_mode_next = 1'b1;
-    5'b01110: led_mode_next = 1'b1;
-    5'b01111: led_mode_next = 1'b1;
-    5'b10000: led_mode_next = 1'b0;
-    5'b10001: led_mode_next = 1'b0;
-    5'b10010: led_mode_next = 1'b0;
-    5'b10011: led_mode_next = 1'b0;
-    5'b10100: led_mode_next = 1'b0;
-    5'b10101: led_mode_next = 1'b0;
-    5'b10110: led_mode_next = 1'b0;
-    5'b10111: led_mode_next = 1'b0;
-    5'b11000: led_mode_next = 1'b1;
-    5'b11001: led_mode_next = 1'b1;
-    5'b11010: led_mode_next = 1'b1;
-    5'b11011: led_mode_next = 1'b1;
-    5'b11100: led_mode_next = 1'b1;
-    5'b11101: led_mode_next = 1'b1;
-    5'b11110: led_mode_next = 1'b1;
-    5'b11111: led_mode_next = 1'b0;
+  case ({X9e, YaRCbt0zk9bDlW, E8on91LjAMIk, szgbhtISZO6lWdZ0zBq, GHJMElpRUEQEEP7EcBqK9y7Np})
+    5'b00000: JUTUkxXfzZHi0 = 1'b0;
+    5'b00001: JUTUkxXfzZHi0 = 1'b0;
+    5'b00010: JUTUkxXfzZHi0 = 1'b0;
+    5'b00011: JUTUkxXfzZHi0 = 1'b0;
+    5'b00100: JUTUkxXfzZHi0 = 1'b0;
+    5'b00101: JUTUkxXfzZHi0 = 1'b0;
+    5'b00110: JUTUkxXfzZHi0 = 1'b0;
+    5'b00111: JUTUkxXfzZHi0 = 1'b0;
+    5'b01000: JUTUkxXfzZHi0 = 1'b1;
+    5'b01001: JUTUkxXfzZHi0 = 1'b1;
+    5'b01010: JUTUkxXfzZHi0 = 1'b1;
+    5'b01011: JUTUkxXfzZHi0 = 1'b1;
+    5'b01100: JUTUkxXfzZHi0 = 1'b1;
+    5'b01101: JUTUkxXfzZHi0 = 1'b1;
+    5'b01110: JUTUkxXfzZHi0 = 1'b1;
+    5'b01111: JUTUkxXfzZHi0 = 1'b1;
+    5'b10000: JUTUkxXfzZHi0 = 1'b0;
+    5'b10001: JUTUkxXfzZHi0 = 1'b0;
+    5'b10010: JUTUkxXfzZHi0 = 1'b0;
+    5'b10011: JUTUkxXfzZHi0 = 1'b0;
+    5'b10100: JUTUkxXfzZHi0 = 1'b0;
+    5'b10101: JUTUkxXfzZHi0 = 1'b0;
+    5'b10110: JUTUkxXfzZHi0 = 1'b0;
+    5'b10111: JUTUkxXfzZHi0 = 1'b0;
+    5'b11000: JUTUkxXfzZHi0 = 1'b1;
+    5'b11001: JUTUkxXfzZHi0 = 1'b1;
+    5'b11010: JUTUkxXfzZHi0 = 1'b1;
+    5'b11011: JUTUkxXfzZHi0 = 1'b1;
+    5'b11100: JUTUkxXfzZHi0 = 1'b1;
+    5'b11101: JUTUkxXfzZHi0 = 1'b1;
+    5'b11110: JUTUkxXfzZHi0 = 1'b1;
+    5'b11111: JUTUkxXfzZHi0 = 1'b0;
   endcase
 end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    led_mode <= 1'b0;
-  end else if(led_mode_en) begin
-    led_mode <= led_mode_next;
+    XvGCZEAG <= 1'b0;
+  end else if(kd21aSJpdPn) begin
+    XvGCZEAG <= JUTUkxXfzZHi0;
   end
 end
-assign write_data_bit = write_data_i[0];
+assign YaRCbt0zk9bDlW = write_data_i[0];
 
-logic  cntr_cmp;
-assign cntr_cmp = cntr < 32'd20_000_000;
+logic  aNirtmfc;
+assign aNirtmfc = G0jy < 32'd20_000_000;
 
-logic [31:0] cntr_next;
+logic [31:0] mTwefHrES;
 always_comb begin
-  case ({cntr_cmp, req, write_enable, soft_reset_addr_cmp, led_mode, soft_reset_write_data_cmp})
-    6'b000000: cntr_next = '0;
-    6'b000001: cntr_next = '0;
-    6'b000010: cntr_next = '0;
-    6'b000011: cntr_next = '0;
-    6'b000100: cntr_next = '0;
-    6'b000101: cntr_next = '0;
-    6'b000110: cntr_next = '0;
-    6'b000111: cntr_next = '0;
-    6'b001000: cntr_next = '0;
-    6'b001001: cntr_next = '0;
-    6'b001010: cntr_next = '0;
-    6'b001011: cntr_next = '0;
-    6'b001100: cntr_next = '0;
-    6'b001101: cntr_next = '0;
-    6'b001110: cntr_next = '0;
-    6'b001111: cntr_next = '0;
-    6'b010000: cntr_next = '0;
-    6'b010001: cntr_next = '0;
-    6'b010010: cntr_next = '0;
-    6'b010011: cntr_next = '0;
-    6'b010100: cntr_next = '0;
-    6'b010101: cntr_next = '0;
-    6'b010110: cntr_next = '0;
-    6'b010111: cntr_next = '0;
-    6'b011000: cntr_next = '0;
-    6'b011001: cntr_next = '0;
-    6'b011010: cntr_next = '0;
-    6'b011011: cntr_next = '0;
-    6'b011100: cntr_next = '0;
-    6'b011101: cntr_next = '0;
-    6'b011110: cntr_next = '0;
-    6'b011111: cntr_next = '0;
+  case ({aNirtmfc, X9e, E8on91LjAMIk, szgbhtISZO6lWdZ0zBq, XvGCZEAG, GHJMElpRUEQEEP7EcBqK9y7Np})
+    6'b000000: mTwefHrES = '0;
+    6'b000001: mTwefHrES = '0;
+    6'b000010: mTwefHrES = '0;
+    6'b000011: mTwefHrES = '0;
+    6'b000100: mTwefHrES = '0;
+    6'b000101: mTwefHrES = '0;
+    6'b000110: mTwefHrES = '0;
+    6'b000111: mTwefHrES = '0;
+    6'b001000: mTwefHrES = '0;
+    6'b001001: mTwefHrES = '0;
+    6'b001010: mTwefHrES = '0;
+    6'b001011: mTwefHrES = '0;
+    6'b001100: mTwefHrES = '0;
+    6'b001101: mTwefHrES = '0;
+    6'b001110: mTwefHrES = '0;
+    6'b001111: mTwefHrES = '0;
+    6'b010000: mTwefHrES = '0;
+    6'b010001: mTwefHrES = '0;
+    6'b010010: mTwefHrES = '0;
+    6'b010011: mTwefHrES = '0;
+    6'b010100: mTwefHrES = '0;
+    6'b010101: mTwefHrES = '0;
+    6'b010110: mTwefHrES = '0;
+    6'b010111: mTwefHrES = '0;
+    6'b011000: mTwefHrES = '0;
+    6'b011001: mTwefHrES = '0;
+    6'b011010: mTwefHrES = '0;
+    6'b011011: mTwefHrES = '0;
+    6'b011100: mTwefHrES = '0;
+    6'b011101: mTwefHrES = '0;
+    6'b011110: mTwefHrES = '0;
+    6'b011111: mTwefHrES = '0;
 
-    6'b100000: cntr_next = '0;
-    6'b100001: cntr_next = '0;
-    6'b100010: cntr_next = cntr + 32'b1;
-    6'b100011: cntr_next = cntr + 32'b1;
-    6'b100100: cntr_next = '0;
-    6'b100101: cntr_next = '0;
-    6'b100110: cntr_next = cntr + 32'b1;
-    6'b100111: cntr_next = cntr + 32'b1;
-    6'b101000: cntr_next = '0;
-    6'b101001: cntr_next = '0;
-    6'b101010: cntr_next = '0;
-    6'b101011: cntr_next = '0;
-    6'b101100: cntr_next = '0;
-    6'b101101: cntr_next = '0;
-    6'b101110: cntr_next = cntr + 32'b1;
-    6'b101111: cntr_next = cntr + 32'b1;
-    6'b110000: cntr_next = '0;
-    6'b110001: cntr_next = '0;
-    6'b110010: cntr_next = cntr + 32'b1;
-    6'b110011: cntr_next = cntr + 32'b1;
-    6'b110100: cntr_next = '0;
-    6'b110101: cntr_next = '0;
-    6'b110110: cntr_next = cntr + 32'b1;
-    6'b110111: cntr_next = cntr + 32'b1;
-    6'b111000: cntr_next = '0;
-    6'b111001: cntr_next = '0;
-    6'b111010: cntr_next = cntr + 32'b1;
-    6'b111011: cntr_next = cntr + 32'b1;
-    6'b111100: cntr_next = '0;
-    6'b111101: cntr_next = '0;
-    6'b111110: cntr_next = cntr + 32'b1;
-    6'b111111: cntr_next = '0;
+    6'b100000: mTwefHrES = '0;
+    6'b100001: mTwefHrES = '0;
+    6'b100010: mTwefHrES = G0jy + 32'b1;
+    6'b100011: mTwefHrES = G0jy + 32'b1;
+    6'b100100: mTwefHrES = '0;
+    6'b100101: mTwefHrES = '0;
+    6'b100110: mTwefHrES = G0jy + 32'b1;
+    6'b100111: mTwefHrES = G0jy + 32'b1;
+    6'b101000: mTwefHrES = '0;
+    6'b101001: mTwefHrES = '0;
+    6'b101010: mTwefHrES = '0;
+    6'b101011: mTwefHrES = '0;
+    6'b101100: mTwefHrES = '0;
+    6'b101101: mTwefHrES = '0;
+    6'b101110: mTwefHrES = G0jy + 32'b1;
+    6'b101111: mTwefHrES = G0jy + 32'b1;
+    6'b110000: mTwefHrES = '0;
+    6'b110001: mTwefHrES = '0;
+    6'b110010: mTwefHrES = G0jy + 32'b1;
+    6'b110011: mTwefHrES = G0jy + 32'b1;
+    6'b110100: mTwefHrES = '0;
+    6'b110101: mTwefHrES = '0;
+    6'b110110: mTwefHrES = G0jy + 32'b1;
+    6'b110111: mTwefHrES = G0jy + 32'b1;
+    6'b111000: mTwefHrES = '0;
+    6'b111001: mTwefHrES = '0;
+    6'b111010: mTwefHrES = G0jy + 32'b1;
+    6'b111011: mTwefHrES = G0jy + 32'b1;
+    6'b111100: mTwefHrES = '0;
+    6'b111101: mTwefHrES = '0;
+    6'b111110: mTwefHrES = G0jy + 32'b1;
+    6'b111111: mTwefHrES = '0;
   endcase
 end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    cntr <= 32'd0;
+    G0jy <= 32'd0;
   end else begin
-    cntr <= cntr_next;
+    G0jy <= mTwefHrES;
   end
 end
 
-logic  led_val_addr_cmp;
-assign led_val_addr_cmp = addr_i == 32'd0;
-logic  write_data_cmp;
-assign write_data_cmp = write_data_i[31:16] == 16'd0;
+logic  u8n925jRHw6yY2OA;
+assign u8n925jRHw6yY2OA = addr_i == 32'd0;
+logic  Sksa8hJRDqKf6y;
+assign Sksa8hJRDqKf6y = write_data_i[31:16] == 16'd0;
 
-logic led_val_en;
+logic kq8KzeiLOE;
 always_comb begin
-  case ({req, write_enable, soft_reset_addr_cmp, soft_reset_write_data_cmp, led_val_addr_cmp, write_data_cmp})
-    6'b000000: led_val_en = 1'b0;
-    6'b000001: led_val_en = 1'b0;
-    6'b000010: led_val_en = 1'b0;
-    6'b000011: led_val_en = 1'b1;
-    6'b000100: led_val_en = 1'b0;
-    6'b000101: led_val_en = 1'b0;
-    6'b000110: led_val_en = 1'b0;
-    6'b000111: led_val_en = 1'b1;
-    6'b001000: led_val_en = 1'b0;
-    6'b001001: led_val_en = 1'b0;
-    6'b001010: led_val_en = 1'b0;
-    6'b001011: led_val_en = 1'b1;
-    6'b001100: led_val_en = 1'b0;
-    6'b001101: led_val_en = 1'b0;
-    6'b001110: led_val_en = 1'b0;
-    6'b001111: led_val_en = 1'b1;
-    6'b010000: led_val_en = 1'b0;
-    6'b010001: led_val_en = 1'b0;
-    6'b010010: led_val_en = 1'b0;
-    6'b010011: led_val_en = 1'b1;
-    6'b010100: led_val_en = 1'b0;
-    6'b010101: led_val_en = 1'b0;
-    6'b010110: led_val_en = 1'b0;
-    6'b010111: led_val_en = 1'b1;
-    6'b011000: led_val_en = 1'b0;
-    6'b011001: led_val_en = 1'b0;
-    6'b011010: led_val_en = 1'b0;
-    6'b011011: led_val_en = 1'b1;
-    6'b011100: led_val_en = 1'b0;
-    6'b011101: led_val_en = 1'b0;
-    6'b011110: led_val_en = 1'b0;
-    6'b011111: led_val_en = 1'b1;
-    6'b100000: led_val_en = 1'b0;
-    6'b100001: led_val_en = 1'b0;
-    6'b100010: led_val_en = 1'b0;
-    6'b100011: led_val_en = 1'b1;
-    6'b100100: led_val_en = 1'b0;
-    6'b100101: led_val_en = 1'b0;
-    6'b100110: led_val_en = 1'b0;
-    6'b100111: led_val_en = 1'b1;
-    6'b101000: led_val_en = 1'b0;
-    6'b101001: led_val_en = 1'b0;
-    6'b101010: led_val_en = 1'b0;
-    6'b101011: led_val_en = 1'b1;
-    6'b101100: led_val_en = 1'b0;
-    6'b101101: led_val_en = 1'b0;
-    6'b101110: led_val_en = 1'b0;
-    6'b101111: led_val_en = 1'b1;
-    6'b110000: led_val_en = 1'b0;
-    6'b110001: led_val_en = 1'b0;
-    6'b110010: led_val_en = 1'b0;
-    6'b110011: led_val_en = 1'b1;
-    6'b110100: led_val_en = 1'b0;
-    6'b110101: led_val_en = 1'b0;
-    6'b110110: led_val_en = 1'b0;
-    6'b110111: led_val_en = 1'b1;
-    6'b111000: led_val_en = 1'b0;
-    6'b111001: led_val_en = 1'b0;
-    6'b111010: led_val_en = 1'b0;
-    6'b111011: led_val_en = 1'b1;
-    6'b111100: led_val_en = 1'b1;
-    6'b111101: led_val_en = 1'b1;
-    6'b111110: led_val_en = 1'b1;
-    6'b111111: led_val_en = 1'b1;
+  case ({X9e, E8on91LjAMIk, szgbhtISZO6lWdZ0zBq, GHJMElpRUEQEEP7EcBqK9y7Np, u8n925jRHw6yY2OA, Sksa8hJRDqKf6y})
+    6'b000000: kq8KzeiLOE = 1'b0;
+    6'b000001: kq8KzeiLOE = 1'b0;
+    6'b000010: kq8KzeiLOE = 1'b0;
+    6'b000011: kq8KzeiLOE = 1'b1;
+    6'b000100: kq8KzeiLOE = 1'b0;
+    6'b000101: kq8KzeiLOE = 1'b0;
+    6'b000110: kq8KzeiLOE = 1'b0;
+    6'b000111: kq8KzeiLOE = 1'b1;
+    6'b001000: kq8KzeiLOE = 1'b0;
+    6'b001001: kq8KzeiLOE = 1'b0;
+    6'b001010: kq8KzeiLOE = 1'b0;
+    6'b001011: kq8KzeiLOE = 1'b1;
+    6'b001100: kq8KzeiLOE = 1'b0;
+    6'b001101: kq8KzeiLOE = 1'b0;
+    6'b001110: kq8KzeiLOE = 1'b0;
+    6'b001111: kq8KzeiLOE = 1'b1;
+    6'b010000: kq8KzeiLOE = 1'b0;
+    6'b010001: kq8KzeiLOE = 1'b0;
+    6'b010010: kq8KzeiLOE = 1'b0;
+    6'b010011: kq8KzeiLOE = 1'b1;
+    6'b010100: kq8KzeiLOE = 1'b0;
+    6'b010101: kq8KzeiLOE = 1'b0;
+    6'b010110: kq8KzeiLOE = 1'b0;
+    6'b010111: kq8KzeiLOE = 1'b1;
+    6'b011000: kq8KzeiLOE = 1'b0;
+    6'b011001: kq8KzeiLOE = 1'b0;
+    6'b011010: kq8KzeiLOE = 1'b0;
+    6'b011011: kq8KzeiLOE = 1'b1;
+    6'b011100: kq8KzeiLOE = 1'b0;
+    6'b011101: kq8KzeiLOE = 1'b0;
+    6'b011110: kq8KzeiLOE = 1'b0;
+    6'b011111: kq8KzeiLOE = 1'b1;
+    6'b100000: kq8KzeiLOE = 1'b0;
+    6'b100001: kq8KzeiLOE = 1'b0;
+    6'b100010: kq8KzeiLOE = 1'b0;
+    6'b100011: kq8KzeiLOE = 1'b1;
+    6'b100100: kq8KzeiLOE = 1'b0;
+    6'b100101: kq8KzeiLOE = 1'b0;
+    6'b100110: kq8KzeiLOE = 1'b0;
+    6'b100111: kq8KzeiLOE = 1'b1;
+    6'b101000: kq8KzeiLOE = 1'b0;
+    6'b101001: kq8KzeiLOE = 1'b0;
+    6'b101010: kq8KzeiLOE = 1'b0;
+    6'b101011: kq8KzeiLOE = 1'b1;
+    6'b101100: kq8KzeiLOE = 1'b0;
+    6'b101101: kq8KzeiLOE = 1'b0;
+    6'b101110: kq8KzeiLOE = 1'b0;
+    6'b101111: kq8KzeiLOE = 1'b1;
+    6'b110000: kq8KzeiLOE = 1'b0;
+    6'b110001: kq8KzeiLOE = 1'b0;
+    6'b110010: kq8KzeiLOE = 1'b0;
+    6'b110011: kq8KzeiLOE = 1'b1;
+    6'b110100: kq8KzeiLOE = 1'b0;
+    6'b110101: kq8KzeiLOE = 1'b0;
+    6'b110110: kq8KzeiLOE = 1'b0;
+    6'b110111: kq8KzeiLOE = 1'b1;
+    6'b111000: kq8KzeiLOE = 1'b0;
+    6'b111001: kq8KzeiLOE = 1'b0;
+    6'b111010: kq8KzeiLOE = 1'b0;
+    6'b111011: kq8KzeiLOE = 1'b1;
+    6'b111100: kq8KzeiLOE = 1'b1;
+    6'b111101: kq8KzeiLOE = 1'b1;
+    6'b111110: kq8KzeiLOE = 1'b1;
+    6'b111111: kq8KzeiLOE = 1'b1;
   endcase
 end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    led_val <= 16'd0;
+    Y8fbZze <= 16'd0;
   end
-  else if(led_val_en) begin
-    led_val <= write_data_i[15:0] & {16{~(req & write_enable & soft_reset_addr_cmp & write_data_bit & soft_reset_write_data_cmp)}};
+  else if(kq8KzeiLOE) begin
+    Y8fbZze <= write_data_i[15:0] & {16{~(X9e & E8on91LjAMIk & szgbhtISZO6lWdZ0zBq & YaRCbt0zk9bDlW & GHJMElpRUEQEEP7EcBqK9y7Np)}};
   end
 end
 
-logic  read_data_addr_cmp;
-assign read_data_addr_cmp = ~|{addr_i[31:3], addr_i[1:0]};
-logic  read_data_addr_bit;
-assign read_data_addr_bit = addr_i[2];
+logic  tECGZrHGXNZHv7hEFV;
+assign tECGZrHGXNZHv7hEFV = ~|{addr_i[31:3], addr_i[1:0]};
+logic  YBnE7pVdlTe8g7B8Mh;
+assign YBnE7pVdlTe8g7B8Mh = addr_i[2];
 
-logic read_data_en;
+logic Sw0wQLq1pYY7;
 always_comb begin
-  case ({read_data_addr_bit, req, soft_reset_addr_cmp, write_enable, read_data_addr_cmp, soft_reset_write_data_cmp})
-    6'b000000: read_data_en = 1'b0;
-    6'b000001: read_data_en = 1'b0;
-    6'b000010: read_data_en = 1'b0;
-    6'b000011: read_data_en = 1'b0;
-    6'b000100: read_data_en = 1'b0;
-    6'b000101: read_data_en = 1'b0;
-    6'b000110: read_data_en = 1'b0;
-    6'b000111: read_data_en = 1'b0;
-    6'b001000: read_data_en = 1'b0;
-    6'b001001: read_data_en = 1'b0;
-    6'b001010: read_data_en = 1'b0;
-    6'b001011: read_data_en = 1'b0;
-    6'b001100: read_data_en = 1'b0;
-    6'b001101: read_data_en = 1'b0;
-    6'b001110: read_data_en = 1'b0;
-    6'b001111: read_data_en = 1'b0;
-    6'b010000: read_data_en = 1'b0;
-    6'b010001: read_data_en = 1'b0;
-    6'b010010: read_data_en = 1'b1;
-    6'b010011: read_data_en = 1'b1;
-    6'b010100: read_data_en = 1'b0;
-    6'b010101: read_data_en = 1'b0;
-    6'b010110: read_data_en = 1'b0;
-    6'b010111: read_data_en = 1'b0;
-    6'b011000: read_data_en = 1'b0;
-    6'b011001: read_data_en = 1'b0;
-    6'b011010: read_data_en = 1'b1;
-    6'b011011: read_data_en = 1'b1;
-    6'b011100: read_data_en = 1'b0;
-    6'b011101: read_data_en = 1'b1;
-    6'b011110: read_data_en = 1'b0;
-    6'b011111: read_data_en = 1'b1;
-    6'b100000: read_data_en = 1'b0;
-    6'b100001: read_data_en = 1'b0;
-    6'b100010: read_data_en = 1'b0;
-    6'b100011: read_data_en = 1'b0;
-    6'b100100: read_data_en = 1'b0;
-    6'b100101: read_data_en = 1'b0;
-    6'b100110: read_data_en = 1'b0;
-    6'b100111: read_data_en = 1'b0;
-    6'b101000: read_data_en = 1'b0;
-    6'b101001: read_data_en = 1'b0;
-    6'b101010: read_data_en = 1'b0;
-    6'b101011: read_data_en = 1'b0;
-    6'b101100: read_data_en = 1'b0;
-    6'b101101: read_data_en = 1'b0;
-    6'b101110: read_data_en = 1'b0;
-    6'b101111: read_data_en = 1'b0;
-    6'b110000: read_data_en = 1'b0;
-    6'b110001: read_data_en = 1'b0;
-    6'b110010: read_data_en = 1'b1;
-    6'b110011: read_data_en = 1'b1;
-    6'b110100: read_data_en = 1'b0;
-    6'b110101: read_data_en = 1'b0;
-    6'b110110: read_data_en = 1'b0;
-    6'b110111: read_data_en = 1'b0;
-    6'b111000: read_data_en = 1'b0;
-    6'b111001: read_data_en = 1'b0;
-    6'b111010: read_data_en = 1'b1;
-    6'b111011: read_data_en = 1'b1;
-    6'b111100: read_data_en = 1'b0;
-    6'b111101: read_data_en = 1'b1;
-    6'b111110: read_data_en = 1'b0;
-    6'b111111: read_data_en = 1'b1;
+  case ({YBnE7pVdlTe8g7B8Mh, X9e, szgbhtISZO6lWdZ0zBq, E8on91LjAMIk, tECGZrHGXNZHv7hEFV, GHJMElpRUEQEEP7EcBqK9y7Np})
+    6'b000000: Sw0wQLq1pYY7 = 1'b0;
+    6'b000001: Sw0wQLq1pYY7 = 1'b0;
+    6'b000010: Sw0wQLq1pYY7 = 1'b0;
+    6'b000011: Sw0wQLq1pYY7 = 1'b0;
+    6'b000100: Sw0wQLq1pYY7 = 1'b0;
+    6'b000101: Sw0wQLq1pYY7 = 1'b0;
+    6'b000110: Sw0wQLq1pYY7 = 1'b0;
+    6'b000111: Sw0wQLq1pYY7 = 1'b0;
+    6'b001000: Sw0wQLq1pYY7 = 1'b0;
+    6'b001001: Sw0wQLq1pYY7 = 1'b0;
+    6'b001010: Sw0wQLq1pYY7 = 1'b0;
+    6'b001011: Sw0wQLq1pYY7 = 1'b0;
+    6'b001100: Sw0wQLq1pYY7 = 1'b0;
+    6'b001101: Sw0wQLq1pYY7 = 1'b0;
+    6'b001110: Sw0wQLq1pYY7 = 1'b0;
+    6'b001111: Sw0wQLq1pYY7 = 1'b0;
+    6'b010000: Sw0wQLq1pYY7 = 1'b0;
+    6'b010001: Sw0wQLq1pYY7 = 1'b0;
+    6'b010010: Sw0wQLq1pYY7 = 1'b1;
+    6'b010011: Sw0wQLq1pYY7 = 1'b1;
+    6'b010100: Sw0wQLq1pYY7 = 1'b0;
+    6'b010101: Sw0wQLq1pYY7 = 1'b0;
+    6'b010110: Sw0wQLq1pYY7 = 1'b0;
+    6'b010111: Sw0wQLq1pYY7 = 1'b0;
+    6'b011000: Sw0wQLq1pYY7 = 1'b0;
+    6'b011001: Sw0wQLq1pYY7 = 1'b0;
+    6'b011010: Sw0wQLq1pYY7 = 1'b1;
+    6'b011011: Sw0wQLq1pYY7 = 1'b1;
+    6'b011100: Sw0wQLq1pYY7 = 1'b0;
+    6'b011101: Sw0wQLq1pYY7 = 1'b1;
+    6'b011110: Sw0wQLq1pYY7 = 1'b0;
+    6'b011111: Sw0wQLq1pYY7 = 1'b1;
+    6'b100000: Sw0wQLq1pYY7 = 1'b0;
+    6'b100001: Sw0wQLq1pYY7 = 1'b0;
+    6'b100010: Sw0wQLq1pYY7 = 1'b0;
+    6'b100011: Sw0wQLq1pYY7 = 1'b0;
+    6'b100100: Sw0wQLq1pYY7 = 1'b0;
+    6'b100101: Sw0wQLq1pYY7 = 1'b0;
+    6'b100110: Sw0wQLq1pYY7 = 1'b0;
+    6'b100111: Sw0wQLq1pYY7 = 1'b0;
+    6'b101000: Sw0wQLq1pYY7 = 1'b0;
+    6'b101001: Sw0wQLq1pYY7 = 1'b0;
+    6'b101010: Sw0wQLq1pYY7 = 1'b0;
+    6'b101011: Sw0wQLq1pYY7 = 1'b0;
+    6'b101100: Sw0wQLq1pYY7 = 1'b0;
+    6'b101101: Sw0wQLq1pYY7 = 1'b0;
+    6'b101110: Sw0wQLq1pYY7 = 1'b0;
+    6'b101111: Sw0wQLq1pYY7 = 1'b0;
+    6'b110000: Sw0wQLq1pYY7 = 1'b0;
+    6'b110001: Sw0wQLq1pYY7 = 1'b0;
+    6'b110010: Sw0wQLq1pYY7 = 1'b1;
+    6'b110011: Sw0wQLq1pYY7 = 1'b1;
+    6'b110100: Sw0wQLq1pYY7 = 1'b0;
+    6'b110101: Sw0wQLq1pYY7 = 1'b0;
+    6'b110110: Sw0wQLq1pYY7 = 1'b0;
+    6'b110111: Sw0wQLq1pYY7 = 1'b0;
+    6'b111000: Sw0wQLq1pYY7 = 1'b0;
+    6'b111001: Sw0wQLq1pYY7 = 1'b0;
+    6'b111010: Sw0wQLq1pYY7 = 1'b1;
+    6'b111011: Sw0wQLq1pYY7 = 1'b1;
+    6'b111100: Sw0wQLq1pYY7 = 1'b0;
+    6'b111101: Sw0wQLq1pYY7 = 1'b1;
+    6'b111110: Sw0wQLq1pYY7 = 1'b0;
+    6'b111111: Sw0wQLq1pYY7 = 1'b1;
   endcase
 end
 
-logic [31:0] read_data_next;
+logic [31:0] ZuHZYJEOvjcYVi;
 always_comb begin
-  case ({req, read_data_addr_bit, soft_reset_addr_cmp, write_enable, soft_reset_write_data_cmp})
-    5'b00000: read_data_next = read_data_o;
-    5'b00001: read_data_next = read_data_o;
-    5'b00010: read_data_next = read_data_o;
-    5'b00011: read_data_next = read_data_o;
-    5'b00100: read_data_next = read_data_o;
-    5'b00101: read_data_next = read_data_o;
-    5'b00110: read_data_next = read_data_o;
-    5'b00111: read_data_next = read_data_o;
-    5'b01000: read_data_next = read_data_o;
-    5'b01001: read_data_next = read_data_o;
-    5'b01010: read_data_next = read_data_o;
-    5'b01011: read_data_next = read_data_o;
-    5'b01100: read_data_next = read_data_o;
-    5'b01101: read_data_next = read_data_o;
-    5'b01110: read_data_next = read_data_o;
-    5'b01111: read_data_next = read_data_o;
-    5'b10000: read_data_next = {16'd0,led_val};
-    5'b10001: read_data_next = {16'd0,led_val};
-    5'b10010: read_data_next = read_data_o;
-    5'b10011: read_data_next = read_data_o;
-    5'b10100: read_data_next = {16'd0,led_val};
-    5'b10101: read_data_next = {16'd0,led_val};
-    5'b10110: read_data_next = read_data_o;
-    5'b10111: read_data_next = '0;
-    5'b11000: read_data_next = {31'd0,led_mode};
-    5'b11001: read_data_next = {31'd0,led_mode};
-    5'b11010: read_data_next = read_data_o;
-    5'b11011: read_data_next = read_data_o;
-    5'b11100: read_data_next = {31'd0,led_mode};
-    5'b11101: read_data_next = {31'd0,led_mode};
-    5'b11110: read_data_next = read_data_o;
-    5'b11111: read_data_next = '0;
+  case ({X9e, YBnE7pVdlTe8g7B8Mh, szgbhtISZO6lWdZ0zBq, E8on91LjAMIk, GHJMElpRUEQEEP7EcBqK9y7Np})
+    5'b00000: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00001: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00010: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00011: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00100: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00101: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00110: ZuHZYJEOvjcYVi = read_data_o;
+    5'b00111: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01000: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01001: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01010: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01011: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01100: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01101: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01110: ZuHZYJEOvjcYVi = read_data_o;
+    5'b01111: ZuHZYJEOvjcYVi = read_data_o;
+    5'b10000: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10001: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10010: ZuHZYJEOvjcYVi = read_data_o;
+    5'b10011: ZuHZYJEOvjcYVi = read_data_o;
+    5'b10100: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10101: ZuHZYJEOvjcYVi = {16'd0,Y8fbZze};
+    5'b10110: ZuHZYJEOvjcYVi = read_data_o;
+    5'b10111: ZuHZYJEOvjcYVi = '0;
+    5'b11000: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11001: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11010: ZuHZYJEOvjcYVi = read_data_o;
+    5'b11011: ZuHZYJEOvjcYVi = read_data_o;
+    5'b11100: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11101: ZuHZYJEOvjcYVi = {31'd0,XvGCZEAG};
+    5'b11110: ZuHZYJEOvjcYVi = read_data_o;
+    5'b11111: ZuHZYJEOvjcYVi = '0;
   endcase
 end
 
@@ -441,10 +441,10 @@ always_ff @(posedge clk_i) begin
   if(rst_i) begin
     read_data_o <= 32'd0;
   end
-  else if(read_data_en) begin
-    read_data_o <= read_data_next;
+  else if(Sw0wQLq1pYY7) begin
+    read_data_o <= ZuHZYJEOvjcYVi;
   end
 end
 
-assign soft_reset_addr_cmp = addr_i == 32'h24;
+assign szgbhtISZO6lWdZ0zBq = addr_i == 32'h24;
 endmodule
