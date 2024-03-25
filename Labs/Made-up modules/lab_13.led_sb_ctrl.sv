@@ -22,19 +22,25 @@ logic [31:0]  cntr;
 
 logic soft_reset;
 
-assign soft_reset = req_i & write_enable_i & (addr_i == 32'h24) & (write_data_i == 1'b1);
+logic  soft_reset_addr_cmp;
+assign soft_reset_addr_cmp = addr_i == 32'h24;
+
+logic  soft_reset_write_data_cmp;
+assign soft_reset_write_data_cmp = write_data_i == 1'b1;
+
+assign soft_reset = req_i & write_enable_i & soft_reset_addr_cmp & soft_reset_write_data_cmp;
 
 assign led_o = cntr < 32'd10_000_000 ? led_val : 32'd0;
 
-logic  addr_cmp;
-assign addr_cmp = addr_i == 32'd4;
+logic  led_mode_addr_cmp;
+assign led_mode_addr_cmp = addr_i == 32'd4;
 
-logic  write_data_cmp;
-assign write_data_cmp = write_data_i <= 32'd1;
+logic  led_mode_write_data_cmp;
+assign led_mode_write_data_cmp = write_data_i <= 32'd1;
 
 logic led_mode_en;
 always_comb begin
-  case ({write_data_cmp, addr_cmp, write_enable_i, soft_reset, req_i})
+  case ({led_mode_write_data_cmp, led_mode_addr_cmp, write_enable_i, soft_reset, req_i})
     5'b00000: led_mode_en = 1'b0;
     5'b00001: led_mode_en = 1'b0;
     5'b00010: led_mode_en = 1'b1;
@@ -93,15 +99,72 @@ assign cntr_cmp = cntr < 32'd20_000_000;
 
 logic [31:0] cntr_next;
 always_comb begin
-  case ({cntr_cmp, soft_reset, led_mode})
-    3'b000: cntr_next = '0;
-    3'b001: cntr_next = '0;
-    3'b010: cntr_next = '0;
-    3'b011: cntr_next = '0;
-    3'b100: cntr_next = '0;
-    3'b101: cntr_next = cntr + 32'b1;
-    3'b110: cntr_next = '0;
-    3'b111: cntr_next = '0;
+  case ({cntr_cmp, req_i, write_enable_i, soft_reset_addr_cmp, led_mode, soft_reset_write_data_cmp})
+    6'b000000: cntr_next = '0;
+    6'b000001: cntr_next = '0;
+    6'b000010: cntr_next = '0;
+    6'b000011: cntr_next = '0;
+    6'b000100: cntr_next = '0;
+    6'b000101: cntr_next = '0;
+    6'b000110: cntr_next = '0;
+    6'b000111: cntr_next = '0;
+    6'b001000: cntr_next = '0;
+    6'b001001: cntr_next = '0;
+    6'b001010: cntr_next = '0;
+    6'b001011: cntr_next = '0;
+    6'b001100: cntr_next = '0;
+    6'b001101: cntr_next = '0;
+    6'b001110: cntr_next = '0;
+    6'b001111: cntr_next = '0;
+    6'b010000: cntr_next = '0;
+    6'b010001: cntr_next = '0;
+    6'b010010: cntr_next = '0;
+    6'b010011: cntr_next = '0;
+    6'b010100: cntr_next = '0;
+    6'b010101: cntr_next = '0;
+    6'b010110: cntr_next = '0;
+    6'b010111: cntr_next = '0;
+    6'b011000: cntr_next = '0;
+    6'b011001: cntr_next = '0;
+    6'b011010: cntr_next = '0;
+    6'b011011: cntr_next = '0;
+    6'b011100: cntr_next = '0;
+    6'b011101: cntr_next = '0; // reset
+    6'b011110: cntr_next = '0;
+    6'b011111: cntr_next = '0; // reset
+
+    6'b100000: cntr_next = '0;
+    6'b100001: cntr_next = '0;
+    6'b100010: cntr_next = cntr + 32'b1;
+    6'b100011: cntr_next = cntr + 32'b1;
+    6'b100100: cntr_next = '0;
+    6'b100101: cntr_next = '0;
+    6'b100110: cntr_next = cntr + 32'b1;
+    6'b100111: cntr_next = cntr + 32'b1;
+    6'b101000: cntr_next = '0;
+    6'b101001: cntr_next = '0;
+    6'b101010: cntr_next = '0;
+    6'b101011: cntr_next = '0;
+    6'b101100: cntr_next = '0;
+    6'b101101: cntr_next = '0;
+    6'b101110: cntr_next = cntr + 32'b1;
+    6'b101111: cntr_next = cntr + 32'b1;
+    6'b110000: cntr_next = '0;
+    6'b110001: cntr_next = '0;
+    6'b110010: cntr_next = cntr + 32'b1;
+    6'b110011: cntr_next = cntr + 32'b1;
+    6'b110100: cntr_next = '0;
+    6'b110101: cntr_next = '0;
+    6'b110110: cntr_next = cntr + 32'b1;
+    6'b110111: cntr_next = cntr + 32'b1;
+    6'b111000: cntr_next = '0;
+    6'b111001: cntr_next = '0;
+    6'b111010: cntr_next = cntr + 32'b1;
+    6'b111011: cntr_next = cntr + 32'b1;
+    6'b111100: cntr_next = '0;
+    6'b111101: cntr_next = '0; // reset
+    6'b111110: cntr_next = cntr + 32'b1;
+    6'b111111: cntr_next = '0; // reset
   endcase
 end
 
