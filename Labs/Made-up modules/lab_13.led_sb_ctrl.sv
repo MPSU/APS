@@ -21,7 +21,6 @@ logic         led_mode;
 logic [31:0]  cntr;
 
 logic  soft_reset_addr_cmp;
-assign soft_reset_addr_cmp = addr_i == 32'h24;
 
 logic  soft_reset_write_data_cmp;
 assign soft_reset_write_data_cmp = write_data_i == 1'b1;
@@ -29,17 +28,16 @@ assign soft_reset_write_data_cmp = write_data_i == 1'b1;
 assign led_o = cntr < 32'd10_000_000 ? led_val : 32'd0;
 
 logic  led_mode_addr_cmp;
+logic  write_enable;
 assign led_mode_addr_cmp = addr_i == 32'd4;
 
 logic  led_mode_write_data_cmp;
+assign write_enable = write_enable_i;
 assign led_mode_write_data_cmp = write_data_i <= 32'd1;
 
-logic  write_enable;
-assign write_enable = write_enable_i;
 logic  req;
 assign req = req_i;
 logic  write_data_bit;
-assign write_data_bit = write_data_i[0];
 
 logic led_mode_en;
 always_comb begin
@@ -156,6 +154,7 @@ always_ff @(posedge clk_i) begin
     led_mode <= led_mode_next;
   end
 end
+assign write_data_bit = write_data_i[0];
 
 logic  cntr_cmp;
 assign cntr_cmp = cntr < 32'd20_000_000;
@@ -445,4 +444,5 @@ always_ff @(posedge clk_i) begin
   end
 end
 
+assign soft_reset_addr_cmp = addr_i == 32'h24;
 endmodule
