@@ -258,7 +258,7 @@ module decoder_riscv (
   output logic         mem_we_o,
   output logic [2:0]   mem_size_o,
   output logic         gpr_we_o,
-  output logic [1:0]   wb_sel_o,        //write back selector
+  output logic [1:0]   wb_sel_o,
   output logic         illegal_instr_o,
   output logic         branch_o,
   output logic         jal_o,
