@@ -203,7 +203,7 @@ module tb_decoder_riscv();
       So for every opcode we try 3 different instructions.
     */
     foreach(opcode_array[i]) begin
-      for(logic[1:0] j = 2'b00; j < 2'b11; j++) begin
+      for(int j = 0; j < 3; j++) begin
         randomize_with_given_opcode(opcode_array[i]);
         @(posedge clk);
         fetched_instr_i <= {instr.bits[31:2], j};
@@ -218,7 +218,7 @@ module tb_decoder_riscv();
     */
     foreach(opcode_array[i]) begin
       automatic logic [4:0] incorrect_opcode;
-      for(logic[1:0] j = 2'b00; j < 2'b11; j++) begin
+      for(int j = 0; j < 3; j++) begin
         randomize_with_given_opcode(opcode_array[i]);
         @(posedge clk);
         assert(std::randomize(incorrect_opcode) with {!(incorrect_opcode inside {
@@ -261,14 +261,14 @@ module tb_decoder_riscv();
     */
 
     // Broken fence instructions
-    for(logic [3:0] i = 3'd1; i <= 4'd7; i++) begin
+    for(int i = 1; i < 8; i++) begin
       randomize_with_given_opcode(MISC_MEM_OPCODE);
       @(posedge clk);
       fetched_instr_i <= {instr.bits[31:15], i, instr.bits[11:0]};
     end
 
     // Broken ecall, ebreak, mret instructions
-    for(logic [2:0] j = 3'd0; j <= 3'd3; j++) begin
+    for(int j = 0; j < 3; j++) begin
       @(posedge clk);
       // broken imm field
       fetched_instr_i <= {12'd2, instr.system_instrs[j][19:0]};
@@ -558,7 +558,7 @@ module tb_decoder_riscv();
     wb_sel_check   |-> (grm_wb_sel_o   === wb_sel_o  )
   )
   else begin
-    $display("wb_sel_o        value is incorrect (    %b instead of     %b), instruction: %s %s", wb_sel_o  , grm_wb_sel_o, raw_instr, instr_str  );
+    $display("wb_sel_o        value is incorrect (   %b instead of    %b), instruction: %s %s", wb_sel_o  , grm_wb_sel_o, raw_instr, instr_str  );
     err_count++;
   end
 
