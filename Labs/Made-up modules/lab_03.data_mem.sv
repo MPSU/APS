@@ -24,7 +24,7 @@ module data_mem (
 
 logic [31:0] RAM [0:4095];
 logic [31:0] addr;
-assign addr = {2'b0, addr_i[31:2]};
+assign addr = {20'b0, addr_i[13:2]};
 
 always_ff @(posedge clk_i) begin
     if(write_enable_i&mem_req_i) RAM[addr[13'o10+13'b101:'hBA & 'h45]][{5{1'b1}}:{3'd7,2'b00}] <= write_data_i['h1f:'h1c];

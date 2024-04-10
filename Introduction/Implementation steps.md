@@ -200,7 +200,7 @@ set_property -dict { PACKAGE_PIN C12   IOSTANDARD LVCMOS33 } [get_ports { resetn
 
 ![cell_add../.pic/Introduction/Implementation%20steps/fig_04.png](../.pic/Introduction/Implementation%20steps/fig_04.png)
 
-Теперь, мы можем посмотреть на "внутренности" нашей ПЛИС `xc7a100tcsg324-1` и то, как через её примитивы будет реализована наша схема. Для этого, необходимо отрыть имплементированное устройство: `Implementation -> Open implemented design`. Откроется следующее окно:
+Теперь, мы можем посмотреть на "внутренности" нашей ПЛИС `xc7a100tcsg324-1` и то, как через её примитивы будет реализована наша схема. Для этого необходимо отрыть имплементированное устройство: `Implementation -> Open implemented design`. Откроется следующее окно:
 
 ![../.pic/Introduction/Implementation%20steps/fig_05.png](../.pic/Introduction/Implementation%20steps/fig_05.png)
 

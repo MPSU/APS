@@ -74,6 +74,17 @@ module tb_rf_riscv();
         $display("invalid memory size");
         err_count = err_count + 1;
       end
+      RA1 <= 'b0;
+      RA2 <= 'b0;
+      @(posedge CLK);
+      if( RD1 !== 'b0 ) begin
+        $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
+        err_count = err_count + 1;
+      end
+      if( RD2 !== 'b0 ) begin
+        $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
+        err_count = err_count + 1;
+      end
       @(posedge CLK);
       WD <= 32'd1;
       WA <= '0;
