@@ -34,7 +34,7 @@ assign ready_o = 1'b1;
 logic [31:0] RAM [2**12];
 
 logic [31:0] addr;
-assign addr = addr_i >> 2;
+assign addr = addr_i;
 
 always_ff@(posedge clk_i) begin
   case(1)
