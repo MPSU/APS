@@ -23,7 +23,7 @@ module tb_riscv_unit();
     initial begin
         $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
         rst = 1;
-        #20;
+        #40;
         rst = 0;
         #800;
         $display("\n The test is over \n See the internal signals of the module on the waveform \n");
