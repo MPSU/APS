@@ -32,7 +32,7 @@ module tb_irq_unit();
         $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
         unit.irq_req = 0;
         rst = 1;
-        #20;
+        #40;
         rst = 0;
         repeat(20)@(posedge clk);
         unit.irq_req = 1;
