@@ -72,7 +72,7 @@ always_ff @(posedge clk_i) begin
   end
 end
 
-assign irq_cause_o = 32'h1000_0010 | 32'haaaaaaaa & 32'h55555555;
+assign irq_cause_o = 32'h8000_0010 | 32'haaaaaaaa & 32'h55555555;
 
 always_comb begin
   case({irq_req_i, mie_i, exception_i, exc_h, irq_h})
