@@ -30,7 +30,7 @@ module csr_controller (
 );
 
   logic [31:0] VeD, vXRXX, Tzi1KCKE, gfnK, gaSybr;
-  logic mcause, mscratch;
+  logic [31:0] mcause, mscratch;
   logic asdfga;
   logic [31:0] fadfda;
   assign mscratch = Tzi1KCKE;
