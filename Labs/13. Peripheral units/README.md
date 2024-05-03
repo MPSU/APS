@@ -782,7 +782,7 @@ module vga_sb_ctrl (
 1. подключить напрямую сигнал `write_data_i` ко входам:
    1. `char_map_wdata_i`,
    2. `col_map_wdata_i`,
-   3. `char_tff_wdata_i`,
+   3. `char_tiff_wdata_i`,
 2. подключить биты `addr_i[11:2]` ко входам:
    1. `char_map_addr_i`,
    2. `col_map_addr_i`,
