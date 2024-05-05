@@ -32,7 +32,7 @@ module tb_fulladder4();
       $display("Test has been started");
       $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
       #5ns;
-      test_case = 3'd0;
+      test_case = 9'd0;
       repeat(512) begin
         #5ns;
         test_case++;
