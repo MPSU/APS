@@ -1,6 +1,5 @@
 /* -----------------------------------------------------------------------------
 * Project Name   : Architectures of Processor Systems (APS) lab work
-* File           : tb_miriscv_alu.sv
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Daniil Strelkov
