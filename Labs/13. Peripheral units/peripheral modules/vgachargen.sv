@@ -12,13 +12,13 @@ module vgachargen
   import vgachargen_pkg::*;
 #(
   parameter int unsigned  CLK_FACTOR_25M           = 100 / 25,
-  parameter               CH_T_RO_INIT_FILE_NAME   = "lab12_vga_ch_t_ro.mem",
+  parameter               CH_T_RO_INIT_FILE_NAME   = "lab13_vga_ch_t_ro.mem",
   parameter bit           CH_T_RO_INIT_FILE_IS_BIN = 1,
-  parameter               CH_T_RW_INIT_FILE_NAME   = "lab12_vga_ch_t_rw.mem",
+  parameter               CH_T_RW_INIT_FILE_NAME   = "lab13_vga_ch_t_rw.mem",
   parameter bit           CH_T_RW_INIT_FILE_IS_BIN = 1,
-  parameter               CH_MAP_INIT_FILE_NAME    = "lab12_vga_ch_map.mem",
+  parameter               CH_MAP_INIT_FILE_NAME    = "lab13_vga_ch_map.mem",
   parameter bit           CH_MAP_INIT_FILE_IS_BIN  = 0,
-  parameter               COL_MAP_INIT_FILE_NAME   = "lab12_vga_col_map.mem",
+  parameter               COL_MAP_INIT_FILE_NAME   = "lab13_vga_col_map.mem",
   parameter bit           COL_MAP_INIT_FILE_IS_BIN = 0
 ) (
   input  logic            clk_i,             // системный синхроимпульс
