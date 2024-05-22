@@ -91,9 +91,13 @@ struct TX_HANDLE
 };
 struct TX_HANDLE *const tx_ptr = CAST(struct TX_HANDLE *const, 0x06000000);
 
-volatile uint8_t * const char_map  = CAST(uint8_t * const, 0x07000000);
-volatile uint8_t * const color_map = CAST(uint8_t * const, 0x07001000);
-volatile uint8_t * const tiff_map  = CAST(uint8_t * const, 0x07002000);
+struct VGA_HANDLE
+{
+  volatile uint8_t *const char_map;
+  volatile uint8_t *const color_map;
+  volatile uint8_t *const tiff_map;
+};
+struct VGA_HANDLE vga = {CAST(uint8_t *const, 0x07000000), CAST(uint8_t *const, 0x07001000), CAST(uint8_t *const, 0x07002000)};
 
 struct TIMER_HANDLE
 {
