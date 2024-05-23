@@ -101,11 +101,13 @@ struct VGA_HANDLE vga = {CAST(uint8_t *const, 0x07000000), CAST(uint8_t *const, 
 
 struct TIMER_HANDLE
 {
-  volatile const uint32_t system_counter;
-  volatile       uint32_t delay;
+  volatile const uint32_t system_counter_low_bits;
+  volatile const uint32_t system_counter_high_bits;
+  volatile       uint32_t delay_low_bits;
+  volatile       uint32_t delay_high_bits;
   volatile       uint32_t mode;
   volatile       uint32_t repeat_counter;
-  volatile const uint32_t __unused2__[5];
+  volatile const uint32_t __unused2__[3];
   volatile       uint32_t rst;
 };
 struct TIMER_HANDLE *const timer_ptr = CAST(struct TIMER_HANDLE *const, 0x08000000);
