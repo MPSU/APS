@@ -21,9 +21,9 @@ module tb_timer();
   logic        interrupt_request_o;
 
 localparam SYS_CNT_ADDR = 32'h0000_0000;
-localparam DELAY_ADDR   = 32'h0000_0004;
-localparam MODE_ADDR    = 32'h0000_0008;
-localparam REP_CNT_ADDR = 32'h0000_000C;
+localparam DELAY_ADDR   = 32'h0000_0008;
+localparam MODE_ADDR    = 32'h0000_0010;
+localparam REP_CNT_ADDR = 32'h0000_0014;
 localparam RST_ADDR     = 32'h0000_0024;
 
 localparam OFF      = 32'd0;

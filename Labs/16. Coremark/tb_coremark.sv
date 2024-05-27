@@ -10,7 +10,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 module tb_coremark();
 
-  logic        clk10mhz_i;
+  logic        clk100mhz_i;
   logic        aresetn_i;
   logic        rx_i;
   logic        tx_o;
@@ -18,18 +18,19 @@ module tb_coremark();
   logic        rst_i;
 
   assign aresetn_i = !rst_i;
-  assign clk10mhz_i = clk_i;
 
   logic rx_busy, rx_valid, tx_busy, tx_valid;
   logic [7:0] rx_data, tx_data;
 
   always #50ns clk_i = !clk_i;
+  always #5ns clk100mhz_i = !clk100mhz_i;
 
   byte coremark_msg[103];
   integer coremark_cntr;
 
   initial begin
     $timeformat(-9, 2, " ns", 3);
+    clk100mhz_i = 0;
     clk_i = 0;
     rst_i <= 0;
     @(posedge clk_i);
@@ -58,7 +59,12 @@ module tb_coremark();
   end
 
   initial #500ms $finish();
-  riscv_top_asic DUT(.clk10mhz_i, .aresetn_i, .rx_i, .tx_o);
+  riscv_unit DUT(
+    .clk_i      (clk100mhz_i), 
+    .resetn_i   (aresetn_i), 
+    .rx_i       (rx_i), 
+    .tx_o       (tx_o)
+);
 
   uart_rx rx(
   .clk_i      (clk_i      ),
