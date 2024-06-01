@@ -10,58 +10,65 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 module tb_top_asic();
 
-  logic        clk10mhz_i;
+  logic        clk100mhz_i;
   logic        aresetn_i;
   logic        rx_i;
   logic        tx_o;
-  logic          clk_i;
-  logic          rst_i;
+  logic        clk_i;
+  logic        rst_i;
 
   assign aresetn_i = !rst_i;
-  assign clk10mhz_i = clk_i;
 
   logic rx_busy, rx_valid, tx_busy, tx_valid;
   logic [7:0] rx_data, tx_data;
 
-  logic [3:0] [7:0] instr_size_ack;
-  logic [3:0] [7:0] data_size_ack;
-  logic [3:0] [7:0] tiff_size = 32'd0;
-  logic [3:0] [7:0] tiff_size_ack;
-  byte init_str[6];
-  byte done_str[10];
-  logic [7:0] instr_mem_byte[];
-  logic [7:0] data_mem_byte[];
+  logic [3:0] [7:0] flash_addr;
   logic [3:0] [7:0] instr_size;
+  logic [3:0] [7:0] instr_size_ack;
   logic [3:0] [7:0] data_size;
-
-  initial begin
-    // $readmemh("tb_coremark_instr.mem", instr_mem_byte);
-    // $readmemh("tb_coremark_data.mem", data_mem_byte);
-    // instr_size = instr_mem_byte.size();
-    // data_size  = data_mem_byte.size();
-    instr_size = 0;
-    data_size  = 0;
-  end
-
-  logic [7:0] tiff_mem_byte [2048];
-
-  localparam INIT_MSG_SIZE  = 6;
-  localparam MSG_DONE_SIZE  = 10;
+  logic [3:0] [7:0] data_size_ack;
+  logic [3:0] [7:0] tiff_size;
+  logic [3:0] [7:0] tiff_size_ack;
+  
+  logic [7:0] instr_mem_byte[$];
+  logic [7:0] data_mem_byte[$];
+  logic [7:0] tiff_mem_byte [$];
+  
+  localparam INIT_MSG_SIZE  = 40;
+  localparam MSG_DONE_SIZE  = 57;
   localparam MSG_ACK_SIZE   = 4;
+  
+  byte init_str[INIT_MSG_SIZE];
+  byte done_str[MSG_DONE_SIZE];
 
   always #50ns clk_i = !clk_i;
-
-  byte coremark_msg[103];
-  integer coremark_cntr;
+  always #5ns clk100mhz_i = !clk100mhz_i;
 
   initial begin
     $timeformat(-9, 2, " ns", 3);
     clk_i = 0;
+    clk100mhz_i = 0;
     rst_i <= 0;
     @(posedge clk_i);
     rst_i <= 1;
     repeat(2) @(posedge clk_i);
     rst_i <= 0;
+    instr_size = instr_mem_byte.size();
+    data_size  = data_mem_byte.size();
+    tiff_size  = tiff_mem_byte.size();
+    
+/*
+    RCV_NEXT_COMMAND
+*/
+    flash_addr = 32'h0000;
+    for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
+      tx_data = flash_addr[i];
+      tx_valid = 1'b1;
+      @(posedge clk_i);
+      tx_valid = 1'b0;
+      @(posedge clk_i);
+      while(tx_busy) @(posedge clk_i);
+    end
 
 /*
     INIT_MSG
@@ -138,6 +145,30 @@ module tb_top_asic();
     repeat(10000)@(posedge clk_i);
 
 
+/*
+    RCV_NEXT_COMMAND
+*/  flash_addr = 32'h4000;
+    for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
+      tx_data = flash_addr[i];
+      tx_valid = 1'b1;
+      @(posedge clk_i);
+      tx_valid = 1'b0;
+      @(posedge clk_i);
+      while(tx_busy) @(posedge clk_i);
+    end
+
+
+/*
+    INIT_MSG
+*/
+    for(int i = 0; i < INIT_MSG_SIZE; i++) begin
+      @(posedge clk_i);
+      while(!rx_valid)@(posedge clk_i);
+      init_str[i] = rx_data;
+    end
+    $display("%s", init_str);
+    wait(tx_o);
+//  ----------------------------------------------
 
 /*
     RCV_DATA_SIZE
@@ -196,8 +227,29 @@ module tb_top_asic();
     repeat(10000)@(posedge clk_i);
 
 
+/*
+    RCV_NEXT_COMMAND
+*/  flash_addr = 32'h0800_0000;
+    for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
+      tx_data = flash_addr[i];
+      tx_valid = 1'b1;
+      @(posedge clk_i);
+      tx_valid = 1'b0;
+      @(posedge clk_i);
+      while(tx_busy) @(posedge clk_i);
+    end
 
-
+/*
+    INIT_MSG
+*/
+    for(int i = 0; i < INIT_MSG_SIZE; i++) begin
+      @(posedge clk_i);
+      while(!rx_valid)@(posedge clk_i);
+      init_str[i] = rx_data;
+    end
+    $display("%s", init_str);
+    wait(tx_o);
+//  ----------------------------------------------
 
 /*
     RCV_TIFF_SIZE
@@ -254,32 +306,34 @@ module tb_top_asic();
     $display("%t %s", $time, done_str);
     wait(!rx_busy)
     @(posedge clk_i)
-    // assert(!pc_stall_o)
-    // else $error("stall is not equal zero at the end");
+    
+/*
+    RCV_NEXT_COMMAND
+*/  flash_addr = 32'hFFFF_FFFF;
+    for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
+      tx_data = flash_addr[i];
+      tx_valid = 1'b1;
+      @(posedge clk_i);
+      tx_valid = 1'b0;
+      @(posedge clk_i);
+      while(tx_busy) @(posedge clk_i);
+    end
+    assert(!DUT.core_reset) $display("Rooom to tooom");
+    else $error("stall is not equal zero at the end");
 //  ----------------------------------------------
 
     repeat(10000)@(posedge clk_i);
-    coremark_cntr = 0;
-    coremark_msg = {32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-    forever begin
-      @(posedge clk_i);
-      if(rx_valid) begin
-        if((rx_data == 10) | (rx_data == 13)) begin
-          $display("%s", coremark_msg);
-          coremark_cntr = 0;
-          coremark_msg = {32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-        end
-        else begin
-          coremark_msg[coremark_cntr] = rx_data;
-          coremark_cntr++;
-        end
-      end
-    end
-    // $finish();
+   
+    $finish();
   end
 
 
-  riscv_top_asic DUT(.clk10mhz_i, .aresetn_i, .rx_i, .tx_o);
+  riscv_unit DUT(
+    .clk_i      (clk100mhz_i), 
+    .resetn_i   (aresetn_i), 
+    .rx_i       (rx_i), 
+    .tx_o       (tx_o)
+);
 
   uart_rx rx(
   .clk_i      (clk_i      ),
@@ -305,6 +359,14 @@ uart_tx tx(
   .tx_valid_i (tx_valid   )
 );
 
+initial instr_mem_byte = {
+8'h93, 8'h00, 8'h10, 8'h00, 8'h37, 8'h01, 8'h00, 8'h06, 8'hB7, 8'hC1, 8'h01, 8'h00, 8'h93, 8'h81, 8'h01, 8'h20,
+8'h23, 8'h26, 8'h31, 8'h00, 8'h13, 8'h02, 8'h10, 8'h00, 8'h23, 8'h28, 8'h41, 8'h00, 8'h93, 8'h02, 8'h10, 8'h00,
+8'h93, 8'h80, 8'h10, 8'h00, 8'h83, 8'h23, 8'h81, 8'h00, 8'h63, 8'h14, 8'h70, 8'h00, 8'h6F, 8'h00, 8'h00, 8'h00,
+8'h6F, 8'h00, 8'h00, 8'h00, 8'h23, 8'h20, 8'h11, 8'h00, 8'h6F, 8'h00, 8'h00, 8'h00
+};
+
+initial #1 data_mem_byte = instr_mem_byte;
 
 initial tiff_mem_byte = {
 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00011110, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00010000, 8'b00011110,
@@ -436,28 +498,5 @@ initial tiff_mem_byte = {
 8'b00000000, 8'b00000000, 8'b00100110, 8'b00011001, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000, 8'b00000000,
 8'b00000000, 8'b00000011, 8'b00000101, 8'b00000101, 8'b00000011, 8'b00000000, 8'b00001100, 8'b00001100, 8'b00000100, 8'b00101100, 8'b00100000, 8'b00100000, 8'b01100000, 8'b00000000, 8'b00000000, 8'b00000000
 };
-
-endmodule
-
-
-module rw_tiff_mem(
-  input  logic         clk_i,
-  input  logic [ 31:0] addr_i,
-  output logic [127:0] read_data_o,
-
-  input  logic [ 31:0] write_addr_i,
-  input  logic [127:0] write_data_i,
-  input  logic         write_enable_i
-);
-
-logic [127:0] rom [256];
-
-assign read_data_o = rom[addr_i];
-
-always_ff @(posedge clk_i) begin
-  if(write_enable_i) begin
-    rom[write_addr_i] <= write_data_i;
-  end
-end
 
 endmodule

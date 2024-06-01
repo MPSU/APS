@@ -65,6 +65,19 @@ module tb_blaster();
     instr_size = instr_mem_byte.size();
     data_size  = data_mem_byte.size();
     tiff_size  = tiff_mem_byte.size();
+    
+/*
+    RCV_NEXT_COMMAND
+*/
+    flash_addr = 32'h0000;
+    for(int i = MSG_ACK_SIZE-1; i >= 0; i--) begin
+      tx_data = flash_addr[i];
+      tx_valid = 1'b1;
+      @(posedge clk_i);
+      tx_valid = 1'b0;
+      @(posedge clk_i);
+      while(tx_busy) @(posedge clk_i);
+    end
 
 /*
     INIT_MSG
@@ -317,7 +330,7 @@ module tb_blaster();
       while(tx_busy) @(posedge clk_i);
     end
 
-    assert(!pc_reset_o)
+    assert(!core_reset_o)
     else $error("reset is not equal zero at the end");
 //  ----------------------------------------------
 
@@ -355,7 +368,7 @@ uart_tx tx(
 
   rw_instr_mem imem(
     .clk_i         (clk_i               ) ,
-    .addr_i        (instr_addr_i        ) ,
+    .read_addr_i   (instr_addr_i        ) ,
     .read_data_o   (instr_rdata_o       ) ,
     .write_addr_i  (instr_addr_o        ) ,
     .write_data_i  (instr_wdata_o       ) ,
