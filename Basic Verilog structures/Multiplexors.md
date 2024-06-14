@@ -223,6 +223,6 @@ assign one_bit_result = bus1024[select];
 
 ## Проверь себя
 
-Как, по-вашему, описать на языке SystemVerilog схему, приведённую ниже?
+Как описать на языке SystemVerilog следующую схему?
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg)
