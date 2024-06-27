@@ -24,7 +24,7 @@
 4. Простейшее программируемое устройство ([04. Primitive programmable device](Labs/04.%20Primitive%20programmable%20device))
 5. Основной дешифратор ([05. Main decoder](Labs/05.%20Main%20decoder))
 6.
-   1. Тракт данных ([06. Datapath](Labs/06.%20Datapath))
+   1. Тракт данных ([07. Datapath](Labs/07.%20Datapath))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](Labs/09.%20LSU%20Integration))
    3. Интеграция подсистемы прерываний ([11. Interrupt Integration](Labs/11.%20Interrupt%20integration))
 7. Периферийные устройства ([13. Peripheral units](Labs/13.%20Peripheral%20units))
@@ -37,7 +37,7 @@
    1. Память ([03. Register file and memory](Labs/03.%20Register%20file%20and%20memory)),
    2. Простейшее программируемое устройство ([04. Primitive programmable device](Labs/04.%20Primitive%20programmable%20device))
 3. Основной дешифратор ([05. Main decoder](Labs/05.%20Main%20decoder))
-4. Тракт данных ([06. Datapath](Labs/06.%20Datapath))
+4. Тракт данных ([07. Datapath](Labs/07.%20Datapath))
 5.
    1. Модуль загрузки и сохранения ([08. Load-store unit](Labs/08.%20Load-store%20unit))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](Labs/09.%20LSU%20Integration))

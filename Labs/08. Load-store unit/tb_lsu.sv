@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 module tb_lsu();
-import riscv_pkg::*;
+import decoder_pkg::*;
 logic        clk_i        ;
 logic        rst_i        ;
 logic        core_req_i   ;
@@ -227,7 +227,7 @@ module riscv_lsu_ref(
   input  logic        mem_ready_i
 );
 
-import riscv_pkg::*;
+import decoder_pkg::*;
 logic enable;
 
 logic [32:0] cursed_numbers;

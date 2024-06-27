@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-package riscv_pkg;
+package decoder_pkg;
 
   import alu_opcodes_pkg::*;
   import csr_pkg::*;
@@ -54,7 +54,7 @@ package riscv_pkg;
   /*
     Hack that makes nested opcodes be
     visible with just one import of
-    riscv_pkg
+    decoder_pkg
   */
 
   export alu_opcodes_pkg::ALU_OP_WIDTH;

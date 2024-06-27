@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-package riscv_pkg;
+package decoder_pkg;
 
   import alu_opcodes_pkg::*;
   export alu_opcodes_pkg::*;

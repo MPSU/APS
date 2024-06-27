@@ -116,7 +116,7 @@ module nexys_riscv_unit(
   assign      opcode = instr[6:0];
 
   Char op_chars[0:3];
-  import riscv_pkg::*;
+  import decoder_pkg::*;
   always_comb begin
     op_chars = '{4{CH_SPACE}};
 

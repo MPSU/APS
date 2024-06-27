@@ -11,7 +11,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 
 module tb_decoder_riscv();
 
-  import riscv_pkg::*;
+  import decoder_pkg::*;
   typedef class riscv_instr;
   riscv_instr instr = new();
 
