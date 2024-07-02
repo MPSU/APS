@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-module ext_mem(
+module data_mem(
   input  logic        clk_i,
   input  logic        mem_req_i,
   input  logic        write_enable_i,

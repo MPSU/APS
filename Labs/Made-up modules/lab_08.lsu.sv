@@ -27,7 +27,7 @@ module riscv_lsu(
   input  logic        mem_ready_i
 );
 
-import riscv_pkg::*;
+import decoder_pkg::*;
 logic enable;
 
 logic [32:0] cursed_numbers;
