@@ -154,7 +154,7 @@ SECTIONS
     регионе "ram".
   */
   _bss_start = .;
-  .bss : {*(.bss*)} >ram
+  .bss : {*(.*bss*)} >ram
   _bss_end = .;
 
 
