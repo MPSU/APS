@@ -25,7 +25,7 @@ module uart_tx (
         output logic            busy_o,
         input  logic [16:0]     baudrate_i,
         input  logic            parity_en_i,
-        input  logic            stopbit_i,
+        input  logic [1:0]      stopbit_i,
         input  logic [7:0]      tx_data_i,
         input  logic            tx_valid_i
         //, input  logic            cfg_en_i,
@@ -161,7 +161,7 @@ module uart_tx (
                 baudgen_en = 1'b1;
                 if (bit_done)
                 begin
-                    if (stopbit_i)
+                    if (stopbit_i[1])
                         NS = STOP_BIT_LAST;
                     else
                         NS = IDLE;

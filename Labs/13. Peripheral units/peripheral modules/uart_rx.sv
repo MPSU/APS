@@ -25,7 +25,7 @@ module uart_rx (
         output logic            busy_o,
         input  logic [16:0]     baudrate_i,
         input  logic            parity_en_i,
-        input  logic            stopbit_i,
+        input  logic [1:0]      stopbit_i,
         output logic [7:0]      rx_data_o,
         output logic            rx_valid_o
         //, input  logic            cfg_en_i,
