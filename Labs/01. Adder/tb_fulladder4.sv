@@ -37,7 +37,7 @@ module tb_fulladder4();
         #5ns;
         test_case++;
       end
-      $display("\nTest has been finished\n");
+      $display("\nTest has been finished Check results at waveform window.\n");
       $finish();
     end
 
