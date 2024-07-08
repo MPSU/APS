@@ -256,12 +256,12 @@ _Рисунок 3. Связь адреса байта и индекса слов
 Поскольку реализация памяти состоит буквально из нескольких строчек, но при этом использование параметров может вызвать некоторые затруднения, код памяти инструкций предоставляется в готовом виде:
 
 ```SystemVerilog
-mоdulе instr_mеm
+module instr_mem
 import memory_pkg::INSTR_MEM_SIZE_BYTES;
 import memory_pkg::INSTR_MEM_SIZE_WORDS;
 (
-  inрut  logic [31:0] addr_i,
-  оutрut logic [31:0] rеаd_dаtа_o
+  input  logic [31:0] addr_i,
+  output logic [31:0] read_data_o
 );
 
   logic [31:0] ROM [INSTR_MEM_SIZE_WORDS];  // создать память с
@@ -280,7 +280,7 @@ import memory_pkg::INSTR_MEM_SIZE_WORDS;
   // в то время как старшие биты обнулены, чтобы не дать обращаться в память
   // по адресам несуществующих ячеек (вместо этого будут выданы данные ячеек,
   // расположенных по младшим адресам).
-  assign rеаd_dаtа_o = R0M[addr_i[$clog2(INSTR_MEM_SIZE_BYTES)-1:2]];
+  assign read_data_o = ROM[addr_i[$clog2(INSTR_MEM_SIZE_BYTES)-1:2]];
 
 endmodule
 ```
