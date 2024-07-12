@@ -744,8 +744,7 @@ module vgachargen (
 * firmware/mem_files/lab_13_ps2_vga_instr.mem — этим файлом необходимо проинициализировать память инструкций
 * firmware/mem_files/lab_13_ps2ascii_data.mem — этим файлом необходимо проинициализировать память данных
 * firmware/mem_files/lab_13_vga_ch_map.mem
-* firmware/mem_files/lab_13_vga_ch_t_ro.mem
-* firmware/mem_files/lab_13_vga_ch_t_rw.mem
+* firmware/mem_files/lab_13_vga_ch_t.mem
 * firmware/mem_files/lab_13_vga_col_map.mem
 
 Вам необходимо добавить в проект все эти файлы.

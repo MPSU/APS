@@ -12,17 +12,15 @@ module vgachargen
   import vgachargen_pkg::*;
 #(
   parameter int unsigned  CLK_FACTOR_25M           = 100 / 25,
-  parameter               CH_T_RO_INIT_FILE_NAME   = "lab_13_vga_ch_t_ro.mem",
-  parameter bit           CH_T_RO_INIT_FILE_IS_BIN = 1,
-  parameter               CH_T_RW_INIT_FILE_NAME   = "lab_13_vga_ch_t_rw.mem",
-  parameter bit           CH_T_RW_INIT_FILE_IS_BIN = 1,
+  parameter               CH_T_INIT_FILE_NAME      = "lab_13_vga_ch_t.mem",
+  parameter bit           CH_T_INIT_FILE_IS_BIN    = 1'b1,
   parameter               CH_MAP_INIT_FILE_NAME    = "lab_13_vga_ch_map.mem",
-  parameter bit           CH_MAP_INIT_FILE_IS_BIN  = 0,
+  parameter bit           CH_MAP_INIT_FILE_IS_BIN  = 1'b0,
   parameter               COL_MAP_INIT_FILE_NAME   = "lab_13_vga_col_map.mem",
-  parameter bit           COL_MAP_INIT_FILE_IS_BIN = 0
+  parameter bit           COL_MAP_INIT_FILE_IS_BIN = 1'b0
 ) (
   input  logic            clk_i,             // системный синхроимпульс
-  input  logic            clk100m_i,         // клок с частотой 100МГц
+  input  logic            clk100m_i,         // клок с частотой CLK_FACTOR_25M * 25m
   input  logic            rst_i,             // сигнал сброса
 
   /*
@@ -58,12 +56,19 @@ module vgachargen
   output logic            vga_hs_o,          // линия горизонтальной синхронизации vga
   output logic            vga_vs_o           // линия вертикальной синхронизации vga
 );
+  logic vga_clk_i;
+  assign vga_clk_i = clk100m_i;
+
+if (CLK_FACTOR_25M == 0 || CLK_FACTOR_25M > 4) error_unsupported_factor error_unsupported_factor ();
 
   logic  [3:0] char_map_be_gated;
   assign       char_map_be_gated = char_map_be_i & {4{char_map_we_i}};
 
   logic  [3:0] col_map_be_gated;
   assign       col_map_be_gated  = col_map_be_i & {4{col_map_we_i}};
+
+  logic  [3:0] char_tiff_be_gated;
+  assign       char_tiff_be_gated  = char_tiff_be_i & {4{char_tiff_we_i}};
 
   logic  arstn_i;
   assign arstn_i = ~rst_i;
@@ -78,7 +83,7 @@ module vgachargen
     .DATA_WIDTH (1),
     .DELAY_BY   (2)
   ) pixel_enable_delay (
-    .clk_i   (clk100m_i),
+    .clk_i   (vga_clk_i),
     .arstn_i (arstn_i),
     .data_i  (pixel_enable),
     .data_o  (pixel_enable_delayed)
@@ -91,7 +96,7 @@ module vgachargen
     .DATA_WIDTH (1),
     .DELAY_BY   (2)
   ) vga_vs_delay (
-    .clk_i   (clk100m_i),
+    .clk_i   (vga_clk_i),
     .arstn_i (arstn_i),
     .data_i  (vga_vs),
     .data_o  (vga_vs_delayed)
@@ -104,7 +109,7 @@ module vgachargen
     .DATA_WIDTH (1),
     .DELAY_BY   (2)
   ) vga_hs_delay (
-    .clk_i   (clk100m_i),
+    .clk_i   (vga_clk_i),
     .arstn_i (arstn_i),
     .data_i  (vga_hs),
     .data_o  (vga_hs_delayed)
@@ -114,7 +119,7 @@ module vgachargen
   vga_block #(
     .CLK_FACTOR_25M (CLK_FACTOR_25M)
   ) vga_block (
-    .clk_i          (clk100m_i),
+    .clk_i          (vga_clk_i),
     .arstn_i        (arstn_i),
     .hcount_o       (hcount_pixels),
     .vcount_o       (vcount_pixels),
@@ -132,7 +137,7 @@ module vgachargen
     .DATA_WIDTH (BITMAP_ADDR_WIDTH),
     .DELAY_BY   (2)
   ) bitmap_delay (
-    .clk_i   (clk100m_i),
+    .clk_i   (vga_clk_i),
     .arstn_i (arstn_i),
     .data_i  (bitmap_addr),
     .data_o  (bitmap_addr_delayed)
@@ -145,12 +150,25 @@ module vgachargen
     .bitmap_addr_o (bitmap_addr)
   );
 
+  logic [1:0] ch_map_byte_select;
+  logic [1:0] ch_map_byte_select_delayed;
+  assign      ch_map_byte_select = ch_map_addr_internal[1:0];
 
-  logic [CH_T_ADDR_WIDTH:0] ch_t_addr_internal;
+  delay #(
+    .DATA_WIDTH (2),
+    .DELAY_BY   (1)
+  ) ch_map_byte_select_delay (
+    .clk_i   (vga_clk_i),
+    .arstn_i (arstn_i),
+    .data_i  (ch_map_byte_select),
+    .data_o  (ch_map_byte_select_delayed)
+  );
+
+  logic [CH_T_ADDR_WIDTH-1:0] ch_t_addr_internal;
 
   logic [3:0][7:0] ch_map_data_word;
 
-  assign ch_t_addr_internal = ch_map_data_word[ch_map_addr_internal[1:0]];
+  assign ch_t_addr_internal = ch_map_data_word[ch_map_byte_select_delayed];
 
   true_dual_port_rw_bram #(
     .INIT_FILE_NAME   (CH_MAP_INIT_FILE_NAME),
@@ -158,7 +176,7 @@ module vgachargen
     .ADDR_WIDTH       (10)
   ) ch_map (
     .clka_i  (clk_i),
-    .clkb_i  (clk100m_i),
+    .clkb_i  (vga_clk_i),
     .addra_i (char_map_addr_i),
     .addrb_i (ch_map_addr_internal[$left(ch_map_addr_internal):2]),
     .wea_i   (char_map_be_gated),
@@ -167,62 +185,68 @@ module vgachargen
     .doutb_o (ch_map_data_word)
   );
 
-  logic [CH_T_ADDR_WIDTH-1:0] ch_t_ro_addr_internal;
-  assign                      ch_t_ro_addr_internal = ch_t_addr_internal[CH_T_ADDR_WIDTH-1:0];
-  logic [CH_T_DATA_WIDTH-1:0] ch_t_ro_data_internal;
+  logic [CH_T_DATA_WIDTH-1:0] ch_t_data_internal;
 
-  single_port_ro_bram #(
-    .INIT_FILE_NAME   (CH_T_RO_INIT_FILE_NAME),
-    .INIT_FILE_IS_BIN (CH_T_RO_INIT_FILE_IS_BIN),
-    .DATA_WIDTH       (CH_T_DATA_WIDTH),
-    .ADDR_WIDTH       (CH_T_ADDR_WIDTH)
-  ) ch_t_ro (
-    .clk_i (clk100m_i),
-    .addr_i(ch_t_ro_addr_internal),
-    .dout_o(ch_t_ro_data_internal)
-  );
+  logic [CH_T_ADDR_WIDTH-1:0] char_tiff_addr_128bit;
+  assign                      char_tiff_addr_128bit = char_tiff_addr_i[$left(char_tiff_addr_i):2];
+  logic [1:0]                 char_tiff_addr_offset_32bit;
+  assign                      char_tiff_addr_offset_32bit = char_tiff_addr_i[1:0];
 
-  logic [CH_T_ADDR_WIDTH-1:0] ch_t_rw_addr_internal;
-  assign                      ch_t_rw_addr_internal = ch_t_ro_addr_internal;
-  logic [CH_T_DATA_WIDTH-1:0] ch_t_rw_data_internal;
+  logic [3:0][3:0]            char_tiff_wea;
+
+  always_comb begin : bin2onehot
+    char_tiff_wea                              = '0;
+    char_tiff_wea[char_tiff_addr_offset_32bit] = char_tiff_be_gated;
+  end
+
+  logic [6:0]                 char_tiff_addr_offset_128bit;
+  logic [6:0]                 char_tiff_addr_offset_128bit_ff;
+  assign                      char_tiff_addr_offset_128bit = {char_tiff_addr_offset_32bit, 5'b00000};
+
+  logic [127:0]               char_tiff_wdata_128bit;
+
+  always_comb begin
+    char_tiff_wdata_128bit                                   = '0;
+    char_tiff_wdata_128bit[char_tiff_addr_offset_128bit+:32] = char_tiff_wdata_i;
+  end
+
+  logic [127:0]               char_tiff_rdata_128bit;
+
+  assign                      char_tiff_rdata_o      = char_tiff_rdata_128bit[char_tiff_addr_offset_128bit_ff+:32];
+
+  always_ff @(posedge clk_i) begin
+    char_tiff_addr_offset_128bit_ff <= char_tiff_addr_offset_128bit;
+  end
 
   true_dual_port_rw_bram #(
-    .INIT_FILE_NAME   (CH_T_RW_INIT_FILE_NAME),
-    .INIT_FILE_IS_BIN (CH_T_RW_INIT_FILE_IS_BIN),
-    .NUM_COLS         (1),
-    .COL_WIDTH        (CH_T_DATA_WIDTH),
+    .INIT_FILE_NAME   (CH_T_INIT_FILE_NAME),
+    .INIT_FILE_IS_BIN (CH_T_INIT_FILE_IS_BIN),
+    .NUM_COLS         (16),
+    .COL_WIDTH        (8),
     .ADDR_WIDTH       (CH_T_ADDR_WIDTH)
-  ) ch_t_rw (
+  ) char_tiff (
     .clka_i  (clk_i),
-    .clkb_i  (clk100m_i),
-    // .addra_i (ch_t_rw_addr_i),
-    .addra_i (),
-    .addrb_i (ch_t_rw_addr_internal),
-    // .wea_i   (ch_t_rw_wen_i),
-    .wea_i   (),
-    // .dina_i  (ch_t_rw_data_i),
-    .dina_i  (),
-    // .douta_o (ch_t_rw_data_o),
-    .douta_o (),
-    .doutb_o (ch_t_rw_data_internal)
+    .clkb_i  (vga_clk_i),
+    .addra_i (char_tiff_addr_128bit),
+    .addrb_i (ch_t_addr_internal),
+    .wea_i   (char_tiff_wea),
+    .dina_i  (char_tiff_wdata_128bit),
+    .douta_o (char_tiff_rdata_128bit),
+    .doutb_o (ch_t_data_internal)
   );
-
-  logic [CH_T_DATA_WIDTH-1:0] ch_t_data_internal;
-  assign                      ch_t_data_internal = ch_t_addr_internal[CH_T_ADDR_WIDTH]  ? ch_t_rw_data_internal
-                                                                                        : ch_t_ro_data_internal;
 
   logic [7:0] col_map_data_internal;
   logic [7:0] col_map_data_internal_delayed;
 
   logic [3:0][7:0] col_map_data_internal_word;
 
-  assign col_map_data_internal = col_map_data_internal_word[ch_map_addr_internal[1:0]];
+  assign col_map_data_internal = col_map_data_internal_word[ch_map_byte_select_delayed];
 
   delay #(
     .DATA_WIDTH (8),
     .DELAY_BY   (1)
   ) col_map_data_delay (
-    .clk_i   (clk100m_i),
+    .clk_i   (vga_clk_i),
     .arstn_i (arstn_i),
     .data_i  (col_map_data_internal),
     .data_o  (col_map_data_internal_delayed)
@@ -240,7 +264,7 @@ module vgachargen
     .ADDR_WIDTH       (10)
   ) col_map (
     .clka_i  (clk_i),
-    .clkb_i  (clk100m_i),
+    .clkb_i  (vga_clk_i),
     .addra_i (col_map_addr_i),
     .addrb_i (ch_map_addr_internal[$left(ch_map_addr_internal):2]),
     .wea_i   (col_map_be_gated),
@@ -277,7 +301,7 @@ module vgachargen
   assign vga_vs_next = vga_vs_delayed;
   assign vga_hs_next = vga_hs_delayed;
 
-  always_ff @(posedge clk100m_i or negedge arstn_i) begin
+  always_ff @(posedge vga_clk_i or negedge arstn_i) begin
     if (!arstn_i) begin
       vga_r_ff  <= '0;
       vga_g_ff  <= '0;
@@ -309,7 +333,8 @@ module clk_divider # (
   input  logic                       arstn_i,
   output logic                       strb_o
 );
-  localparam int unsigned COUNTER_WIDTH = (DIVISOR > 1) ? $clog2(DIVISOR) : 1;
+
+  localparam int unsigned COUNTER_WIDTH = $clog2(DIVISOR);
 
   logic [COUNTER_WIDTH-1:0] counter_next;
   logic [COUNTER_WIDTH-1:0] counter_ff;
@@ -394,28 +419,6 @@ module index_generator
 
 endmodule
 
-module single_port_ro_bram #(
-  parameter               INIT_FILE_NAME   = "",
-  parameter               INIT_FILE_IS_BIN = 0,
-  parameter  int unsigned DATA_WIDTH       = 2,
-  parameter  int unsigned ADDR_WIDTH       = 4,
-  localparam int unsigned DEPTH_WORDS      = 2 ** ADDR_WIDTH
-) (
-  input  logic                  clk_i,
-  input  logic [ADDR_WIDTH-1:0] addr_i,
-  output logic [DATA_WIDTH-1:0] dout_o
-);
-  logic [DATA_WIDTH-1:0] mem[DEPTH_WORDS];
-
-  if   (INIT_FILE_IS_BIN) initial  $readmemb(INIT_FILE_NAME, mem, 0, DEPTH_WORDS-1);
-  else                    initial  $readmemh(INIT_FILE_NAME, mem, 0, DEPTH_WORDS-1);
-
-  always_ff @(posedge clk_i) begin
-    dout_o <= mem[addr_i];
-  end
-
-endmodule
-
 module timing_generator
   import vgachargen_pkg::*;
 (
@@ -434,7 +437,6 @@ module timing_generator
 );
 
   logic [VGA_MAX_H_WIDTH-1:0] hcount_ff;
-  logic hcount_en;
   logic [VGA_MAX_H_WIDTH-1:0] hcount_next;
 
   logic [VGA_MAX_V_WIDTH-1:0] vcount_ff;
@@ -602,6 +604,7 @@ module vga_block
 );
   logic clk_divider_strb;
 
+if (CLK_FACTOR_25M > 1) begin
   clk_divider # (
     .DIVISOR (CLK_FACTOR_25M)
   ) clk_divider (
@@ -609,6 +612,9 @@ module vga_block
     .arstn_i,
     .strb_o  (clk_divider_strb)
   );
+end else begin
+  assign clk_divider_strb = 1'b1;
+end
 
   timing_generator timing_generator (
     .clk_i,
