@@ -20,7 +20,7 @@ module vgachargen
   parameter bit           COL_MAP_INIT_FILE_IS_BIN = 1'b0
 ) (
   input  logic            clk_i,             // системный синхроимпульс
-  input  logic            clk100m_i,         // клок с частотой CLK_FACTOR_25M * 25m
+  input  logic            clk100m_i,         // клок с частотой 100МГц
   input  logic            rst_i,             // сигнал сброса
 
   /*
