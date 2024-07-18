@@ -62,7 +62,7 @@ initial begin
   repeat(2)@(posedge clk_i);
   rst_i <= 1'b0;
   repeat(3e3)@(posedge clk_i);
-  $display("Simulation finished. Number of errors: %d", err_count); 
+  $display("Simulation finished. Number of errors: %d", err_count);
   $finish();
 end
 
@@ -106,7 +106,7 @@ stall_seq: assert property (
   @(posedge clk_i)
     disable iff ( rst_i )
   core_req_i |-> (core_stall_o || $past(core_stall_o))
-)else begin 
+)else begin
         err_count++;
         $error("\nIncorrect implementation of core_stall_o signal\n");
     end
@@ -115,7 +115,7 @@ stall_rise: assert property (
   @(posedge clk_i)
     disable iff ( rst_i )
   $rose(core_req_i) |-> $rose(core_stall_o)
-)else begin 
+)else begin
         err_count++;
         $error("\nRising core_req_i means rising core_stall_o\n");
     end
@@ -124,7 +124,7 @@ stall_fall: assert property (
   @(posedge clk_i)
     disable iff ( rst_i )
   $fell(core_req_i) |-> !core_stall_o
-)else begin 
+)else begin
         err_count++;
         $error("\nFalling core_req_i can be only on !core_stall_o\n");
     end
@@ -133,7 +133,7 @@ stall: assert property (
   @(posedge clk_i)
     disable iff ( rst_i )
   core_stall_o |-> core_req_i
-)else begin 
+)else begin
         err_count++;
         $error("\ncore_stall_o can be asserted only while core_req_i == 1\n");
     end
@@ -141,7 +141,7 @@ stall: assert property (
 stall_rst: assert property (
   @(posedge clk_i)
   (rst_i) |=> !core_stall_o
-)else begin 
+)else begin
         err_count++;
         $error("\nrst_i should reset core_stall_o and it's register\n");
     end
@@ -149,7 +149,7 @@ stall_rst: assert property (
 mem_we: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   mem_we_o === core_we_i
-)else begin 
+)else begin
         err_count++;
         $error("\nmem_we_o should be equal core_we_i\n");
     end
@@ -157,7 +157,7 @@ mem_we: assert property (
 mem_req: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   mem_req_o === core_req_i
-)else begin 
+)else begin
         err_count++;
         $error("\nmem_req_o should be equal core_req_i\n");
     end
@@ -165,7 +165,7 @@ mem_req: assert property (
 mem_addr: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   core_req_i |-> (mem_addr_o === core_addr_i)
-)else begin 
+)else begin
         err_count++;
         $error("\nmem_addr_o should be equal core_addr_i\n");
     end
@@ -173,15 +173,15 @@ mem_addr: assert property (
 core_rdata: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   is_reading |-> (core_rd_o === grm_rd_o)
-)else begin 
+)else begin
         err_count++;
-        $error("\nIncorrect value of core_rd_o. Compare it with grm");
+        $error("\nIncorrect value of core_rd_o. Your value is %0h while it should be %0h", core_rd_o, grm_rd_o);
     end
 
 core_stall: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   core_stall_o === grm_stall_o
-)else begin 
+)else begin
         err_count++;
         $error("\nIncorrect value of core_stall_o. Your value is %0h while it should be %0h", core_stall_o, grm_stall_o);
     end
@@ -189,7 +189,7 @@ core_stall: assert property (
 mem_be: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   is_writing |-> (mem_be_o === grm_be_o)
-)else begin 
+)else begin
         err_count++;
         $error("\nIncorrect value of mem_be_o. Your value is %0h while it should be %0h", mem_be_o, grm_be_o);
     end
@@ -197,7 +197,7 @@ mem_be: assert property (
 mem_wdata: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   is_writing |-> mem_wd_o === grm_wd_o
-)else begin 
+)else begin
         err_count++;
         $error("\nIncorrect value of mem_wd_o. Your value is %0h while it should be %0h", mem_wd_o, grm_wd_o);
     end
