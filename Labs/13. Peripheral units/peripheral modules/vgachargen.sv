@@ -19,42 +19,45 @@ module vgachargen
   parameter               COL_MAP_INIT_FILE_NAME   = "lab_13_vga_col_map.mem",
   parameter bit           COL_MAP_INIT_FILE_IS_BIN = 1'b0
 ) (
-  input  logic            clk_i,             // системный синхроимпульс
-  input  logic            clk100m_i,         // клок с частотой 100МГц
-  input  logic            rst_i,             // сигнал сброса
+  input  logic        clk_i,             // системный синхроимпульс
+  input  logic        clk100m_i,         // клок с частотой 100МГц
+  input  logic        rst_i,             // сигнал сброса
 
   /*
       Интерфейс записи выводимого символа
   */
-  input  logic [ 9:0]     char_map_addr_i,   // адрес позиции выводимого символа
-  input  logic            char_map_we_i,     // сигнал разрешения записи кода
-  input  logic [ 3:0]     char_map_be_i,     // сигнал выбора байтов для записи
-  input  logic [31:0]     char_map_wdata_i,  // ascii-код выводимого символа
-  output logic [31:0]     char_map_rdata_o,  // сигнал чтения кода символа
+  input  logic        char_map_req_i,    // запрос к памяти выводимых символов
+  input  logic [ 9:0] char_map_addr_i,   // адрес позиции выводимого символа
+  input  logic        char_map_we_i,     // сигнал разрешения записи кода
+  input  logic [ 3:0] char_map_be_i,     // сигнал выбора байтов для записи
+  input  logic [31:0] char_map_wdata_i,  // ascii-код выводимого символа
+  output logic [31:0] char_map_rdata_o,  // сигнал чтения кода символа
 
   /*
       Интерфейс установки цветовой схемы
   */
-  input  logic [ 9:0]     col_map_addr_i,    // адрес позиции устанавливаемой схемы
-  input  logic            col_map_we_i,      // сигнал разрешения записи схемы
-  input  logic [ 3:0]     col_map_be_i,      // сигнал выбора байтов для записи
-  input  logic [31:0]     col_map_wdata_i,   // код устанавливаемой цветовой схемы
-  output logic [31:0]     col_map_rdata_o,   // сигнал чтения кода схемы
+  input  logic        col_map_req_i,     // запрос к памяти цветов символов
+  input  logic [ 9:0] col_map_addr_i,    // адрес позиции устанавливаемой схемы
+  input  logic        col_map_we_i,      // сигнал разрешения записи схемы
+  input  logic [ 3:0] col_map_be_i,      // сигнал выбора байтов для записи
+  input  logic [31:0] col_map_wdata_i,   // код устанавливаемой цветовой схемы
+  output logic [31:0] col_map_rdata_o,   // сигнал чтения кода схемы
 
   /*
       Интерфейс установки шрифта.
   */
-  input  logic [ 9:0]     char_tiff_addr_i,  // адрес позиции устанавливаемого шрифта
-  input  logic            char_tiff_we_i,    // сигнал разрешения записи шрифта
-  input  logic [ 3:0]     char_tiff_be_i,    // сигнал выбора байтов для записи
-  input  logic [31:0]     char_tiff_wdata_i, // отображаемые пиксели в текущей позиции шрифта
-  output logic [31:0]     char_tiff_rdata_o, // сигнал чтения пикселей шрифта
+  input  logic        char_tiff_req_i,   // запрос к памяти шрифтов символов
+  input  logic [ 9:0] char_tiff_addr_i,  // адрес позиции устанавливаемого шрифта
+  input  logic        char_tiff_we_i,    // сигнал разрешения записи шрифта
+  input  logic [ 3:0] char_tiff_be_i,    // сигнал выбора байтов для записи
+  input  logic [31:0] char_tiff_wdata_i, // отображаемые пиксели в текущей позиции шрифта
+  output logic [31:0] char_tiff_rdata_o, // сигнал чтения пикселей шрифта
 
-  output logic [3:0]      vga_r_o,           // красный канал vga
-  output logic [3:0]      vga_g_o,           // зеленый канал vga
-  output logic [3:0]      vga_b_o,           // синий канал vga
-  output logic            vga_hs_o,          // линия горизонтальной синхронизации vga
-  output logic            vga_vs_o           // линия вертикальной синхронизации vga
+  output logic [3:0]  vga_r_o,           // красный канал vga
+  output logic [3:0]  vga_g_o,           // зеленый канал vga
+  output logic [3:0]  vga_b_o,           // синий канал vga
+  output logic        vga_hs_o,          // линия горизонтальной синхронизации vga
+  output logic        vga_vs_o           // линия вертикальной синхронизации vga
 );
   logic vga_clk_i;
   assign vga_clk_i = clk100m_i;
@@ -62,13 +65,13 @@ module vgachargen
 if (CLK_FACTOR_25M == 0 || CLK_FACTOR_25M > 4) error_unsupported_factor error_unsupported_factor ();
 
   logic  [3:0] char_map_be_gated;
-  assign       char_map_be_gated = char_map_be_i & {4{char_map_we_i}};
+  assign       char_map_be_gated = char_map_be_i & {4{char_map_we_i & char_map_req_i}};
 
   logic  [3:0] col_map_be_gated;
-  assign       col_map_be_gated  = col_map_be_i & {4{col_map_we_i}};
+  assign       col_map_be_gated  = col_map_be_i & {4{col_map_we_i & col_map_req_i}};
 
   logic  [3:0] char_tiff_be_gated;
-  assign       char_tiff_be_gated  = char_tiff_be_i & {4{char_tiff_we_i}};
+  assign       char_tiff_be_gated  = char_tiff_be_i & {4{char_tiff_we_i & char_tiff_req_i}};
 
   logic  arstn_i;
   assign arstn_i = ~rst_i;
