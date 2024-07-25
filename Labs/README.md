@@ -51,11 +51,11 @@
 2. АЛУ ([02. Arithmetic-logic unit](02.%20Arithmetic-logic%20unit))
 3. Регистровый файл и внешняя память ([03. Register file and memory](03.%20Register%20file%20and%20memory))
 4. Простейшее программируемое устройство ([04. Primitive programmable device](04.%20Primitive%20programmable%20device))
-5. Основной дешифратор ([05. Main decoder](05.%20Main%20decoder))
+5. Декодер инструкций ([05. Main decoder](05.%20Main%20decoder))
 6.
    1. Тракт данных ([07. Datapath](07.%20Datapath))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](09.%20LSU%20Integration))
-   3. Интеграция подсистемы прерываний ([11. Interrupt Integration](11.%20Interrupt%20integration))
+   3. Интеграция подсистемы прерывания ([11. Interrupt Integration](11.%20Interrupt%20integration))
 7. Периферийные устройства ([13. Peripheral units](13.%20Peripheral%20units))
 8. Программирование ([14. Programming](14.%20Programming))
 
@@ -65,14 +65,14 @@
 2.
    1. Память ([03. Register file and memory](03.%20Register%20file%20and%20memory)),
    2. Простейшее программируемое устройство ([04. Primitive programmable device](04.%20Primitive%20programmable%20device))
-3. Основной дешифратор ([05. Main decoder](05.%20Main%20decoder))
+3. Декодер инструкций ([05. Main decoder](05.%20Main%20decoder))
 4. Тракт данных ([07. Datapath](07.%20Datapath))
 5.
    1. Модуль загрузки и сохранения ([08. Load-store unit](08.%20Load-store%20unit))
    2. Интеграция блока загрузки и сохранения ([09. LSU Integration](09.%20LSU%20Integration))
 6.
    1. Контроллер прерываний ([10. Interrupt subsystem](10.%20Interrupt%20subsystem))
-   2. Интеграция подсистемы прерываний ([11. Interrupt Integration](11.%20Interrupt%20integration))
+   2. Интеграция подсистемы прерывания ([11. Interrupt Integration](11.%20Interrupt%20integration))
 7. Периферийные устройства ([13. Peripheral units](13.%20Peripheral%20units))
 8. Программирование ([14. Programming](14.%20Programming))
 
