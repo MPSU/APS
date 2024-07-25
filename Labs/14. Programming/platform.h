@@ -114,10 +114,11 @@ struct TIMER_HANDLE *const timer_ptr = CAST(struct TIMER_HANDLE *const, 0x080000
 
 struct SUPER_COLLIDER_HANDLE
 {
-  volatile const uint32_t ready;
-  volatile       uint32_t start;
-  volatile const uint32_t status;
-  volatile       uint32_t emergency_switch;
+  volatile const uint32_t         ready;
+  volatile       uint32_t         start;
+  volatile const uint32_t         status;
+  volatile       uint32_t         emergency_switch;
+  volatile        uint8_t *const  mem;
 };
 struct SUPER_COLLIDER_HANDLE *const collider_ptr = CAST(struct SUPER_COLLIDER_HANDLE *const, 0xFF000000);
-volatile uint8_t *const collider_mem = CAST(uint8_t *const, 0xFF000100);
+struct SUPER_COLLIDER_HANDLE        collider_obj = {0, 0, 0, 0, CAST(uint8_t *const, 0xFF000100)};
