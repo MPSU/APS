@@ -20,7 +20,7 @@ module data_mem(
   output logic        ready_o
 );
 assign ready_o = 1'b1;
-parameter DATA_MEM_SIZE_WORDS = 4096;
+import memory_pkg::DATA_MEM_SIZE_WORDS;
 logic [31:0] ram [DATA_MEM_SIZE_WORDS];
 
 always_ff @(posedge clk_i) begin
