@@ -833,3 +833,4 @@ module vga_sb_ctrl (
 
 1. С.А. Орлов, Б.Я. Цилькер / Организация ЭВМ и систем: Учебник для вузов. 2-е изд. / СПб.: Питер, 2011.
 2. [Rebelstar](https://en.wikipedia.org/wiki/Rebelstar)
+3. [Easycode](https://fontstruct.com/fontstructions/show/346317/easycode)
