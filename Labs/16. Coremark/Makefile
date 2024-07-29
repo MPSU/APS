@@ -26,7 +26,6 @@ OBJS = $(src) startup.o core_list_join.o core_matrix.o core_portme.o core_state.
 LINK_SCRIPT = linker_script.ld
 OUTPUT      = coremark
 OUTPUT_PROD = $(addprefix $(OUTPUT), .mem _instr.mem _data.mem .elf _disasm.S)
-# OUTPUT_PROD :=$(OUTPUT_PROD) $(addprefix tb_$(OUTPUT), .mem _instr.mem _data.mem .elf _disasm.S)
 
 INC_DIRS    = "./"
 SRC_DIR     = ./src
@@ -44,9 +43,6 @@ harvard: $(OUTPUT).elf $(OUTPUT)_disasm.S size
 # $< означает "первая зависимость"
 	${OBJCOPY} -O verilog --verilog-data-width=4 -j .data -j .sdata -j .bss $< $(OUTPUT)_data.mem
 	${OBJCOPY} -O verilog --verilog-data-width=4 -j .text $< $(OUTPUT)_instr.mem
-	${OBJCOPY} -O verilog -j .data -j .sdata -j .bss $< tb_$(OUTPUT)_data.mem
-	${OBJCOPY} -O verilog -j .text $< tb_$(OUTPUT)_instr.mem
-	sed -i '1d' $(OUTPUT)_data.mem
 
 princeton: $(OUTPUT).elf $(OUTPUT)_disasm.S size
 	${OBJCOPY} -O verilog --verilog-data-width=4 --remove-section=.comment $< $(OUTPUT).mem
