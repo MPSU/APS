@@ -248,7 +248,7 @@ _Рисунок 18. Пример использования логической
 
 ## Сеть межсоединений
 
-Для того, чтобы разобраться как управлять межсоединением логических блоков, рассмотрим рис. 19, входящий в [патент](https://patents.google.com/patent/US4870302A) на ПЛИС[[4]()].
+Для того, чтобы разобраться как управлять межсоединением логических блоков, рассмотрим рис. 19, входящий в [патент](https://patents.google.com/patent/US4870302A) на ПЛИС[[4](http://www.righto.com/2020/09/reverse-engineering-first-fpga-chip.html)].
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_19.jpg](../.pic/Introduction/How%20FPGA%20works/fig_19.jpg)
 
