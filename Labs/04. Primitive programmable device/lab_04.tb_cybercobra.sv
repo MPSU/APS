@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_CYBERcobra();
+module lab_04_tb_CYBERcobra();
 
     CYBERcobra dut(
     .clk_i(clk),
@@ -26,7 +26,7 @@ module tb_CYBERcobra();
     always #5 clk = ~clk;
 
     initial begin
-    $display( "\nStart test: \n\n===============================================\nAdd CYBERcobra signals to the waveform and then\nCLICK THE BUTTON 'Run All'\n===============================================\n"); $stop();
+    $display("Test has been started");
     rstn = 1'b1;
     #10;
     rstn = 1'b0;

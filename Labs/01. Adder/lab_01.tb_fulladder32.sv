@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-module tb_fulladder32();
+module lab_01_tb_fulladder32();
 
     logic [31:0] tb_a_i;
     logic [31:0] tb_b_i;
@@ -32,7 +32,6 @@ module tb_fulladder32();
 
     initial begin
       $display("Test has been started");
-      $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
       sequential_add_test();
       random_test();
       $display("\nTest has been finished\nNumber of errors: %d\n", err_cnt);

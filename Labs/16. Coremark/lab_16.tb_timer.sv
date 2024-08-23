@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_timer();
+module lab_16_tb_timer();
 
   logic        clk_i;
   logic        rst_i;

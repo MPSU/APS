@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-module tb_decoder_riscv();
+module lab_05_tb_decoder();
 
   import decoder_pkg::*;
   typedef class riscv_instr;
@@ -130,8 +130,6 @@ module tb_decoder_riscv();
 
   initial begin
     $display("Test has been started");
-    $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
-
     valid_instrs_direct_test();
     valid_instrs_random_test();
     illegal_instr_direct_test();
@@ -403,9 +401,9 @@ module tb_decoder_riscv();
   logic         grm_mret_o;
 
 
-  decoder_riscv DUT(.*);
+  decoder DUT(.*);
 
-  decoder_riscv_ref GRM(
+  decoder_ref GRM(
     .fetched_instr_i  (fetched_instr_i    ),
     .a_sel_o          (grm_a_sel_o        ),
     .b_sel_o          (grm_b_sel_o        ),
@@ -1057,7 +1055,7 @@ module jalr_table (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     endcase
 endmodule
 
-module decoder_riscv_ref (
+module decoder_ref (
     input  logic [31:0] fetched_instr_i,
     output logic [1:0]  a_sel_o,
     output logic [2:0]  b_sel_o,

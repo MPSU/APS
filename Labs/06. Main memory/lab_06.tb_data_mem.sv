@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_data_mem;
+module lab_06_tb_data_mem;
   // Входы
   import memory_pkg::DATA_MEM_SIZE_WORDS;
   import memory_pkg::DATA_MEM_SIZE_BYTES;

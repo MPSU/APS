@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module lab_13_tb_system();
+module lab_13_tb_processor_system();
 
 import peripheral_pkg::*;
 

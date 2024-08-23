@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-module tb_fulladder4();
+module lab_01_tb_fulladder4();
 
     logic [3:0] tb_a_i;
     logic [3:0] tb_b_i;
@@ -30,7 +30,6 @@ module tb_fulladder4();
 
     initial begin
       $display("Test has been started");
-      $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
       #5ns;
       test_case = 9'd0;
       repeat(512) begin

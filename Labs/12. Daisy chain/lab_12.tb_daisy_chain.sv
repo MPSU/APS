@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_daisy_chain();
+module lab_12_tb_daisy_chain();
 
 logic clk_i, rst_i, ready_i, irq_ret_i;
 logic [15:0] masked_irq_i;

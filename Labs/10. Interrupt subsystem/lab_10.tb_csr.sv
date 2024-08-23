@@ -9,7 +9,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-module tb_csr();
+module lab_10_tb_csr();
     logic     clk_i;
     logic     rst_i;
     logic     trap_i;

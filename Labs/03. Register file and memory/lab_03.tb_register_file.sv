@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_rf_riscv();
+module lab_03_tb_register_file();
 
     logic        CLK;
     logic [ 4:0] RA1;
@@ -22,7 +22,7 @@ module tb_rf_riscv();
     logic [31:0] RD1ref;
     logic [31:0] RD2ref;
 
-    rf_riscv DUT(
+    register_file DUT(
         .clk_i         (CLK),
         .read_addr1_i  (RA1),
         .read_addr2_i  (RA2),
@@ -33,7 +33,7 @@ module tb_rf_riscv();
         .read_data2_o  (RD2)
     );
 
-    rf_riscv_ref DUTref(
+    register_file_ref DUTref(
         .clk_i         (CLK   ),
         .read_addr1_i  (RA1   ),
         .read_addr2_i  (RA2   ),
@@ -61,7 +61,7 @@ module tb_rf_riscv();
 
     initial begin
       $timeformat (-9, 2, "ns");
-      $display( "\nStart test: \n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
+      $display("Test has been started");
       RA1 = 'b1;
       @(posedge CLK);
         if (32'hx !== RD1) begin
@@ -153,7 +153,7 @@ module tb_rf_riscv();
     end
 endmodule
 
-module rf_riscv_ref(
+module register_file_ref(
   input  logic        clk_i,
   input  logic        write_enable_i,
 

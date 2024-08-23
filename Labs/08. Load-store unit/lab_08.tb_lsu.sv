@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_lsu();
+module lab_08_tb_lsu();
 import decoder_pkg::*;
 logic        clk_i        ;
 logic        rst_i        ;
@@ -33,9 +33,9 @@ logic        grm_we_o     ;
 logic [ 3:0] grm_be_o     ;
 logic [31:0] grm_addr_o   ;
 logic [31:0] grm_wd_o     ;
-riscv_lsu dut(.*);
+lsu dut(.*);
 
-riscv_lsu_ref grm(
+lsu_ref grm(
     .core_rd_o      (grm_rd_o   ),
     .core_stall_o   (grm_stall_o),
     .mem_we_o       (grm_we_o   ),
@@ -53,8 +53,7 @@ always #5 clk_i <= ~clk_i;
 int err_count;
 bit not_stopped;
 initial begin
-  $display("\n\n===========================\n\nPress button 'Run All' (F3)\n\n===========================\n\n");
-  $stop();
+  $display("Test has been started.");
   err_count = 0;
   not_stopped = 1;
   clk_i <= 0;
@@ -204,7 +203,7 @@ mem_wdata: assert property (
 
 endmodule
 
-module riscv_lsu_ref(
+module lsu_ref(
   input logic clk_i,
   input logic rst_i,
 

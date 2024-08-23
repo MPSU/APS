@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_alu();
+module lab_02_tb_alu();
 
 import alu_opcodes_pkg::*;
 
@@ -28,7 +28,7 @@ wire [31:0] result_ref;
 wire        comparison_result_ref;
 
 
-alu_riscv DUT
+alu DUT
 (
   .alu_op_i (operator_i ),
   .a_i      (operand_a_i),
@@ -38,7 +38,7 @@ alu_riscv DUT
   .flag_o   (comparison_result_dut)
 );
 
-alu_riscv_ref REF
+alu_ref REF
 (
   .alu_op_i (operator_i ),
   .a_i      (operand_a_i),
@@ -54,7 +54,6 @@ reg [8*9:1] operator_type;
 initial
   begin
     $display("Test has been started");
-    $display( "\n\n==========================\nCLICK THE BUTTON 'Run All'\n==========================\n"); $stop();
     //X_test();
     result_test();
     flag_test();
@@ -141,7 +140,7 @@ task direct_test();
   logic [4:0] flag_opcodes_2[3] = {ALU_SLL, ALU_SRL, ALU_SRA};
   logic [4:0] flag_opcodes_3[2] = {ALU_ADD, ALU_SUB};
   logic [4:0] flag_opcodes_4[5] = {ALU_XOR, ALU_OR, ALU_AND, ALU_EQ, ALU_NE};
- 
+
   repeat(100)
   begin
     std::randomize(operand_a_i, operand_b_i) with {operand_a_i==operand_b_i;};
@@ -191,14 +190,14 @@ task direct_test();
 
   repeat(100)
   begin
-    std::randomize(operand_a_i) with {operand_a_i > {31{1'b1}};}; 
+    std::randomize(operand_a_i) with {operand_a_i > {31{1'b1}};};
     std::randomize(operand_b_i) with {operand_b_i > {31{1'b1}};};
     foreach(flag_opcodes_3[i]) begin
       operator_i = flag_opcodes_3[i];
       @(posedge clk);
     end
   end
-    
+
   repeat(100)
   begin
     operand_a_i = $urandom();
@@ -256,7 +255,7 @@ parameter HASH_LEN = 1000;
 parameter START_CODING = 10366;
 parameter START_MUX = START_CODING+100;
 
-module alu_riscv_ref (
+module alu_ref (
     input  logic [ALUOP_W-1:0] alu_op_i,
     input  logic [OP_W-1:0]    a_i,
     input  logic [OP_W-1:0]    b_i,

@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module tb_coremark();
+module lab_16_tb_coremark();
 
   logic        clk100mhz_i;
   logic        aresetn_i;
