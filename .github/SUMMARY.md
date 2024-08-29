@@ -50,13 +50,14 @@
 
 # Основы Vivado
 
-- [Создание проекта в Vivado](Vivado%20Basics/Vivado%20trainer.md)
-- [Взаимодействие с окном исходников проекта Vivado](Vivado%20Basics/How%20to%20use%20Source%20Window.md)
-- [Как сгенерировать логическую схему](Vivado%20Basics/How%20to%20open%20a%20schematic.md)
-- [Ошибки элаборации](Vivado%20Basics/Elaboration%20failed.md)
-- [Запуск симуляции](Vivado%20Basics/Run%20Simulation.md)
-- [Руководство по поиску ошибок](Vivado%20Basics/Debug%20manual.md)
-- [Руководство по прошивке ПЛИС](Vivado%20Basics/How%20to%20program%20an%20fpga%20board.md)
+1. [Создание проекта в Vivado](Vivado%20Basics/01.%20New%20project.md)
+2. [Навигатор по маршруту проектирования](Vivado%20Basics/02.%20Flow%20Navigator.md)
+3. [Менеджер проекта](Vivado%20Basics/03.%20Project%20manager.md)
+4. [Симуляция](Vivado%20Basics/04.%20Simulation.md)
+5. [Руководство по поиску функциональных ошибок](Vivado%20Basics/05.%20Bug%20hunting.md)
+6. [Анализ RTL](Vivado%20Basics/06.%20RTL%20Analysis.md)
+7. [Руководство по прошивке ПЛИС](Vivado%20Basics/07.%20Program%20and%20debug.md)
+8. [Руководство по работе с ошибками обработки кода](Vivado%20Basics/08.%20Code%20processing%20errors.md)
 
 # Дополнительные материалы
 

@@ -30,7 +30,7 @@
 ## Полезное
 
 - [Студенческий сервер](../Other/Students%20server.md)
-- [Создание базового проекта с прошивкой ПЛИС в Vivado](../Vivado%20Basics/Vivado%20trainer.md)
+- [Создание базового проекта с прошивкой ПЛИС в Vivado](../Vivado%20Basics/01.%20New%20project.md)
 - [Базовые конструкции Verilog](../Basic%20Verilog%20structures/)
 - [Список типичных ошибок в Vivado и SystemVerilog](../Other/FAQ.md)
 - [Тестовое окружение](../Basic%20Verilog%20structures/Testbench.md)
