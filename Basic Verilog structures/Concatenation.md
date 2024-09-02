@@ -8,7 +8,7 @@
 
 ![../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg)
 
-```SystemVerilog
+```Verilog
 
 logic a;
 logic b;
@@ -29,7 +29,7 @@ logic [5:0] e;
 
 Это можно сделать путем 4 непрерывных присваиваний:
 
-```SystemVerilog
+```Verilog
 logic a;
 logic b;
 logic [7:0] c;
@@ -45,7 +45,7 @@ assign e[1:0] = d;
 
 либо через одно присваивание, использующее конкатенацию:
 
-```SystemVerilog
+```Verilog
 logic a;
 logic b;
 logic [7:0] c;
@@ -60,7 +60,7 @@ assign e = {a, b, c[4:3], d};
 
 ![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg)
 
-```SystemVerilog
+```Verilog
 logic a;
 logic b;
 logic [7:0] c;
@@ -76,7 +76,7 @@ assign d      = e[1:0];
 
 Подобную операцию можно так же выполнить в одно выражение через конкатенацию:
 
-```SystemVerilog
+```Verilog
 logic a;
 logic b;
 logic [7:0] c;
@@ -89,14 +89,14 @@ assign {a, b, c[4:3], d} = e;
 
 Кроме того, конкатенация может использоваться при **множественном дублировании** сигналов. Дублирование выполняется выражением:
 
-```SystemVerilog
+```Verilog
 {a, {число_повторений{повторяемый_сигнал}} ,b}
 ```
 
 Допустим, мы хотим присвоить какому-то сигналу три копии `[4:3]` битов сигнала `c`, после которых идут сигналы `a` и `b`.
 Это можно сделать выражением:
 
-```SystemVerilog
+```Verilog
 logic a;
 logic b;
 logic [7:0] c;
@@ -105,3 +105,10 @@ logic [7:0] e;
 
 assign e = { {3{c[4:3]}}, a, b};
 ```
+
+## Итоги главы
+
+Оператор конкатенации может быть использован для группировки и репликации сигналов по обе стороны присваивания, а именно:
+
+- он может быть использован для присваивания сигналу большей разрядности группы сигналов меньшей разрядности
+- он может быть использован для присваивания группе сигналов меньшей разрядности соответствующих бит сигнала большей разрядности.
