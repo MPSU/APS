@@ -68,7 +68,7 @@
 
 ![../../.pic/Labs/lab_10_irq/fig_01.drawio.svg](../../.pic/Labs/lab_10_irq/fig_01.drawio.svg)
 
-_Рисунок 1. Распределение привилегий по уровням абстракций программного обеспечения [[5](https://doi.org/10.1007/978-981-16-9113-3_33), стр.448]._
+_Рисунок 1. Распределение привилегий по уровням абстракций программного обеспечения [[5](https://doi.org/10.1007/978-981-16-9113-3_33), стр.448], [[6](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/priv-isa-asciidoc.pdf), стр. 8]._
 
 Переключение между этими режимами происходит с помощью исключения, называемого **системный вызов**, и который происходит при выполнении специальной инструкции. Для RISC-V такой инструкцией является **ecall**. Это похоже на вызов подпрограммы, но при системном вызове изменяется режим работы и управление передаётся операционной системе, которая, по коду в инструкции вызова определяет, что от неё хотят. Например, операционная система может предоставить данные с диска, так как запускаемая программа не имеет никакого представления о том, на какой машине её запустили, или что используется какая-то конкретная файловая система.
 
@@ -114,9 +114,9 @@ _Рисунок 2. Разделение регистра `mtvec` на поля `
 
 Так как обработчик перехвата будет использовать те же регистры, что и прерванная программа, перед использованием регистрового файла, данные из него необходимо сохранить, разместив их на специальном стеке — стеке прерываний. Адрес начала этого стека хранится в регистре `mscratch`, расположенного по адресу `0x340` и по сути является указателем на верхушку стека прерываний.
 
-Регистр `mepc`, расположенный по адресу `0x341` сохраняет адрес инструкции, во время исполнения которой произошёл перехват [6, стр. 42]. Это очень важно понимать, при реализации **обработчика исключения** — если в нем не перезаписать этот регистр, по возврату из обработчика **процессор снова окажется на инструкции, которая вызвала исключение**.
+Регистр `mepc`, расположенный по адресу `0x341` сохраняет адрес инструкции, во время исполнения которой произошёл перехват [[6](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/priv-isa-asciidoc.pdf), стр. 42]. Это очень важно понимать, при реализации **обработчика исключения** — если в нем не перезаписать этот регистр, по возврату из обработчика **процессор снова окажется на инструкции, которая вызвала исключение**.
 
-То как кодируется причина перехвата в регистре `mcause`, расположенного по адресу `0x342` описано в спецификации привилегированной архитектуры[[6](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf), стр. 38]:
+То как кодируется причина перехвата в регистре `mcause`, расположенного по адресу `0x342` описано в спецификации привилегированной архитектуры[[6](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/priv-isa-asciidoc.pdf), стр. 43]:
 
 ![../../.pic/Labs/lab_10_irq/tab_02.png](../../.pic/Labs/lab_10_irq/tab_02.png)
 
@@ -402,6 +402,6 @@ endmodule
 1. С.А. Орлов, Б.Я. Цилькер / Организация ЭВМ и систем: Учебник для вузов. 2-е изд. / СПб.: Питер, 2011.
 2. [PIC24FJ512GU410 Family Data Sheet](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU16/ProductDocuments/DataSheets/PIC24FJ512GU410-Family-Data-Sheet-DS30010203D.pdf)
 3. [The Art of Assembly Language](https://flint.cs.yale.edu/cs422/doc/art-of-asm/pdf/)
-4. [The RISC-V Instruction Set Manual Volume I: Unprivileged ISA](https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf)
+4. [The RISC-V Instruction Set Manual Volume I: Unprivileged ISA](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/unpriv-isa-asciidoc.pdf)
 5. [Pillai, V.P., Megalingam, R.K. (2022). System Partitioning with Virtualization for Federated and Distributed Machine Learning on Critical IoT Edge Systems. In: Saraswat, M., Sharma, H., Balachandran, K., Kim, J.H., Bansal, J.C. (eds) Congress on Intelligent Systems. Lecture Notes on Data Engineering and Communications Technologies, vol 111. Springer, Singapore.](https://doi.org/10.1007/978-981-16-9113-3_33)
-6. [The RISC-V Instruction Set Manual Volume II: Privileged Architecture](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
+6. [The RISC-V Instruction Set Manual Volume II: Privileged Architecture](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/priv-isa-asciidoc.pdf)
