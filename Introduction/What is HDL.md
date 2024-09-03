@@ -81,7 +81,3 @@ endmodule
 3. [F.Ka˘gan. Gürkaynak / Side Channel Attack Secure Cryptographic Accelerators](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf);
 4. [FIPS 197, Advanced Encryption Standart (AES)](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf);
 5. [P. Flake, P. Moorby, S. Golson, A. Salz, S. Davidmann / Verilog HDL and Its Ancestors and Descendants](https://dl.acm.org/doi/pdf/10.1145/3386337).
-
-## Примечания
-
-Несмотря на то, что данная глава пестрит термином "цифровая схема", определение этому термину будет дано только в начале следующей главы. Такое решение было принято в виду того, что данный документ проще и приоритетней к прочтению и не требует глубокого понимания данного термина, в то время как его определение более органично вписывается в следующей главе.
