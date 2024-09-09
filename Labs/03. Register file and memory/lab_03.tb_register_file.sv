@@ -10,146 +10,149 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 module lab_03_tb_register_file();
 
-    logic        CLK;
-    logic [ 4:0] RA1;
-    logic [ 4:0] RA2;
-    logic [ 4:0] WA;
-    logic [31:0] WD;
-    logic        WE;
+  logic        CLK;
+  logic [ 4:0] RA1;
+  logic [ 4:0] RA2;
+  logic [ 4:0] WA;
+  logic [31:0] WD;
+  logic        WE;
 
-    logic [31:0] RD1;
-    logic [31:0] RD2;
-    logic [31:0] RD1ref;
-    logic [31:0] RD2ref;
+  logic [31:0] RD1;
+  logic [31:0] RD2;
+  logic [31:0] RD1ref;
+  logic [31:0] RD2ref;
 
-    register_file DUT(
-        .clk_i         (CLK),
-        .read_addr1_i  (RA1),
-        .read_addr2_i  (RA2),
-        .write_addr_i  (WA ),
-        .write_data_i  (WD ),
-        .write_enable_i(WE ),
-        .read_data1_o  (RD1),
-        .read_data2_o  (RD2)
-    );
+  register_file DUT(
+    .clk_i         (CLK),
+    .read_addr1_i  (RA1),
+    .read_addr2_i  (RA2),
+    .write_addr_i  (WA ),
+    .write_data_i  (WD ),
+    .write_enable_i(WE ),
+    .read_data1_o  (RD1),
+    .read_data2_o  (RD2)
+  );
 
-    register_file_ref DUTref(
-        .clk_i         (CLK   ),
-        .read_addr1_i  (RA1   ),
-        .read_addr2_i  (RA2   ),
-        .write_addr_i  (WA    ),
-        .write_data_i  (WD    ),
-        .write_enable_i(WE    ),
-        .read_data1_o  (RD1ref),
-        .read_data2_o  (RD2ref)
-    );
+  register_file_ref DUTref(
+    .clk_i         (CLK   ),
+    .read_addr1_i  (RA1   ),
+    .read_addr2_i  (RA2   ),
+    .write_addr_i  (WA    ),
+    .write_data_i  (WD    ),
+    .write_enable_i(WE    ),
+    .read_data1_o  (RD1ref),
+    .read_data2_o  (RD2ref)
+  );
 
-    integer i, err_count = 0;
+  integer i, err_count = 0;
 
-    parameter CLK_FREQ_MHz   = 100;
-    parameter CLK_SEMI_PERIOD= 1e3/CLK_FREQ_MHz/2;
+  parameter CLK_FREQ_MHz   = 100;
+  parameter CLK_SEMI_PERIOD= 1e3/CLK_FREQ_MHz/2;
 
-    parameter address_length = 32;
+  parameter address_length = 32;
 
-    initial CLK <= 0;
-    always begin
-        #CLK_SEMI_PERIOD CLK = ~CLK;
-        if (err_count >= 10) begin
-            $display("\n\nThe test was stopped due to errors"); $stop();
-        end
+  initial CLK <= 0;
+  always begin
+    #CLK_SEMI_PERIOD CLK = ~CLK;
+    if (err_count >= 10) begin
+      $display("\n\nThe test was stopped due to errors"); $stop();
     end
+  end
 
-    initial begin
-      $timeformat (-9, 2, "ns");
-      $display("Test has been started");
-      RA1 = 'b1;
+  initial begin
+    $timeformat (-9, 2, "ns");
+    $display("Test has been started");
+    RA1 = 'b1;
+    @(posedge CLK);
+      if (32'hx !== RD1) begin
+      $display("The register file should not be initialized by the $readmemh function");
+      err_count = err_count + 1;
+    end
+    @(posedge CLK);
+    DUT.rf_mem[32] = 32'd1;
+    if(DUT.rf_mem[32]=== 32'd1) begin
+      $display("invalid memory size");
+      err_count = err_count + 1;
+    end
+    RA1 <= 'b0;
+    RA2 <= 'b0;
+    @(posedge CLK);
+    if( RD1 !== 'b0 ) begin
+      $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
+      err_count = err_count + 1;
+    end
+    if( RD2 !== 'b0 ) begin
+      $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
+      err_count = err_count + 1;
+    end
+    @(posedge CLK);
+    WD <= 32'd1;
+    WA <= '0;
+    WE <= 1'b1;
+    @(posedge CLK);
+    WE  <= 'b0;
+    RA1 <= 'b0;
+    @(posedge CLK);
+    if( RD1 !== 'b0 ) begin
+      $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
+      err_count = err_count + 1;
+    end
+    @(posedge CLK);
+    //------initial
+    CLK <= 'b0;
+    RA1 <= 'b0;
+    RA2 <= 'b0;
+    WA  <= 'b0;
+    WD  <= 'b0;
+    WE  <= 'b0;
+    @(posedge CLK);
+    //----- reset
+    for( i = 1; i < address_length; i = i + 1) begin
       @(posedge CLK);
-        if (32'hx !== RD1) begin
-        $display("The register file should not be initialized by the $readmemh function");
-        err_count = err_count + 1;
-      end
-      @(posedge CLK);
-      DUT.rf_mem[32] = 32'd1;
-      if(DUT.rf_mem[32]=== 32'd1) begin
-        $display("invalid memory size");
-        err_count = err_count + 1;
-      end
-      RA1 <= 'b0;
-      RA2 <= 'b0;
-      @(posedge CLK);
-      if( RD1 !== 'b0 ) begin
-        $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
-        err_count = err_count + 1;
-      end
-      if( RD2 !== 'b0 ) begin
-        $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
-        err_count = err_count + 1;
-      end
-      @(posedge CLK);
-      WD <= 32'd1;
-      WA <= '0;
-      WE <= 1'b1;
-      @(posedge CLK);
-      WE  <= 'b0;
-      RA1 <= 'b0;
-      @(posedge CLK);
-      if( RD1 !== 'b0 ) begin
-        $display("time = %0t. invalid data when reading at address 0: RD1 = %h", $time, RD1);
-        err_count = err_count + 1;
-      end
-      @(posedge CLK);
-      //------initial
-      CLK <= 'b0;
-      RA1 <= 'b0;
-      RA2 <= 'b0;
-      WA  <= 'b0;
-      WD  <= 'b0;
-      WE  <= 'b0;
-      @(posedge CLK);
-      //----- reset
-      for( i = 1; i < address_length; i = i + 1) begin
-        @(posedge CLK);
-        WA <= i;
-        WD <= 'b0;
-        WE <= 'b1;
-      end
-      @(posedge CLK);
-      WA  <= 'b0;
-      WD  <= 'b1;
+      WA <= i;
+      WD <= 'b0;
       WE <= 'b1;
+    end
+    @(posedge CLK);
+    WA  <= 'b0;
+    WD  <= 'b1;
+    WE <= 'b1;
+    @(posedge CLK);
+    WE <= 'b0;
+    RA2  <= 'b0;
+    @(posedge CLK);
+    if( RD2 !== 'b0 )begin
+      $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
+      err_count = err_count + 1;
+    end
+    @(posedge CLK);
+    for( i = 1; i < address_length; i = i + 1) begin
       @(posedge CLK);
-      WE <= 'b0;
-      RA2  <= 'b0;
+      WA <= i;
+      WD <= $urandom;
+      WE <= $urandom % 2;
+    end
+    @(posedge CLK);
+    WE <= 'b0;
+    for( i = 0; i < address_length; i = i + 1) begin
       @(posedge CLK);
-      if( RD2 !== 'b0 )begin
-        $display("time = %0t. invalid data when reading at address 0: RD2 = %h", $time, RD2);
-        err_count = err_count + 1;
+      RA1  <= i;
+      RA2  <= address_length - (i + 1);
+      @(posedge CLK);
+      if(RD1ref !== RD1) begin
+          $display("time = %0t, address %h, RD1. Invalid data %h, correct data %h", $time, RA1, RD1, RD1ref);
+          err_count = err_count + 1;
       end
-      @(posedge CLK);
-      for( i = 1; i < address_length; i = i + 1) begin
-        @(posedge CLK);
-        WA <= i;
-        WD <= $urandom;
-        WE <= $urandom % 2;
+      if(RD2ref !== RD2) begin
+          $display("time = %0t, address %h, RD2. Invalid data %h, correct data %h", $time, RA2, RD2, RD2ref);
+          err_count = err_count + 1;
       end
-      @(posedge CLK);
-      WE <= 'b0;
-      for( i = 0; i < address_length; i = i + 1) begin
-        @(posedge CLK);
-        RA1  <= i;
-        RA2  <= address_length - (i + 1);
-        @(posedge CLK);
-        if(RD1ref !== RD1) begin
-            $display("time = %0t, address %h, RD1. Invalid data %h, correct data %h", $time, RA1, RD1, RD1ref);
-            err_count = err_count + 1;
-        end
-        if(RD2ref !== RD2) begin
-            $display("time = %0t, address %h, RD2. Invalid data %h, correct data %h", $time, RA2, RD2, RD2ref);
-            err_count = err_count + 1;
-        end
-      end
-      if( !err_count ) $display("\nregister file SUCCESS!!!\n");
-      $finish();
+    end
+    $display("\nTest has been finished\nNumber of errors: %d\n", err_count);
+    $finish();
+    #5;
+    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $fatal();
     end
 endmodule
 

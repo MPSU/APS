@@ -36,6 +36,9 @@ module lab_04_tb_CYBERcobra();
     #10000;
     $display("\n The test is over \n See the internal signals of the CYBERcobra on the waveform \n");
     $finish;
+    #5;
+    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $fatal();
     end
 
 endmodule

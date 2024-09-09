@@ -30,8 +30,6 @@ module lab_06_tb_data_mem;
 
   int err_cnt = 0;
 
-  static bit  simulation_finished;
-
   data_mem DUT (.*);
 
   task read_request(input logic [31:0] address, output logic [31:0] data);
@@ -173,8 +171,10 @@ module lab_06_tb_data_mem;
     random_test();
 
     $display("\nTest has been finished\nNumber of errors: %d\n", err_cnt);
-    simulation_finished = 1;
     $finish;
+    #5;
+    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $fatal();
   end
 
   logic [31:0] ram_data;
@@ -273,13 +273,6 @@ module lab_06_tb_data_mem;
   ) else begin
     err_cnt++;
     $display("Error at %t. ram[%d][31:24] is unstable without write request", $time(), $sampled(addr_reg));
-  end
-
-
-  always @(posedge clk_i) begin
-    if(simulation_finished) begin
-      $finish;
-    end
   end
 
   always @(posedge clk_i) begin

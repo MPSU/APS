@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module rf_riscv(
+module register_file(
   input  logic        clk_i,
   input  logic        write_enable_i,
 

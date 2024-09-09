@@ -18,17 +18,20 @@ module lab_07_tb_processor_system();
     .rst_i(rst)
     );
 
-    initial clk = 0;
+  initial clk = 0;
     always #10 clk = ~clk;
     initial begin
-        $display( "\nTest has been started.");
-        rst = 1;
-        #40;
-        rst = 0;
-        #800;
-        $display("\n The test is over \n See the internal signals of the module on the waveform \n");
-        $finish;
-    end
+      $display( "\nTest has been started.");
+      rst = 1;
+      #40;
+      rst = 0;
+      #800;
+      $display("\n The test is over \n See the internal signals of the module on the waveform \n");
+      $finish;
+      #5;
+      $display("You're trying to run simulation that has finished. Aborting simulation.")
+      $fatal();
+  end
 
 stall_seq: assert property (
   @(posedge system.core.clk_i) disable iff ( system.core.rst_i )

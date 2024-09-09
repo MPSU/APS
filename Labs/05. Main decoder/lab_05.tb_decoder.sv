@@ -15,7 +15,7 @@ module lab_05_tb_decoder();
   typedef class riscv_instr;
   riscv_instr instr = new();
 
-  logic clk, test_has_been_finished;
+  logic clk;
   logic [31:0]  fetched_instr_i = '0;
 
   int err_count;
@@ -136,8 +136,10 @@ module lab_05_tb_decoder();
     illegal_instrs_random_test();
 
     $display("\nTest has been finished\nNumber of errors: %d\n", err_count);
-    test_has_been_finished = 1'b1;
     $finish();
+    #5;
+    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $fatal();
   end
 
   function void randomize_with_given_opcode(input logic[4:0] given_opcode);
@@ -348,17 +350,12 @@ module lab_05_tb_decoder();
   bit test_paused_by_errs;
   initial begin
     clk                     = '0;
-    test_has_been_finished  = '0;
     err_count               = '0;
     test_paused_by_errs     = '0;
   end
 
   always #5 clk = ~clk;
-  always @(posedge clk) begin
-    if(test_has_been_finished) begin
-      $finish();
-    end
-  end
+
 
   always @(posedge clk) begin
     if((err_count >= 10) & !test_paused_by_errs) begin
