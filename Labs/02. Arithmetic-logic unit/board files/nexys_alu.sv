@@ -45,7 +45,7 @@ module nexys_alu(
   logic [31:0]              result;
   logic                     flag;
 
-  alu_riscv alu_riscv (
+  alu alu_riscv (
     .alu_op_i (operator),
     .a_i      (operand_a),
     .b_i      (operand_b),
