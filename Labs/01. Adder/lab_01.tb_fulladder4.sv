@@ -39,7 +39,7 @@ module lab_01_tb_fulladder4();
     $display("\nTest has been finished Check results at waveform window.\n");
     $finish();
     #5;
-    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $display("You're trying to run simulation that has finished. Aborting simulation.");
     $fatal();
   end
 

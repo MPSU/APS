@@ -37,7 +37,7 @@ module lab_01_tb_fulladder32();
     $display("\nTest has been finished\nNumber of errors: %d\n", err_cnt);
     $finish();
     #5;
-    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $display("You're trying to run simulation that has finished. Aborting simulation.");
     $fatal();
   end
 
