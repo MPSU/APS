@@ -173,7 +173,7 @@ module lab_06_tb_data_mem;
     $display("\nTest has been finished\nNumber of errors: %d\n", err_cnt);
     $finish;
     #5;
-    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $display("You're trying to run simulation that has finished. Aborting simulation.");
     $fatal();
   end
 
