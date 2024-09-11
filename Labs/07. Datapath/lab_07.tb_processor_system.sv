@@ -29,7 +29,7 @@ module lab_07_tb_processor_system();
       $display("\n The test is over \n See the internal signals of the module on the waveform \n");
       $finish;
       #5;
-      $display("You're trying to run simulation that has finished. Aborting simulation.")
+        $display("You're trying to run simulation that has finished. Aborting simulation.");
       $fatal();
   end
 
