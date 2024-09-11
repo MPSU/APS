@@ -148,6 +148,36 @@ module lab_03_tb_register_file();
           err_count = err_count + 1;
       end
     end
+    //Incorrect read check
+    @(posedge CLK);
+    WA <= 5'd1;
+    WD <= 1;
+    WE <= 1'b1;
+    @(posedge CLK);
+    WA <= 5'd2;
+    WD <= 2;
+    WE <= 1'b1;
+    @(posedge CLK);
+    WE  <= 1'b0;
+    RA1 <= 5'd1;
+    RA2 <= 5'd1;
+    @(posedge CLK);
+    WA  <= 5'd31;
+    WE  <= 1'b1;
+    WD  <= 0;
+    RA1 <= 5'd2;
+    RA2 <= 5'd2;
+    @(posedge CLK);
+    RD1ref = 2;
+    RD2ref = 2;
+    if(RD1ref !== RD1) begin
+        $display("time = %0t, address %h, RD1. Invalid data %h, correct data %h", $time, RA1, RD1, RD1ref);
+        err_count = err_count + 1;
+    end
+    if(RD2ref !== RD2) begin
+        $display("time = %0t, address %h, RD2. Invalid data %h, correct data %h", $time, RA2, RD2, RD2ref);
+        err_count = err_count + 1;
+    end
     $display("\nTest has been finished\nNumber of errors: %d\n", err_count);
     $finish();
     #5;
