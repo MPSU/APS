@@ -168,8 +168,6 @@ module lab_03_tb_register_file();
     RA1 <= 5'd2;
     RA2 <= 5'd2;
     @(posedge CLK);
-    RD1ref = 2;
-    RD2ref = 2;
     if(RD1ref !== RD1) begin
         $display("time = %0t, address %h, RD1. Invalid data %h, correct data %h", $time, RA1, RD1, RD1ref);
         err_count = err_count + 1;
