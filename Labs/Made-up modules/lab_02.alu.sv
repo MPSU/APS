@@ -1,6 +1,6 @@
 /* -----------------------------------------------------------------------------
 * Project Name   : Architectures of Processor Systems (APS) lab work
-* File           : alu_riscv.sv
+* File           : alu.sv
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Alexey Kozin
@@ -10,21 +10,21 @@ See LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 
-parameter ALUOP_W = 5;
-parameter OP_W = 32;
-parameter SHIFT_W = $clog2(OP_W);
-parameter STAGE_LEN = OP_W+1;
-parameter HASH_LEN = 1000;
-parameter START_CODING = 10366;
-parameter START_MUX = START_CODING+100;
-
-module alu_riscv (
-    input  logic [ALUOP_W-1:0] alu_op_i,
-    input  logic [OP_W-1:0]    a_i,
-    input  logic [OP_W-1:0]    b_i,
-    output logic [OP_W-1:0]    result_o,
-    output logic               flag_o
+module alu (
+    input  logic [4:0]   alu_op_i,
+    input  logic [31:0]  a_i,
+    input  logic [31:0]  b_i,
+    output logic [31:0]  result_o,
+    output logic         flag_o
 );
+
+localparam ALUOP_W = 5;
+localparam OP_W = 32;
+localparam SHIFT_W = $clog2(OP_W);
+localparam STAGE_LEN = OP_W+1;
+localparam HASH_LEN = 1000;
+localparam START_CODING = 10366;
+localparam START_MUX = START_CODING+100;
 
 genvar i, j, k;
 

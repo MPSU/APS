@@ -34,7 +34,7 @@ module nexys_rf_riscv(
   logic [7:0][3:0] rd1;
   logic [7:0][3:0] rd2;
 
-  rf_riscv rf_riscv (
+  register_file rf_riscv (
     .clk_i            (clk_i),
     .read_addr1_i     (ra1  ),
     .read_addr2_i     (ra2  ),

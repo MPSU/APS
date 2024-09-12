@@ -63,6 +63,9 @@ initial begin
   repeat(3e3)@(posedge clk_i);
   $display("Simulation finished. Number of errors: %d", err_count);
   $finish();
+  #5;
+  $display("You're trying to run simulation that has finished. Aborting simulation.");
+  $fatal();
 end
 
 initial begin

@@ -98,7 +98,7 @@ module nexys_riscv_unit(
     .O (bufg_clk     )
   );
 
-  riscv_unit unit(
+  processor_system unit(
     .clk_i (bufg_clk),
     .rst_i (!arstn_i)
   );
