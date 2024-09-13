@@ -199,7 +199,7 @@ module inv(
 endmodule
 ```
 
-Опишем `top`:
+Опишем модуль `top`:
 
 ```Verilog
 module top(
@@ -207,6 +207,9 @@ module top(
   input  logic b,
   output logic q
 );
+  // создаём вспомогательный провод c
+  logic c;
+
   // подключение модуля
   inv invertor_1( // подключаем модуль inv и
                   // даём экземпляру этого модуля
@@ -236,7 +239,7 @@ module top(
   input  logic b,
   output logic q
 );
-
+  // создаём вспомогательный провод c
   logic c;
 
   // подключение модуля 1
