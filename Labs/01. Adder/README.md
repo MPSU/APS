@@ -153,10 +153,10 @@ module testbench();                // <- Не имеет ни входов, ни
   logic a, b, carry, sum;
 
   half_adder DUT(                  // <- Подключаем проверяемый модуль
-    .a_i    (a),
-    .b_i    (b),
-    .carry_o(p),
-    .sum_o  (s)
+    .a_i    (a    ),
+    .b_i    (b    ),
+    .carry_o(carry),
+    .sum_o  (sum  )
 );
 
   initial begin
