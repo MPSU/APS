@@ -171,7 +171,7 @@ module testbench();                // <- Не имеет ни входов, ни
 endmodule
 ```
 
-_Листинг 2. SystemVerilog-код тестбенча для модуля example._
+_Листинг 2. SystemVerilog-код тестбенча для модуля half_adder._
 
 ![../../.pic/Labs/lab_01_adder/fig_04.png](../../.pic/Labs/lab_01_adder/fig_04.png)
 
