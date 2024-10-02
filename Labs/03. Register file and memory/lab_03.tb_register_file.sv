@@ -179,7 +179,7 @@ module lab_03_tb_register_file();
     $display("\nTest has been finished\nNumber of errors: %d\n", err_count);
     $finish();
     #5;
-    $display("You're trying to run simulation that has finished. Aborting simulation.")
+    $display("You're trying to run simulation that has finished. Aborting simulation.");
     $fatal();
     end
 endmodule
