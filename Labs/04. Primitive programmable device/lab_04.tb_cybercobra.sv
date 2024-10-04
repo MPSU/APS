@@ -10,7 +10,7 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 module lab_04_tb_CYBERcobra();
 
-    CYBERcobra dut(
+    CYBERcobra DUT(
     .clk_i(clk),
     .rst_i(rstn),
     .sw_i (sw_i ),
