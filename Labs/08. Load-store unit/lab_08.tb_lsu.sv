@@ -33,7 +33,7 @@ logic        grm_we_o     ;
 logic [ 3:0] grm_be_o     ;
 logic [31:0] grm_addr_o   ;
 logic [31:0] grm_wd_o     ;
-lsu dut(.*);
+lsu DUT(.*);
 
 lsu_ref grm(
     .core_rd_o      (grm_rd_o   ),
