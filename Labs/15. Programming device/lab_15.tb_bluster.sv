@@ -51,7 +51,7 @@ module lab_15_tb_bluster();
   end
 
 
-  bluster blust(.*);
+  bluster DUT(.*);
 
   uart_rx rx(
   .clk_i      (clk_i      ),
