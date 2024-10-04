@@ -13,7 +13,7 @@ module lab_11_tb_processor_system();
     reg clk;
     reg rst;
 
-    processor_system system(
+    processor_system DUT(
     .clk_i(clk),
     .rst_i(rst)
     );
@@ -30,16 +30,16 @@ module lab_11_tb_processor_system();
 
     initial begin
         $display( "\nTest has been started");
-        system.irq_req = 0;
+        DUT.irq_req = 0;
         rst = 1;
         #40;
         rst = 0;
         repeat(20)@(posedge clk);
-        system.irq_req = 1;
-        while(system.irq_ret == 0) begin
+        DUT.irq_req = 1;
+        while(DUT.irq_ret == 0) begin
           @(posedge clk);
         end
-        system.irq_req = 0;
+        DUT.irq_req = 0;
         repeat(20)@(posedge clk);
         $display("\n The test is over \n See the internal signals of the module on the waveform \n");
         $finish;
