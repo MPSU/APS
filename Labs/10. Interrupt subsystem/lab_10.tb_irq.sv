@@ -22,7 +22,7 @@ module lab_10_tb_irq();
 
     string str;
 
-interrupt_controller dut(.*);
+interrupt_controller DUT(.*);
 int err_count;
 
 always #5 clk_i <= ~clk_i;
