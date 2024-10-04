@@ -30,7 +30,7 @@ module lab_10_tb_csr();
 
 import csr_pkg::*;
 
-csr_controller dut(.*);
+csr_controller DUT(.*);
 
 always #5 clk_i <= ~clk_i;
 
