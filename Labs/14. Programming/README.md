@@ -333,8 +333,8 @@ _irq_config:
   li    t1, -1 # -1 (все биты равны 1) означает, что разрешены все прерывания
   la    t2, _trap_stack_ptr
   csrw  mtvec, t0
-  csrw  mie, t1
   csrw  mscratch, t2
+  csrw  mie, t1
 
 # Вызов функции main
 _main_call:
