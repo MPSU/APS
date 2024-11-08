@@ -676,8 +676,9 @@ module lab_05_tb_decoder();
               ALU_SRA  : instr_str = "(      SRA     )";
               ALU_SRL  : instr_str = "(      SRL     )";
               ALU_SLL  : instr_str = "(      SLL     )";
+              ALU_SLTS : instr_str = "(      SLT     )";
               ALU_SLTU : instr_str = "(      SLTU    )";
-              default   : instr_str = "(  illegal_OP  )";
+              default  : instr_str = "(  illegal_OP  )";
             endcase
           else instr_str = "(  illegal_OP  )";
         end
