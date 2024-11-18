@@ -79,7 +79,7 @@ module turnstile_fsm(
   input  logic push,
   input  logic coin,
   output logic is_locked
-)
+);
 
   enum logic {LOCKED=1, UNLOCKED=0} state;
 
@@ -122,7 +122,7 @@ module turnstile_fsm(
   input  logic coin,
   output logic is_locked,
   output logic green_light
-)
+);
 
   enum logic {LOCKED=1, UNLOCKED=0} state;
 
@@ -162,7 +162,7 @@ module turnstile_fsm(
   input  logic coin,
   output logic is_locked,
   output logic green_light
-)
+);
 
   enum logic {LOCKED=1, UNLOCKED=0} state, next_state;
 
