@@ -177,7 +177,7 @@ core_rdata: assert property (
   is_reading |-> (core_rd_o === grm_rd_o)
 )else begin
         err_count++;
-        $error("\nIncorrect value of core_rd_o. Your value is %0h while it should be %0h", core_rd_o, grm_rd_o);
+        $error("\nIncorrect value of core_rd_o. Your value is %0h while it should be %0h", $sampled(core_rd_o), $sampled(grm_rd_o));
     end
 
 core_stall: assert property (
@@ -185,7 +185,7 @@ core_stall: assert property (
   core_stall_o === grm_stall_o
 )else begin
         err_count++;
-        $error("\nIncorrect value of core_stall_o. Your value is %0h while it should be %0h", core_stall_o, grm_stall_o);
+        $error("\nIncorrect value of core_stall_o. Your value is %0h while it should be %0h", $sampled(core_stall_o), $sampled(grm_stall_o));
     end
 
 mem_be: assert property (
@@ -193,7 +193,7 @@ mem_be: assert property (
   is_writing |-> (mem_be_o === grm_be_o)
 )else begin
         err_count++;
-        $error("\nIncorrect value of mem_be_o. Your value is %0h while it should be %0h", mem_be_o, grm_be_o);
+        $error("\nIncorrect value of mem_be_o. Your value is %0h while it should be %0h", $sampled(mem_be_o), $sampled(grm_be_o));
     end
 
 mem_wdata: assert property (
@@ -201,7 +201,7 @@ mem_wdata: assert property (
   is_writing |-> mem_wd_o === grm_wd_o
 )else begin
         err_count++;
-        $error("\nIncorrect value of mem_wd_o. Your value is %0h while it should be %0h", mem_wd_o, grm_wd_o);
+        $error("\nIncorrect value of mem_wd_o. Your value is %0h while it should be %0h", $sampled(mem_wd_o), $sampled(grm_wd_o));
     end
 
 endmodule
