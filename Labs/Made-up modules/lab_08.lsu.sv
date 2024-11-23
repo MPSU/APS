@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module riscv_lsu(
+module lsu(
   input logic clk_i,
   input logic rst_i,
   input  logic        core_req_i,
