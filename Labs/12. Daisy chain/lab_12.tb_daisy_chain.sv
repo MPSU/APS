@@ -67,7 +67,7 @@ irq_ret_o_is_not_0: assert property (
 irq_ret_o_is_incorrect: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   irq_ret_i |-> irq_ret_o === cause
-)else $error("irq_ret_o are incorrect: %08h", irq_ret_o);
+)else $error("irq_ret_o are incorrect: %08h", $sampled(irq_ret_o));
 
 irq_o_is_not_1: assert property (
   @(posedge clk_i) disable iff ( rst_i )
@@ -82,11 +82,11 @@ irq_o_is_not_0: assert property (
 irq_cause_o_mcause: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   irq_o |-> $onehot0(irq_cause_o[19:4])
-)else $error("error value on irq_cause_o: %08h, should be onehot", irq_cause_o[20:5]);
+)else $error("error value on irq_cause_o: %08h, should be onehot", $sampled(irq_cause_o[20:5]));
 
 irq_cause_o_borders: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   irq_o |-> (irq_cause_o[31:20] === 12'h800) && (irq_cause_o[3:0] == 4'h0)
-)else $error("irq_cause_o borders are incorrect: %08h", irq_cause_o);
+)else $error("irq_cause_o borders are incorrect: %08h", $sampled(irq_cause_o));
 
 endmodule
