@@ -47,13 +47,13 @@ endmodule
 Описание регистра, а также указание фронта и тактирующего сигнала происходит в конструкции `always_ff`:
 
 ```Verilog
-always @(posedge clk)
+always_ff @(posedge clk)
 ```
 
 Далее, внутри данной конструкции необходимо указать, что происходит с содержимым регистра. В нашем случае, происходит запись с входного сигнала `data`
 
 ```Verilog
-always @(posedge clk) begin
+always_ff @(posedge clk) begin
   reg_name <= data;
 end
 ```
@@ -73,7 +73,7 @@ module reg_example(
 
   logic reg_name;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     reg_name <= data;
   end
 
