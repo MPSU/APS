@@ -175,7 +175,7 @@ module turnstile_fsm(
       state <= LOCKED;
     end
     else begin
-      state <= next_state
+      state <= next_state;
     end
   end
 
