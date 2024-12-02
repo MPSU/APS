@@ -3,7 +3,7 @@
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Daniil Strelkov
-* Email(s)       : @edu.miet.ru
+* Email(s)       : 8190948@edu.miet.ru
 
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
