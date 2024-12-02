@@ -360,7 +360,7 @@ mie_a: assert property (
   ((addr_i === MIE_ADDR) && $rose(write_enable_i)) |=> (mie_o === data_ref)
 )else begin
         err_count++;
-        $display("Incorrect value of mie_o    :       mie_o = %08h while if should be %08h.\n", $sampled(mie_o), $sampled(data_ref));
+        $display("Incorrect value of mie_o    :       mie_o = %08h while it should be %08h.\n", $sampled(mie_o), $sampled(data_ref));
       end
 
 mepc_a: assert property (
@@ -368,7 +368,7 @@ mepc_a: assert property (
   ((addr_i === MEPC_ADDR) && $rose(write_enable_i)) |=> (mepc_o === data_ref)
 )else begin
         err_count++;
-        $display("Incorrect value of mepc_o   :      mepc_o = %08h while if should be %08h.\n", $sampled(mepc_o), $sampled(data_ref));
+        $display("Incorrect value of mepc_o   :      mepc_o = %08h while it should be %08h.\n", $sampled(mepc_o), $sampled(data_ref));
     end
 
 mtvec_a: assert property (
@@ -376,7 +376,7 @@ mtvec_a: assert property (
   ((addr_i === MTVEC_ADDR) && $rose(write_enable_i)) |=> (mtvec_o === data_ref)
 )else begin
         err_count++;
-        $display("Incorrect value of mtvec_o  :     mtvec_o = %08h while if should be %08h.\n", $sampled(mtvec_o), $sampled(data_ref));
+        $display("Incorrect value of mtvec_o  :     mtvec_o = %08h while it should be %08h.\n", $sampled(mtvec_o), $sampled(data_ref));
     end
 
 mepc_stability_a: assert property (
