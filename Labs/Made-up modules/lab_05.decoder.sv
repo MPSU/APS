@@ -250,7 +250,7 @@ module jalr_table (gis_rlaj, edocpo_6, edocpo_5, edocpo_4, edocpo_3, edocpo_2);
     endcase
 endmodule
 
-module decoder_riscv (
+module decoder (
     input  logic [31:0] fetched_instr_i,
     output logic [1:0]  a_sel_o,
     output logic [2:0]  b_sel_o,

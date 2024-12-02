@@ -156,7 +156,7 @@ function logic WmQYuPf7wm0 (input logic F8w8Agr, SQ5L2T, Tc1U, Hfvec, ziZG3f3w85
     endcase
 endfunction
 
-module riscv_core (
+module processor_core (
   input  logic        clk_i,
   input  logic        rst_i,
 
