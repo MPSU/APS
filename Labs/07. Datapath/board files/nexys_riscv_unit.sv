@@ -238,7 +238,7 @@ endmodule
 
 module semseg_one2many #(
   parameter int unsigned SEMSEGS_NUM = 8,
-  parameter type         DATA_T
+  parameter type         DATA_T = logic
 ) (
   input  DATA_T all_semsegs_i[0:SEMSEGS_NUM-1],
   input  logic  clk100m_i,
