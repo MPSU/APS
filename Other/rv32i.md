@@ -204,5 +204,5 @@ _Рисунок 5. Иллюстрация общих частей при код�
 
 ## Список использованной литературы
 
-1. [RISC-V Instruction Set Manual](https://github.com/riscv/riscv-isa-manual)
+1. [The RISC-V Instruction Set Manual Volume I: Unprivileged ISA, Document Version 20240411, Editors Andrew Waterman and Krste Asanović, RISC-V Foundation, April 2024](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/unpriv-isa-asciidoc.pdf);
 2. [Д.М. Харрис, С.Л. Харрис / Цифровая схемотехника и архитектура компьютера: RISC-V / пер. с англ. В. С. Яценков, А. Ю. Романов; под. ред. А. Ю. Романова  / М.: ДМК Пресс, 2021](https://e.lanbook.com/book/241166).

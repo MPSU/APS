@@ -38,4 +38,4 @@ _Таблица 3. Псевдоинструкции для работы с ре�
 
 ## Список использованной литературы
 
-1. [The RISC-V Instruction Set Manual Volume II: Privileged Architecture](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
+1. [The RISC-V Instruction Set Manual Volume II: Privileged Architecture, Document Version 20240411, Editors Andrew Waterman and Krste Asanović, RISC-V Foundation, April 2024](https://github.com/riscv/riscv-isa-manual/releases/download/20240411/priv-isa-asciidoc.pdf).
