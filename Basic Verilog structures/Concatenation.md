@@ -58,7 +58,7 @@ assign e = {a, b, c[4:3], d};
 
 Кроме того, возможна и обратная ситуация. Предположим, мы хотим подать отдельные биты сигнала `e` на различные провода:
 
-![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg)
+![../.pic/Basic%20Verilog%20structures/concatenation/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_03.drawio.svg)
 
 ```Verilog
 logic a;
