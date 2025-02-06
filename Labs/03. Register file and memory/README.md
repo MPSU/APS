@@ -203,7 +203,7 @@ module rom16_8 (
 
 
   assign read_data1 = ROM[addr1];   // реализация первого порта на чтение
-  assign read_data2 = ROM[addr2]    // реализация второго порта на чтение
+  assign read_data2 = ROM[addr2];   // реализация второго порта на чтение
 
 endmodule
 ```
