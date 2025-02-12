@@ -156,7 +156,7 @@ function logic WmQYuPf7wm0 (input logic F8w8Agr, SQ5L2T, Tc1U, Hfvec, ziZG3f3w85
     endcase
 endfunction
 
-module riscv_core (
+module processor_core (
   input  logic        clk_i,
   input  logic        rst_i,
 
@@ -235,7 +235,7 @@ module riscv_core (
     logic [ 4:0] wdudy;
     logic        dobvu;
 
-    decoder_riscv cWDIi3Yip2wSVkI (
+    decoder cWDIi3Yip2wSVkI (
         .fetched_instr_i (fwSfv),
         .a_sel_o         (C56l2),
         .b_sel_o         (i2H9F),
@@ -254,7 +254,7 @@ module riscv_core (
         .mret_o          (TIO8)
     );
 
-    rf_riscv v9QOWb9Pd9 (
+    register_file v9QOWb9Pd9 (
         .clk_i          (clk_i),
         .write_enable_i (gHecFb),
         .write_addr_i   ({ntbtm[0],fveev}),
@@ -265,7 +265,7 @@ module riscv_core (
         .read_data2_o   (FA2lvEpcG4)
     );
 
-    alu_riscv VyeRFt4138f (
+    alu VyeRFt4138f (
         .alu_op_i (eliEEt),
         .a_i      (JYPAbNp3k),
         .b_i      (lLYh8Ufl2),
@@ -278,7 +278,7 @@ module riscv_core (
         .rst_i       (rst_i),
         .exception_i (ziZG3f3w85eBr),
         .irq_req_i   (irq_req_i),
-        .mie_i       (c3y[0]),
+        .mie_i       (c3y[16]),
         .mret_i      (TIO8),
         .irq_ret_o   (irq_ret_o),
         .irq_cause_o (Ws9A5HuaS),

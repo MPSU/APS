@@ -3,7 +3,7 @@
 * Organization   : National Research University of Electronic Technology (MIET)
 * Department     : Institute of Microdevices and Control Systems
 * Author(s)      : Daniil Strelkov
-* Email(s)       : @edu.miet.ru
+* Email(s)       : 8190948@edu.miet.ru
 
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ task t1();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(1,0);
+  error_info(1,0);
   @(posedge clk_i);
 endtask
 
@@ -88,7 +88,7 @@ task t2();
   irq_req_i   = 1;
   mie_i       = 0;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -106,14 +106,14 @@ task t3();
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
   mret_i      = 0;
   exception_i = 0;
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -131,14 +131,14 @@ task t4();
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
   mret_i      = 0;
   exception_i = 1;
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -156,7 +156,7 @@ task t5();
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,1);
+  error_info(0,1);
   @(posedge clk_i);
 endtask
 
@@ -173,7 +173,7 @@ task t6();
   exception_i = 0;
   irq_req_i   = 0;
   mie_i       = 1;
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -191,13 +191,13 @@ task t7();
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i)
   mret_i      = 1;
   exception_i = 0;
   irq_req_i   = 0;
   mie_i       = 1;
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -231,7 +231,7 @@ task t8();
   irq_req_i   = 0;
   mie_i       = 1;
   #1
-  eror_info(0,1);
+  error_info(0,1);
   @(posedge clk_i);
 endtask
 
@@ -254,7 +254,7 @@ task t9();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(1,0);
+  error_info(1,0);
   @(posedge clk_i);
 endtask
 
@@ -277,7 +277,7 @@ task t10();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(1,0);
+  error_info(1,0);
   @(posedge clk_i);
 endtask
 
@@ -305,7 +305,7 @@ task t11();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 
 endtask
@@ -345,7 +345,7 @@ task t12();
   mie_i       = 1;
   #1
   str = "request interrupt after 2 mret for interrupt and exception";
-  eror_info(1,0);
+  error_info(1,0);
   @(posedge clk_i);
 endtask
 
@@ -363,7 +363,7 @@ task t13();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
@@ -376,16 +376,16 @@ task t14();
   irq_req_i   = 1;
   mie_i       = 1;
   #1
-  eror_info(0,0);
+  error_info(0,0);
   @(posedge clk_i);
 endtask
 
 //logic irq, irq_ret;
 
-task eror_info(irq, irq_ret);
-  if (irq_o!=irq)                 begin $error("invalid irq_o       = %b, expected value %b."           , $sampled(irq_o    ), irq    )); err_count++; end
-  if (irq_ret_o!=irq_ret)         begin $error("invalid irq_ret_o   = %b, expected value %b."           , $sampled(irq_ret_o), irq_ret)); err_count++; end
-  if (irq_cause_o!=32'h8000_0010) begin $error("invalid irq_cause_o = %h, expected value 32'h8000_0010.", $sampled(irq_cause_o)        ); err_count++; end
+task error_info(irq, irq_ret);
+  if (irq_o!=irq)                 begin $error("invalid irq_o       = %b, expected value %b."           , $sampled(irq_o    ), irq    ); err_count++; end
+  if (irq_ret_o!=irq_ret)         begin $error("invalid irq_ret_o   = %b, expected value %b."           , $sampled(irq_ret_o), irq_ret); err_count++; end
+  if (irq_cause_o!=32'h8000_0010) begin $error("invalid irq_cause_o = %h, expected value 32'h8000_0010.", $sampled(irq_cause_o)       ); err_count++; end
 endtask
 
 endmodule

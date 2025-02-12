@@ -38,7 +38,7 @@ initial begin
   resetn = 1;
 end
 
-riscv_unit DUT(
+processor_system DUT(
   .clk_i    (clk_i    ),
   .resetn_i (resetn   ),
   .sw_i     (sw_i     ),
