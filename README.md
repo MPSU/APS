@@ -162,8 +162,8 @@
 13. Peripheral units/
 14. Programming/
 15. Programming device/
-16. Coremark/
-Made-up modules/
+16. Coremark/  
+Made-up modules/  
 Readme.md
 
 Здесь находятся методические материалы ко всем 16 лабораторным работам, разложенные по соответствующим им папкам.
