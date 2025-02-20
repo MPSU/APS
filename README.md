@@ -129,17 +129,18 @@
 
 В корне репозитория находятся следующие элементы (символом ‘/’ на конце обозначены папки):
 
-- <p style="color:LightGray;">.github/</p>
-- <p style="color:LightGray;">.pic/</p>
+- `.github/`
+- `.pic/`
 - Basic Verilog structures/
 - Introduction/
 - Labs/
-- <p style="color:LightGray;">Lectures/</p>
+- `Lectures/`
 - Other/
 - Vivado Basics/
-- <p style="color:LightGray;">.gitmodules</p>
-- <p style="color:LightGray;">LICENSE</p>
-- <p style="color:LightGray;">README.md</p>
+- `.gitmodules`
+- `ERRATA`
+- `LICENSE`
+- `README.md`
 
 Серым цветом обозначены элементы, которые не потребуются в ходе выполнения лабораторных работ.
 
