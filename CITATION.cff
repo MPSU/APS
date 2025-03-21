@@ -5,8 +5,13 @@ message: >-
 authors:
 - family-names: "Переверзев"
   given-names: "Алексей"
+  email: pal@olvs.miee.ru
+  affilation: >-
+    Национальный исследовательский университет «Московский
+    институт электронной техники»
 - family-names: "Попов"
   given-names: "Михаил"
+  email: mikhail.popov@bsc.es
 - family-names: "Солодовников"
   given-names: "Андрей"
   email: hepoh@org.miet.ru
