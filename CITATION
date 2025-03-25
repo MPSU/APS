@@ -12,6 +12,9 @@ authors:
 - family-names: "Попов"
   given-names: "Михаил"
   email: mikhail.popov@bsc.es
+  affilation: >-
+   Barcelona Supercomputing Center
+  orcid: "https://orcid.org/0009-0003-3379-2921"
 - family-names: "Солодовников"
   given-names: "Андрей"
   email: hepoh@org.miet.ru
@@ -30,6 +33,7 @@ preferred-citation:
     given-names: "Алексей"
   - family-names: "Попов"
     given-names: "Михаил"
+    orcid: "https://orcid.org/0009-0003-3379-2921"
   - family-names: "Солодовников"
     given-names: "Андрей"
     orcid: "https://orcid.org/0009-0006-6042-6451"
