@@ -31,8 +31,6 @@ module lab_04_tb_CYBERcobra();
     #10;
     rstn = 1'b0;
     sw_i = 16'b100001000; //значение, до которого считает счетчик
-    //#260;
-    //sw_i = 15'b0;
     #10000;
     $display("\n The test is over \n See the internal signals of the CYBERcobra on the waveform \n");
     $finish;
