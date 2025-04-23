@@ -449,7 +449,7 @@ module lab_05_tb_decoder();
   assign mem_we_check   = 1'b1;
   assign mem_size_check =  (opcode inside {LOAD_OPCODE, STORE_OPCODE});
   assign gpr_we_check   = 1'b1;
-  assign wb_sel_check   = !(opcode inside {MISC_MEM_OPCODE, BRANCH_OPCODE}) && (!(opcode == SYSTEM_OPCODE) | ((opcode == SYSTEM_OPCODE) & (func3 != 3'd0))); // (opcode == SYSTEM_OPCODE) -> (func3 != 3'd0)
+    assign wb_sel_check   = !(opcode inside {STORE_OPCODE, MISC_MEM_OPCODE, BRANCH_OPCODE}) && (!(opcode == SYSTEM_OPCODE) | ((opcode == SYSTEM_OPCODE) & (func3 != 3'd0))); // (opcode == SYSTEM_OPCODE) -> (func3 != 3'd0)
   assign branch_check   = 1'b1;
   assign jal_check      = 1'b1;
   assign jalr_check     = 1'b1;
