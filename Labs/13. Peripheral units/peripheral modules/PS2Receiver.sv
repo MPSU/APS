@@ -26,7 +26,7 @@ module PS2Receiver(
   input  logic        rst_i,
   input  logic        kclk_i,
   input  logic        kdata_i,
-  output logic [7:0]  keycodeout_o,
+  output logic [7:0]  keycode_o,
   output              keycode_valid_o
   );
 
@@ -67,19 +67,19 @@ end
 
 always_ff @(negedge kclkf or posedge rst_i) begin
   if(rst_i) begin
-    keycodeout_o <= '0;
+    keycode_o <= '0;
   end
   else begin
     case(cnt)
-      1:keycodeout_o[0]<=kdataf;
-      2:keycodeout_o[1]<=kdataf;
-      3:keycodeout_o[2]<=kdataf;
-      4:keycodeout_o[3]<=kdataf;
-      5:keycodeout_o[4]<=kdataf;
-      6:keycodeout_o[5]<=kdataf;
-      7:keycodeout_o[6]<=kdataf;
-      8:keycodeout_o[7]<=kdataf;
-      default: keycodeout_o <= keycodeout_o;
+      1:keycode_o[0]<=kdataf;
+      2:keycode_o[1]<=kdataf;
+      3:keycode_o[2]<=kdataf;
+      4:keycode_o[3]<=kdataf;
+      5:keycode_o[4]<=kdataf;
+      6:keycode_o[5]<=kdataf;
+      7:keycode_o[6]<=kdataf;
+      8:keycode_o[7]<=kdataf;
+      default: keycode_o <= keycode_o;
     endcase
   end
 end
