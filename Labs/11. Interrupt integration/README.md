@@ -17,7 +17,7 @@ _Рисунок 2. Схема без выделения новых частей 
 
 ## Задание
 
-Интегрировать модули `csr_controller` и `irq_controller` в модуль `processor_core`. При этом у модуля `processor_core` будет обновлённый прототип (поскольку добавился вход `irq_req_i` и `irq_ret_o`):
+Интегрировать модули `csr_controller` и `interrupt_controller` в модуль `processor_core`. При этом у модуля `processor_core` будет обновлённый прототип (поскольку добавился вход `irq_req_i` и `irq_ret_o`):
 
 ```Verilog
 module processor_core (
@@ -46,7 +46,7 @@ module processor_core (
 ## Порядок выполнения работы
 
 1. Замените файл `program.mem` в `Design Sources` проекта новым файлом [program.mem](program.mem), приложенном в данной лабораторной работе. Данный файл содержит программу из _листинга 1_ ЛР№10.
-2. Интегрируйте модули `csr_controller` и `irq_controller` в модуль `processor_core`.
+2. Интегрируйте модули `csr_controller` и `interrupt_controller` в модуль `processor_core`.
    1. Обратите внимание, что что в модуле `processor_core` появились новые входные и выходные сигналы: `irq_req_i` и `irq_ret_o`. Эти порты должны быть использованы при подключении `processor_core` в модуле `processor_system`.
       1. Ко входу `irq_req_i` должен быть подключён провод `irq_req`, другой конец которого пока не будет ни к чему подключён.
       2. К выходу `irq_ret_o` необходимо подключить провод `irq_ret`, который также пока не будет использован.
