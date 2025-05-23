@@ -1,3 +1,6 @@
+[![Печатный экземпляр](https://img.shields.io/badge/📘-Печатный_экземпляр-blue)](https://www.technosphera.ru/lib/book/743)
+
+
 # Путеводитель АПС
 
 ![.pic/README/gus_gr.svg](.pic/README/gus_gr.svg)
