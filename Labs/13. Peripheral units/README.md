@@ -758,13 +758,13 @@ module vgachargen (
 
 Файлы модуля:
 
-- peripheral modules/vhachargen.sv
-- peripheral modules/vhachargen_pkg.sv
-- firmware/mem_files/lab_13_ps2_vga_instr.mem — этим файлом необходимо проинициализировать память инструкций
-- firmware/mem_files/lab_13_ps2ascii_data.mem — этим файлом необходимо проинициализировать память данных
-- firmware/mem_files/lab_13_vga_ch_t.mem
-- firmware/mem_files/lab_13_vga_ch_map.mem
-- firmware/mem_files/lab_13_vga_col_map.mem
+- [peripheral modules/vgachargen.sv](peripheral%20modules/vgachargen.sv)
+- [peripheral modules/vgachargen_pkg.sv](peripheral%20modules/vgachargen_pkg.sv)
+- [firmware/mem_files/lab_13_ps2_vga_instr.mem](firmware/mem_files/lab_13_ps2_vga_instr.mem) — этим файлом необходимо проинициализировать память инструкций
+- [firmware/mem_files/lab_13_ps2ascii_data.mem](firmware/mem_files/lab_13_ps2ascii_data.mem) — этим файлом необходимо проинициализировать память данных
+- [firmware/mem_files/lab_13_vga_ch_t.mem](firmware/mem_files/lab_13_vga_ch_t.mem)
+- [firmware/mem_files/lab_13_vga_ch_map.mem](firmware/mem_files/lab_13_vga_ch_map.mem)
+- [firmware/mem_files/lab_13_vga_col_map.mem](firmware/mem_files/lab_13_vga_col_map.mem)
 
 Вам необходимо добавить в проект все эти файлы. Последние три файла отвечают за инициализацию памятей шрифтов[[3](https://fontstruct.com/fontstructions/show/346317/easycode)], символов и цветов. Инициализация будет выполнена автоматически. Главное, чтобы файлы были добавлены в проект.
 
@@ -836,7 +836,7 @@ module vga_sb_ctrl (
   - `char_tiff_rdata_o` подаётся на выход `read_data_o`.
 
 > [!Important]
-> Обратите внимание на то, что контроллер vga является единственным контроллером, для которого не нужно реализовывать регистр перед выходом read_data_o для реализации синхронного чтения. Данная особенность обусловлена тем, что внутри модуля `vgachargen` уже находится блочная память с синхронным портом на чтение. Добавление ещё одного регистра приведёт к тому, данные будут "опаздывать" на один такт. Таким образом, данные на выход `read_data_o` необходимо подавать с помощью чисто комбинационной логики.
+> Обратите внимание на то, что контроллер vga является единственным контроллером, для которого не нужно реализовывать регистр перед выходом read_data_o для реализации синхронного чтения. Данная особенность обусловлена тем, что внутри модуля `vgachargen` уже находится блочная память с синхронным портом на чтение. Добавление ещё одного регистра приведёт к тому, что данные будут "опаздывать" на один такт. Таким образом, данные на выход `read_data_o` необходимо подавать с помощью чисто комбинационной логики.
 
 ## Список использованной литературы
 
