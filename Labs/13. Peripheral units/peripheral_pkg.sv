@@ -31,8 +31,8 @@ package peripheral_pkg;
     end
   endtask
 
-  task automatic uart_rx_send_char(input logic [7:0] char, input logic [31:0] baudrate, ref logic tx);
-    logic [11:0] data = {2'b11, (^char), char, 1'b0};
+  task automatic uart_rx_send_char(input logic [7:0] code, input logic [31:0] baudrate, ref logic tx);
+    logic [11:0] data = {2'b11, (^code), code, 1'b0};
     for(int i = 0; i < 12; i++) begin
       tx = data[i];
       #(1s/baudrate);
