@@ -64,13 +64,13 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 198px; height: 1px; padding-top: 15px; margin-left: 871px;">
                         <div data-drawio-colors="color: #007FFF; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 22px; font-family: Helvetica; color: rgb(0, 127, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
-                                nexys_riscv_unit
+                                nexys_processor_system
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="970" y="22" fill="#007FFF" font-family="Helvetica" font-size="22px" text-anchor="middle">
-                    nexys_riscv_unit
+                    nexys_processor_system
                 </text>
             </switch>
         </g>
@@ -189,13 +189,13 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 143px; height: 1px; padding-top: 165px; margin-left: 1411px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 22px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
-                                riscv_core
+                                processor_core
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="1482" y="172" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="22px" text-anchor="middle">
-                    riscv_core
+                    processor_core
                 </text>
             </switch>
         </g>
@@ -240,13 +240,13 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 143px; height: 1px; padding-top: 65px; margin-left: 1401px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 22px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
-                                riscv_unit
+                                processor_system
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="1472" y="72" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="22px" text-anchor="middle">
-                    riscv_unit
+                    processor_system
                 </text>
             </switch>
         </g>

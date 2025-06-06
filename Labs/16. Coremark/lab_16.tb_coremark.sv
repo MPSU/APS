@@ -59,7 +59,7 @@ module lab_16_tb_coremark();
   end
 
   initial #500ms $finish();
-  riscv_unit DUT(
+  processor_system DUT(
     .clk_i      (clk100mhz_i), 
     .resetn_i   (aresetn_i), 
     .rx_i       (rx_i), 

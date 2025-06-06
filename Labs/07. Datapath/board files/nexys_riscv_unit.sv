@@ -64,7 +64,7 @@ typedef struct {
   logic dp;
 } Semseg;
 
-module nexys_riscv_unit(
+module nexys_processor_system(
   input  logic        clk_i,
   input  logic        arstn_i,
   input  logic        btnd_i,
