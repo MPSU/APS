@@ -1,4 +1,4 @@
-# Проверка работы riscv_unit на ПЛИС
+# Проверка работы processor_system на ПЛИС
 
 После того, как вы проверили на моделировании дизайн, вам необходимо проверить его работу на прототипе в ПЛИС.
 
@@ -6,9 +6,9 @@
 
 На _рис. 1_ представлена схема прототипа в ПЛИС.
 
-![../../../.pic/Labs/board%20files/nexys_riscv_unit_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_riscv_unit_structure.drawio.svg)
+![../../../.pic/Labs/board%20files/nexys_processor_system_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_processor_system_structure.drawio.svg)
 
-_Рисунок 1. Структурная схема модуля `nexys_riscv_unit`._
+_Рисунок 1. Структурная схема модуля `nexys_processor_system`._
 
 Прототип позволяет потактово исполнять программу, прошитую в память инструкций. Также прототип отображает операцию исполняемую в данный момент.
 
@@ -37,7 +37,7 @@ _Рисунок 1. Структурная схема модуля `nexys_riscv_u
 
 Соответствие операции ее отображению на семисегментных индикаторах представлено на _рис. 2_:
 
-!['../../../.pic/Labs/board%20files/nexys_riscv_unit_operations.drawio.svg'](../../../.pic/Labs/board%20files/nexys_riscv_unit_operations.drawio.svg)
+!['../../../.pic/Labs/board%20files/nexys_processor_system_operations.drawio.svg'](../../../.pic/Labs/board%20files/nexys_processor_system_operations.drawio.svg)
 
 _Рисунок 2. Соответствие операции ее отображению на семисегментных индикаторах._
 
