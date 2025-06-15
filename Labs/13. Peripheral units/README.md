@@ -433,6 +433,7 @@ module hex_sb_ctrl(
     Часть интерфейса модуля, отвечающая за подключение к системной шине
 */
   input  logic        clk_i,
+  input  logic        rst_i,
   input  logic [31:0] addr_i,
   input  logic        req_i,
   input  logic [31:0] write_data_i,
