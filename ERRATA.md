@@ -20,7 +20,7 @@
 
 ![.pic/Labs/lab_12_daisy_chain/fig_03.drawio.svg](.pic/Labs/lab_12_daisy_chain/fig_03.drawio.svg)
 
-_Рисунок II.8-3. Структурная схема блока приоритетных прерываний._
+_Рисунок II.12-3. Структурная схема блока приоритетных прерываний._
 
 </details>
 
