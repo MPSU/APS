@@ -10,6 +10,7 @@
 - [О данном разделе](Introduction/README.md)
 - [Что такое Язык Описания Аппаратуры](Introduction/What%20is%20HDL.md)
 - [Как работает ПЛИС](Introduction/How%20FPGA%20works.md)
+- [Последовательностная логика](Introduction/Sequential%20logic.md)
 - [Этапы реализации проекта в ПЛИС](Introduction/Implementation%20steps.md)
 
 ---
