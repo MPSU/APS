@@ -299,7 +299,7 @@ module lab_05_tb_decoder();
       assert(std::randomize(mutation));
       // we want to broke (invert constraint of) func3 if
       // 9's bit is 1 while six lower bits are 0
-      if(mutation[9] & !(|mutation[5:0])) begin
+      if(mutation[9] & !(|mutation[3:0])) begin
         assert(std::randomize(func7    ) with {!(func7 inside {7'h0, 7'h20});});
       end
       else begin
