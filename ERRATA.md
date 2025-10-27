@@ -2,6 +2,17 @@
 
 ![http://95.215.8.74:5000/days_since_last_commit.png](http://95.215.8.74:5000/days_since_last_commit.png)
 
+**27.10.2025**: Исправлено отображение инверсии выхода Q̅ в _рисунках I.2-13_ и _I.3-6_.
+
+<details>
+  <summary> Исправленная версия рисунка </summary>
+
+![.pic/Introduction/Sequential%20logic/fig_06.drawio.svg](.pic/Introduction/Sequential%20logic/fig_06.drawio.svg)
+
+</details>
+
+<br><br>
+
 **27.10.2025**: Исправлена опечатка в описании функционального поведения ведомой защёлки в составе D-триггера на стр. 41:
 
 ```diff
