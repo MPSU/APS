@@ -2,15 +2,15 @@
 
 ## Содержание
 
-- [Список типичных ошибок при работе с Vivado и SystemVerilog](#список-типичных-ошибок-при-работе-с-vivado-и-systemverilog)
-  - [Содержание](#содержание)
-  - [Ошибки связанные с САПР Vivado](#ошибки-связанные-с-сапр-vivado)
-    - [Не запускается симуляция FATAL\_ERROR PrivateChannel Error creating client socket](#не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)
-    - [Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу](#не-запускается-симуляция-boost-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
-    - [Вылетает Vivado при попытке открыть схему](#вылетает-vivado-при-попытке-открыть-схему)
-    - [Не устанавливается Vivado Unable to open archive](#не-устанавливается-vivado-unable-to-open-archive)
-  - [Ошибки синтаксиса языка SystemVerilog](#ошибки-синтаксиса-языка-systemverilog)
-    - [имя сигнала is not a type](#имя-сигнала-is-not-a-type)
+- [Список типичных ошибок при работе с Vivado и SystemVerilog](#Список-типичных-ошибок-при-работе-с-vivado-и-systemverilog)
+  - [Содержание](#Содержание)
+  - [Ошибки связанные с САПР Vivado](#Ошибки-связанные-с-сапр-vivado)
+    - [Не запускается симуляция FATAL\_ERROR PrivateChannel Error creating client socket](#Не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)
+    - [Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу](#Не-запускается-симуляция-boost-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
+    - [Вылетает Vivado при попытке открыть схему](#Вылетает-vivado-при-попытке-открыть-схему)
+    - [Не устанавливается Vivado Unable to open archive](#Не-устанавливается-vivado-unable-to-open-archive)
+  - [Ошибки синтаксиса языка SystemVerilog](#Ошибки-синтаксиса-языка-systemverilog)
+    - [имя сигнала is not a type](#Имя-сигнала-is-not-a-type)
     - [cannot find port on this module](#cannot-find-port-on-this-module)
 
 
