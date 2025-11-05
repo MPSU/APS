@@ -4,3 +4,7 @@ language = "ru"
 multilingual = true
 src = "./"
 title = "Архитектуры процессорных систем"
+
+[output.html]
+git-repository-url = "https://github.com/MPSU/APS"
+git-repository-icon = "fa-github"
