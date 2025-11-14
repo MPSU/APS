@@ -21,6 +21,7 @@
 - [Лабораторная №2. АЛУ](Labs/02.%20Arithmetic-logic%20unit/README.md)
 - [Лабораторная №3. Регистровый файл и внешняя память](Labs/03.%20Register%20file%20and%20memory/README.md)
 - [Лабораторная №4. Простейшее программируемое устройство](Labs/04.%20Primitive%20programmable%20device/README.md)
+- [Написание программы под процессор CYBERcobra](Labs/04.%20Primitive%20programmable%20device/Индивидуальное%20задание/README.md)
 - [Лабораторная №5. Декодер инструкций](Labs/05.%20Main%20decoder/README.md)
 - [Лабораторная №6. Основная память](Labs/06.%20Main%20memory/README.md)
 - [Лабораторная №7. Тракт данных](Labs/07.%20Datapath/README.md)
