@@ -28,8 +28,6 @@ int err_count;
 always #5 clk_i <= ~clk_i;
 
 initial begin
-  $display("\n\n===========================\n\nPress button 'Run All' (F3)\n\n===========================\n\n");
-  $stop();
   clk_i       = '0;
   exception_i = '0;
   mret_i      = '0;
@@ -388,4 +386,16 @@ task error_info(irq, irq_ret);
     if (irq_cause_o!==32'h8000_0010) begin $error("invalid irq_cause_o = %08h, expected value 32'h8000_0010.", $sampled(irq_cause_o)       ); err_count++; end
 endtask
 
+initial begin
+  automatic int not_stopped = 1;
+  forever begin
+    @(posedge clk_i);
+    if((err_count >= 10) && not_stopped) begin
+      $display("Simulation stopped after ten errors.");
+      $stop();
+      not_stopped = 0;
+    end
+  end
+end
+    
 endmodule
