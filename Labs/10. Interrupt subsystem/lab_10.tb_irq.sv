@@ -383,9 +383,9 @@ endtask
 //logic irq, irq_ret;
 
 task error_info(irq, irq_ret);
-    if (irq_o!==irq)                 begin $error("invalid irq_o       = %b, expected value %b."           , $sampled(irq_o    ), irq    ); err_count++; end
-    if (irq_ret_o!==irq_ret)         begin $error("invalid irq_ret_o   = %b, expected value %b."           , $sampled(irq_ret_o), irq_ret); err_count++; end
-    if (irq_cause_o!==32'h8000_0010) begin $error("invalid irq_cause_o = %h, expected value 32'h8000_0010.", $sampled(irq_cause_o)       ); err_count++; end
+    if (irq_o!==irq)                 begin $error("invalid irq_o       = %1b, expected value %b."            , $sampled(irq_o    ), irq    ); err_count++; end
+    if (irq_ret_o!==irq_ret)         begin $error("invalid irq_ret_o   = %1b, expected value %b."            , $sampled(irq_ret_o), irq_ret); err_count++; end
+    if (irq_cause_o!==32'h8000_0010) begin $error("invalid irq_cause_o = %08h, expected value 32'h8000_0010.", $sampled(irq_cause_o)       ); err_count++; end
 endtask
 
 endmodule
