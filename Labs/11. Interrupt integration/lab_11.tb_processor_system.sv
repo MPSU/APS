@@ -36,7 +36,7 @@ module lab_11_tb_processor_system();
         rst = 0;
         repeat(20)@(posedge clk);
         DUT.irq_req = 1;
-        while(DUT.irq_ret == 0) begin
+        while(DUT.irq_ret !== 1) begin
           @(posedge clk);
         end
         DUT.irq_req = 0;
