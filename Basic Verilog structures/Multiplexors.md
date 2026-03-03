@@ -226,7 +226,3 @@ assign one_bit_result = bus1024[select];
 Как описать на языке SystemVerilog следующую схему?
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg)
-
-## Список источников
-
-1. [Мультиплексор (электроника)](https://ru.wikipedia.org/wiki/Мультиплексор_(электроника)).
