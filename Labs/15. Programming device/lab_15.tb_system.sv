@@ -101,7 +101,7 @@ module lab_15_tb_system();
   end
 
 
-  proseccor_system DUT(
+  processor_system DUT(
     .clk_i    (clk_i  ),
     .resetn_i (!rst_i ),
     .rx_i     (flashing_is_done ? tb_rx : flash_rx ),
