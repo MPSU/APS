@@ -78,6 +78,6 @@ endmodule
 
 1. [Intel 4004 — 50th Anniversary Project](https://www.4004.com/mcs4-masks-schematics-sim.html);
 2. [Страница википедии по Intel 4004](https://en.wikipedia.org/wiki/Intel_4004);
-3. [F.Ka˘gan. Gürkaynak / Side Channel Attack Secure Cryptographic Accelerators](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf);
-4. [FIPS 197, Advanced Encryption Standart (AES)](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf);
+3. [F.Kağan. Gürkaynak / Side Channel Attack Secure Cryptographic Accelerators](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf);
+4. [FIPS 197, Advanced Encryption Standard (AES)](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf);
 5. [P. Flake, P. Moorby, S. Golson, A. Salz, S. Davidmann / Verilog HDL and Its Ancestors and Descendants](https://dl.acm.org/doi/pdf/10.1145/3386337).
