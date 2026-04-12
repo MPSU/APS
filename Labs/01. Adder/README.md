@@ -1,121 +1,119 @@
-# Лабораторная работа №1 "Сумматор"
+# Lab 1 "Adder"
 
-## Цель
+## Goal
 
-Познакомиться с САПР Vivado и научиться реализовывать в нём простейшие схемотехнические модули с помощью конструкций языка SystemVerilog.
+Get familiar with the Vivado EDA tool and learn how to implement basic circuit modules using SystemVerilog language constructs.
 
-## Материал для подготовки к лабораторной работе
+## Preparation Materials
 
-[Описание модулей на языке SystemVerilog](../../Basic%20Verilog%20structures/Modules.md).
+[Describing modules in SystemVerilog](../../Basic%20Verilog%20structures/Modules.md).
 
-## Ход работы
+## Workflow
 
-1. Изучение 1-битного сумматора;
-2. Воспроизведение примера по реализации и проверке полусумматора.
-3. Реализация и проверка полного 1-битного сумматора
-4. Изучение 4-битного сумматора;
-5. Реализация и проверка полного 4-битного сумматора;
-6. Реализация и проверка полного 32-битного сумматора.
+1. Study the 1-bit adder;
+2. Reproduce the example of implementing and verifying a half adder.
+3. Implement and verify a full 1-bit adder
+4. Study the 4-bit adder;
+5. Implement and verify a full 4-bit adder;
+6. Implement and verify a full 32-bit adder.
 
-## Теория
+## Theory
 
-Итогом лабораторной работы будет создание устройства, способного складывать два числа. Но перед тем, как учиться создавать подобное устройство, необходимо немного освоиться в самом процессе складывания чисел.
+The outcome of this lab will be a device capable of adding two numbers. But before learning how to build such a device, it is necessary to get comfortable with the addition process itself.
 
-Давайте начнём с примера и сложим в столбик произвольную пару чисел, например 42 и 79:
+Let's start with an example and add a pair of numbers in column format, say 42 and 79:
 
 ![../../.pic/Labs/lab_01_adder/column_add_dec.drawio.svg](../../.pic/Labs/lab_01_adder/column_add_dec.drawio.svg)
 
 ```text
-2 + 9             = 11 ➨ 1 пишем, 1 "в уме"
-4 + 7 + "1 в уме" = 12 ➨ 2 пишем, 1 "в уме"
-0 + 0 + "1 в уме" = 1
+2 + 9             = 11 ➨ write 1, carry 1
+4 + 7 + carry 1   = 12 ➨ write 2, carry 1
+0 + 0 + carry 1   = 1
 ```
 
-Итого, 121.
+Total: 121.
 
-Назовём то, что мы звали "1 в уме", переносом разряда.
-
-Теперь попробуем сделать то же самое, только в двоичной системе исчисления. К примеру, над числами 3 и 5. Три в двоичной системе записывается как 011. Пять записывается как 101.
+Now let's do the same thing in binary. For example, with the numbers 3 and 5. Three in binary is 011. Five is 101.
 
 ![../../.pic/Labs/lab_01_adder/column_add_bin.drawio.svg](../../.pic/Labs/lab_01_adder/column_add_bin.drawio.svg)
 
-Поскольку в двоичной системе всего две цифры: 0 и 1, один разряд не может превысить 1. Складывая числа 1 и 1, вы получаете 2, что не умещается в один разряд, поэтому мы пишем 0 и держим 1 "в уме". Это снова перенос разряда. Поскольку в двоичной арифметике разряд называют битом, перенос разряда можно назвать переносом бита, а сам разряд, который перенесли — битом переноса.
+Since binary has only two digits — 0 and 1 — a single bit cannot exceed 1. When adding 1 and 1, you get 2, which does not fit in one bit, so we write 0 and carry 1. This is again a carry. Since binary digits are called bits, the carry is called a carry bit.
 
-### Полный 1-битный сумматор
+### Full 1-bit Adder
 
-Полный 1-битный сумматор — это цифровое устройство, которое выполняет сложение двух 1-битных чисел и учитывает входной бит переноса. Это устройство имеет три входа: два слагаемых и входной бит переноса, а также два выхода: 1-битный результат суммы и выходной бит переноса.
+A full 1-bit adder is a digital device that adds two 1-bit numbers and accounts for an incoming carry bit. It has three inputs — two operands and a carry-in — and two outputs: a 1-bit sum result and a carry-out.
 
-Что такое входной бит переноса? Давайте вспомним второй этап сложения чисел 42 и 79:
+What is the carry-in? Let's recall the second step of adding 42 and 79:
 
 ```text
-4 + 7 + "1 в уме" = 12 ➨ 2 пишем, 1 "в уме"
+4 + 7 + carry 1   = 12 ➨ write 2, carry 1
 ```
 
-**+ "1 в уме"** — это прибавление разряда, перенесённого с предыдущего этапа сложения.
+**+ carry 1** — this is the addition of the carry bit propagated from the previous step.
 
-Входной бит переноса — это бит, перенесённый с предыдущего этапа сложения двоичных чисел. Имея этот сигнал, мы можем складывать многоразрядные двоичные числа путём последовательного соединения нескольких 1-битных сумматоров: выходной бит переноса сумматора младшего разряда передастся на входной бит переноса сумматора старшего разряда.
+The carry-in is the bit propagated from the previous stage of binary addition. With this signal, we can add multi-bit binary numbers by chaining multiple 1-bit adders: the carry-out of the lower-order adder is fed into the carry-in of the higher-order adder.
 
-### Реализация одноразрядного сложения
+### Single-bit Addition Implementation
 
-Можно ли как-то описать сложение двух одноразрядных двоичных чисел с помощью логических операций? Давайте посмотрим на таблицу истинности подобной операции:
+Can single-bit binary addition be described using logical operations? Let's look at the truth table for this operation:
 
 ![../../.pic/Labs/lab_01_adder/tt1.png](../../.pic/Labs/lab_01_adder/tt1.png)
 
-_Таблица истинности одноразрядного сложения._
+_Truth table for single-bit addition._
 
-`S` — это младший разряд 2-битного результата суммы, записываемый в столбце сложения под слагаемыми `a` и `b`. `C` (_carry_, перенос) — это старший разряд суммы, записываемый левее, если произошёл перенос разряда. Как мы видим, перенос разряда происходит только в случае, когда оба числа одновременно равны единице. При этом значение `S` обращается в `0`, и результат записывается как `10`, что в двоичной системе означает `2`. Кроме того, значение `S` равно `0` и в случае, когда оба операнда одновременно равны нулю. Вы можете заметить, что `S` равно нулю в тех случаях, когда `а` и `b` равны, и не равно нулю в противоположном случае. Подобным свойством обладает логическая операция **Исключающее ИЛИ** (**eXclusive OR**, **XOR**), именно поэтому одно из других названий этой операции — сумма по модулю 2.
+`S` is the least significant bit of the 2-bit sum result, written in the sum column below operands `a` and `b`. `C` (_carry_) is the most significant bit of the sum, written to the left when a carry occurs. As we can see, a carry occurs only when both numbers are simultaneously equal to one. In this case, `S` becomes `0` and the result is written as `10`, which equals `2` in binary. Additionally, `S` equals `0` when both operands are simultaneously zero. You may notice that `S` is zero when `a` and `b` are equal, and non-zero otherwise. This property belongs to the **Exclusive OR** (**XOR**) logical operation, which is why another name for this operation is "sum modulo 2".
 
 ![../../.pic/Labs/lab_01_adder/tt2.png](../../.pic/Labs/lab_01_adder/tt2.png)
 
-_Таблица истинности операции Исключающее ИЛИ (XOR)._
+_Truth table for the Exclusive OR (XOR) operation._
 
-Для бита переноса всё ещё проще — он описывается операцией **логическое И**:
+The carry bit is even simpler — it is described by the **logical AND** operation:
 
 ![../../.pic/Labs/lab_01_adder/tt3.png](../../.pic/Labs/lab_01_adder/tt3.png)
 
-_Таблица истинности операции И._
+_Truth table for the AND operation._
 
-На _рис. 1_ представлена цифровая схема, связывающая входные и выходные сигналы с помощью логических элементов, соответствующих ожидаемому поведению.
+_Fig. 1_ shows the digital circuit connecting inputs and outputs through logic gates that match the expected behavior.
 
 ![../../.pic/Labs/lab_01_adder/fig_01.drawio.svg](../../.pic/Labs/lab_01_adder/fig_01.drawio.svg)
 
-_Рисунок 1. Цифровая схема устройства, складывающего два операнда с сохранением переноса (полусумматора)._
+_Figure 1. Digital circuit of a device that adds two operands with carry preservation (half adder)._
 
-Однако, в описании полного 1-битного сумматора сказано, что у него есть три входа, а в наших таблицах истинности и на схеме выше их только два (схема, представленная на _рис. 1_, реализует так называемый "полусумматор"). На самом деле, на каждом этапе сложения в столбик мы всегда складывали три числа: цифру верхнего числа, цифру нижнего числа, и единицу в случае переноса разряда из предыдущего столбца (если с предыдущего разряда не было переноса, прибавление нуля неявно опускалось).
+However, the description of a full 1-bit adder states that it has three inputs, while our truth tables and the circuit above only have two (the circuit in _Fig. 1_ implements a so-called "half adder"). In fact, at every step of column addition we always add three numbers: the digit of the top number, the digit of the bottom number, and one in case of a carry from the previous column (if there was no carry from the previous digit, adding zero was implicitly omitted).
 
-Таким образом, таблица истинности немного усложняется:
+Therefore, the truth table becomes slightly more complex:
 
 ![../../.pic/Labs/lab_01_adder/tt4.png](../../.pic/Labs/lab_01_adder/tt4.png)
 
-_Таблица истинности сигналов полного 1-битного сумматора._
+_Truth table for a full 1-bit adder._
 
-Поскольку теперь у нас есть и входной и выходной биты переноса, для их различия добавлены суффиксы "in" и "out".
+Since we now have both a carry-in and a carry-out, suffixes "in" and "out" are added to distinguish them.
 
-Как в таком случае описать S? Например, как сумму по модулю 2 этих трёх слагаемых: `а ⊕ b ⊕ Cіn`. Давайте сравним такую операцию с таблицей истинности. Сумма по модуля 2 — это ассоциативная операция [`(a⊕b)⊕c = a⊕(b⊕с)`], т.е. порядок сложения не влияет на результат. Предположим, что Cin равен нулю. Сумма по модулю 2 с нулём даёт второй операнд (`a⊕0=a`), значит `(a⊕b)⊕0 = a⊕b`. Это соответствует верхней половине таблицы истинности для сигнала S, когда Cin равен нулю.
-Предположим, что Cin равен единице. Сумма по модулю 2 с единицей даёт нам отрицание второго операнда (`a⊕1=!a`), значит `(a⊕b) ⊕1=!(a⊕b)`. Это соответствует нижней половине таблицы истинности, когда Cin равен единице.
+How do we express S in this case? For example, as the sum modulo 2 of the three operands: `a ⊕ b ⊕ Cin`. Let's verify this against the truth table. Sum modulo 2 is an associative operation [`(a⊕b)⊕c = a⊕(b⊕c)`], meaning the order of addition does not affect the result. Assume Cin is zero. Sum modulo 2 with zero gives the second operand (`a⊕0=a`), so `(a⊕b)⊕0 = a⊕b`. This corresponds to the upper half of the truth table for signal S when Cin is zero.
+Assume Cin is one. Sum modulo 2 with one gives the negation of the second operand (`a⊕1=!a`), so `(a⊕b)⊕1=!(a⊕b)`. This corresponds to the lower half of the truth table when Cin is one.
 
-Для выходного бита переноса всё гораздо проще. Он равен единице, когда хотя бы два из трех операндов равны единице, это значит, что необходимо попарно сравнить все операнды, и если найдется хоть одна такая пара, он равен единице. Это утверждение можно записать следующим образом:
+For the carry-out, things are simpler. It equals one when at least two of the three operands equal one, meaning we need to compare all pairs of operands and if any such pair is found, it equals one. This can be written as:
 
-`Cоut = (a&b) | (а&Cіn) | (b&Cіn)`, где `&` — логическое И, `|` — логическое ИЛИ.
+`Cout = (a&b) | (a&Cin) | (b&Cin)`, where `&` is logical AND, `|` is logical OR.
 
-Цифровая схема устройства с описанным поведением выглядит следующим образом:
+The digital circuit with this described behavior looks as follows:
 
 ![../../.pic/Labs/lab_01_adder/fig_02.drawio.svg](../../.pic/Labs/lab_01_adder/fig_02.drawio.svg)
 
-_Рисунок 2. Цифровая схема полного 1-битного сумматора._
+_Figure 2. Digital circuit of a full 1-bit adder._
 
-## Практика
+## Practice
 
-Реализуем схему полусумматора (_рис. 1_) в виде модуля, описанного на языке SystemVerilog.
+Let's implement the half adder circuit (_Fig. 1_) as a module described in SystemVerilog.
 
-Модуль `half_adder` имеет два входных сигнала и два выходных. Входы `a_i` и `b_i` идут на два логических элемента: Исключающее ИЛИ и И, выходы которых подключены к выходам модуля `sum_o` и `carry_o` соответственно.
+The `half_adder` module has two input signals and two output signals. Inputs `a_i` and `b_i` feed into two logic elements: Exclusive OR and AND, whose outputs are connected to module outputs `sum_o` and `carry_o` respectively.
 
 ```Verilog
 module half_adder(
-  input  logic    a_i,     // Входные сигналы
+  input  logic    a_i,     // Input signals
   input  logic    b_i,
 
-  output logic    sum_o,   // Выходные сигналы
+  output logic    sum_o,   // Output signals
   output logic    carry_o
 );
 
@@ -125,31 +123,31 @@ assign carry_o = a_i & b_i;
 endmodule
 ```
 
-_Листинг 1. SystemVerilog-код модуля half_adder._
+_Listing 1. SystemVerilog code for the half_adder module._
 
-По данному коду, САПР может реализовать схему, представленную на рисунке 3.
+From this code, the EDA tool can implement the circuit shown in Figure 3.
 
 ![../../.pic/Labs/lab_01_adder/fig_03.png](../../.pic/Labs/lab_01_adder/fig_03.png)
 
-_Рисунок 3. Цифровая схема модуля half_adder, сгенерированная САПР Vivado._
+_Figure 3. Digital circuit of the half_adder module generated by the Vivado EDA tool._
 
-Схема похожа на _рис. 1_, но как проверить, что эта схема не содержит ошибок и делает именно то, что от неё ожидается?
+The circuit resembles _Fig. 1_, but how do we verify that this circuit is error-free and behaves as expected?
 
-Для этого необходимо провести моделирование этой схемы. Во время моделирования на входы подаются тестовые воздействия. Каждое изменение входных сигналов приводит к каскадному изменению состояний внутренних цепей, что в свою очередь приводит к изменению значений на выходных сигналах схемы.
+To do this, we need to simulate the circuit. During simulation, test stimuli are applied to the inputs. Each change in input signals causes a cascading change in the states of internal nets, which in turn causes changes in the output signal values.
 
-Подаваемые на схему входные воздействия формируются верификационным окружением. Верификационное окружение (в дальнейшем будет использован термин "**тестбенч**") — это особый несинтезируемый модуль, который не имеет входных или выходных сигналов. Эти сигналы ему не нужны, потому что он сам является генератором всех своих внутренних сигналов, и данный модуль не передаёт ничего вовне — только проверяет тестируемый модуль внутри себя.
+The test stimuli applied to the circuit are generated by the verification environment. The verification environment (hereafter referred to as a "**testbench**") is a special non-synthesizable module that has no input or output signals. It does not need them because it generates all its internal signals itself, and this module does not pass anything to the outside world — it only tests the design under test (DUT) internally.
 
-Внутри тестбенча можно использовать конструкции из несинтезируемого подмножества языка SystemVerilog, в частности программный блок `initial`, в котором команды выполняются последовательно, что делает этот блок чем-то отдалённо похожим на проверяющую программу. Поскольку изменение внутренних цепей происходит с некоторой задержкой относительно изменений входных сигналов, при моделировании есть возможность делать паузы между командами. Это делается с помощью специального символа #, за которым указывается количество времени симуляции, которое нужно пропустить перед следующей командой.
+Inside the testbench, constructs from the non-synthesizable subset of SystemVerilog can be used, in particular the `initial` procedural block, in which statements execute sequentially, making this block somewhat similar to a test program. Since changes in internal nets occur with some delay relative to input signal changes, it is possible to insert pauses between statements during simulation. This is done using the special `#` symbol followed by the amount of simulation time to skip before the next statement.
 
-Перед тем как писать верификационное окружение, необходимо составить план того, как будет проводиться проверка устройства (составить верификационный план). Ввиду предельной простоты устройства, план будет состоять из одного предложения:
+Before writing the verification environment, it is necessary to draft a plan for how the device will be verified (a verification plan). Given the extreme simplicity of the device, the plan consists of a single statement:
 
-> Поскольку устройство не имеет внутреннего состояния, которое могло бы повлиять на результат, а число всех его возможных входных наборов воздействий равно четырём, мы можем проверить его работу, перебрав все возможные комбинации его входных сигналов.
+> Since the device has no internal state that could affect the result, and the total number of all possible input stimulus combinations equals four, we can verify its operation by exhausting all possible combinations of its input signals.
 
 ```Verilog
-module testbench();                // <- Не имеет ни входов, ни выходов!
+module testbench();                // <- Has neither inputs nor outputs!
   logic a, b, carry, sum;
 
-  half_adder DUT(                  // <- Подключаем проверяемый модуль
+  half_adder DUT(                  // <- Connect the design under test
     .a_i    (a    ),
     .b_i    (b    ),
     .carry_o(carry),
@@ -157,50 +155,50 @@ module testbench();                // <- Не имеет ни входов, ни
 );
 
   initial begin
-    a = 1'b0; b = 1'b0;            // <- Подаём на входы модуля тестовые
-    #10ns;                         //    воздействия
+    a = 1'b0; b = 1'b0;            // <- Apply test stimuli to the module
+    #10ns;                         //    inputs
     a = 1'b0; b = 1'b1;
-    #10ns;                         // <- Делаем паузу в десять наносекунд
-    a = 1'b1; b = 1'b0;            //    перед очередным изменением
-    #10ns;                         //    входных сигналов
+    #10ns;                         // <- Pause for ten nanoseconds before
+    a = 1'b1; b = 1'b0;            //    the next input signal change
+    #10ns;
     a = 1'b1; b = 1'b1;
   end
 endmodule
 ```
 
-_Листинг 2. SystemVerilog-код тестбенча для модуля half_adder._
+_Listing 2. SystemVerilog code for the half_adder testbench._
 
 ![../../.pic/Labs/lab_01_adder/fig_04.png](../../.pic/Labs/lab_01_adder/fig_04.png)
 
-_Рисунок 4. Временная диаграмма, моделирующая работу схемы с рис. 3._
+_Figure 4. Timing diagram simulating the operation of the circuit from Fig. 3._
 
-В данной лабораторной работе вам предстоит реализовать схему полного 1-битного сумматора (_рис. 2_). Модуль полусумматора, код которого представлен в _листинге 1_ не используется в лабораторной работе (он был дан только в качестве примера).
+In this lab, you will implement the full 1-bit adder circuit (_Fig. 2_). The half adder module whose code is shown in _Listing 1_ is not used in this lab (it was provided as an example only).
 
-### Полный 4-битный сумматор
+### Full 4-bit Adder
 
-До этого мы реализовали сложение в столбик только для одного разряда, теперь мы хотим реализовать всю операцию сложения в столбик. Как это сделать? Сделать ровно то, что делается при сложении в столбик: сначала сложить младший разряд, получить бит переноса для следующего разряда, сложить следующий и т.д.
+So far, we have implemented column addition for only one digit. Now we want to implement the full column addition operation. How? By doing exactly what column addition does: first add the least significant bit, obtain the carry for the next bit, add the next, and so on.
 
-Давайте посмотрим, как это будет выглядеть на схеме (для простоты, внутренняя логика 1-битного сумматора скрыта, но вы должны помнить, что каждый прямоугольник — это та же самая схема с рис. 2).
+Let's look at how this appears as a circuit (for simplicity, the internal logic of the 1-bit adder is hidden, but remember that each rectangle is the same circuit from Fig. 2).
 
 ![../../.pic/Labs/lab_01_adder/fig_05.drawio.svg](../../.pic/Labs/lab_01_adder/fig_05.drawio.svg)
 
-_Рисунок 5. Схема 4-битного сумматора._
+_Figure 5. 4-bit adder circuit._
 
-Фиолетовой линией на схеме показаны провода, соединяющие выходной бит переноса сумматора предыдущего разряда с входным битом переноса сумматора следующего разряда.
+The purple lines in the circuit show the wires connecting the carry-out of one adder stage to the carry-in of the next stage.
 
-Как же реализовать модуль, состоящий из цепочки других модулей? Половину этой задачи мы уже сделали, когда писали тестбенч к 1-битному полусумматору в _Листинге 2_ — мы создавали модуль внутри другого модуля и подключали к нему провода. Теперь надо сделать то же самое, только с чуть большим числом модулей.
+How do we implement a module composed of a chain of other modules? We already did half of this when we wrote the testbench for the 1-bit half adder in _Listing 2_ — we created a module inside another module and connected wires to it. Now we need to do the same thing, just with a slightly larger number of modules.
 
-Описание 4-битного сумматора, сводится к описанию межсоединения четырёх экземпляров 1-битного сумматора. Подробнее о том, как описывать создание экземпляров модулей рассказано в главе [Описание модулей на языке SystemVerilog](../../Basic%20Verilog%20structures/Modules.md#Иерархия-модулей), который вы изучали перед лабораторной работой.
+Describing a 4-bit adder reduces to describing the interconnection of four instances of a 1-bit adder. More details on how to instantiate modules are covered in the chapter [Describing modules in SystemVerilog](../../Basic%20Verilog%20structures/Modules.md#Module-hierarchy), which you studied before this lab.
 
 ![../../.pic/Labs/lab_01_adder/fig_06.png](../../.pic/Labs/lab_01_adder/fig_06.png)
 
-_Рисунок 6. Схема 4-битного сумматора, сгенерированная САПР Vivado._
+_Figure 6. 4-bit adder circuit generated by the Vivado EDA tool._
 
-Несмотря на запутанность схемы, если присмотреться, вы увидите, как от шин A, B и S отходят линии к каждому из сумматоров, а бит переноса передаётся от предыдущего сумматора к следующему. Для передачи битов переноса от одного сумматора к другому, потребуется создать вспомогательные провода, которые можно сгруппировать в один [вектор](../../Basic%20Verilog%20structures/Modules.md#Векторы) (см. сигналы c[0]-c[2] на _рис. 5_).
+Despite how complex the circuit looks, if you look closely, you can see lines running from buses A, B, and S to each of the adders, with the carry bit propagating from one adder to the next. To transfer the carry bits from one adder to the next, auxiliary wires need to be created; these can be grouped into a single [vector](../../Basic%20Verilog%20structures/Modules.md#Vectors) (see signals c[0]–c[2] in _Fig. 5_).
 
-## Задание
+## Assignment
 
-Опишите полный 1-битный сумматор, схема которого представлена на _[Рис. 2](../../.pic/Labs/lab_01_adder/fig_02.drawio.svg)_. Прототип модуля следующий:
+Describe a full 1-bit adder whose circuit is shown in _[Fig. 2](../../.pic/Labs/lab_01_adder/fig_02.drawio.svg)_. The module prototype is as follows:
 
 ```Verilog
 module fulladder(
@@ -212,7 +210,7 @@ module fulladder(
 );
 ```
 
-Далее, вам необходимо реализовать полный 32-битный сумматор со следующим прототипом:
+Next, implement a full 32-bit adder with the following prototype:
 
 ```verilog
 module fulladder32(
@@ -224,9 +222,9 @@ module fulladder32(
 );
 ```
 
-Соединять вручную 32 однотипных модуля чревато усталостью и ошибками, поэтому можно сначала создать 4-битный сумматор, а затем из набора 4-битных сумматоров сделать 32-битный.
+Manually connecting 32 identical modules is tedious and error-prone, so it is recommended to first build a 4-bit adder and then combine four 4-bit adders into a 32-bit one.
 
-Если вы решите делать 4-битный сумматор, то модуль должен быть описан в соответствии со следующим прототипом:
+If you choose to build a 4-bit adder, the module must follow this prototype:
 
 ```Verilog
 module fulladder4(
@@ -238,15 +236,15 @@ module fulladder4(
 );
 ```
 
-Либо же можно создать массив 1-битных сумматоров.
+Alternatively, you can create an array of 1-bit adders.
 
-Создание массива модулей схоже с созданием одного модуля за исключением того, что после имени экземпляра модуля указывается диапазон, определяющий количество модулей в массиве. При этом подключение сигналов к массиву модулей осуществляется следующим образом:
+Creating a module array is similar to instantiating a single module, except that a range defining the number of modules in the array is specified after the instance name. Signal connections to a module array work as follows:
 
-- если разрядность подключаемого сигнала совпадает с разрядностью порта модуля из массива, этот сигнал подключается к каждому из модулей в массиве;
-- если разрядность подключаемого сигнала превосходит разрядность порта модуля из массива в `N` раз (где `N` — количество модулей в массиве), к модулю подключается соответствующий диапазон бит подключаемого сигнала (диапазон младших бит будет подключён к модулю с меньшим индексом в массиве).
-- если разрядность подключаемого сигнала не подходит ни под один из описанных выше пунктов, происходит ошибка синтеза схемы, поскольку в этом случае САПР не способен понять каким образом подключать данный сигнал к каждому модулю из массива.
+- if the width of the connected signal matches the port width of the module in the array, that signal is connected to every module in the array;
+- if the width of the connected signal is `N` times the port width of the array module (where `N` is the number of modules in the array), the corresponding bit range of the signal is connected to each module (the lower bit range is connected to the module with the smaller index in the array);
+- if the width of the connected signal does not match either of the above cases, a synthesis error occurs, because the EDA tool cannot determine how to connect the signal to each module in the array.
 
-В _листинге 3_ представлен пример того, как можно создать массив модулей.
+_Listing 3_ shows an example of how to create a module array.
 
 ```Verilog
 module example1(
@@ -267,54 +265,52 @@ module example2(
   output logic [ 8:0] C
 );
 
-example1 instance_array[7:0]( // Создается массив из 8 модулей example1
-  .a(A),                      // Поскольку разрядность сигнала A в 8 раз больше
-                              // разрядности входа a, к каждому модулю в массиве
-                              // будет подключен свой диапазон бит сигнала A
-                              // (к instance_array[0] будет подключен диапазон
-                              // A[3:0], к instance_array[7] будет подключен
-                              // диапазон A[31:28]).
+example1 instance_array[7:0]( // Creates an array of 8 example1 modules
+  .a(A),                      // Since the width of signal A is 8 times greater
+                              // than the width of port a, each module in the array
+                              // is connected to its own bit range of signal A
+                              // (instance_array[0] is connected to A[3:0],
+                              // instance_array[7] is connected to A[31:28]).
 
-  .b(B),                      // Поскольку разрядность сигнала B совпадает с
-                              // разрядностью входа b, сигнал B будет подключен
-                              // как есть ко всем модулям в массиве.
+  .b(B),                      // Since the width of signal B matches the width
+                              // of port b, signal B is connected as-is to
+                              // all modules in the array.
 
-  .c(C[7:0]),                 // Поскольку разрядность сигнала C не равна
-                              // ни разрядности входа c, ни его увосьмерённой
-                              // разрядности, мы должны выбрать такой диапазон
-                              // бит, который будет удовлетворять одному из
-                              // этих требований.
+  .c(C[7:0]),                 // Since the width of signal C does not equal
+                              // either the port width of c or eight times
+                              // that width, we must select a bit range that
+                              // satisfies one of the requirements.
 
-  .d(C[8])                    // Аналогично предыдущему.
+  .d(C[8])                    // Same as the previous case.
 );
 endmodule
 ```
 
-_Листинг 3. Пример создания массива модулей._
+_Listing 3. Example of creating a module array._
 
-Реализация массива сумматоров будет осложнена тем, что вам потребуется каким-то образом организовать передачу выходного бита переноса предыдущего разряда до входного бита переноса следующего разряда. Для этого рекомендуется создать два 32-битных вектора:
+Implementing the adder array will be complicated by the need to propagate the carry-out of each stage to the carry-in of the next. To do this, it is recommended to create two 32-bit vectors:
 
-- вектор входных битов переноса;
-- вектор выходных битов переноса.
+- a vector of carry-in bits;
+- a vector of carry-out bits.
 
-Далее, с помощью оператора непрерывного присваивания соединить разряды вектора выходных битов переноса с соответствующими разрядами вектора входных битов переноса. Кроме того, вам потребуется связать входной и выходной биты переноса модуля с младшим и старшим разрядом соответствующих векторов.
+Then use continuous assignment to connect the bits of the carry-out vector to the corresponding bits of the carry-in vector. In addition, you will need to connect the module-level carry-in and carry-out to the least significant and most significant bits of the corresponding vectors.
 
-После того, как векторы бит переноса будут готовы, создание массива модулей уже не будет представлять сложности.
+Once the carry bit vectors are ready, creating the module array will be straightforward.
 
-### Порядок выполнения задания
+### Step-by-Step Instructions
 
-1. Создайте проект, согласно [руководству по созданию проекта в Vivado](../../Vivado%20Basics/01.%20New%20project.md)
-2. Опишите модуль `fulladder`, схема которого представлена на _[Рис. 2](../../.pic/Labs/lab_01_adder/fig_02.drawio.svg)_.
-   1. Модуль необходимо описать с таким же именем и портами, как указано в задании.
-3. Проверьте модуль с помощью верификационного окружения, представленного в файле [`lab_01.tb_fulladder.sv`](lab_01.tb_fulladder.sv). Убедитесь по сигналам временной диаграммы, что модуль работает корректно. В случае обнаружения некорректного поведения сигналов суммы и выходного бита переноса, вам необходимо [найти](../../Vivado%20Basics/05.%20Bug%20hunting.md) причину этого поведения, и устранить её.
-4. Опишите модуль `fulladder4`, схема которого представлена на _Рис. 5 и 6_, используя [`иерархию модулей`](../../Basic%20Verilog%20structures/Modules.md#Иерархия-модулей), чтобы в нем выполнялось поразрядное сложение двух 4-битных чисел и входного бита переноса. Некоторые входы и выходы модуля будет необходимо описать в виде [`векторов`](../../Basic%20Verilog%20structures/Modules.md#Векторы).
-   1. Модуль необходимо описать с таким же именем и портами, как указано в задании.
-   2. Обратите внимание, что входной бит переноса должен подаваться на сумматор, выполняющий сложение нулевого разряда, выходной бит переноса соединяется с выходным битом переноса сумматора, выполняющего сложение 4-го разряда. Промежуточные биты переноса передаются с помощью вспомогательных проводов, которые необходимо создать самостоятельно.
-5. Проверьте модуль с помощью верификационного окружения, представленного в файле [`lab_01.tb_fulladder4.sv`](lab_01.tb_fulladder4.sv). Убедитесь по сигналам временной диаграммы, что модуль работает корректно. В случае обнаружения некорректного поведения сигналов суммы и выходного бита переноса, вам необходимо [найти](../../Vivado%20Basics/05.%20Bug%20hunting.md) причину этого поведения, и устранить её.
-   1. Перед запуском моделирования убедитесь, что у вас выбран корректный модуль верхнего уровня в `Simulation Sources`.
-6. Опишите модуль `fulladder32` так, чтобы в нем выполнялось поразрядное сложение двух 32-битных чисел и входного бита переноса. Его можно реализовать через последовательное соединение восьми 4-битных сумматоров, либо же можно соединить 32 1-битных сумматора (как вручную, так и с помощью создания массива модулей).
-   1. Модуль необходимо описать с таким же именем и портами, как указано в задании.
-   2. Обратите внимание, что входной бит переноса должен подаваться на сумматор, выполняющий сложение нулевого разряда, выходной бит переноса соединяется с выходным битом переноса сумматора, выполняющего сложение 31-го разряда.
-7. Проверьте модуль с помощью верификационного окружения, представленного в файле [`lab_01.tb_fulladder32.sv`](lab_01.tb_fulladder32.sv). В случае, если в TCL-консоли появились сообщения об ошибках, вам необходимо [найти](../../Vivado%20Basics/05.%20Bug%20hunting.md) и исправить их.
-   1. Перед запуском моделирования убедитесь, что у вас выбран корректный модуль верхнего уровня в `Simulation Sources`.
-8. [Проверьте](./board%20files) работоспособность вашей цифровой схемы в ПЛИС.
+1. Create a project following the [Vivado project creation guide](../../Vivado%20Basics/01.%20New%20project.md).
+2. Describe the `fulladder` module whose circuit is shown in _[Fig. 2](../../.pic/Labs/lab_01_adder/fig_02.drawio.svg)_.
+   1. The module must be described with the same name and ports as specified in the assignment.
+3. Verify the module using the verification environment provided in the file [`lab_01.tb_fulladder.sv`](lab_01.tb_fulladder.sv). Check the waveform signals to confirm that the module operates correctly. If incorrect behavior is observed on the sum or carry-out signals, you must [find](../../Vivado%20Basics/05.%20Bug%20hunting.md) the cause and fix it.
+4. Describe the `fulladder4` module whose circuit is shown in _Figs. 5 and 6_, using [module hierarchy](../../Basic%20Verilog%20structures/Modules.md#Module-hierarchy) to perform bit-by-bit addition of two 4-bit numbers and a carry-in. Some inputs and outputs of the module will need to be described as [vectors](../../Basic%20Verilog%20structures/Modules.md#Vectors).
+   1. The module must be described with the same name and ports as specified in the assignment.
+   2. Note that the carry-in must be fed to the adder that processes bit 0, and the carry-out must be connected to the carry-out of the adder processing bit 3. Intermediate carry bits are passed using auxiliary wires that you must create yourself.
+5. Verify the module using the verification environment provided in the file [`lab_01.tb_fulladder4.sv`](lab_01.tb_fulladder4.sv). Check the waveform signals to confirm that the module operates correctly. If incorrect behavior is observed on the sum or carry-out signals, you must [find](../../Vivado%20Basics/05.%20Bug%20hunting.md) the cause and fix it.
+   1. Before launching simulation, make sure the correct top-level module is selected in `Simulation Sources`.
+6. Describe the `fulladder32` module to perform bit-by-bit addition of two 32-bit numbers and a carry-in. It can be implemented by chaining eight 4-bit adders, or by connecting 32 1-bit adders (either manually or by creating a module array).
+   1. The module must be described with the same name and ports as specified in the assignment.
+   2. Note that the carry-in must be fed to the adder that processes bit 0, and the carry-out must be connected to the carry-out of the adder processing bit 31.
+7. Verify the module using the verification environment provided in the file [`lab_01.tb_fulladder32.sv`](lab_01.tb_fulladder32.sv). If error messages appear in the TCL console, you must [find](../../Vivado%20Basics/05.%20Bug%20hunting.md) and fix them.
+   1. Before launching simulation, make sure the correct top-level module is selected in `Simulation Sources`.
+8. [Verify](./board%20files) the operation of your digital circuit on the FPGA.

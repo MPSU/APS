@@ -1,281 +1,279 @@
-# Что такое ПЛИС и как она работает
+# What is an FPGA and How Does It Work
 
-- [Что такое ПЛИС и как она работает](#Что-такое-ПЛИС-и-как-она-работает)
-  - [История появления ПЛИС](#История-появления-ПЛИС)
-  - [Цифровые схемы и логические вентили](#Цифровые-схемы-и-логические-вентили)
-    - [Цифровые схемы](#Цифровые-схемы)
-    - [Логические вентили](#Логические-вентили)
-    - [Мультиплексоры](#Мультиплексоры)
-    - [Программируемая память](#Программируемая-память)
-  - [Таблицы подстановки (Look-Up Tables, LUTs)](#Таблицы-подстановки-look-up-tables-luts)
-  - [D-триггеры](#d-триггеры)
-  - [Арифметика](#Арифметика)
-  - [Логические блоки](#Логические-блоки)
-  - [Сеть межсоединений](#Сеть-межсоединений)
-  - [Итоги главы](#Итоги-главы)
-  - [Список источников](#Список-источников)
+- [What is an FPGA and How Does It Work](#what-is-an-fpga-and-how-does-it-work)
+  - [History of FPGAs](#history-of-fpgas)
+  - [Digital Circuits and Logic Gates](#digital-circuits-and-logic-gates)
+    - [Digital Circuits](#digital-circuits)
+    - [Logic Gates](#logic-gates)
+    - [Multiplexers](#multiplexers)
+    - [Programmable Memory](#programmable-memory)
+  - [Look-Up Tables (LUTs)](#look-up-tables-luts)
+  - [D Flip-Flops](#d-flip-flops)
+  - [Arithmetic](#arithmetic)
+  - [Logic Blocks](#logic-blocks)
+  - [Interconnect Network](#interconnect-network)
+  - [Chapter Summary](#chapter-summary)
+  - [References](#references)
 
-> Параграфы "Цифровые схемы и логические вентили" и "Таблицы подстановки" во многом используют материалы статьи "[How Does an FPGA Work?[1]](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)" за авторством `Alchitry, Ell C`, распространяемой по лицензии [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+> The sections "Digital Circuits and Logic Gates" and "Look-Up Tables" draw heavily from the article "[How Does an FPGA Work?[1]](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)" by `Alchitry, Ell C`, distributed under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
 
-## История появления ПЛИС
+## History of FPGAs
 
-До появления интегральных схем электронные устройства строились на базе вакуумных ламп, которые выполняли функции усиления и переключения. Эти лампы были громоздкими, энергозатратными и недолговечными. Затем их заменили на транзисторы, которые стали основой современных электронных схем. Поначалу транзисторы, как и лампы, использовались в виде отдельных компонентов, и схемы собирались из них, как модель из кубиков Lego. В случае ошибки её можно было исправить ручной корректировкой соединений между элементами, подобно исправлению ошибки при сборке модели Lego.
+Before integrated circuits existed, electronic devices were built using vacuum tubes, which performed amplification and switching functions. These tubes were bulky, power-hungry, and short-lived. They were later replaced by transistors, which became the foundation of modern electronic circuits. Initially, transistors were used as discrete components just like tubes, and circuits were assembled from them like a Lego model. If a mistake was made, it could be corrected by manually reworking the connections between components, much like fixing an error when building a Lego model.
 
-С развитием технологий произошла миниатюризация транзисторов, что позволило разместить их вместе с соединениями на одном кристалле. Так появились интегральные схемы — электронные схемы, выполненные на полупроводниковой подложке и заключённые в неразборный корпус. Этот переход стал революционным шагом в развитии электроники, открыв путь к созданию компактных и производительных устройств.
+As technology advanced, transistors were miniaturized, making it possible to place them together with their interconnections on a single die. This gave rise to integrated circuits — electronic circuits fabricated on a semiconductor substrate and enclosed in a sealed package. This transition was a revolutionary step in the development of electronics, paving the way for compact and high-performance devices.
 
-В большинстве случаев, исправить ошибку, допущенную при разработке и изготовлении интегральной схемы, невозможно. С учетом того, что изготовление прототипа интегральной схемы является долгим и затратным мероприятием (от десятков тысяч до миллионов долларов), возникла необходимость в гибком, быстром и дешёвом способе изготовления прототипа, и проверки на нём схемы до её изготовления. Так появились **программируемые логические интегральные схемы** (**ПЛИС**). В связи с повсеместным использованием англоязычной литературы, имеет смысл дать и англоязычное название этого класса устройств: **programmable logic devices** (**PLD**).
+In most cases, it is impossible to correct a mistake made during the design and manufacture of an integrated circuit. Given that fabricating a prototype integrated circuit is a lengthy and expensive process (costing tens of thousands to millions of dollars), there arose a need for a flexible, fast, and inexpensive way to prototype and verify a circuit before committing to fabrication. This is how **programmable logic devices** (**PLDs**) came about.
+It should be noted that this book mainly focuses on a specific type of PLD known as an FPGA (field-programmable gate array).
 
-Стоит оговориться, что в данной книге под термином ПЛИС будет подразумеваться конкретный тип программируемых схем: **FPGA** (**field-programmable gate array**, **программируемая пользователем вентильная матрица**, **ППВМ**).
+An FPGA contains a finite set of basic building blocks (primitives), primitive interconnect blocks, and input/output blocks. By applying a specific set of configuration data to an FPGA (**programming** it), the primitives, their interconnections with each other, and with the I/O blocks can be configured to implement a desired digital circuit. The advantage of an FPGA is that if an error is found in a prototype implemented on the FPGA, the digital circuit can be corrected and the FPGA reprogrammed.
 
-ПЛИС содержит некоторое конечное множество базовых блоков (примитивов), блоки межсоединений примитивов и блоки ввода-вывода. Подав определенный набор воздействий на ПЛИС (**запрограммировав** её), можно настроить примитивы, их межсоединения между собой и блоками ввода-вывода, чтобы получить требуемую цифровую схему. Удобство ПЛИС заключается в том, что в случае обнаружения ошибки на прототипе, исполненном в ПЛИС, вы можете исправить свою цифровую схему и повторно запрограммировать ПЛИС.
+In addition, FPGAs can be used effectively not only as a low-cost prototyping tool, but also as the final implementation vehicle for low-volume products (it is cheaper to buy and program an off-the-shelf batch of FPGAs than to fabricate a custom batch of chips).
 
-Кроме того, эффективно использовать ПЛИС не как средство дешевого прототипирования, но и как средство реализации конечного продукта в случае малого тиража (дешевле купить и запрограммировать готовую партию ПЛИС, чем изготовить партию собственных микросхем).
+Let us take a closer look at what this device is and how it works internally, but first we need to cover some basics of digital circuits and logic gates.
 
-Давайте разберемся, что же это за устройство и как оно работает изнутри, но перед этим необходимо провести ликбез по цифровым схемам и логическим вентилям.
+## Digital Circuits and Logic Gates
 
-## Цифровые схемы и логические вентили
+### Digital Circuits
 
-### Цифровые схемы
+A **digital circuit** is an **abstract model** of computation that operates on two discrete states, commonly denoted as `0` and `1`. It is important to understand that these states are not tied to specific physical quantities such as voltage in an electrical circuit. Instead, they represent generalized logical values that can be implemented on any technology capable of distinguishing two discrete states.
 
-**Цифровая схема** — это **абстрактная модель** вычислений, которая оперирует двумя дискретными состояниями, обычно обозначаемыми как `0` и `1`. Важно понимать, что эти состояния не привязаны к конкретным физическим величинам, таким как напряжение в электрической цепи. Вместо этого они представляют собой обобщенные логические значения, которые могут быть реализованы на любой технологии, способной различать два дискретных состояния.
+Thanks to this abstraction, digital circuits can be implemented not only using traditional electronic components, but also on entirely different platforms — for example, using [pneumatic systems](https://habr.com/ru/companies/ruvds/articles/692236/), [cardboard and marbles](https://habr.com/ru/articles/399391/), [redstone dust](https://minecraft.fandom.com/wiki/Tutorials/Redstone_computers) in Minecraft, or even through human interaction, as described in Liu Cixin's novel "The Three-Body Problem" (the efficiency of such implementations is another matter entirely). The core idea is that a digital circuit is decoupled from its physical implementation, focusing solely on the logic of interactions between the states `0` and `1`, which makes it universal and technology-independent.
 
-Благодаря этой абстракции цифровые схемы могут быть реализованы не только с помощью традиционных электронных компонентов, но и на совершенно иных платформах, например на [пневматических системах](https://habr.com/ru/companies/ruvds/articles/692236/), [из картона и шариков](https://habr.com/ru/articles/399391/), [красной пыли](https://minecraft.fandom.com/wiki/Tutorials/Redstone_computers) в игре Майнкрафт или даже с использованием человеческого взаимодействия, подобно тому, как это описано в романе Лю Цысиня "Задача трёх тел" (эффективность подобных схем — это уже другой вопрос). Основная идея заключается в том, что цифровая схема отвязывается от физической реализации, фокусируясь лишь на логике взаимодействия состояний `0` и `1`, что делает её универсальной и независимой от конкретной технологии.
+Of course, when designing efficient digital circuits, the underlying technology must be taken into account.
 
-Разумеется, при проектировании эффективных цифровых схем необходимо оглядываться на технологию, по которой эти схемы будут работать.
+In electronics, the word "digital" describes circuits that abstract away from continuous (analog) voltage values, using only two discrete values: `0` and `1`. At this level of abstraction, we are not concerned with specific voltage levels or their thresholds, which allows us to design circuits in an idealized world where voltage can have only two values: `0` and `1`. Ensuring these conditions is the responsibility of the basic building blocks from which digital circuits are constructed.
 
-В электронике словом "цифровая" описывают схемы, которые абстрагируются от непрерывных (аналоговых) значений напряжений, вместо этого используются только два дискретных значения: `0` и `1`. На данном уровне абстракции нас не интересуют конкретные значения напряжений и пороги этих значений, что позволяет нам разрабатывать схему в идеальном мире, где у напряжения может быть всего два значения: `0` и `1`. А обеспечением этих условий будут заниматься базовые блоки, из которых мы будем строить цифровые схемы.
+These basic building blocks are called **logic gates**.
 
-Эти базовые блоки называются **логическими вентилями**.
+### Logic Gates
 
-### Логические вентили
+There are many types of logic gates; we will consider four of them: **AND**, **OR**, **XOR**, and **NOT**. Each of these elements accepts a **digital value** as input (see [**Digital Circuits**](#digital-circuits)), performs a specific **logical function** on its inputs, and produces the result of that function as a **digital value** on its output.
 
-Существует множество логических вентилей, мы рассмотрим четыре из них: **И**, **ИЛИ**, **Исключающее ИЛИ**, **НЕ**. Каждый из этих элементов принимает на вход **цифровое значение** (см. [**цифровая схема**](#Цифровые-схемы)), выполняет определенную **логическую функцию** над входами и подает на выход результат этой функции в виде **цифрового значения**.
+The logic gates in _Figs. 1–4_ are illustrated using standard schematic symbols from two standards: **ANSI** and **GOST**. Since the ANSI variant is widely used in the literature, it will be used throughout this book.
 
-Логические вентили на _рис. 1-4_ иллюстрируются условными графическими обозначениями (**УГО**), взятыми из двух стандартов: **ANSI** и **ГОСТ**. Ввиду повсеместного использования в литературе первого варианта, в дальнейшем в книге будет использован он.
-
-Логический вентиль **И** принимает два входа и выдает на выход значение `1` только в том случае, если оба входа равны `1`. Если хотя бы один из входов `0`, то на выходе будет `0`. На схемах логический вентиль **И** отображается следующим образом:
+The **AND** gate takes two inputs and outputs a value of `1` only when both inputs are `1`. If at least one input is `0`, the output is `0`. The **AND** gate is represented on schematics as follows:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_01.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_01.drawio.svg)
 
-_Рисунок 1. УГО логического вентиля **И**._
+_Figure 1. Schematic symbol of the **AND** gate._
 
-Логический вентиль **ИЛИ** принимает два входа и выдает на выход значение `1` в случае, если хотя бы один из входов равен `1`. Если оба входа равны `0`, то на выходе будет `0`. На схемах логический вентиль **ИЛИ** отображается следующим образом:
+The **OR** gate takes two inputs and outputs a value of `1` if at least one input equals `1`. If both inputs are `0`, the output is `0`. The **OR** gate is represented on schematics as follows:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_02.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_02.drawio.svg)
 
-_Рисунок 2. УГО логического вентиля **ИЛИ**._
+_Figure 2. Schematic symbol of the **OR** gate._
 
-Логический вентиль **Исключающее ИЛИ** принимает два входа и выдает на выход значение `1` в случае, если значения входов не равны между собой (один из них равен `1`, а другой `0`). Если значения входов равны между собой (оба равны `0` или оба равны `1`), то на выходе будет `0`. На схемах логический вентиль **Исключающее ИЛИ** отображается следующим образом:
+The **XOR** (Exclusive OR) gate takes two inputs and outputs a value of `1` when the input values are not equal to each other (one is `1` and the other is `0`). If both inputs are equal (both `0` or both `1`), the output is `0`. The **XOR** gate is represented on schematics as follows:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_03.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_03.drawio.svg)
 
-_Рисунок 3. УГО логического вентиля **Исключающее ИЛИ**._
+_Figure 3. Schematic symbol of the **XOR** gate._
 
-Логический вентиль **НЕ** — самый простой. Он принимает один вход и подает на выход его инверсию. Если на вход пришло значение `0`, то на выходе будет `1`, если на вход пришло значение `1`, то на выходе будет `0`. Он обозначается на схемах следующим образом:
+The **NOT** gate is the simplest. It takes a single input and outputs its inverse. If the input is `0`, the output is `1`; if the input is `1`, the output is `0`. It is represented on schematics as follows:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_04.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_04.drawio.svg)
 
-_Рисунок 4. УГО логического вентиля **НЕ**._
+_Figure 4. Schematic symbol of the **NOT** gate._
 
-Также существуют вариации базовых вентилей, такие как **И-НЕ**, **ИЛИ-НЕ**, **Исключающее ИЛИ-НЕ**, отличающиеся от исходных тем, что результат операции инвертирован относительно результата аналогичной операции без **-НЕ**.
+There are also variations of the basic gates, such as **NAND**, **NOR**, and **XNOR**, which differ from their base counterparts in that the result of the operation is inverted relative to the result of the corresponding operation without the inversion.
 
-Логические вентили строятся из **транзисторов**. **Транзистор** — это элемент, который может пропускать/блокировать ток в зависимости от поданного напряжения на его управляющий вход.
+Logic gates can be built from **transistors**. A **transistor** is a device that can pass or block current depending on the voltage applied to its control terminal.
 
-Особенностью современных интегральных схем является то, что они строятся на основе комплементарной (взаимодополняющей) пары транзисторов **P** и **N**-типа (**Комплементарная Металл-Оксид-Полупроводниковая**, **КМОП** логика). Для данного типа транзисторов оказалось эффективнее реализовать операции **И-НЕ** и **ИЛИ-НЕ**.
+A key feature of modern integrated circuits is that they are built using complementary (**P**- and **N**-type) transistor pairs — **Complementary Metal-Oxide-Semiconductor** (**CMOS**) logic. For this type of transistor, it turns out to be more efficient to implement **NAND** and **NOR** operations.
 
-С точки зрения построения цифровых схем МОП-транзисторы (**P**- и **N**-типа) можно воспринимать как выключатели, которые замыкают или размыкают связь между двумя выводами. Разница между **P**- и **N** типами заключается в значении напряжения на управляющем входе, при котором транзистор "открыт" (вход и выход замкнуты) или "закрыт" (связь разорвана). _Рис. 5_ иллюстрирует данное различие.
+From the perspective of building digital circuits, MOS transistors (**P**- and **N**-type) can be thought of as switches that either connect or disconnect two terminals. The difference between **P**- and **N**-type transistors lies in the voltage at the control terminal that causes the transistor to be "on" (terminals connected) or "off" (connection broken). _Fig. 5_ illustrates this difference.
 
-Выводы, между которыми образуется связь называются "**сток**" (**drain**, **d**) и "**исток**" (**source**, **s**), а управляющий вход — "**затвор**" (**gate**, **g**). Обратите внимание, что логический вентиль (**logic gate**) и затвор транзистора (просто **gate**) — это разные сущности!
+The terminals between which the connection is formed are called the "**drain**" (**d**) and "**source**" (**s**), and the control terminal is called the "**gate**" (**g**). Note that a **logic gate** and a transistor **gate** are different things!
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_05.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_05.drawio.svg)
 
-_Рисунок 5. МОП-транзисторы P и N типа._
+_Figure 5. P-type and N-type MOS transistors._
 
-На _рис. 6_ показан способ построения логических вентилей **И-НЕ**, **ИЛИ-НЕ** по **КМОП** технологии. Рассмотрим принцип работы вентиля **И-НЕ**.
+_Fig. 6_ shows how **NAND** and **NOR** gates are constructed using **CMOS** technology. Let us walk through the operation of the **NAND** gate.
 
-Подача значения `1` на вход **А** или **B** открывает соответствующий этому входу n-канальный транзистор (обозначен на _рис. 6_ красным цветом) и закрывает дополняющий его (комплементарный ему) p-канальный транзистор (обозначен синим цветом). Подача на оба входа `1` закрывает оба p-канальных транзистора (верхняя часть схемы разомкнута, что для значения на выходе означает, что её будто и нет) и открывает оба n-канальных транзистора. В результате чего выход замыкается на "землю" (чёрный треугольник внизу схемы), что эквивалентно `0` в контексте цифровых значений.
+Applying a value of `1` to input **A** or **B** turns on the corresponding N-channel transistor (shown in red in _Fig. 6_) and turns off its complementary P-channel transistor (shown in blue). Applying `1` to both inputs turns off both P-channel transistors (the upper portion of the circuit is open, effectively removing it from the output) and turns on both N-channel transistors. As a result, the output is connected to "ground" (the black triangle at the bottom of the circuit), which is equivalent to `0` in terms of digital values.
 
-В случае, если хотя бы на одном из входов **А** или **B** будет значение `0`, откроется один из параллельно соединенных p-канальных транзисторов (в то время как соединение с "землей" будет разорвано) и выход будет подключен к питанию (две перпендикулярные линии вверху схемы), что эквивалентно `1` в контексте цифровых значений.
+If at least one of the inputs **A** or **B** is `0`, one of the parallel-connected P-channel transistors turns on (while the connection to "ground" is broken), and the output is connected to the supply voltage (the two perpendicular lines at the top of the circuit), which is equivalent to `1` in terms of digital values.
 
-Как вы видите, напряжение на выход подается от **источников постоянного питания** или **земли**, а не от входов вентиля, именно этим и обеспечивается постоянное обновление напряжения и устойчивость **цифровых схем** к помехам.
+As you can see, the output voltage is driven from the **power supply** or **ground**, not from the gate inputs themselves. This is precisely what ensures continuous voltage refresh and noise immunity of **digital circuits**.
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_06.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_06.drawio.svg)
 
-_Рисунок 6. Схема логических вентилей **И-НЕ**, **ИЛИ-НЕ**, построенных на КМОП транзисторах._
+_Figure 6. Schematic of **NAND** and **NOR** gates built from CMOS transistors._
 
-Как правило, при необходимости инвертировать вход или выход логического элемента на схеме, на нем рисуют кружок вместо добавления логического вентиля **НЕ** в том виде, котором он изображён на _рис. 4_. К примеру, логический элемент **И-НЕ** обозначают в виде, представленном на _рис. 6_.
+As a rule, when it is necessary to invert an input or output of a logic element in a schematic, a small circle is drawn on it rather than adding an explicit **NOT** gate as shown in _Fig. 4_. For example, the **NAND** gate is represented in the form shown in _Fig. 6_.
 
-При желании, из логического элемента **И-НЕ** можно легко получить логический элемент **И** (как и элемент **ИЛИ** из **ИЛИ-НЕ**). Для этого необходимо поставить на выходе **И-НЕ** инвертор, собираемый из двух МОП-транзисторов по схеме, представленной на _рис. 7_.
+If desired, a **NAND** gate can easily be converted into an **AND** gate (just as a **NOR** gate can be converted into an **OR** gate) by placing an inverter at the output of **NAND**, built from two MOS transistors as shown in _Fig. 7_.
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_07.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_07.drawio.svg)
 
-_Рисунок 7. Схема логического вентиля **НЕ**, построенного на КМОП транзисторах._
+_Figure 7. Schematic of a **NOT** gate built from CMOS transistors._
 
-КМОП логика далеко не единственный способ построения цифровых элементов, ранее достаточно широко применялись другие варианты построения схем, например только на одном типе транзисторов. Однако наиболее эффективным оказалось использование именно комплементарных пар, и на сегодня такой подход для цифровых схем является доминирующим.
+CMOS logic is far from the only way to build digital elements; other approaches were widely used in the past, such as circuits built using only one type of transistor. However, the use of complementary pairs has proven to be the most efficient, and today this approach dominates digital circuit design.
 
-Используя одни лишь описанные выше логические вентили можно построить **любую(!)** цифровую схему.
+Using only the logic gates described above, it is possible to build **any(!)** digital circuit.
 
-Однако, при описании цифровых схем, некоторые цифровые блоки используются настолько часто, что для них ввели отдельные обозначения (**сумматоры**, **умножители**, **мультиплексоры** т.п.), используемые при описании более сложных схем. Рассмотрим один из фундаментальных строительных блоков в ПЛИС — **мультиплексор**.
+However, when describing digital circuits, certain digital blocks are used so frequently that dedicated symbols have been introduced for them — **adders**, **multipliers**, **multiplexers**, etc. — which are used when describing more complex circuits. Let us look at one of the fundamental building blocks in an FPGA: the **multiplexer**.
 
-### Мультиплексоры
+### Multiplexers
 
-Мультиплексор — это устройство, которое в зависимости от значения **управляющего сигнала** подает на выход значение одного из входных сигналов.
+A multiplexer is a device that routes one of its input signals to the output, depending on the value of a **select signal**.
 
-УГО мультиплексора представлено на _рисунке 8_.
+The schematic symbol of a multiplexer is shown in _Figure 8_.
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_08.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_08.drawio.svg)
 
-_Рисунок 8. Обозначение Мультиплексора._
+_Figure 8. Multiplexer symbol._
 
-Символ `/` на линии `sel` указывает на то, что данный сигнал является многоразрядным, а число ниже указывает на то, что разрядность сигнала составляет 6 бит.
+The `/` symbol on the `sel` line indicates that this signal is multi-bit, and the number below specifies that the signal width is 6 bits.
 
-Число входов мультиплексора может быть различным, но выход у него всегда один.
+A multiplexer can have any number of inputs, but always has exactly one output.
 
-**Способ, которым кодируется значение управляющего сигнала может также различаться**. Простейшая цифровая схема мультиплексора получится, если использовать [**унитарное**](https://ru.wikipedia.org/wiki/Унитарный_код) (**one-hot**) кодирование. При таком кодировании, значение **многоразрядного** управляющего сигнала **всегда** содержит **ровно одну** `1`. Информация, которую несёт закодированный таким образом сигнал содержится в положении этой `1` внутри управляющего сигнала.
+**The way in which the select signal is encoded can also vary.** The simplest digital multiplexer circuit results from using [**one-hot**](https://en.wikipedia.org/wiki/One-hot) encoding. With this encoding, the value of the **multi-bit** select signal **always** contains **exactly one** `1`. The information carried by such an encoded signal is contained in the position of that `1` within the select signal.
 
-Посмотрим, как можно реализовать мультиплексор с управляющим сигналом, использующим one-hot-кодирование, при помощи одних лишь логических вентилей **И**, **ИЛИ**:
+Let us see how a multiplexer with a one-hot-encoded select signal can be implemented using only **AND** and **OR** gates:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_09.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_09.drawio.svg)
 
-_Рисунок 9. Реализация мультиплексора, использующего one-hot кодирование._
+_Figure 9. Multiplexer implementation using one-hot encoding._
 
-Если мы выставим значение управляющего сигнала, равное `000010`, означающее, что только **первый** бит этого сигнала (**счет ведется с нуля**) будет равен **единице** (`sel[1] = 1`), то увидим, что на один из входов каждого логического вентиля **И** будет подано значение `0`. Исключением будет логический вентиль **И** для входа `b`, на вход которого будет подано значение `1`. Это означает, что все логические вентили **И** (кроме первого, на который подается вход `b`) будут выдавать на выход `0` (см. [Логические вентили](#Логические-вентили)) вне зависимости от того, что было подано на входы a,c,d,e и f. Единственным входом, который будет влиять на работу схемы, окажется вход `b`. Когда он равен `1`, на выходе соответствующего логического вентиля **И** окажется значение `1`. Когда он равен `0` на выходе **И** окажется значение `0`. Иными словами, выход **И** будет повторять значение `b`.
+If we set the select signal to `000010`, meaning that only the **first** bit of this signal (**counting from zero**) equals **one** (`sel[1] = 1`), we can see that a value of `0` is applied to one input of each **AND** gate. The exception is the **AND** gate for input `b`, which receives a value of `1`. This means that all **AND** gates (except the one connected to input `b`) will output `0` (see [Logic Gates](#logic-gates)) regardless of what is applied to inputs a, c, d, e, and f. The only input that will affect the circuit's output is `b`. When it is `1`, the corresponding **AND** gate outputs `1`. When it is `0`, the **AND** gate outputs `0`. In other words, the **AND** gate's output mirrors the value of `b`.
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_10.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_10.drawio.svg)
 
-_Рисунок 10. Реализация мультиплексора, использующего one-hot кодирование._
+_Figure 10. Multiplexer implementation using one-hot encoding._
 
-Логический вентиль **ИЛИ** на данной схеме имеет больше двух входов. Подобный вентиль может быть создан в виде каскада логических вентилей **ИЛИ**:
+The **OR** gate in this circuit has more than two inputs. Such a gate can be constructed as a cascade of two-input **OR** gates:
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_11.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_11.drawio.svg)
 
-_Рисунок 11. Реализация многоходового логического **ИЛИ**._
+_Figure 11. Multi-input **OR** gate implementation._
 
-**Многовходовой вентиль ИЛИ** ведет себя ровно так же, как двухвходовой: он выдает на выход значение `1`, когда хотя бы один из входов равен `1`. В случае, если все входы равны `0`, на выход **ИЛИ** пойдет `0`.
+A **multi-input OR gate** behaves exactly like a two-input one: it outputs `1` when at least one input is `1`. If all inputs are `0`, the output is `0`.
 
-Для нашей схемы мультиплексора гарантируется, что каждый вход **ИЛИ** кроме одного будет равняться `0` (поскольку выход каждого **И** кроме одного будет равен `0`). Это означает, что выход **многовходового ИЛИ** будет зависеть только от **одного** входа (в случае, когда `sel = 000010` — от входа `b`).
+In our multiplexer circuit, it is guaranteed that every input of the **OR** gate except one will be `0` (since every **AND** gate output except one will be `0`). This means the output of the **multi-input OR** gate depends on only **one** input (when `sel = 000010`, it depends on input `b`).
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_12.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_12.drawio.svg)
 
-_Рисунок 12. Реализация мультиплексора, использующего one-hot кодирование._
+_Figure 12. Multiplexer implementation using one-hot encoding._
 
-Меняя значение `sel`, мы можем управлять тем, какой из входов мультиплексора будет идти на его выход.
+By changing the value of `sel`, we can control which multiplexer input is routed to the output.
 
-### Программируемая память
+### Programmable Memory
 
-Из транзисторов можно построить не только логические элементы, но и элементы памяти. На рис. 13 представлена схема простейшей ячейки статической памяти, состоящей из транзистора и двух инверторов (т.е. суммарно состоящей из 5 транзисторов, поэтому она называется **5T** SRAM). Данная ячейка реализует 1 бит программируемой памяти, являвшейся одним из основных компонентов самой первой ПЛИС.
+Transistors can be used to build not only logic elements, but also memory elements. Fig. 13 shows a schematic of the simplest static memory cell, consisting of one transistor and two inverters (totaling 5 transistors, which is why it is called **5T** SRAM). This cell implements 1 bit of programmable memory and was one of the core components of the very first FPGA.
 
 ![../.pic/Introduction/Sequential%20logic/fig_06.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_06.drawio.svg)
 
-_Рисунок 13. Программируемая ячейка памяти ПЛИС Xilinx XC2064[[2, стр. 2-63](https://archive.org/details/programmablegate00xili/page/n93/mode/2up)]._
+_Figure 13. Programmable memory cell of the Xilinx XC2064 FPGA [[2, p. 2-63](https://archive.org/details/programmablegate00xili/page/n93/mode/2up)]._
 
-Данная память представляет собой **бистабильную ячейку** — петлю из двух инверторов, в которых "заперто" хранимое значение. Дважды инвертированный сигнал совпадает по значению с исходным, при этом, проходя через каждый из инверторов, сигнал обновляет свое значение напряжения, что не позволяет ему угаснуть из-за сопротивления цепи.
+This memory is a **bistable cell** — a loop of two inverters in which the stored value is "latched". A signal inverted twice returns to its original value, and as it passes through each inverter, the signal's voltage level is refreshed, preventing it from decaying due to circuit resistance.
 
-Для того чтобы поместить в бистабильную ячейку новое значение, к её входу подключается еще один транзистор, замыкающий или размыкающий её с напряжением питания/земли.
+To write a new value into the bistable cell, an additional transistor is connected to its input, which connects or disconnects it from the supply voltage or ground.
 
-## Таблицы подстановки (Look-Up Tables, LUTs)
+## Look-Up Tables (LUTs)
 
-Представьте мультиплексор с четырьмя входными сигналами и двухбитным управляющим сигналом (обратите внимание, что теперь это сигнал использует обычное двоичное кодирование). Но теперь, вместо того чтобы выставлять входные сигналы во внешний мир, давайте подключим их к программируемой памяти. Это означает, что мы можем "запрограммировать" каждый из входов на какое-то константное значение. Поместим то, что у нас получилось, в отдельный блок и вот, мы получили двухвходовую **Таблицу подстановки** (**Look-Up Tables**, далее **LUT**).
+Imagine a multiplexer with four input signals and a two-bit select signal (note that this signal now uses standard binary encoding). But instead of exposing the input signals to the outside world, let us connect them to programmable memory. This means we can "program" each input to hold a constant value. If we enclose the result in a separate block, we obtain a two-input **Look-Up Table** (**LUT**).
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_14.drawio.svg](../.pic/Introduction/How%20FPGA%20works/fig_14.drawio.svg)
 
-_Рисунок 14. Реализация таблицы подстановки (Look-Up Table, LUT)._
+_Figure 14. Look-Up Table (LUT) implementation._
 
-Эти два входа **LUT** являются битами управляющего сигнала мультиплексора, спрятанного внутри **LUT**. Программируя входы мультиплексора (точнее, программируя память, к которой подключены входы мультиплексора), мы можем реализовать на базе **LUT** **любую(!)** логическую функцию, принимающую два входа и возвращающую один выход.
+The two inputs of the **LUT** are the bits of the select signal of the multiplexer hidden inside the **LUT**. By programming the multiplexer inputs (more precisely, by programming the memory to which the multiplexer inputs are connected), we can implement **any(!)** logical function with two inputs and one output on top of the **LUT**.
 
-Допустим, мы хотим получить **логическое И**. Для этого, нам потребуется записать в память следующее содержимое:
+For example, suppose we want to implement **logical AND**. To do so, we need to write the following content into the memory:
 
-|Адрес ({x, y}) | Значение (f)|
-|---------------|-------------|
-|       00      |       0     |
-|       01      |       0     |
-|       10      |       0     |
-|       11      |       1     |
+| Address ({x, y}) | Value (f) |
+|------------------|-----------|
+|        00        |     0     |
+|        01        |     0     |
+|        10        |     0     |
+|        11        |     1     |
 
-Это простейший пример — обычно **LUT**-ы имеют больше входов, что позволяет им реализовывать более сложную логику.
+This is the simplest example — in practice, **LUT**s typically have more inputs, allowing them to implement more complex logic.
 
-## D-триггеры
+## D Flip-Flops
 
-Как вы уже поняли, используя неограниченное количество LUT-ов, вы можете построить цифровую схему, реализующую логическую функцию любой сложности. Однако цифровые схемы не ограничиваются реализацией одних только логических функций (цифровые схемы, реализующие логическую функцию, называются **комбинационными**, поскольку выход зависит только от комбинации входов). Например, так не построить цифровую схему, реализующую процессор. Для таких схем нужны элементы памяти. Заметим, что речь идет не о программируемой памяти, задавая значения которой мы управляем тем, какие логические функции будут реализовывать LUT-ы. Речь идет о ячейках памяти, которые будут использоваться логикой самой схемы.
+As you have already seen, using an unlimited number of LUTs, you can build a digital circuit that implements a logical function of any complexity. However, digital circuits are not limited to implementing logical functions only (circuits that implement logical functions are called **combinational circuits**, because the output depends only on the current combination of inputs). For example, a digital circuit implementing a processor cannot be built this way. Such circuits require memory elements. Note that we are not talking about the programmable memory used to configure the logic functions implemented by the LUTs — we are talking about memory cells used by the circuit's own logic.
 
-Такой базовой ячейкой памяти является **D-триггер** (**D flip-flop**). Из D-триггеров можно собирать другие ячейки памяти, например **регистры** (а из регистров можно собрать **память с произвольным доступом** (**random access memory**, **RAM**)), **сдвиговые регистры** и т.п.
+The fundamental memory element is the **D flip-flop**. D flip-flops can be used to build other memory elements, such as **registers** (and registers can be used to build **random access memory** (**RAM**)), **shift registers**, and so on.
 
-**D-триггер** — это цифровой элемент, способный хранить один бит информации. В базовом варианте у этого элемента есть два входа и один выход. Один из входов подает значение, которое будет записано в **D-триггер**, второй вход управляет записью (обычно он называется `clk` или `clock` и подключается к тактирующему синхроимпульсу схемы). Когда управляющий сигнал меняет своё значение с `0` на `1` (либо с `1` на `0`, зависит от схемы), в **D-триггер** записывается значение сигнала данных. Обычно, описывая **D-триггер**, говорится, что он строится из двух **триггеров-защелок** (**D-latch**), которые, в свою очередь, строятся из **RS-триггеров**. Однако в конечном итоге, все эти элементы могут быть построены на базе логических вентилей **И**/**ИЛИ**, **НЕ**:
+A **D flip-flop** is a digital element capable of storing one bit of information. In its basic form, it has two inputs and one output. One input receives the value to be stored in the **D flip-flop**; the other controls the write operation (typically called `clk` or `clock`, and connected to the circuit's clock signal). When the control signal transitions from `0` to `1` (or from `1` to `0`, depending on the design), the data signal's value is captured into the **D flip-flop**. It is commonly said that a **D flip-flop** is built from two **D latches**, which in turn are built from **SR latches**. Ultimately, however, all of these elements can be implemented using **AND**/**OR** and **NOT** gates:
 
 ![../.pic/Introduction/Sequential%20logic/fig_05.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_05.drawio.svg)
 
-_Рисунок 15. Реализация D-триггера._
+_Figure 15. D flip-flop implementation._
 
-## Арифметика
+## Arithmetic
 
-Помимо описанных выше блоков (мультиплексоров и построенных на их основе LUT-ов и регистров) выделяется еще один тип блоков, настолько часто используемый в цифровых схемах, что его заранее размещают в ПЛИС в больших количествах: это арифметические блоки. Эти блоки используются при сложении, вычитании, сравнении чисел, реализации счётчиков. В разных ПЛИС могут быть предустановлены разные блоки: где-то это может быть 1-битный сумматор, а где-то блок вычисления ускоренного переноса (`carry-chain`).
+In addition to the blocks described above (multiplexers and the LUTs and registers built on top of them), there is another type of block so frequently used in digital circuits that it is pre-placed in FPGAs in large quantities: **arithmetic blocks**. These blocks are used for addition, subtraction, comparison, and counter implementations. Different FPGAs may include different arithmetic primitives: some include a 1-bit adder, others a carry-chain block.
 
-Все эти блоки могут быть реализованы через логические вентили, например так можно реализовать сумматор:
+All of these blocks can be implemented using logic gates. For example, here is how a full adder can be implemented:
 
 ![../.pic/Labs/lab_01_adder/fig_02.drawio.svg](../.pic/Labs/lab_01_adder/fig_02.drawio.svg)
 
-_Рисунок 16. Реализация полного однобитного сумматора._
+_Figure 16. Full 1-bit adder implementation._
 
-## Логические блоки
+## Logic Blocks
 
-В предыдущих параграфах, были рассмотрены отдельные виды цифровых блоков: таблицы подстановок, регистры, арифметические блоки. Для удобства структурирования, эти блоки объединены в ПЛИС в виде **логических блоков**. Обычно, логические блоки современных ПЛИС состоят из **логических ячеек** (или **логических элементов**), но для простоты повествования, мы объединим все эти термины.
+The previous sections covered individual types of digital blocks: look-up tables, registers, and arithmetic blocks. For structural convenience, these blocks are grouped together inside an FPGA as **logic blocks**. Typically, logic blocks in modern FPGAs consist of **logic cells** (or **logic elements**), but for simplicity we will use these terms interchangeably.
 
-Логический блок может содержать одну или несколько **LUT**, **арифметический блок**, и один или несколько **D-триггеров**, которые соединены между собой некоторым количеством мультиплексоров. На _рисунке 17_ представлена схема того, как может выглядеть логический блок:
-
+A logic block can contain one or more **LUT**s, an **arithmetic block**, and one or more **D flip-flops**, connected to each other through a number of multiplexers. _Figure 17_ shows what a logic block may look like:
 
 ![../.pic/Labs/lab_03_memory/fig_02.png](../.pic/Labs/lab_03_memory/fig_02.png)
 
-_Рисунок 17. Схема логической ячейки[[2]](https://en.wikipedia.org/wiki/Field-programmable_gate_array)._
+_Figure 17. Logic cell schematic [[2]](https://en.wikipedia.org/wiki/Field-programmable_gate_array)._
 
-Логический блок представляет собой цепочку операций: `логическая функция, реализованная через LUT -> арифметическая операция -> Запись в D-триггер`. Каждый из мультиплексоров определяет то, будет ли пропущен какой-либо из этих этапов.
-Таким образом, конфигурируя логический блок, можно получить следующие вариации кусочка цифровой схемы:
+A logic block represents a chain of operations: `logical function implemented in LUT → arithmetic operation → write to D flip-flop`. Each multiplexer determines whether any of these stages is bypassed.
+By configuring a logic block, the following variations of a circuit fragment can be obtained:
 
-1. Комбинационная схема (логическая функция, реализованная в LUT)
-2. Арифметическая операция
-3. Запись данных в D-триггер
-4. Комбинационная схема с записью результата в D-триггер
-5. Арифметическая операция с записью результата в D-триггер
-6. Комбинационная схема с последующей арифметической операцией
-7. Комбинационная схема с последующей арифметической операцией и записью в D-триггер
+1. Combinational circuit (logical function implemented in a LUT)
+2. Arithmetic operation
+3. Write data to a D flip-flop
+4. Combinational circuit with the result written to a D flip-flop
+5. Arithmetic operation with the result written to a D flip-flop
+6. Combinational circuit followed by an arithmetic operation
+7. Combinational circuit followed by an arithmetic operation and a write to a D flip-flop
 
-На _рисунке 18_ приведён реальный пример использования логического блока в ПЛИС `xc7a100tcsg324-1` при реализации Арифметико-логического устройства (АЛУ), подключенного к периферии отладочной платы `Nexys-7`. На этом рисунке вы можете увидеть использование LUT-ов, арифметического блока (ускоренного расчета переноса), и одного из D-триггеров. D-триггеры, обозначенные серым цветом, не используются.
+_Figure 18_ shows a real example of logic block usage in the `xc7a100tcsg324-1` FPGA when implementing an Arithmetic Logic Unit (ALU) connected to the peripherals of the `Nexys-7` development board. In this figure, you can see the use of LUTs, an arithmetic block (carry-lookahead), and one of the D flip-flops. D flip-flops shown in grey are unused.
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_18.png](../.pic/Introduction/How%20FPGA%20works/fig_18.png)
 
-_Рисунок 18. Пример использования логической ячейки._
+_Figure 18. Example of logic cell usage._
 
-Располагая большим наборов таких логических блоков, и имея возможность межсоединять их нужным вам образом, вы получаете широчайшие возможности по реализации практически любой цифровой схемы (ограничением является только ёмкость ПЛИС, т.е. количество подобных логических блоков, входов выходов и т.п.).
+With a large set of such logic blocks and the ability to interconnect them as needed, you have extensive capabilities for implementing virtually any digital circuit (the only limitation is the FPGA's capacity — i.e., the number of logic blocks, I/O pins, and so on).
 
-Помимо логических блоков в ПЛИС есть и другие примитивы: **блочная память**, **блоки умножителей** и т.п.
+In addition to logic blocks, FPGAs also include other primitives: **block RAM**, **multiplier blocks**, and so on.
 
-## Сеть межсоединений
+## Interconnect Network
 
-Для того чтобы разобраться, как управлять межсоединением логических блоков, рассмотрим рис. 19, входящий в патент на ПЛИС[[4](https://patents.google.com/patent/US4870302A)].
+To understand how the interconnection of logic blocks is controlled, let us look at Fig. 19, taken from the FPGA patent [[4](https://patents.google.com/patent/US4870302A)].
 
 ![../.pic/Introduction/How%20FPGA%20works/fig_19.jpg](../.pic/Introduction/How%20FPGA%20works/fig_19.jpg)
 
-_Рисунок 19. Содержимое ПЛИС в виде межсоединения логических блоков и блоков ввода-вывода[[5](http://www.righto.com/2020/09/reverse-engineering-first-fpga-chip.html)]._
+_Figure 19. FPGA contents showing the interconnection of logic blocks and I/O blocks [[5](http://www.righto.com/2020/09/reverse-engineering-first-fpga-chip.html)]._
 
-Синим показано 9 логических блоков, желтым — 12 блоков ввода-вывода. Все эти блоки окружены **сетью межсоединений** (interconnect net), представляющей собой решётку из горизонтальных и вертикальных соединительных линий — межсоединений общего назначения (general purpose interconnect) [[2, 2-66](https://archive.org/details/programmablegate00xili/page/n97/mode/2up)].
+Nine logic blocks are shown in blue, and twelve I/O blocks in yellow. All of these blocks are surrounded by an **interconnect network**, which consists of a grid of horizontal and vertical wiring lines — the general purpose interconnect [[2, 2-66](https://archive.org/details/programmablegate00xili/page/n97/mode/2up)].
 
-Косыми чертами в местах пересечения линий обозначены **программируемые точки межсоединений** (**programmable interconnect points**, **PIP**s), представляющие собой транзисторы, затвор которых подключен к программируемой памяти.
+The diagonal marks at line crossings represent **programmable interconnect points** (**PIPs**): transistors whose gates are connected to programmable memory.
 
-Управляя значением в подключенной к затвору транзистора памяти, можно управлять тем, что из себя будет представлять транзистор в данной точке: разрыв, или цепь. А значит, можно удалять "лишние" участки сети, оставляя только используемые логические блоки, соединенные между собой.
+By controlling the value stored in the memory connected to a transistor's gate, it is possible to determine whether that transistor acts as an open connection or a closed switch at that point in the grid. This allows "unused" segments of the network to be removed, leaving only the routes needed to connect the logic blocks to each other.
 
-## Итоги главы
+## Chapter Summary
 
-1. Используя такие элементы, как **транзисторы**, можно собирать **логические вентили**: элементы **И**, **ИЛИ**, **НЕ** и т.п.
-2. Используя **логические вентили**, можно создавать схемы, реализующие как **логические функции** (**комбинационные схемы**), так и сложную логику с памятью (**последовательностные схемы**).
-3. Из логических вентилей строится и такая важная комбинационная схема, как **мультиплексор**: цифровой блок, который в зависимости от значения управляющего сигнала подаёт на выход один из входных сигналов.
-4. Кроме того, подключив вход бистабильной ячейки (представляющую собой петлю из двух инверторов) к транзистору, можно получить 1 бит **программируемой памяти**.
-5. Подключив входные сигналы мультиплексора к программируемой памяти, можно получить **Таблицу подстановок** (**Look-Up Table**, **LUT**), которая может реализовывать простейшие логические функции. LUT-ы позволяют заменить логические вентили И/ИЛИ/НЕ, и удобны тем, что их можно динамически изменять. Логические вентили в свою очередь исполняются на заводе и уже не могут быть изменены после создания.
-6. Из логических вентилей также можно собрать базовую ячейку памяти: **D-триггер**, и такую комбинационную схему как **полный 1-битный сумматор** (или любой другой часто используемый арифметический блок).
-7. Объединив LUT, арифметический блок и D-триггер получается структура в ПЛИС, которая называется **логический блок**.
-8. Логический блок (а также другие **примитивы**, такие как **блочная память** или **умножители**) — это множество блоков, которые заранее физически размещаются в кристалле ПЛИС, их количество строго определено конкретной ПЛИС и не может быть изменено.
-9. Подключая программируемую память к транзисторам, расположенных в узлах **сети межсоединений**, можно управлять расположением разрывов в сети, а значит можно оставить только маршрут, по которому сигнал пойдет туда, куда нам нужно (**трассировать сигнал**).
-10. **Конфигурируя примитивы** и **трассируя сигнал** между ними (см. п.4), можно получить **практически любую цифровую схему** (с учетом ограничения ёмкости ПЛИС).
+1. Using elements such as **transistors**, it is possible to build **logic gates**: **AND**, **OR**, **NOT**, and so on.
+2. Using **logic gates**, it is possible to create circuits that implement both **logical functions** (**combinational circuits**) and complex logic with memory (**sequential circuits**).
+3. Logic gates can also be used to build the important combinational circuit known as the **multiplexer**: a digital block that routes one of its input signals to the output based on the value of a select signal.
+4. Furthermore, by connecting the input of a bistable cell (a loop of two inverters) to a transistor, one bit of **programmable memory** can be obtained.
+5. By connecting the input signals of a multiplexer to programmable memory, a **Look-Up Table** (**LUT**) is obtained, which can implement simple logical functions. LUTs can replace AND/OR/NOT gates and have the advantage of being dynamically reconfigurable. Logic gates, by contrast, are fixed at fabrication and cannot be changed afterwards.
+6. Logic gates can also be used to build the basic memory element — the **D flip-flop** — and the combinational circuit known as the **full 1-bit adder** (or any other commonly used arithmetic block).
+7. Combining a LUT, an arithmetic block, and a D flip-flop yields the FPGA structure known as a **logic block**.
+8. A logic block (as well as other **primitives**, such as **block RAM** or **multipliers**) represents a set of blocks that are physically pre-placed in the FPGA die; their quantity is fixed by the specific FPGA and cannot be changed.
+9. By connecting programmable memory to transistors located at the nodes of the **interconnect network**, the placement of breaks in the network can be controlled, making it possible to leave only the routing paths that carry signals where they are needed (**signal routing**).
+10. By **configuring primitives** and **routing signals** between them (see item 4), **virtually any digital circuit** can be implemented (subject to the FPGA's capacity constraints).
 
-## Список источников
+## References
 
 1. Alchitry, Ell C / [How Does an FPGA Work?](https://learn.sparkfun.com/tutorials/how-does-an-fpga-work/all)
 2. Xilinx / [The Programmable Gate Array Data Book](https://archive.org/details/programmablegate00xili)

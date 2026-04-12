@@ -1,55 +1,55 @@
-# Лабораторная работа №14 "Высокоуровневое программирование"
+# Lab 14 "High-Level Programming"
 
-Благодаря абстрагированию можно создавать действительно сложные системы — из вентилей можно собрать модули, из модулей — микроархитектуру и так далее.  В этом контексте архитектура выступает как фундамент, на котором строится программный стек абстракций. На основе архитектур строятся ассемблеры, на основе которых "строятся" языки высокого уровня, на основе которых создаются фреймворки и метафреймворки, что обеспечивает более высокий уровень и удобство при разработке новых программ. Давайте немного глубже погрузимся в этот стек.
+Through abstraction, it is possible to build truly complex systems — from gates you can assemble modules, from modules — a microarchitecture, and so on. In this context, the architecture serves as the foundation upon which the software abstraction stack is built. Assemblers are built on top of architectures, high-level languages are built on top of assemblers, and frameworks and meta-frameworks are built on top of those, providing higher-level and more convenient tools for developing new programs. Let us dive a little deeper into this stack.
 
-## Цель
+## Objective
 
-В соответствии с индивидуальным заданием написать программу на языке программирования высокого уровня C, скомпилировать в машинные коды и запустить на ранее разработанном процессоре RISC-V.
+In accordance with the individual assignment, write a program in the high-level programming language C, compile it to machine code, and run it on the previously developed RISC-V processor.
 
-## Ход работы
+## Procedure
 
-1. Изучить теорию:
-   1. [Соглашение о вызовах](#Соглашение-о-вызовах)
-   2. [Скрипт для компоновки](#Скрипт-для-компоновки-linker_scriptld)
-   3. [Файл первичных команд](#Файл-первичных-команд-при-загрузке-startups)
-2. [Подготовить набор инструментов для кросс-компиляции](#Практика)
-3. Изучить порядок компиляции и команды, её осуществляющую:
-   1. [Компиляция объектных файлов](#Компиляция-объектных-файлов)
-   2. [Компоновка объектных файлов в исполняемый](#Компоновка-объектных-файлов-в-исполняемый)
-   3. [Экспорт секций для инициализации памяти](#Экспорт-секций-для-инициализации-памяти)
-   4. [Дизассемблирование](#Дизассемблирование)
-4. [Написать и скомпилировать собственную программу](#Задание)
-5. Проверить исполнение программы вашим процессором в ПЛИС
+1. Study the theory:
+   1. [Calling Convention](#calling-convention)
+   2. [Linker Script](#linker-script-linker_scriptld)
+   3. [Startup File](#startup-file-startups)
+2. [Prepare the cross-compilation toolchain](#practice)
+3. Study the compilation procedure and the relevant commands:
+   1. [Compiling object files](#compiling-object-files)
+   2. [Linking object files into an executable](#linking-object-files-into-an-executable)
+   3. [Exporting sections for memory initialization](#exporting-sections-for-memory-initialization)
+   4. [Disassembly](#disassembly)
+4. [Write and compile your own program](#assignment)
+5. Verify that your program executes correctly on your processor in the FPGA
 
-## Теория
+## Theory
 
-В рамках данной лабораторной работы вы напишите полноценную программу, которая будет запущена на вашем процессоре. В процессе компиляции, вам потребуются файлы [linker_script.ld](linker_script.ld) и [startup.S](startup.S), лежащие в этой папке.
+In this lab you will write a complete program that will run on your processor. During compilation, you will need the files [linker_script.ld](linker_script.ld) and [startup.S](startup.S) located in this directory.
 
-> — Но зачем мне эти файлы? Мы ведь уже делали задания по программированию на предыдущих лабораторных работах и нам не были нужны никакие дополнительные файлы.
+> — But why do I need these files? We have already done programming assignments in previous labs and did not need any additional files.
 
-Дело в том, что ранее вы писали небольшие программки на ассемблере. Однако, язык ассемблера архитектуры RISC-V, так же, как и любой другой RISC архитектуры, недружелюбен к программисту, поскольку изначально создавался с прицелом на то, что будут созданы компиляторы и программы будут писаться на более удобных для человека языках высокого уровня. Ранее вы писали простенькие программы, которые можно было реализовать на ассемблере, теперь же вам будет предложено написать полноценную программу на языке Си.
+The thing is, previously you were writing small programs in assembly. However, the RISC-V assembly language, like that of any other RISC architecture, is not programmer-friendly, because it was originally designed with the expectation that compilers would be created and programs would be written in more human-friendly high-level languages. Before, you wrote simple programs that could be implemented in assembly; now you will be asked to write a complete program in C.
 
-> —  Но разве в процессе компиляции исходного кода на языке Си мы не получаем программу, написанную на языке ассемблера? Получится ведь тот же код, что мы могли написать и сами.
+> — But doesn't compiling C source code produce a program written in assembly? It would be the same code we could write ourselves.
 
-Штука в том, что ассемблерный код, который писали ранее вы отличается от ассемблерного кода, генерируемого компилятором. Код, написанный вами, обладал, скажем так... более тонким микро-контролем хода программы. Когда вы писали программу, вы знали какой у вас размер памяти, где в памяти расположены инструкции, а где данные (ну, при написании программ вы почти не пользовались памятью данных, а когда пользовались — просто использовали случайные адреса и всё получалось). Вы пользовались всеми регистрами регистрового файла по своему усмотрению, без ограничений. Однако, представьте на секунду, что вы пишете проект на ассемблере вместе с коллегой: вы пишите одни функции, а он другие. Как в таком случае вы будете пользоваться регистрами регистрового файла? Ведь если вы будете пользоваться одними и теми же регистрами, вызов одной функции может испортить данные в другой. Поделите его напополам и будете пользоваться каждый своей половиной? Но что будет, если к проекту присоединится ещё один коллега — придётся делить регистровый файл уже на три части? Так от него уже ничего не останется. Для разрешения таких ситуаций было разработано [соглашение о вызовах](#Соглашение-о-вызовах) (calling convention).
+The thing is, the assembly code you wrote before is different from the assembly code generated by a compiler. The code you wrote had, shall we say... finer micro-control over the program flow. When you wrote a program, you knew the size of your memory, where instructions were stored, and where data was stored (well, in your programs you barely used the data memory, and when you did — you just used arbitrary addresses and it worked). You used all registers in the register file as you pleased, without any restrictions. However, imagine for a moment that you are writing an assembly project together with a colleague: you write some functions and they write others. How would you use the registers in that case? If you both use the same registers, calling one function could corrupt data in another. Split it in half and each use your own half? But what if another colleague joins the project — would you have to split the register file into three parts? There would be nothing left. To resolve situations like this, a [calling convention](#calling-convention) was developed.
 
-Таким образом, генерируя ассемблерный код, компилятор не может так же, как это делали вы, использовать все ресурсы без каких-либо ограничений — он должен следовать ограничениям, накладываемым на него соглашением о вызовах, а также ограничениям, связанным с тем, что он ничего не знает о памяти устройства, в котором будет исполняться программа — а потому он не может работать с памятью абы как. Работая с памятью, компилятор следует некоторым правилам, благодаря которым после компиляции компоновщик сможет собрать программу под ваше устройство с помощью специального скрипта.
+Thus, when generating assembly code, the compiler cannot use all resources without restrictions the way you did — it must follow the constraints imposed by the calling convention, as well as constraints arising from the fact that it knows nothing about the memory layout of the target device, so it cannot work with memory arbitrarily. When working with memory, the compiler follows certain rules that allow the linker to assemble the program for your device using a special script.
 
-### Соглашение о вызовах
+### Calling Convention
 
-Соглашение о вызовах [устанавливает](https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/v1.0/riscv-abi.pdf) порядок вызова функций: где размещаются аргументы при вызове функций, где находятся указатель на стек, адрес возврата и т.п.
+The calling convention [defines](https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/v1.0/riscv-abi.pdf) the procedure for calling functions: where arguments are placed when calling functions, where the stack pointer and return address are located, etc.
 
-Кроме того, соглашение делит регистры регистрового файла на две группы: оберегаемые и необерегаемые регистры.
+In addition, the convention divides the register file into two groups: callee-saved and caller-saved registers.
 
-При работе с оберегаемыми регистрами, функция должна гарантировать, что перед возвратом в этих регистрах останется тоже самое значение, что было при вызове функции. То есть, если функция собирается записать что-то в оберегаемый регистр, она должна сохранить перед этим его значение на стек, а затем, перед возвратом, вернуть это значение со стека обратно в этот же регистр.
+When working with callee-saved registers, a function must guarantee that upon return, these registers hold the same values they had at the time the function was called. That is, if a function intends to write something to a callee-saved register, it must first save its value onto the stack, and then restore that value from the stack before returning.
 
-Простая аналогия — в маленькой квартире двое делят один рабочий стол по времени. Каждый использует стол по полной, но после себя он должен оставить половину стола соседа (оберегаемые регистры) в том же виде, в котором её получил, а со своей (необерегаемые регистры) делает что хочет. Кстати, вещи соседа, чтоб не потерять, убирают на стопку (**stack**) рядом (в основную память).
+A simple analogy: two people share a single desk in a small apartment, taking turns. Each uses the full desk, but upon finishing, they must leave their neighbour's half of the desk (callee-saved registers) in the same state they found it, while doing whatever they want with their own half (caller-saved registers). By the way, the neighbour's belongings are stored in a nearby pile (**stack**) so they are not lost (in main memory).
 
-С необерегаемыми регистрами функция может работать как ей угодно — не существует никаких гарантий, которые вызванная функция должна исполнить. При этом, если функция вызывает другую функцию, она точно так же не получает никаких гарантий, что вызванная функция оставит значения необерегаемых регистров без изменений, поэтому если там хранятся значения, которые потребуются по окончанию выполнения вызываемой функции, эти значения необходимо сохранить на стек.
+A function may use caller-saved registers however it wishes — the called function makes no guarantees about preserving them. At the same time, if a function calls another function, it similarly has no guarantee that the called function will leave the caller-saved registers unchanged, so if values needed after the called function returns are stored there, those values must be saved to the stack.
 
-В _таблице 1_ приведено разделение регистров на оберегаемые (в правом столбце записано `Callee`, т.е. за их сохранение отвечает вызванная функция) и необерегаемые (`Caller` — за сохранение отвечает вызывающая функция). Кроме того, есть три регистра, для которых правый столбец не имеет значения: нулевой регистр (поскольку его невозможно изменить) и указатели на поток и глобальную область памяти. По соглашению о вызовах, эти регистры нельзя использовать для вычислений функций, они изменяются только по заранее оговорённым ситуациям.
+_Table 1_ shows the division of registers into callee-saved (the right column contains `Callee`, meaning the called function is responsible for preserving them) and caller-saved (`Caller` — the calling function is responsible for preserving them). In addition, there are three registers for which the right column is not applicable: the zero register (since it cannot be changed) and the thread and global memory pointers. Per the calling convention, these registers must not be used for computations inside functions; they are only changed in pre-defined situations.
 
-В столбце `ABI name` записывается синоним имени регистра, связанный с его функциональным назначением (см. описание регистра). Часто ассемблеры одинаково воспринимают обе формы написания имени регистров.
+The `ABI name` column contains the register's alias, associated with its functional purpose (see register description). Assemblers often accept both forms of register names interchangeably.
 
 |Register|ABI Name|           Description           | Saver |
 |--------|--------|---------------------------------|-------|
@@ -67,57 +67,57 @@
 | x18–27 |  s2–11 |Saved registers                  |Callee |
 | x28–31 |  t3–6  |Temporaries                      |Caller |
 
-_Таблица 1. Ассемблерные мнемоники для целочисленных регистров RISC-V и их назначение в соглашении о вызовах[1, стр. 6]._
+_Table 1. Assembly mnemonics for RISC-V integer registers and their roles in the calling convention [1, p. 6]._
 
-Несмотря на то, что указатель на стек помечен как Callee-saved регистр, это не означает, что вызываемая функция может записать в него что заблагорассудится, предварительно сохранив его значение на стек. Ведь как вы вернёте значение указателя на стек со стека, если в регистре указателя на стек лежит что-то не то?
+Although the stack pointer is marked as a Callee-saved register, this does not mean that the called function can write anything it wants to it after saving its value onto the stack. How would you restore the stack pointer value from the stack if the stack pointer register itself contains something wrong?
 
-Запись `Callee` означает, что к моменту возврата из вызываемой функции, значение Callee-saved регистров должно быть ровно таким же, каким было в момент вызова функций. Для s0-s11 регистров это осуществляется путём сохранения их значений на стек. При этом, перед каждым сохранением на стек, изменяется значение указателя на стек таким образом, чтобы он указывал на сохраняемое значение (обычно он декрементируется). Затем, перед возвратом из функции все сохранённые на стек значения восстанавливаются, попутно изменяя значение указателя на стек противоположным образом (инкрементируют его). Таким образом, несмотря на, то что значение указателя на стек менялось в процессе работы вызываемой функции, к моменту выхода из неё, его значение в итоге останется тем же.
+The `Callee` designation means that by the time the called function returns, the values of Callee-saved registers must be exactly the same as they were at the moment the function was called. For registers s0–s11 this is accomplished by saving their values to the stack. Before each save, the stack pointer is decremented so that it points to the saved value. Then, before returning from the function, all values saved to the stack are restored, incrementing the stack pointer accordingly. Thus, even though the stack pointer value changed during the execution of the called function, it will ultimately be the same upon exit.
 
-### Скрипт для компоновки (linker_script.ld)
+### Linker Script (linker_script.ld)
 
-Скрипт для компоновки описывает то, как в вашей памяти будут храниться данные. Вы уже могли слышать о том, что исполняемый файл содержит секции `.text` и `.data` — инструкций и данных соответственно. Компоновщик (**linker**) ничего не знает о том, какая у вас структура памяти: принстонская у вас архитектура или гарвардская, по каким адресам у вас должны храниться инструкции, а по каким данные, какой в памяти используется порядок следования байт (**endianess**). У вас может быть несколько типов памятей под особые секции — и обо всем этом компоновщику можно сообщить в скрипте для компоновки.
+The linker script describes how data will be stored in your memory. You may have heard that an executable file contains sections `.text` and `.data` — for instructions and data respectively. The **linker** knows nothing about your memory structure: whether your architecture is Princeton or Harvard, at which addresses instructions should be stored and at which addresses data should be stored, or what byte order (**endianness**) is used. You may have multiple memory types for special sections — and all of this can be communicated to the linker via the linker script.
 
-В самом простом виде скрипт компоновки состоит из одного раздела: раздела секций, в котором вы и описываете какие части программы куда и в каком порядке необходимо разместить.
+In its simplest form, a linker script consists of one section: the sections block, in which you describe which parts of the program go where and in what order.
 
-Для удобства этого описания существует вспомогательная переменная: счётчик адресов. Этот счётчик показывает в какое место в памяти будет размещена очередная секция (если при размещении секции в явном виде не будет указано иного). На момент начала исполнения скрипта этот счётчик равен нулю. Размещая очередную секцию, счётчик увеличивается на размер размещаемой секции. Допустим, у нас есть два файла `startup.o` и `main.o`, в каждом из которых есть секции `.text` и `.data`. Мы хотим разместить их в памяти следующим образом: сперва разместить секции `.text` обоих файлов, а затем секции `.data`.
+To facilitate this description, there is a helper variable: the location counter. This counter indicates where in memory the next section will be placed (unless an explicit address is specified when placing a section). At the start of the script execution, this counter is zero. When placing a section, the counter is incremented by the size of that section. Suppose we have two files `startup.o` and `main.o`, each containing `.text` and `.data` sections. We want to place them in memory as follows: first place the `.text` sections from both files, then the `.data` sections.
 
-В итоге начиная с нулевого адреса будет размещена секция `.text` файла `startup.o`. Она будет размещена именно там, поскольку счётчик адресов в начале скрипта равен нулю, а очередная секция размещается по адресу, куда указывает счётчик адресов. После этого, счётчик будет увеличен на размер этой секции и секция `.text` файла `main.o` будет размещена сразу же за секцией `.text` файла `startup.o`. После этого счётчик адресов будет увеличен на размер этой секции. То же самое произойдёт и при размещении оставшихся секций.
+As a result, starting from address zero, the `.text` section of `startup.o` will be placed. It is placed there because the location counter is zero at the start of the script, and the next section is placed at the address currently pointed to by the location counter. After that, the counter is incremented by the size of this section and the `.text` section of `main.o` is placed immediately after. After that, the location counter is incremented again. The same will happen for the remaining sections.
 
-Кроме того, вы в любой момент можете изменить значение счетчика адресов. Например, если адресное пространство памяти поделено на две части: под инструкции отводится 512 байт, а под данные 1024 байта. Таким образом, выделенный диапазон адресов для инструкций: `[0:511]`, а для данных: `[512:1535]`. Предположим при этом, что общий объем секций `.text` составляет 416 байт. В этом случае, вы можете сперва разместить секции `.text` так же, как было описано в предыдущем примере, а затем, выставив значение на счетчике адресов равное `512`, описать размещение секций данных. Тогда, между секциями появится разрыв в 96 байт, а данные окажутся в выделенном для них диапазоне адресов.
+Additionally, you can change the value of the location counter at any time. For example, if the memory address space is divided into two parts: 512 bytes for instructions and 1024 bytes for data. Thus, the allocated address range for instructions is `[0:511]`, and for data: `[512:1535]`. Suppose the total size of all `.text` sections is 416 bytes. In this case, you can first place the `.text` sections as described above, then set the location counter to `512` and describe the placement of data sections. This will create a 96-byte gap between the sections, and the data will end up in the allocated address range.
 
-В нашей процессорной системе гарвардская архитектура. Это значит, что память инструкций и данных у нас независимы друг от друга. Это физически разные устройства, с разными шинами и разным адресным пространством. Однако обе эти памяти имеют общие значения младших адресов: самый младший имеет адрес ноль, следующий адрес 1 и т.д. Таким образом, происходит наложение адресных пространств памяти инструкций и памяти данных. Компоновщику трудно работать в таких условиях: "как я могу разместить по этому адресу секцию данных, когда здесь уже размещена секция инструкций".
+Our processor system uses a Harvard architecture. This means that the instruction memory and data memory are independent from each other. They are physically separate devices with different buses and different address spaces. However, both memories share the same lower address values: the lowest address is zero, the next is one, and so on. This causes an overlap of the address spaces of instruction memory and data memory. This makes things difficult for the linker: "how can I place a data section at this address when an instruction section is already there?"
 
-Есть два механизма для решения этого вопроса. Первый: компоновать секции инструкций и данных по отдельности. В этом случае будет два отдельных скрипта компоновщика. Однако, компоновка секций инструкций зависит от компоновки секций данных (в частности, от того по каким адресам будут размещены стек и .bss-секция, а также указатель на глобальную область данных), поскольку в часть инструкций необходимо прописать конкретные адреса. В этом случае, придётся делать промежуточные операции в виде экспорта глобальных символов в отдельный объектный файл, который будет использован при компоновке секции инструкций, что кажется некоторым переусложнением.
+There are two mechanisms to resolve this. The first is to link instruction and data sections separately. In this case, there would be two separate linker scripts. However, linking instruction sections depends on linking data sections (specifically, on the addresses at which the stack and .bss section will be placed, as well as the global data pointer), because concrete addresses need to be embedded into some instructions. This would require intermediate steps such as exporting global symbols to a separate object file, which feels overly complicated.
 
-Вместо этого, будет использован другой подход, механизм виртуальных адресов (**Virtual Memory Address**, **VMA**) и адресов загрузки (**Load Memory Address**, **LMA**).
+Instead, another approach will be used: the mechanism of **Virtual Memory Addresses** (**VMA**) and **Load Memory Addresses** (**LMA**).
 
-- VMA — это адрес, по которому секция будет доступна во время выполнения программы. По этому адресу процессор будет обращаться к секции.
-- LMA — это адрес, по которому секция будет загружена в память при старте программы.
+- VMA — the address at which the section will be accessible during program execution. The processor will use this address to access the section.
+- LMA — the address at which the section will be loaded into memory at program startup.
 
-Обычно LMA совпадает с VMA. Однако в некоторых случаях они могут быть и различны (например, изначально секция данных записывается в ROM, а перед выполнением программы, копируется из ROM в RAM). В этом случае, LMA — это адрес секции в ROM, а VMA — адрес секции в RAM.
+Usually LMA coincides with VMA. However, in some cases they may differ (for example, the data section is initially written to ROM and then copied from ROM to RAM before program execution). In this case, LMA is the section's address in ROM and VMA is the section's address in RAM.
 
-Таким образом, мы можем сделать общие VMA (процессор, обращаясь к секциям инструкций и данных будет использовать пересекающееся адресное пространство), а конфликт размещения секций компоновщиком разрешить, задав какой-нибудь заведомо большой LMA для секции данных. В последствии, мы просто проигнорируем этот адрес, проинициализировав память данных начиная с нуля.
+Thus, we can use shared VMAs (the processor will use overlapping address spaces when accessing instruction and data sections), and resolve the linker's section placement conflict by assigning an arbitrarily large LMA to the data section. We will then simply ignore this address by initializing data memory starting from zero.
 
-Помимо прочего, в скрипте компоновщика необходимо прописать, каков [порядок следования байт](https://en.wikipedia.org/wiki/Endianness), где будет находиться стек, и какое будет значение у указателя на глобальную область памяти.
+In addition, the linker script must specify the [byte order](https://en.wikipedia.org/wiki/Endianness), the location of the stack, and the value of the global memory pointer.
 
-Всё это с подробными комментариями описано в файле `linker_script.ld`.
+All of this is described with detailed comments in the `linker_script.ld` file.
 
 ```ld
-OUTPUT_FORMAT("elf32-littleriscv")      /* Указываем порядок следования байт */
+OUTPUT_FORMAT("elf32-littleriscv")      /* Specify the byte order */
 
-ENTRY(_start)                           /* мы сообщаем компоновщику, что первая
-                                           исполняемая процессором инструкция
-                                           находится у метки "_start"
+ENTRY(_start)                           /* We tell the linker that the first
+                                           instruction executed by the processor
+                                           is at the label "_start"
                                         */
 
 /*
-  В данном разделе указывается структура памяти:
-  Сперва идёт регион "instr_mem", являющийся памятью с исполняемым кодом
-  (об этом говорит аттрибут 'x'). Этот регион начинается
-  с адреса 0x00000000 и занимает 1024 байта.
-  Далее идет регион "data_mem", начинающийся с адреса 0x00000000 и занимающий
-  2048 байт. Этот регион является памятью, противоположной региону "instr_mem"
-  (в том смысле, что это не память с исполняемым кодом).
+  This section specifies the memory structure:
+  First comes the "instr_mem" region, which is executable memory
+  (indicated by the 'x' attribute). This region starts
+  at address 0x00000000 and occupies 1024 bytes.
+  Next comes the "data_mem" region, starting at address 0x00000000 and
+  occupying 2048 bytes. This region is non-executable memory
+  (in the sense that it does not contain executable code).
 */
 MEMORY
 {
@@ -125,51 +125,50 @@ MEMORY
   data_mem (!x) : ORIGIN = 0x00000000, LENGTH = 2K
 }
 
-_trap_stack_size = 640;                /* Размер стека обработчика перехватов.
-                                          Данный размер позволяет выполнить
-                                          до 8 вложенных вызовов при обработке
-                                          перехватов.
+_trap_stack_size = 640;                /* Size of the trap handler stack.
+                                          This size allows up to 8 nested
+                                          calls during trap handling.
                                         */
 
-_stack_size = 640;                     /* Размер программного стека.
-                                          Данный размер позволяет выполнить
-                                          от 8 вложенных вызовов.
+_stack_size = 640;                     /* Size of the program stack.
+                                          This size allows up to 8 nested
+                                          calls.
                                        */
 
 /*
-  В данном разделе описывается размещение программы в памяти.
-  Программа разделяется на различные секции:
-  - секции исполняемого кода программа;
-  - секции статических переменных и массивов, значение которых должно быть
-    "вшито" в программу;
-  и т.п.
+  This section describes the placement of the program in memory.
+  The program is divided into various sections:
+  - sections of the executable code;
+  - sections of static variables and arrays whose values must be
+    embedded in the program;
+  etc.
 */
 
 SECTIONS
 {
 
   /*
-    В скриптах компоновщика есть внутренняя переменная, записываемая как '.'
-    Эта переменная называется "счётчиком адресов". Она хранит текущий адрес в
-    памяти.
-    В начале файла она инициализируется нулём. Добавляя новые секции, эта
-    переменная будет увеличиваться на размер каждой новой секции.
-    Если при размещении секций не указывается никакой адрес, они будут размещены
-    по текущему значению счётчика адресов.
-    Этой переменной можно присваивать значения, после этого, она будет
-    увеличиваться с этого значения.
-    Подробнее:
+    In linker scripts there is an internal variable written as '.'
+    This variable is called the "location counter". It stores the current
+    address in memory.
+    At the beginning of the file it is initialized to zero. As new sections
+    are added, this variable is incremented by the size of each new section.
+    If no address is specified when placing sections, they will be placed
+    at the current value of the location counter.
+    This variable can be assigned values; after that, it will increment
+    from that value.
+    More details:
       https://home.cs.colorado.edu/~main/cs1300/doc/gnu/ld_3.html#IDX338
   */
 
   /*
-    Следующая команда сообщает, что начиная с адреса, которому в данных момент
-    равен счётчик адресов (в данный момент, начиная с нуля) будет находиться
-    секция .text итогового файла, которая состоит из секций .boot, а также всех
-    секций, начинающихся на .text во всех переданных компоновщику двоичных
-    файлах.
-    Дополнительно мы указываем, что данная секция должна быть размещена в
-    регионе "instr_mem".
+    The following command specifies that starting from the address currently
+    held by the location counter (at this point, starting from zero), the
+    .text section of the output file will be located, consisting of the .boot
+    sections as well as all sections starting with .text from all binary files
+    passed to the linker.
+    We additionally specify that this section must be placed in the
+    "instr_mem" region.
   */
   .text : {
     PROVIDE(_start = .);
@@ -179,29 +178,29 @@ SECTIONS
 
 
   /*
-  Секция данных размещается аналогично секции инструкций за исключением
-  адреса загрузки в памяти (Load Memory Address, LMA). Поскольку память
-  инструкций и данных физически разделены, у них есть пересекающееся адресное
-  пространство, которое мы бы хотели использовать (поэтому в разделе MEMORY мы
-  указали что стартовые адреса обоих памятей равны нулю). Однако компоновщику
-  это не нравится, ведь как он будет размещать две разные секции в одно и то же
-  место. Поэтому мы ему сообщаем, с помощью оператора "AT", что загружать секцию
-  данных нужно на самом деле не по нулевому адресу, а по какому-то другому,
-  заведомо большему чем размер памяти инструкций, но процессор будет
-  использовать адреса, начинающиеся с нуля. Такой вариант компоновщика
-  устраивает и он собирает исполняемый файл без ошибок. Наша же задача,
-  загрузить итоговую секцию данных по нулевым адресам памяти данных.
+  The data section is placed similarly to the instruction section, except
+  for the Load Memory Address (LMA). Since instruction and data memories are
+  physically separate, they have overlapping address spaces that we would
+  like to use (which is why in the MEMORY section we set the start addresses
+  of both memories to zero). However, the linker does not like this, since
+  how can it place two different sections in the same location? So we tell it,
+  using the "AT" operator, that the data section should actually be loaded
+  at a different address — one that is guaranteed to be larger than the size
+  of the instruction memory — while the processor will use addresses starting
+  from zero. The linker accepts this arrangement and builds the executable
+  without errors. Our task is then to load the final data section at address
+  zero in data memory.
   */
   .data : AT (0x00800000) {
     /*
-    Общепринято присваивать GP значение равное началу секции данных, смещённое
-    на 2048 байт вперёд.
-    Благодаря относительной адресации со смещением в 12 бит, можно адресоваться
-    на начало секции данных, а также по всему адресному пространству вплоть до
-    4096 байт от начала секции данных, что сокращает объем требуемых для
-    адресации инструкций (практически не используются операции LUI, поскольку GP
-    уже хранит базовый адрес и нужно только смещение).
-    Подробнее:
+    It is conventional to assign GP a value equal to the start of the data
+    section offset forward by 2048 bytes.
+    With 12-bit relative addressing with offset, it is possible to address
+    the beginning of the data section as well as the entire address space up
+    to 4096 bytes from the start of the data section, which reduces the number
+    of addressing instructions needed (LUI operations are rarely used since GP
+    already holds the base address and only an offset is needed).
+    More details:
       https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/60IdaZj27dY/m/s1eJMlrUAQAJ
     */
     _gbl_ptr = . + 2048;
@@ -211,37 +210,38 @@ SECTIONS
 
 
   /*
-    Поскольку мы не знаем суммарный размер всех используемых секций данных,
-    перед размещением других секций, необходимо выровнять счётчик адресов по
-    4х-байтной границе.
+    Since we do not know the total size of all data sections used,
+    before placing other sections, we must align the location counter
+    to a 4-byte boundary.
   */
   . = ALIGN(4);
 
 
   /*
-    BSS (block started by symbol, неофициально его расшифровывают как
-    better save space) — это сегмент, в котором размещаются неинициализированные
-    статические переменные. В стандарте Си сказано, что такие переменные
-    инициализируются нулём (или NULL для указателей). Когда вы создаёте
-    статический массив — он должен быть размещён в исполняемом файле.
-    Без bss-секции, этот массив должен был бы занимать такой же объем
-    исполняемого файла, какого объёма он сам. Массив на 1000 байт занял бы
-    1000 байт в секции .data.
-    Благодаря секции bss, начальные значения массива не задаются, вместо этого
-    здесь только записываются названия переменных и их адреса.
-    Однако на этапе загрузки исполняемого файла теперь необходимо принудительно
-    занулить участок памяти, занимаемый bss-секцией, поскольку статические
-    переменные должны быть проинициализированы нулём.
-    Таким образом, bss-секция значительным образом сокращает объем исполняемого
-    файла (в случае использования неинициализированных статических массивов)
-    ценой увеличения времени загрузки этого файла.
-    Для того чтобы занулить bss-секцию, в скрипте заводятся две переменные,
-    указывающие на начало и конец bss-секции посредством счётчика адресов.
-    Подробнее:
+    BSS (block started by symbol, unofficially expanded as
+    "better save space") is a segment where uninitialized static
+    variables are placed. The C standard states that such variables
+    are initialized to zero (or NULL for pointers). When you create
+    a static array, it must be placed in the executable file.
+    Without a bss section, the array would occupy as much space in the
+    executable as its own size. A 1000-byte array would take 1000 bytes
+    in the .data section.
+    Thanks to the bss section, the initial values of the array are not stored;
+    instead, only the variable names and their addresses are recorded.
+    However, during executable loading, the memory region occupied by the
+    bss section must be explicitly zeroed out, since static variables must
+    be initialized to zero.
+    Thus, the bss section significantly reduces the size of the executable
+    (when using uninitialized static arrays) at the cost of increased
+    loading time.
+    To zero out the bss section, two variables are defined in the script
+    that point to the beginning and end of the bss section via the
+    location counter.
+    More details:
       https://en.wikipedia.org/wiki/.bss
 
-    Дополнительно мы указываем, что данная секция должна быть размещена в
-    регионе "data_mem".
+    We additionally specify that this section must be placed in the
+    "data_mem" region.
   */
   _bss_start = .;
   .bss : {
@@ -252,30 +252,32 @@ SECTIONS
 
 
   /*=================================
-      Секция аллоцированных данных завершена, остаток свободной памяти отводится
-      под программный стек, стек прерываний и (возможно) кучу. В соглашении о
-      вызовах архитектуры RISC-V сказано, что стек растёт снизу вверх, поэтому
-      наша цель разместить его в самых последних адресах памяти.
-      Поскольку стеков у нас два, в самом низу мы разместим стек прерываний, а
-      над ним программный стек. При этом надо обеспечить защиту программного
-      стека от наложения на него стека прерываний.
-      Однако перед этим, мы должны убедиться, что под оба стека хватит места.
+      The allocated data section is complete; the remaining free memory is
+      reserved for the program stack, the trap stack, and (possibly) the heap.
+      The RISC-V calling convention states that the stack grows downward
+      (from higher to lower addresses), so our goal is to place it at the
+      highest addresses in memory.
+      Since we have two stacks, the trap stack is placed at the very bottom
+      and the program stack above it. We must also ensure that the program
+      stack is protected from being overwritten by the trap stack.
+      Before doing so, however, we must verify that there is enough room
+      for both stacks.
     =================================
   */
 
-  /* Мы хотим гарантировать, что под стек останется место */
+  /* We want to guarantee that there is room left for the stack */
   ASSERT(. < (LENGTH(data_mem) - _trap_stack_size - _stack_size),
             "Program size is too big")
 
-  /*  Перемещаем счётчик адресов над стеком прерываний (чтобы после мы могли
-      использовать его в вызове ALIGN) */
+  /*  Move the location counter above the trap stack (so that we can
+      use it in the ALIGN call later) */
   . = LENGTH(data_mem) - _trap_stack_size;
 
   /*
-      Размещаем указатель программного стека так близко к границе стека
-      прерываний, насколько можно с учетом требования о выравнивании адреса
-      стека до 16 байт.
-      Подробнее:
+      Place the program stack pointer as close to the trap stack boundary
+      as possible, subject to the requirement that the stack address be
+      aligned to 16 bytes.
+      More details:
         https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
   */
   _stack_ptr = ALIGN(16) <= LENGTH(data_mem) - _trap_stack_size?
@@ -283,15 +285,15 @@ SECTIONS
   ASSERT(_stack_ptr <= LENGTH(data_mem) - _trap_stack_size,
             "SP exceed memory size")
 
-  /*  Перемещаем счётчик адресов в конец памяти (чтобы после мы могли
-      использовать его в вызове ALIGN) */
+  /*  Move the location counter to the end of memory (so that we can
+      use it in the ALIGN call later) */
   . = LENGTH(data_mem);
 
   /*
-      Обычно память имеет размер, кратный 16, но на случай, если это не так, мы
-      делаем проверку, после которой мы либо остаёмся в самом конце памяти (если
-      конец кратен 16), либо поднимаемся на 16 байт вверх от края памяти,
-      округлённого до 16 в сторону большего значения
+      Memory size is usually a multiple of 16, but in case it is not, we
+      perform a check: we either stay at the very end of memory (if the
+      end is a multiple of 16), or move 16 bytes up from the memory edge
+      rounded up to the nearest multiple of 16.
   */
   _trap_stack_ptr = ALIGN(16) <= LENGTH(data_mem) ? ALIGN(16) : ALIGN(16) - 16;
   ASSERT(_trap_stack_ptr <= LENGTH(data_mem), "ISP exceed memory size")
@@ -299,26 +301,26 @@ SECTIONS
 
 ```
 
-_Листинг 1. Пример скрипта компоновщика с комментариями._
+_Listing 1. Example of a linker script with comments._
 
 > [!IMPORTANT]
-> Обратите внимание на указанные размеры памяти инструкций и данных. Они отличаются от размеров, которые использовались ранее в пакете `memory_pkg`. Дело в том, что пока система и исполняемые ей программы были простыми, в большом объеме памяти не было нужды и меньший размер значительно сокращал время синтеза системы. Однако в данный момент, чтобы обеспечить программе достаточно места под инструкции, а также программный стек и стек прерываний, необходимо увеличить объемы памяти инструкций и памяти данных. Для этого необходимо обновить значения параметров `INSTR_MEM_SIZE_BYTES` и `DATA_MEM_SIZE_BYTES` на 32'd1024 и 32'd2048 соответственно. В зависимости от сложности вашего проекта, в будущем вам может снова потребоваться изменять размер памяти в вашей системе. Помните, все изменения в memory_pkg должны отражаться и в скрипте компоновщика для вашей системы.
+> Note the specified sizes of instruction and data memory. They differ from the sizes previously used in the `memory_pkg` package. The reason is that while the system and the programs it runs were simple, there was no need for large memory, and smaller sizes significantly reduced synthesis time. However, at this point, to provide the program with enough room for instructions, the program stack, and the trap stack, it is necessary to increase the sizes of both instruction memory and data memory. To do this, update the values of the `INSTR_MEM_SIZE_BYTES` and `DATA_MEM_SIZE_BYTES` parameters to 32'd1024 and 32'd2048 respectively. Depending on the complexity of your project, you may need to change the memory size again in the future. Remember: all changes to `memory_pkg` must also be reflected in the linker script for your system.
 
-### Файл первичных команд при загрузке (startup.S)
+### Startup File (startup.S)
 
-В стартап-файле хранятся инструкции, которые обязательно необходимо выполнить перед началом исполнения любой программы. Это инициализация регистров указателей на стек и глобальную область данных, контрольных регистров системы прерывания, инициализация .bss-секции и т.п.
+The startup file contains instructions that must be executed before any program begins running. These include initializing the stack pointer and global data pointer registers, the interrupt system control registers, zeroing out the .bss section, etc.
 
-По завершению инициализации, стартап-файл выполняет процедуру передачи управления точке входа в запускаемую программу.
+Upon completing initialization, the startup file transfers control to the entry point of the program being launched.
 
 ```asm
   .section    .boot
 
  .global _start
 _start:
-  la    gp, _gbl_ptr     # Инициализация глобального указателя
-  la    sp, _stack_ptr   # Инициализация указателя на стек
+  la    gp, _gbl_ptr     # Initialize the global pointer
+  la    sp, _stack_ptr   # Initialize the stack pointer
 
-# Инициализация (зануление) сегмента bss
+# Initialize (zero out) the bss segment
   la    t0, _bss_start
   la    t1, _bss_end
 _bss_init_loop:
@@ -327,67 +329,65 @@ _bss_init_loop:
   addi  t0, t0, 4
   j     _bss_init_loop
 
-# Настройка вектора (mtvec) и маски (mie) прерываний, а также указателя на стек
-# прерываний (mscratch).
+# Configure the interrupt vector (mtvec), interrupt mask (mie),
+# and trap stack pointer (mscratch).
 _irq_config:
   la    t0, _int_handler
-  li    t1, -1 # -1 (все биты равны 1) означает, что разрешены все прерывания
+  li    t1, -1 # -1 (all bits set to 1) means all interrupts are enabled
   la    t2, _trap_stack_ptr
   csrw  mtvec, t0
   csrw  mscratch, t2
   csrw  mie, t1
 
-# Вызов функции main
+# Call the main function
 _main_call:
-  li    a0, 0 # Передача аргументов argc и argv в main. Формально, argc должен
-  li    a1, 0 # быть больше нуля, а argv должен указывать на массив строк,
-              # нулевой элемент которого является именем исполняемого файла,
-              # Но для простоты реализации оба аргумента всего лишь обнулены.
-              # Это сделано для детерминированного поведения программы в случае,
-              # если программист будет пытаться использовать эти аргументы.
+  li    a0, 0 # Pass argc and argv arguments to main. Formally, argc should
+  li    a1, 0 # be greater than zero, and argv should point to an array of
+              # strings whose zeroth element is the executable name.
+              # For simplicity of implementation, both arguments are simply
+              # set to zero. This is done for deterministic program behavior
+              # in case the programmer tries to use these arguments.
 
-  # Вызов main.
-  # Для того чтобы программа скомпоновалась, где-то должна быть описана
-  # функция именно с таким именем.
+  # Call main.
+  # For the program to link successfully, a function with exactly
+  # this name must be defined somewhere.
   call  main
-# Зацикливание после выхода из функции main
+# Infinite loop after main returns
 _endless_loop:
   j     _endless_loop
 
-# Низкоуровневый обработчик прерывания отвечает за:
-#   * Сохранение и восстановление контекста;
-#   * Вызов высокоуровневого обработчика с передачей id источника прерывания в
-#     качестве аргумента.
-# В основе кода лежит обработчик из репозитория urv-core:
+# The low-level interrupt handler is responsible for:
+#   * Saving and restoring context;
+#   * Calling the high-level handler with the interrupt source id
+#     as an argument.
+# The code is based on the handler from the urv-core repository:
 # https://github.com/twlostow/urv-core/blob/master/sw/common/irq.S
-# Из реализации убраны сохранения нереализованных CS-регистров. Кроме того,
-# в реализации сохраняются только необерегаемые регистры регистрового файла.
-# Это сделано по причине того, что при вызове высокоуровневого обработчика
-# прерываний, тот будет обязан сохранить оберегаемые регистры в соответствии
-# с соглашением о вызовах.
+# Saves of unimplemented CS registers have been removed. Additionally,
+# only caller-saved registers are saved here, because the high-level
+# interrupt handler is required to preserve callee-saved registers
+# in accordance with the calling convention.
 _int_handler:
-  # Данная операция меняет местами регистры sp и mscratch.
-  # В итоге указатель на стек прерываний оказывается в регистре sp, а вершина
-  # программного стека оказывается в регистре mscratch.
+  # This operation swaps the sp and mscratch registers.
+  # As a result, the trap stack pointer ends up in sp, and the top
+  # of the program stack ends up in mscratch.
   csrrw sp, mscratch,sp
 
-  # Далее мы поднимаемся по стеку прерываний и сохраняем все регистры.
-  addi  sp, sp, -80  # Указатель на стек должен быть выровнен до 16 байт, поэтому
-                     # поднимаемся вверх не на 76, а на 80.
+  # Move up the trap stack and save all registers.
+  addi  sp, sp, -80  # The stack pointer must be aligned to 16 bytes,
+                     # so we move up by 80, not 76.
   sw    ra, 4(sp)
-  # Мы хотим убедиться, что очередное прерывание не наложит стек прерываний на
-  # программный стек, поэтому записываем в освободившийся регистр низ
-  # программного стека, и проверяем что приподнятый указатель на верхушку
-  # стека прерываний не залез в программный стек.
-  # В случае, если это произошло (произошло переполнение стека прерываний),
-  # мы хотим остановить работу процессора, чтобы не потерять данные, которые
-  # могут помочь нам в отладке этой ситуации.
+  # We want to ensure that a subsequent interrupt does not cause the trap
+  # stack to overwrite the program stack, so we load the bottom of the
+  # program stack into the freed register and verify that the raised trap
+  # stack pointer has not encroached on the program stack.
+  # If this has happened (trap stack overflow), we want to halt the
+  # processor to avoid losing data that could help us debug the situation.
   la    ra, _stack_ptr
   blt   sp, ra, _endless_loop
 
-  sw    t0, 12(sp) # Мы перепрыгнули через смещение 8, поскольку там должен
-                   # лежать регистр sp, который ранее сохранили в mscratch.
-                   # Мы запишем его на стек чуть позже.
+  sw    t0, 12(sp) # We skipped offset 8 because that is where the sp
+                   # register saved into mscratch earlier should go.
+                   # We will write it to the stack a little later.
   sw    t1, 16(sp)
   sw    t2, 20(sp)
   sw    a0, 24(sp)
@@ -403,8 +403,8 @@ _int_handler:
   sw    t5, 64(sp)
   sw    t6, 68(sp)
 
-  # Кроме того, мы сохраняем состояние регистров прерываний на случай, если
-  # произойдет ещё одно прерывание.
+  # We also save the interrupt register state in case another
+  # interrupt occurs.
   csrr  t0, mscratch
   csrr  t1, mepc
   csrr  a0, mcause
@@ -412,16 +412,16 @@ _int_handler:
   sw    t1, 72(sp)
   sw    a0, 76(sp)
 
-  # Вызов высокоуровневого обработчика прерываний.
-  # Для того чтобы программа скомпоновалась, где-то должна быть описана
-  # функция именно с таким именем.
+  # Call the high-level interrupt handler.
+  # For the program to link successfully, a function with exactly
+  # this name must be defined somewhere.
   call  int_handler
 
-  # Восстановление контекста. В первую очередь мы хотим восстановить CS-регистры,
-  # на случай, если происходило вложенное прерывание. Для этого, мы должны
-  # вернуть исходное значение указателя стека прерываний. Однако его нынешнее
-  # значение нам ещё необходимо для восстановления контекста, поэтому мы
-  # сохраним его в регистр a0, и будем восстанавливаться из него.
+  # Restore context. First, we want to restore the CS registers in case
+  # a nested interrupt occurred. To do this, we must restore the original
+  # value of the trap stack pointer. However, its current value is still
+  # needed for context restoration, so we save it to register a0 and
+  # restore from there.
   mv    a0,sp
 
   lw    t1, 72(a0)
@@ -435,9 +435,9 @@ _int_handler:
   lw    t0, 12(a0)
   lw    t1, 16(a0)
   lw    t2, 20(a0)
-  lw    a1, 28(a0)   # Мы пропустили a0, потому что сейчас он используется в
-                     # качестве указателя на верхушку стека и не может быть
-                     # восстановлен.
+  lw    a1, 28(a0)   # We skipped a0 because it is currently used as a
+                     # pointer to the top of the stack and cannot be
+                     # restored.
   lw    a2, 32(a0)
   lw    a3, 36(a0)
   lw    a4, 40(a0)
@@ -450,85 +450,85 @@ _int_handler:
   lw    t6, 68(a0)
   lw    a0, 24(a0)
 
-  # Выход из обработчика прерывания
+  # Return from the interrupt handler
   mret
 
 
 ```
 
-_Листинг 2. Пример содержимого файла первичных команд с поясняющими комментариями._
+_Listing 2. Example contents of the startup file with explanatory comments._
 
 > [!IMPORTANT]
-> Обратите внимание на строки `call  main` и `call  int_handler`. Компоновка объектного файла, полученного после компиляции `startup.S` будет успешной только в том случае, если в других компонуемых файлах будут функции именно с такими именами.
+> Note the lines `call  main` and `call  int_handler`. Linking the object file produced by compiling `startup.S` will only succeed if functions with exactly these names are defined in other files being linked.
 
-## Практика
+## Practice
 
-Для того чтобы запустить моделирование исполнения программы на вашем процессоре, сперва эту программу необходимо скомпилировать и преобразовать в текстовый файл, которым САПР сможет проинициализировать память процессора. Для компиляции программы, вам потребуется особый компилятор, который называется "кросскомпилятор". Он позволяет компилировать исходный код под архитектуру компьютера, отличную от компьютера, на котором ведется компиляция. В нашем случае, вы будете собирать код под архитектуру `RISC-V` на компьютере с архитектурой `x86_64`.
+To simulate the execution of a program on your processor, you must first compile the program and convert it into a text file that the EDA tool can use to initialize the processor's memory. To compile the program, you will need a special compiler called a **cross-compiler**. It allows you to compile source code for a computer architecture different from the one on which the compilation is performed. In our case, you will be building code for the `RISC-V` architecture on a computer with the `x86_64` architecture.
 
-Компилятор, который подойдет для данной задачи должен быть установлен в учебной аудитории. Но если что, вы можете скачать его [отсюда](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-1/xpack-riscv-none-elf-gcc-13.2.0-1-win32-x64.zip) (обратите внимание, что размер архива составляет ~550 МБ, попытка скачивания этого архива из учебной аудитории может потратить вашу месячную квоту интернет-трафика).
+The compiler suitable for this task should be installed in the lab. If not, you can download it [here](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-1/xpack-riscv-none-elf-gcc-13.2.0-1-win32-x64.zip) (note that the archive size is approximately 550 MB; attempting to download it from the lab may use up your monthly internet traffic quota).
 
-### Компиляция объектных файлов
+### Compiling Object Files
 
-В первую очередь необходимо скомпилировать файлы с исходным кодом в объектные. Это можно сделать следующей командой:
+First, compile the source files into object files. This can be done with the following command:
 
 ```text
-<исполняемый файл компилятора> -с <флаги компиляции> <входной файл с исходным кодом> -o <выходной объектный файл>
+<compiler executable> -c <compilation flags> <input source file> -o <output object file>
 ```
 
-Вам потребуются следующие флаги компиляции:
+You will need the following compilation flags:
 
-- `-march=rv32i_zicsr` — указание разрядности и набора расширений в архитектуре, под которую идет компиляция (у нас процессор rv32i, расширенный набором инструкций для взаимодействия с регистрами контроля и статуса Zicsr)
-- `-mabi=ilp32`  — указание двоичного интерфейса приложений. Здесь сказано, что типы `int`, `long` и `pointer` являются 32-разрядными.
+- `-march=rv32i_zicsr` — specifies the bit width and extension set of the target architecture (our processor is rv32i, extended with the Zicsr instruction set for interacting with control and status registers)
+- `-mabi=ilp32` — specifies the application binary interface. This states that the `int`, `long`, and `pointer` types are 32-bit.
 
-Есть очень [хорошее видео](https://youtu.be/29iNHEhHmd0?t=141), описывающее состав тулчейнов, именование исполняемых файлов компиляторов, как формируются ключи архитектуры и двоичного интерфейса приложений.
+There is a very [helpful video](https://youtu.be/29iNHEhHmd0?t=141) explaining the composition of toolchains, the naming of compiler executables, and how architecture and ABI flags are formed.
 
-С учетом названия исполняемого файла скачанного вами компилятора (при условии, что папку из архива вы переименовали в `riscv_cc` и скопировали в корень диска `C:`, а команду запускаете из оболочки `git bash`), командой для компиляции файла [`startup.S`](startup.S) может быть:
+Given the name of the compiler executable you downloaded (assuming you renamed the extracted directory to `riscv_cc` and copied it to the root of drive `C:`, and are running the command from a `git bash` shell), the command to compile [`startup.S`](startup.S) might look like:
 
 ```bash
 /c/riscv_cc/bin/riscv-none-elf-gcc -c -march=rv32i_zicsr -mabi=ilp32 startup.S -o startup.o
 ```
 
-### Компоновка объектных файлов в исполняемый
+### Linking Object Files into an Executable
 
-Далее необходимо выполнить компоновку объектных файлов. Это можно сделать командой следующего формата:
+Next, link the object files. This can be done with the following command format:
 
 ```text
-<исполняемый файл компилятора> <флаги компоновки> <входные объектные файлы> -o <выходной объектный файл>
+<compiler executable> <linking flags> <input object files> -o <output object file>
 ```
 
-Исполняемый файл компилятора тот же самый, флаги компоновки будут следующие:
+The compiler executable is the same; the linking flags are as follows:
 
-- `-march=rv32i_zicsr -mabi=ilp32` — те же самые флаги, что были при компиляции (нам все ещё нужно указывать архитектуру, иначе компоновщик может скомпоновать объектные файлы со стандартными библиотеками от другой архитектуры)
-- `-Wl,--gc-sections` — указать компоновщику удалять неиспользуемые секции (сокращает объем итогового файла). Обратите внимание, что **после запятой не должно быть пробела** — это важно!
-- `-nostartfiles` — указать компоновщику не использовать стартап-файлы стандартных библиотек (сокращает объем файла и устраняет ошибки компиляции из-за конфликтов с используемым стартап-файлом).
-- `-T linker_script.ld` — передать компоновщику скрипт компоновки
+- `-march=rv32i_zicsr -mabi=ilp32` — the same flags as during compilation (we still need to specify the architecture, otherwise the linker might link the object files with standard libraries from a different architecture)
+- `-Wl,--gc-sections` — instruct the linker to remove unused sections (reduces the size of the output file). Note that **there must be no space after the comma** — this is important!
+- `-nostartfiles` — instruct the linker not to use the startup files from standard libraries (reduces file size and eliminates compilation errors caused by conflicts with the startup file being used).
+- `-T linker_script.ld` — pass the linker script to the linker
 
-Пример команды компоновки:
+Example linking command:
 
 ```bash
 /c/riscv_cc/bin/riscv-none-elf-gcc -march=rv32i_zicsr -mabi=ilp32 -Wl,--gc-sections -nostartfiles -T linker_script.ld startup.o main.o -o result.elf
 ```
 
-### Экспорт секций для инициализации памяти
+### Exporting Sections for Memory Initialization
 
-В результате компоновки вы получите исполняемый файл формата `elf` ([Executable and Linkable Format](https://ru.wikipedia.org/wiki/Executable_and_Linkable_Format)). Это двоичный файл, однако это не просто набор двоичных инструкций и данных, которые будут загружены в память процессора. Данный файл содержит заголовки и специальную информацию, которая поможет загрузчику разместить этот файл в памяти компьютера. Поскольку роль загрузчика будете выполнять вы и САПР, на котором будет вестись моделирование, эта информация вам не понадобятся, поэтому вам потребуется экспортировать из данного файла только двоичные инструкции и данные, отбросив всю остальную информацию. Полученный файл уже можно будет использовать в функции `$readmemh`.
+As a result of linking, you will obtain an executable file in `elf` format ([Executable and Linkable Format](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)). This is a binary file, but it is not simply a stream of binary instructions and data to be loaded into the processor's memory. This file contains headers and special information that helps a loader place the file in computer memory. Since the role of the loader will be played by you and the EDA tool used for simulation, this information is not needed, so you will need to export only the binary instructions and data from this file, discarding all other information. The resulting file can then be used with the `$readmemh` function.
 
-Для экспорта используйте команду:
+To export, use the command:
 
 ```bash
 /c/riscv_cc/bin/riscv-none-elf-objcopy -O verilog result.elf init.mem
 ```
 
-ключ `-O verilog` говорит о том, что файл надо сохранить в формате, который сможет воспринять команда `$readmemh`.
+The `-O verilog` flag specifies that the file should be saved in a format that the `$readmemh` command can process.
 
-Поскольку память инструкций и данных у вас разделены, можно экспортировать отдельные секции в разные файлы:
+Since instruction and data memory are separate, you can export individual sections into separate files:
 
 ```bash
 /c/riscv_cc/bin/riscv-none-elf-objcopy -O verilog -j .text result.elf init_instr.mem
 /c/riscv_cc/bin/riscv-none-elf-objcopy -O verilog -j .data -j .bss -j .sdata result.elf init_data.mem
 ```
 
-Обратите внимание на содержимое полученного файла:
+Note the contents of the resulting file:
 
 ```text
 @00000000
@@ -540,9 +540,9 @@ _Листинг 2. Пример содержимого файла первичн
 ...
 ```
 
-Первая строка говорит о том, что память необходимо инициализировать с нулевого адреса и в данный момент нас не интересует. Важно то, что файл был экспортирован побайтово. Такой формат файла не подойдет для нашей памяти, т.к. каждая ячейка нашей памяти состоит из 4х байт.
+The first line indicates that memory should be initialized starting from address zero and is not of interest to us right now. What matters is that the file was exported byte by byte. This format does not suit our memory, since each of our memory cells consists of 4 bytes.
 
-Для того чтобы итоговый файл подходил для памяти с 32-разрядными ячейками, команду экспорта необходимо дополнить опцией `--verilog-data-width=4`, которая указывает размер ячейки инициализируемой памяти в байтах. Файл примет следующий вид:
+For the output file to be compatible with a memory with 32-bit cells, the export command must be supplemented with the `--verilog-data-width=4` option, which specifies the cell size in bytes of the memory being initialized. The file will then look like:
 
 ```text
 @00000000
@@ -554,15 +554,15 @@ FF5FF06F 04400293 FFF00313 30529073
 ...
 ```
 
-Обратите внимание что байты не просто склеились в четверки, изменился так же и порядок следования байт. Это важно, т.к. в память данные должны лечь именно в таком (обновленном) порядке байт (см. первую строчку скрипта компоновщика). Когда-то `objcopy` содержал [баг](https://sourceware.org/bugzilla/show_bug.cgi?id=25202), из-за которого порядок следования байт не менялся. В каких-то версиях тулчейна (отличных от представленного в данной лабораторной работе) вы всё ещё можете столкнуться с подобным поведением.
+Note that the bytes were not simply concatenated into groups of four — the byte order also changed. This is important, because the data must be laid out in memory exactly in this (updated) byte order (see the first line of the linker script). At one point `objcopy` had a [bug](https://sourceware.org/bugzilla/show_bug.cgi?id=25202) where the byte order was not changed. In some versions of the toolchain (other than the one used in this lab) you may still encounter this behavior.
 
-Вернемся к первой строке: `@00000000`. Как уже говорилось, число, начинающееся с символа `@` говорит САПР, что с этого момента инициализация идет начиная с ячейки памяти, номер которой совпадает с этим числом. Когда вы будете экспортировать секции данных, первой строкой будет: `@20000000`. Так произойдет, поскольку в скрипте компоновщика сказано инициализировать память данных с `0x80000000` адреса (значение которого было поделено на 4, чтобы получить номер 32-битной ячейки памяти; когда-то в objcopy был ещё один [баг](https://sourceware.org/bugzilla/show_bug.cgi?id=27214), в результате которого деление на 4 не производилось). Это было сделано, чтобы не произошло наложения адресов памяти инструкций и памяти данных (см параграф [скрипт для компоновки](#Скрипт-для-компоновки-linker_scriptld)). **Чтобы система работала корректно, эту строчку необходимо удалить.**
+Let us return to the first line: `@00000000`. As mentioned, a number starting with `@` tells the EDA tool to initialize memory starting from the cell whose number matches this value. When you export the data sections, the first line will be `@20000000`. This happens because the linker script instructs the data memory to be initialized from address `0x80000000` (divided by 4 to obtain the 32-bit cell number; at one point objcopy had another [bug](https://sourceware.org/bugzilla/show_bug.cgi?id=27214) where this division by 4 was not performed). This was done to prevent the address spaces of instruction memory and data memory from overlapping (see the [linker script](#linker-script-linker_scriptld) section). **For the system to work correctly, this line must be deleted.**
 
-### Дизассемблирование
+### Disassembly
 
-В процессе отладки лабораторной работы потребуется много раз смотреть на программный счётчик и текущую инструкцию. Довольно тяжело декодировать инструкцию самостоятельно, чтобы понять, что сейчас выполняется. Для облегчения задачи можно дизасемблировать скомпилированный файл. Полученный файл на языке ассемблера будет хранить адреса инструкций, а также их двоичное и ассемблерное представление.
+During lab debugging you will frequently need to look at the program counter and the current instruction. It is quite difficult to manually decode an instruction to understand what is currently being executed. To simplify this, you can disassemble the compiled file. The resulting assembly file will store instruction addresses as well as their binary and assembly representations.
 
-Пример дизасемблированного файла:
+Example of a disassembled file:
 
 ```asm
 Disassembly of section .text:
@@ -613,110 +613,110 @@ Disassembly of section .data:
 ...
 ```
 
-_Листинг 3. Пример дизасемблированного файла._
+_Listing 3. Example of a disassembled file._
 
-Числа в самом левом столбце, увеличивающиеся на 4 — это адреса в памяти. Отлаживая программу на временной диаграмме, вы можете ориентироваться на эти числа, как на значения PC.
+The numbers in the leftmost column, incrementing by 4, are memory addresses. When debugging a program using the waveform, you can use these numbers as reference values for PC.
 
-Следующая за адресом строка, записанная в шестнадцатеричном виде — это та инструкция (или данные), которая размещена по этому адресу. С помощью этого столбца вы можете проверить, что считанная инструкция на временной диаграмме (сигнал `instr`) корректна.
+The string in hexadecimal following the address is the instruction (or data) placed at that address. Using this column, you can verify that the instruction read from the waveform (the `instr` signal) is correct.
 
-В правом столбце находится ассемблерный (человекочитаемый) аналог инструкции из предыдущего столбца. Например, инструкция `00001197` — это операция `auipc gp,0x1`, где `gp` — это синоним (ABI name) регистра `x3` (см. параграф [Соглашение о вызовах](#Соглашение-о-вызовах)).
+The right column contains the assembly (human-readable) representation of the instruction from the previous column. For example, instruction `00001197` is the operation `auipc gp,0x1`, where `gp` is the alias (ABI name) of register `x3` (see the [Calling Convention](#calling-convention) section).
 
-Обратите внимание на последнюю часть листинга: дизасм секции `.data`. В этой секции адреса могут увеличиваться на любое число, шестнадцатеричные данные могут быть любого размера, а на ассемблерные инструкции в правом столбце и вовсе не надо обращать внимание.
+Pay attention to the last part of the listing: the disassembly of the `.data` section. In this section, addresses may increment by any amount, hexadecimal data can be of any size, and the assembly instructions in the right column should be completely ignored.
 
-Дело в том, что дизасемблер пытается декодировать вообще все двоичные данные, которые видит: не делая различий инструкции это или нет. В итоге, если у него получается как-то декодировать байты из секции данных (которые могут быть абсолютно любыми) — он это сделает. Причем получившиеся инструкции могут быть из совершенно не поддерживаемых текущим файлом расширений: сжатыми (по два байта вместо четырех), инструкциями операций над числами с плавающей точкой, атомарными и т.п.
+The reason is that the disassembler attempts to decode all binary data it sees, making no distinction between instructions and data. If it can decode bytes from the data section in any way (which can be completely arbitrary), it will. Moreover, the resulting "instructions" may belong to extensions not supported by the current file: compressed (two bytes instead of four), floating-point, atomic, etc.
 
-Это не значит, что секция данных в дизасме бесполезна — в приведенном выше листинге вы можете понять, что первыми элементами массива `array_to_sort` являются числа `3`, `5`, `10`, а также то, по каким адресам они лежат (`0x2b4`, `0x2b8`, `0x2bc`, если непонятно почему первое число записано в одну 4-байтовую строку, а два других разделены на две двубайтовые — попробуйте перечитать предыдущий абзац). Просто разбирая дизасемблерный файл, обращайте внимание на то, какую именно секцию вы сейчас читаете.
+This does not mean the data section in the disassembly is useless — from the listing above you can determine that the first elements of the `array_to_sort` array are the numbers `3`, `5`, `10`, and also the addresses at which they reside (`0x2b4`, `0x2b8`, `0x2bc`; if it is unclear why the first number occupies a single 4-byte row while the other two are split into two 2-byte rows, try rereading the previous paragraph). Simply be mindful of which section you are currently reading when examining a disassembled file.
 
-Для того чтобы произвести дизасемблирование, необходимо выполнить следующую команду:
+To perform disassembly, execute the following command:
 
 ```text
-[исполняемый файл дизасемблера] -D (либо -d) [входной исполняемый файл] > [выходной файл на языке ассемблер]
+[disassembler executable] -D (or -d) [input executable file] > [output assembly file]
 ```
 
-Для нашего примера, командной будет
+For our example, the command is:
 
 ```bash
 /c/riscv_cc/bin/riscv-none-elf-objdump -D result.elf > disasmed_result.S
 ```
 
-Опция `-D` говорит, что дизасемблировать необходимо вообще все секции. Опция `-d` позволяет дизасемблировать только исполняемые секции (секции с инструкциями). Таким образом, выполнив дизасемблирование с опцией `-d` мы избавимся от проблем с непонятными инструкциями, в которые декодировались данные из секции `.data`, однако в этом случае, мы не сможем проверить адреса и значения, которые хранятся в этих секциях.
+The `-D` flag disassembles all sections. The `-d` flag disassembles only executable sections (sections containing instructions). Thus, by using the `-d` flag, you avoid the confusing pseudo-instructions produced by decoding `.data` section bytes, but you will no longer be able to check the addresses and values stored in those sections.
 
 ---
 
-## Задание
+## Assignment
 
-Написать программу для вашего [индивидуального задания](../04.%20Primitive%20programmable%20device/Индивидуальное%20задание#Индивидуальные-задания) к 4-ой лабораторной работе на языке C или C++ (в зависимости от выбранного языка необходимо использовать соответствующий компилятор: gcc для C, g++ для C++).
+Write a program for your [individual assignment](../04.%20Primitive%20programmable%20device/Индивидуальное%20задание#Индивидуальные-задания) from Lab 4 in C or C++ (depending on the chosen language, use the corresponding compiler: gcc for C, g++ for C++).
 
-Для того чтобы ваша программа собралась, необходимо описать две функции: `main` и `int_handler`. Аргументы и возвращаемые значения могут быть любыми, но использоваться они не смогут. Функция `main` будет вызвана в начале работы программы (после исполнения .boot-секции startup-файла), функция `int_handler` будет вызываться автоматически каждый раз, когда ваш контроллер устройства ввода будет генерировать запрос прерывания (если процессор закончил обрабатывать предыдущий запрос).
+For your program to link successfully, you must define two functions: `main` and `int_handler`. Arguments and return values may be anything, but they will not be used. The `main` function will be called at the start of program execution (after the `.boot` section of the startup file has run); the `int_handler` function will be called automatically every time your input device controller generates an interrupt request (once the processor has finished handling the previous request).
 
-Таким образом, минимальный алгоритм работы заключается в том, чтобы считать по прерыванию данные от устройства ввода (в индивидуальном задании обозначалось как sw_i), выполнить обработку из вашего варианта, и записать результат в устройство вывода. При этом необходимо помнить о следующем:
+Thus, the minimum required algorithm is to read the input data from the input device upon an interrupt (referred to as `sw_i` in the individual assignment), perform the processing defined in your variant, and write the result to the output device. Keep the following in mind:
 
-- При вводе данных с клавиатуры, отправляется скан-код клавиши, а не значение нажатой цифры (и не ascii-код нажатой буквы). Более того, при отпускании клавиши, генерируется скан-код `F0`, за которым следует повторная отправка скан-кода этой клавиши.
-- Работая с uart через программу Putty, вы отправляете ascii-код вводимого символа.
+- When entering data from a keyboard, a key scancode is sent, not the digit value of the pressed key (nor its ASCII code). Moreover, when a key is released, scancode `F0` is generated, followed by the scancode of that key being sent again.
+- When working with UART via Putty, you send the ASCII code of the entered character.
 
-Для этих двух устройств ввода, вам необходимо продумать протокол, по которому вы будете вводить числа в вашу программу. В простейшем случае можно обрабатывать данные "как есть". Т.е. в случае клавиатуры, нажатие на клавишу `1` в верхнем горизонтальном ряду на клавиатуры со скан-кодом 0x16 интерпретировать как число `0x16`. А в случае отправки по uart символа `1` с ascii-кодом `0x31` интерпретировать его как `0x31`. Однако вывод в Putty осуществляется в виде символов принятого ascii-кода, поэтому высок риск получить непечатный символ.
+For these two input devices, you need to design a protocol for entering numbers into your program. In the simplest case, data can be processed "as-is". That is, for the keyboard, pressing key `1` in the top row with scancode 0x16 can be interpreted as the number `0x16`. For UART, sending character `1` with ASCII code `0x31` can be interpreted as `0x31`. However, Putty displays output as the characters corresponding to the received ASCII codes, so there is a high risk of producing non-printable characters.
 
-Функция main может быть как пустой, содержать один лишь оператор return или бесконечный цикл — ход работы в любом случае не сломается, т.к. в стартап-файле прописан бесконечный цикл после выполнения main. Тем не менее, вы можете разместить здесь и какую-то логику, получающую данные от обработчика прерываний через глобальные переменные.
+The `main` function may be empty, contain only a `return` statement, or contain an infinite loop — program flow will not break in any case, since the startup file already includes an infinite loop after `main` returns. Nevertheless, you may place some logic here that receives data from the interrupt handler via global variables.
 
-Доступ к регистрам контроллеров периферии осуществляется через обращение в память. В простейшем случае такой доступ осуществляется через [разыменование указателей](https://ru.wikipedia.org/wiki/Указатель_(тип_данных)#Действия_над_указателями), проинициализированных адресами регистров из [карты памяти](../13.%20Peripheral%20units#Задание) 13-ой лабораторной работы.
+Access to the peripheral controller registers is done through memory access. In the simplest case, this is accomplished via [pointer dereferencing](https://en.wikipedia.org/wiki/Pointer_(computer_programming)), with pointers initialized to the register addresses from the [memory map](../13.%20Peripheral%20units#Задание) of Lab 13.
 
-При написании программы помните, что в C++ сильно ограничена арифметика указателей, поэтому при присваивании указателю целочисленного значения адреса, необходимо использовать оператор `reinterpret_cast`.
+When writing the program, remember that in C++ pointer arithmetic is heavily restricted, so when assigning an integer address value to a pointer, you must use the `reinterpret_cast` operator.
 
-Для того чтобы уменьшить ваше взаимодействие с чёрной магией указателей, вам представлен файл [platform.h](platform.h), в котором объявлены указатели на структуры, отвечающие за отображение полей на физические адреса периферийных устройств. Вам нужно лишь воспользоваться указателем на ваше периферийное устройство.
+To reduce your interaction with the dark magic of pointers, you are provided with the file [platform.h](platform.h), which declares pointers to structures that map fields to the physical addresses of peripheral devices. You only need to use the pointer corresponding to your peripheral device.
 
-Если вашим устройством вывода является VGA-контроллер, то вам необходимо использовать экземпляр структуры, а не указатель на нее. Внутри данной структуры представлены указатели на байты: `char_map`, `color_map`, `tiff_map`. Как вы знаете, указатель может использоваться в качестве имени массива, а значит вы можете обращаться к нужному вам байту в соответствующей области памяти VGA-контроллера как к элементу массива. Например, для того, чтобы записать символ в шестое знакоместо второй строки, вам необходимо будет обратиться к `char_map[2*80+6]` (2*80 — индекс начала второй строки).
+If your output device is a VGA controller, you must use a structure instance rather than a pointer to it. Inside this structure, pointers to byte arrays are declared: `char_map`, `color_map`, `tiff_map`. As you know, a pointer can be used as an array name, so you can access the desired byte in the corresponding memory region of the VGA controller as an array element. For example, to write a character to the sixth position of the second row, you would access `char_map[2*80+6]` (2*80 is the index of the start of the second row).
 
-Пример взаимодействия с периферийным устройством через структуру **ВЫМЫШЛЕННОГО** периферийного устройства. Данная программа является лишь примером, иллюстрирующим взаимодействие с периферией через представленные указатели на структуры. Вам необходимо разобраться в том, как осуществляется работа с вымышленным устройством, а затем написать собственную программу, работающую по логике вашего индивидуального задания, которая взаимодействует с вашим реальным устройством.
+Example of interacting with a **FICTIONAL** peripheral device via a structure. This program is only an example illustrating interaction with peripherals through the provided structure pointers. You need to understand how the fictional device works, and then write your own program that implements the logic of your individual assignment and interacts with your real device.
 
 ```C++
 /*
- Не надо копировать и использовать в качестве основы вашей программы этот код.
- Он для этого не подходит. В вашей процессорной системе нет никаких коллайдеров
- DEADLY_SERIOUS-событий и аварийных выключателей.
- Просто разберитесь в операторах `->`, ".", использовании указателей в качестве
- имени массива и напишите собственную программу.
+ Do not copy this code and use it as the basis for your program.
+ It is not suitable for that purpose. Your processor system has no
+ colliders, DEADLY_SERIOUS events, or emergency switches.
+ Just understand the `->`, ".", operators, the use of pointers as
+ array names, and write your own program.
 */
 #include "platform.h"
 
 /*
-  В заголовочном файле "platform.h" объявлены collider_ptr — указатель на
-  структуру SUPER_COLLIDER_HANDLE и collider_obj — экземпляр аналогичной
-  структуры.
-  Доступ к полям этой структуры через указатель можно осуществлять посредством
-  оператора "->". Доступ к полям через экземпляр осуществляется с помощью
-  оператора ".".
-  Среди прочих полей, структура содержит указатель collider_mem, который
-  указывает на некоторую память этого периферийного устройства. Данный указатель
-  можно использовать в качестве имени массива.
+  In the header file "platform.h", collider_ptr — a pointer to the
+  SUPER_COLLIDER_HANDLE structure — and collider_obj — an instance of the
+  same structure — are declared.
+  Fields of this structure can be accessed through the pointer using the
+  "->" operator. Fields can be accessed through the instance using the
+  "." operator.
+  Among other fields, the structure contains a pointer collider_mem, which
+  points to some memory of this peripheral device. This pointer can be
+  used as an array name.
 */
 
 int main(int argc, char** argv)
 {
-  while(1){                             // В бесконечном цикле
-    while (!(collider_ptr->ready));     // Постоянно опрашиваем регистр ready,
-                                        // пока тот не станет равен 1.
+  while(1){                             // In an infinite loop
+    while (!(collider_ptr->ready));     // Continuously poll the ready register
+                                        // until it becomes 1.
 
-                                        // После чего запускаем коллайдер,
-    collider_ptr->start = 1;            // записав 1 в контрольный регистр start
-    collider_obj.mem[0] = 300;          // Пример взаимодействия с памятью,
-                                        // Используя объявленный в структуре
-                                        // указатель в качестве имени массива.
+                                        // Then start the collider by
+    collider_ptr->start = 1;            // writing 1 to the start control register
+    collider_obj.mem[0] = 300;          // Example of interacting with memory
+                                        // using the pointer declared in the
+                                        // structure as an array name.
   }
 }
 
 #define DEADLY_SERIOUS_EVENT 0xDEADDAD1
 
-// extern "C" нужно использовать только в С++. Благодаря этому, в объектном
-// файле функция будет называться именно int_handler, как и ожидает компоновщик
-// при объединении кода с startup.S
-// Без extern "C", при компиляции C++ кода имя функции в объектном файле будет
-// немного другим (что-то типа _Z11int_handlerv), из-за чего возникнут проблемы
-// в процессе компоновки.
+// extern "C" is only needed in C++. It ensures that in the object file
+// the function is named exactly int_handler, as the linker expects when
+// combining code with startup.S.
+// Without extern "C", when compiling C++ code, the function name in the
+// object file will be slightly different (something like _Z11int_handlerv),
+// causing linking errors.
 extern "C" void int_handler()
 {
-  // Если от коллайдера приходит прерывание, сразу же проверяем регистр статуса
-  // и если его код равен DEADLY_SERIOUS_EVENT, экстренно останавливаем
-  // коллайдер
+  // If an interrupt arrives from the collider, immediately check the status
+  // register, and if its code equals DEADLY_SERIOUS_EVENT, emergency-stop
+  // the collider
   if(DEADLY_SERIOUS_EVENT == collider_ptr->status)
   {
     collider_ptr->emergency_switch = 1;
@@ -724,54 +724,51 @@ extern "C" void int_handler()
 }
 ```
 
-_Листинг 4. Пример кода на C++, взаимодействующего с выдуманным периферийным устройством через указатели на структуру и массив, объявленные в platform.h._
+_Listing 4. Example of C++ code interacting with a fictional peripheral device via structure and array pointers declared in platform.h._
 
-При написании программы на языках высокого уровня может возникнуть соблазн использовать все блага высокоуровневого программирования: использовать `scanf`/`cin` для консольного ввода, `printf`/`cout` для консольного вывода, а также использовать динамические массивы, или контейнеры библиотеки STL. Вам следует избегать подобных позывов, поскольку "из коробки" весь этот функционал вам не будет доступен по следующим причинам:
+When writing a program in a high-level language, you may be tempted to use all the benefits of high-level programming: `scanf`/`cin` for console input, `printf`/`cout` for console output, or dynamic arrays and STL containers. You should avoid such impulses, because "out of the box" none of this functionality will be available for the following reasons:
 
-1. **Консольный ввод-вывод**. Для того чтобы `printf` мог вывести сообщение в ваше устройство вывода, необходимо "рассказать" ему как это сделать. Для этого необходимо переопределить функцию `write`, используемую функцией `printf`.
-2. **Динамическая память**. Использование динамических массивов и контейнеров, неявно использующих динамическую память ограничено сложной механикой контроля за этой памятью. В системах общего назначения за это отвечает операционная система, однако в нашей встраиваемой системе её не будет. Для использования динамической памяти, вам потребуется написать **аллокатор** — специальную функцию, или класс, обеспечивающий выделение и освобождение памяти.
-3. **Размер стандартных библиотек**. Даже если вы реализуете весь требуемый функционал, любая из перечисленных выше функций стандартных библиотек C/C++ потянет за собой включение огромного числа кода, который в итоге попросту не уместится в вашу память инструкций.
+1. **Console I/O**. For `printf` to output a message to your output device, you need to "tell" it how to do so. This requires overriding the `write` function used by `printf`.
+2. **Dynamic memory**. The use of dynamic arrays and containers that implicitly rely on dynamic memory is limited by the complex mechanics of memory management. In general-purpose systems, the operating system handles this, but in our embedded system there is no OS. To use dynamic memory, you would need to write an **allocator** — a special function or class that handles memory allocation and deallocation.
+3. **Standard library size**. Even if you implement all the required functionality, any of the standard C/C++ library functions listed above will pull in a large amount of code that will simply not fit in your instruction memory.
 
-Однако, если вы всё ещё горите желанием писать по-настоящему высокоуровневый код, вы можете воспользоваться сторонними библиотеками, написанными специально для встраиваемых систем. К примеру, для `printf` можно использовать следующий репозиторий: https://github.com/mpaland/printf. Для использования этой библиотеки вам потребуется реализовать одну лишь функцию со следующим прототипом:
+However, if you still want to write truly high-level code, you can use third-party libraries written specifically for embedded systems. For example, for `printf` you can use the following repository: https://github.com/mpaland/printf. To use this library, you only need to implement one function with the following prototype:
 
 ```C
 void _putchar(char character);
 ```
 
-В этой функции вам необходимо рассказать, как вывести один ASCII-символ в ваше устройство вывода.
+In this function, you need to describe how to output a single ASCII character to your output device.
 
-Динамических массивов вам всё же стоит избегать, заменяя их статическими массивами заведомо большего размера. Однако, не всегда можно решить проблему одним лишь статическим массивом. К примеру, вы можете захотеть использовать словарь (ассоциативный массив). В этом случае вы можете использовать следующий репозиторий: https://github.com/mpaland/avl_array. Он не будет использовать динамическую память, в основе данного контейнера будет также лежать статический массив, размер которого вам необходимо будет задать вручную.
+You should still avoid dynamic arrays, replacing them with statically allocated arrays of a sufficiently large size. However, it is not always possible to solve a problem with just a static array. For example, you may want to use a dictionary (associative array). In that case, you can use the following repository: https://github.com/mpaland/avl_array. It does not use dynamic memory; the underlying container is also a static array whose size you must set manually.
 
 ---
 
-### Порядок выполнения задания
+### Assignment Steps
 
-1. Внимательно изучите параграфы теории и практики.
-2. Разберите принцип взаимодействия с контрольными и статусными регистрами периферийного устройства на примере _Листинга 4_.
-3. Обновите значения параметров `INSTR_MEM_SIZE_BYTES` и `DATA_MEM_SIZE_BYTES` в пакете `memory_pkg` на 32'd1024 и 32'd2048 соответственно. Поскольку пакеты не являются модулями, вы не увидите их во вкладке `Hierarchy` окна исходников, вместо этого вы сможете найти их во вкладках `Libraries` и `Compile order`.
-4. Напишите программу для своего индивидуального задания и набора периферийных устройств на языке C или C++. В случае написания кода на C++ помните о необходимости добавления `extern "C"` перед определением функции `int_handler`.
-   1. В описываемой программе обязательно должны присутствовать функции `main` и `int_handler`, т.к. в стартап-файле описаны вызовы этих функций. При необходимости, вы можете описать необходимые вам вспомогательные функции — ограничений на то, что должно быть ровно две этих функции нет.
-   2. Функция `main` может быть пустой — по её завершению в стартап-файле предусмотрен бесконечный цикл, из которого процессор сможет выходить только по прерыванию.
-   3. В функции `int_handler` вам необходимо считать поступившие от устройства ввода входные данные.
-   4. Вам необходимо самостоятельно решить, как вы хотите построить ход работы вашей программы: будет ли ваше индивидуальное задание вычисляться всего лишь 1 раз в функции `main`, данные в которую поступят от функции `int_handler` через глобальные переменные, или же оно будет постоянно пересчитываться при каждом вызове `int_handler`.
-   5. Доступ к регистрам контроля и статуса необходимо осуществлять посредством указателей на структуры, объявленные в файле [platform.h](./platform.h). В случае VGA-контроллера, доступ к областям памяти осуществляется через экземпляр структуры (а не указатель на нее), содержащий имена массивов `char_map`, `color_map` и `tiff_map`.
-5. [Скомпилируйте](#Практика) программу и [стартап-файл](startup.S) в объектные файлы.
-6. Скомпонуйте объектные файлы в исполняемый файл, передав компоновщику соответствующий [скрипт](linker_script.ld).
-7. Экспортируйте из объектного файла секции `.text` и `.data` в текстовые файлы `init_instr.mem`, `init_data.mem`. Если вы не создавали инициализированных статических массивов или глобальных переменных, то файл `init_data.mem` может быть оказаться пустым.
-   1. Если файл `init_data.mem` не пустой, необходимо проинициализировать память в модуле `data_mem` c помощью системной функции `$readmemh` как это было сделано для памяти инструкций.
-   2. Перед этим из файла `init_data.mem` необходимо удалить первую строку (вида `@20000000`), указывающую начальный адрес инициализации.
-8. Добавьте получившиеся текстовые файлы в проект Vivado.
-9. Запустите моделирование исполнения программы вашим процессором с помощью тестбенча из ЛР№13.
-   1. В `peripheral_pkg` находятся вспомогательные вызовы, позволяющие сымитировать ввод с клавиатуры или uart (для переключателей никаких вспомогательных вызовов не требуется). Пример имитации ввода вы можете посмотреть в тестбенче. Обновите код тестбенча таким образом, чтобы в вашу систему были поданы необходимые для работы вашей программы данные.
-   2. Для отладки во время моделирования будет удобно использовать дизасемблерный файл, ориентируясь на сигналы адреса и данных шины инструкций.
-10. Проверьте корректное исполнение программы процессором в ПЛИС.
+1. Carefully study the theory and practice sections.
+2. Understand the principle of interacting with the control and status registers of a peripheral device using _Listing 4_ as an example.
+3. Update the values of the `INSTR_MEM_SIZE_BYTES` and `DATA_MEM_SIZE_BYTES` parameters in the `memory_pkg` package to 32'd1024 and 32'd2048 respectively. Since packages are not modules, you will not see them in the `Hierarchy` tab of the sources window; instead, you can find them in the `Libraries` and `Compile order` tabs.
+4. Write a program for your individual assignment and peripheral device set in C or C++. If writing C++ code, remember to add `extern "C"` before the definition of the `int_handler` function.
+   1. The program must include both `main` and `int_handler` functions, since the startup file contains calls to these functions. If needed, you may define additional helper functions — there is no restriction that exactly two functions must be present.
+   2. The `main` function may be empty — upon its return, the startup file provides an infinite loop that the processor can only exit via an interrupt.
+   3. In the `int_handler` function, you must read the input data received from the input device.
+   4. You must decide on your own how to structure the program's execution flow: whether your individual assignment will be computed only once inside `main` using data passed from `int_handler` via global variables, or whether it will be recomputed on every call to `int_handler`.
+   5. Access to control and status registers must be done through pointers to structures declared in the file [platform.h](./platform.h). For the VGA controller, access to memory regions is done through a structure instance (not a pointer to it) containing the array names `char_map`, `color_map`, and `tiff_map`.
+5. [Compile](#practice) the program and the [startup file](startup.S) into object files.
+6. Link the object files into an executable, passing the corresponding [script](linker_script.ld) to the linker.
+7. Export the `.text` and `.data` sections from the object file into the text files `init_instr.mem` and `init_data.mem`. If you did not create any initialized static arrays or global variables, the `init_data.mem` file may be empty.
+   1. If the `init_data.mem` file is not empty, initialize the memory in the `data_mem` module using the `$readmemh` system function, as was done for instruction memory.
+   2. Before doing so, remove the first line (of the form `@20000000`) from the `init_data.mem` file, which specifies the starting initialization address.
+8. Add the resulting text files to the Vivado project.
+9. Run the simulation of program execution on your processor using the testbench from Lab 13.
+   1. `peripheral_pkg` contains helper tasks that allow you to simulate keyboard or UART input (no helper tasks are needed for switches). You can see an example of input simulation in the testbench. Update the testbench code so that the data required for your program to run is fed into your system.
+   2. For debugging during simulation, it is convenient to use the disassembled file as a reference, guided by the address and data signals on the instruction bus.
+10. Verify that the program executes correctly on the processor in the FPGA.
 
-## Список источников:
+## References
 
-1. [RISC-V ABIs Specification, Document Version 1.0, Editors Kito Cheng and Jessica
-Clarke, RISC-V International, November 2022](https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/v1.0/riscv-abi.pdf);
+1. [RISC-V ABIs Specification, Document Version 1.0, Editors Kito Cheng and Jessica Clarke, RISC-V International, November 2022](https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/v1.0/riscv-abi.pdf);
 2. [Using LD, the GNU linker — Linker Scripts](https://home.cs.colorado.edu/~main/cs1300/doc/gnu/ld_3.html#IDX338);
 3. [Google Groups — "gcc gp (global pointer) register"](https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/60IdaZj27dY/m/s1eJMlrUAQAJ?pli=1);
 4. [Wikipedia — .bss](https://en.wikipedia.org/wiki/.bss).
-
-
