@@ -1,35 +1,35 @@
-# Написание программы под процессор CYBERcobra
+# Writing a Program for the CYBERcobra Processor
 
-Чтобы максимально "прочувствовать" принцип работы созданного вами процессора, вам необходимо написать один из [вариантов программ](#Индивидуальные-задания). Вариант выдаётся преподавателем.
+To fully grasp the principles behind the processor you have built, you need to write one of the [individual assignments](#individual-assignments). The variant is assigned by the instructor.
 
-Порядок выполнения задания следующий:
+The procedure is as follows:
 
-1. В первую очередь необходимо ознакомиться с заданием и изучить пример, приведённый в конце задания. Если возникли вопросы по заданию или примеру, свяжитесь с преподавателем. Чем лучше вы понимаете, что от вас ожидают, тем проще будет выполнить задание.
-2. Составьте алгоритм работы программы (буквально возьмите листочек, и нарисуйте блок-схему). Прежде чем вы погрузитесь в увлекательное приключение с ноликами и единицами, вам нужно составить четкую карту вашего путешествия.
-3. Проверьте вашу блок-схему на данных из примера. Если все сошлось, проверьте вашу блок-схему на других данных. Не забывайте про краевые случаи (отрицательные числа, деление на ноль, переполнения и прочее — для каждого задания они могут быть разными).
-4. После того как вы убедились в работоспособности алгоритма на всех возможных данных, наступает время претворить его в виде двоичной программы.
-5. Программа описывается в текстовом файле. Для удобства был написан специальный конвертер, который будет принимать на вход текстовый файл с комментариями и двоичным кодом, разделённым пробелами, а на выход выдавать текстовый файл, которым можно будет проинициализировать память инструкций. Подробнее о конвертере смотрите в параграфе [cyberconverter](#cyberconverter). Пример текстового файла, который сможет принять конвертер:
+1. First, read the assignment carefully and study the example provided at the end. If you have any questions about the assignment or the example, contact the instructor. The better you understand what is expected of you, the easier it will be to complete the task.
+2. Design the program algorithm (literally take a sheet of paper and draw a flowchart). Before you dive into the exciting adventure of zeros and ones, you need to draw a clear map of your journey.
+3. Verify your flowchart against the data from the example. If everything matches, check your flowchart against other data. Do not forget about edge cases (negative numbers, division by zero, overflows, etc. — these may differ for each assignment).
+4. Once you have confirmed that the algorithm works for all possible inputs, it is time to implement it as a binary program.
+5. The program is described in a text file. For convenience, a special converter has been written that takes a text file containing comments and binary code separated by spaces as input, and produces a text file that can be used to initialize the instruction memory. For more details on the converter, see the [cyberconverter](#cyberconverter) section. An example of a text file that the converter can accept:
 
     ```text
     //J B WS ALUop  RA1   RA2   const     WA
-      0 0 00   11111111111111111111111  00001  // загрузить константу -1 в регистр 1
-      0 0 10   00000000000000000000000  00010  // загрузить значение с входа sw_i в регистр 2
-      0 0 00   00000000000000000000001  00011  // загрузить константу 1 регистр 3
-      0 0 01 00000 00001 00011 00000000 00001  // сложить регистр 1 с регистром 3 и поместить результат в регистр 1
-      0 1 00 11110 00001 00010 11111111 00000  // если значение в регистре 1 меньше значения в регистре 2, возврат на 1 инструкцию назад
-      1 0 00 00000 00001 00000 00000000 00000  // бесконечное повторение этой инструкции с выводом на out_o значения в регистре 1
+      0 0 00   11111111111111111111111  00001  // load constant -1 into register 1
+      0 0 10   00000000000000000000000  00010  // load value from sw_i input into register 2
+      0 0 00   00000000000000000000001  00011  // load constant 1 into register 3
+      0 0 01 00000 00001 00011 00000000 00001  // add register 1 and register 3, store result in register 1
+      0 1 00 11110 00001 00010 11111111 00000  // if the value in register 1 is less than the value in register 2, go back 1 instruction
+      1 0 00 00000 00001 00000 00000000 00000  // repeat this instruction indefinitely, outputting the value of register 1 to out_o
     ```
 
-6. При реализации условных переходов следует иметь в виду пару правил:
-   1. Блок ветвления (аналог `if/else`) состоит из двух наборов инструкций:
-      1. инструкции блока `if` (если условие выполнилось)
-      2. инструкции блока `else` (если условие не выполнилось)
+6. When implementing conditional branches, keep the following rules in mind:
+   1. A branch block (analogous to `if/else`) consists of two sets of instructions:
+      1. instructions of the `if` block (executed when the condition is true)
+      2. instructions of the `else` block (executed when the condition is false)
 
-      При этом сразу за инструкцией ветвления описываются инструкции блока `else` (т.к. в случае невыполнения условия перехода, `PC` перейдёт к следующей инструкции).  
-      Для того, чтобы после выполнения инструкций блока `else` не начались исполняться инструкции блока `if`, в конце блока этих инструкций необходимо добавить безусловный переход на инструкцию, следующую за инструкциями блока `if`.
-   2. Если вы реализуете не ветвление (аналог блока `if/else`), а только проверку условия для выполнения какого-то блока инструкций (аналог блока `if` без блока `else`), вы должны помнить, что блок `else` всё равно есть, просто в этом блоке нет инструкций. Однако вы, как и в прошлом правиле, должны добавить безусловный переход на инструкцию, следующую за инструкциями блока `if`.  
-      Этого можно избежать, если инвертировать ваше условие. В этом случае, если ваше инвертированное условие выполнится, вы сможете сразу пропустить нужное количество инструкций и начать исполнять инструкцию за пределами вашего блока `if`. Если инвертированное условие не выполнится (т.е. выполнится исходное условие), `PC` перейдёт к следующей инструкции, где и будут находиться ваши инструкции блока `if`.  
-      Звучит достаточно запутанно, поэтому давайте рассмотрим пару примеров. Сначала мы запишем нашу идею на языке Си, а затем перенесём её в двоичный код под архитектуру CYBERcobra:
+      The instructions of the `else` block immediately follow the branch instruction (because when the branch condition is not taken, `PC` moves to the next instruction).  
+      To prevent the `if` block instructions from being executed after the `else` block completes, an unconditional jump to the instruction following the `if` block must be added at the end of the `else` block.
+   2. If you are implementing not a branch (analogous to `if/else`) but only a condition check for a block of instructions (analogous to an `if` block without an `else`), remember that the `else` block still exists — it simply contains no instructions. However, as in the previous rule, you must still add an unconditional jump to the instruction following the `if` block.  
+      This can be avoided by inverting your condition. In that case, if the inverted condition is true, you can immediately skip the required number of instructions and begin executing the instruction beyond your `if` block. If the inverted condition is false (i.e., the original condition is true), `PC` will move to the next instruction, where your `if` block instructions will be located.  
+      This sounds somewhat confusing, so let us look at a couple of examples. We will first write the idea in C, then translate it into binary code for the CYBERcobra architecture:
 
       ```C
       if(reg[1]==reg[5])
@@ -40,25 +40,25 @@
       else
       {
         reg[2] = 7;
-        goto if_end;  // Поскольку в памяти программы блок else будет идти
-                      // сразу за инструкцией условного перехода, необходимо
-                      // добавить в конце инструкцию безусловного перехода,
-                      // чтобы не начать исполнять инструкции блока if.
+        goto if_end;  // Since in program memory the else block follows
+                      // immediately after the conditional branch instruction,
+                      // an unconditional jump must be added at the end
+                      // to avoid executing the if block instructions.
       }
       if_end:
       ```
 
-      Мы хотим проверить на равенство значения в регистровом файле по адресам `1` и `5`. Если это так, записать значения `10` и `15` по адресам `2` и `3` соответственно. В противном случае, записать значение `7` по адресу `2`.  
-      Это можно реализовать следующей двоичной программой:
+      We want to check whether the values in the register file at addresses `1` and `5` are equal. If so, write values `10` and `15` to addresses `2` and `3` respectively. Otherwise, write value `7` to address `2`.  
+      This can be implemented with the following binary program:
 
       ```text
       //J B WS ALUop  RA1   RA2   const     WA
-        0 1 00 11000 00001 00101 00000011 00000 // Если регистры 1 и 5 равны,
-                                                // перемести PC на 3 инструкции вперёд
-                                                // (перешагни через две
-                                                // инструкции блока else)
+        0 1 00 11000 00001 00101 00000011 00000 // If registers 1 and 5 are equal,
+                                                // move PC 3 instructions forward
+                                                // (skip over two
+                                                // instructions of the else block)
       //---------------------------------------
-      // блок else
+      // else block
       //---------------------------------------
         0 0 00   00000000000000000000111  00010 // reg[2] = 7
         1 0 00 00000 00000 00000 00000011 00000 // goto if_end
@@ -66,18 +66,18 @@
 
 
       //---------------------------------------
-      // блок if
+      // if block
       //---------------------------------------
         0 0 00   00000000000000000001010  00010 // reg[2] = 10
         0 0 00   00000000000000000001111  00011 // reg[3] = 15
       //---------------------------------------
 
-        0 0 00   00000000000000000000000  00000 // некая инструкция с меткой if_end
-                                                // куда будет перемещен PC после
-                                                // выполнения блока else
+        0 0 00   00000000000000000000000  00000 // some instruction at the if_end label,
+                                                // where PC will be moved after
+                                                // the else block executes
       ```
 
-      Рассмотрим второй пример, где нет блока `else`:
+      Let us consider the second example, where there is no `else` block:
 
       ```C
       if(reg[1] == reg[5])
@@ -87,7 +87,7 @@
       }
       ```
 
-      Как упоминалось ранее, можно реализовать этот условный переход по той же схеме (тогда пример программы на Си примет вид):
+      As mentioned earlier, this conditional branch can be implemented using the same scheme (in which case the C program looks like):
 
       ```C
       if(reg[1] == reg[5])
@@ -102,7 +102,7 @@
       if_end:
       ```
 
-      А можно инвертировать условие:
+      Alternatively, the condition can be inverted:
 
       ```C
       if(reg[1] != reg[5])
@@ -116,202 +116,202 @@
       }
       ```
 
-      В этом случае, нет нужды делать безусловный переход на инструкцию, следующую за инструкциями блока `if`, т.к. там нет никаких инструкций.  
-      Такое условие можно реализовать следующей двоичной программой:
+      In this case, there is no need to add an unconditional jump to the instruction following the `if` block, since there are no instructions there.  
+      This condition can be implemented with the following binary program:
 
       ```text
       //J B WS ALUop  RA1   RA2   const     WA
-        0 1 00 11001 00010 00101 00000011 00000 // Если регистры 2 и 5 НЕ РАВНЫ,
-                                                // перемести PC на 3 инструкции вперед
-                                                // (перешагни через две
-                                                // инструкции блока else)
+        0 1 00 11001 00010 00101 00000011 00000 // If registers 2 and 5 are NOT EQUAL,
+                                                // move PC 3 instructions forward
+                                                // (skip over two
+                                                // instructions of the else block)
       //---------------------------------------
-      // блок else
+      // else block
       //---------------------------------------
         0 0 00   00000000000000000001010  00010 // reg[2] = 7
         0 0 00   00000000000000000001111  00011 // reg[3] = 15
       //---------------------------------------
       ```
 
-7. В двоичном программировании, реализация циклов лучше всего делается аналогом `do while` в Си (если вы уверены, что первая итерация цикла гарантированно пройдёт условие выхода из цикла). В этом случае, вы сперва описываете тело цикла, а затем через условный переход возвращаетесь обратно к началу тела цикла. Если условие не выполнилось, вы автоматически выйдете из цикла.
-8. Для того, чтобы в конце выполнения программы было легко увидеть результат выполнения, в конец программы необходимо добавить инструкцию безусловного перехода, поле `const` которой равно нулю. В этом случае, будет выполняться `PC=PC+0` что приведёт к повторению этой инструкции снова и снова. При этом в поле `RA1` необходимо указать адрес регистра, где хранится результат. На временной диаграмме это отобразится так, что в какой-то момент все сигналы процессора "замрут", а на выходе `out_o` окажется результат, вычисленный вашей программой.
-9. После того, как вы написали программу, её необходимо проверить. Для этого сперва необходимо преобразовать её к формату, принимаемому памятью инструкций с помощью программы [`cyberconverter`](#cyberconverter). При необходимости, заменить данные в файле, инициализирующем память инструкций актуальными данными.
-10. Если ваша программа использует данные с внешних устройств, нужно выставить проверяемое вами значение в модуле `testbench` на вход `sw_i` в месте подключения модуля `CYBERcobra`.
-11. Проверка работы программы осуществляется аналогично проверке модуля `CYBERcobra` — вы достаете внутренние сигналы модуля, и смотрите за поведением сигналов: `PC`, `read_data` памяти инструкций, `flag` АЛУ, содержимым регистрового файла. Проверяете, что в конце на выходе `out_o` размещено корректное значение.
+7. In binary programming, loops are best implemented as the equivalent of `do while` in C (if you are certain that the first iteration will always satisfy the loop exit condition). In this case, you first describe the loop body, then use a conditional branch to return to the beginning of the loop body. If the condition is not satisfied, execution will automatically exit the loop.
+8. To make it easy to see the result at the end of program execution, add an unconditional jump instruction at the end of the program with the `const` field equal to zero. This will execute `PC=PC+0`, causing that instruction to repeat indefinitely. Set the `RA1` field to the address of the register holding the result. On the waveform, this will appear as all processor signals "freezing" at some point, while the output `out_o` holds the result computed by your program.
+9. After writing the program, it must be verified. To do this, first convert it to the format accepted by the instruction memory using the [`cyberconverter`](#cyberconverter) tool. If necessary, replace the data in the instruction memory initialization file with the updated data.
+10. If your program uses data from external devices, set the value you want to test on the `sw_i` input of the `CYBERcobra` module in the `testbench`.
+11. Program verification is performed in the same way as verifying the `CYBERcobra` module — you expose the internal signals of the module and observe the behavior of: `PC`, `read_data` of the instruction memory, `flag` of the ALU, and the contents of the register file. Verify that at the end of execution, the output `out_o` holds the correct value.
 
 ## cyberconverter
 
-[cyberconverter](cyberconverter.cpp) — это программа, которая преобразует текстовый файл с инструкциями архитектуры CYBERcobra в текстовый файл, который сможет принять память инструкций.
+[cyberconverter](cyberconverter.cpp) is a program that converts a text file containing CYBERcobra architecture instructions into a text file that can be used to initialize the instruction memory.
 
-cyberconverter может обрабатывать файлы, содержащие комментарии (начинающиеся с `//`), пробелы и пустые строки, а также наборы символов `0` и `1`. Комментарии, пробелы и пустые строки удаляются, после чего оставшиеся строки из 32 нулей и единиц конвертируются в шестнадцатеричные значения и записываются в выходной файл.
+cyberconverter can process files containing comments (starting with `//`), spaces and blank lines, as well as sequences of `0` and `1` characters. Comments, spaces, and blank lines are removed, after which the remaining 32-character binary strings are converted to hexadecimal values and written to the output file.
 
-cyberconverter принимает до двух аргументов. Порядок запуска следующий:
+cyberconverter accepts up to two arguments. The usage is as follows:
 
-1. Вызов справки:
+1. Display help:
 
     ```bash
     cyberconverter -h
     cyberconverter --help
     ```
 
-2. Преобразование программы, записанной в файле `test.txt`, с записью результата в файл `program.mem`:
+2. Convert a program stored in `test.txt` and write the result to `program.mem`:
 
     ```bash
     cyberconverter test.txt program.mem
     ```
 
-3. Если не указан второй аргумент, результат будет записан в файл:
- `<имя_исходного_файла>_converted.<расширение исходного файла>`:
+3. If the second argument is not specified, the result will be written to:
+ `<source_filename>_converted.<source_file_extension>`:
 
     ```bash
     cyberconverter test.txt
     ```
 
-     Результат будет записан в файл `test_converted.txt`.
+     The result will be written to `test_converted.txt`.
 
-4. Если программа будет запущена без аргументов, то исходным файлом будет считаться файл `program.mem`.
+4. If the program is run without any arguments, the source file is assumed to be `program.mem`.
 
-В случае отсутствия исходного файла, наличия неподдерживаемых символов или неверной длины инструкции будет выведено сообщение об ошибке.
+If the source file is missing, contains unsupported characters, or has an incorrect instruction length, an error message will be displayed.
 
-## Индивидуальные задания
+## Individual Assignments
 
-В приведённых ниже заданиях под `a` будет подразумеваться некоторое число, заданное в программе (например, в программе прописано `a=10`), под `sw_i` — вход с внешних устройств. "Вывести в `out_o`" — означает, что в конце программы необходимо реализовать бесконечный цикл, с указанием в `RA1` адреса регистра, хранящего результат (см. пункт 8 параграфа "[Написание программы под процессор CYBERcobra](#Написание-программы-под-процессор-cybercobra)").
+In the assignments below, `a` refers to a number defined in the program (for example, the program sets `a=10`), and `sw_i` refers to the external device input. "Output to `out_o`" means that at the end of the program you must implement an infinite loop with `RA1` set to the address of the register holding the result (see step 8 of the "[Writing a Program for the CYBERcobra Processor](#writing-a-program-for-the-cybercobra-processor)" section).
 
-В случае, если задание используется для написания программы на ассемблере, `sw_i` будет обозначать ещё одно число, заданное в программе (как и `a`), а под "Вывести в `out_o`" — запись результата в регистр `x10` (в назначение этого регистра входит возврат результата функции) в конце выполнения программы.
+If the assignment is used for writing an assembly program, `sw_i` denotes another number defined in the program (like `a`), and "Output to `out_o`" means writing the result to register `x10` (whose designated purpose is to return a function result) at the end of program execution.
 
-1. Вычислить [циклический сдвиг](https://ru.wikipedia.org/wiki/Битовый_сдвиг#Циклический_сдвиг) вправо `a >> sw_i`.  
-Пример: `a = 0...01011`, `sw_i = 0...010`.  
-Результат вычислений: `out_o = 110...010`.  
+1. Compute the [circular shift](https://ru.wikipedia.org/wiki/Битовый_сдвиг#Циклический_сдвиг) right `a >> sw_i`.  
+Example: `a = 0...01011`, `sw_i = 0...010`.  
+Result: `out_o = 110...010`.  
 
-2. Вычислить `a - sw_i` без использования операции вычитания.  
-Пример: `sw_i = 0...011`, `a = 0...0100`.  
-Результат вычислений: `out_o = 0...001`.
+2. Compute `a - sw_i` without using the subtraction operation.  
+Example: `sw_i = 0...011`, `a = 0...0100`.  
+Result: `out_o = 0...001`.
 
-3. Вычислить [циклический сдвиг](https://ru.wikipedia.org/wiki/Битовый_сдвиг#Циклический_сдвиг) влево `a << sw_i`.  
-Пример: `a = 10...01011`, `sw_i = 0...10`.  
-Результат вычислений: `out_o = 0...0101110`.  
+3. Compute the [circular shift](https://ru.wikipedia.org/wiki/Битовый_сдвиг#Циклический_сдвиг) left `a << sw_i`.  
+Example: `a = 10...01011`, `sw_i = 0...10`.  
+Result: `out_o = 0...0101110`.  
 
-4. Поменять местами `[7:0]` и `[15:8]` биты числа `sw_i`. Вывести результат в `out_o`.  
-Пример: `sw_i = 0...010100000_1110010`.  
-Результат вычислений: `out_o = 0...011100101_10100000`.   
+4. Swap bits `[7:0]` and `[15:8]` of the number `sw_i`. Output the result to `out_o`.  
+Example: `sw_i = 0...010100000_1110010`.  
+Result: `out_o = 0...011100101_10100000`.   
 
-5. Вычислить приблизительное значение длины вектора `(a;sw_i)`. Вычисляется как `max + min/2`, где `max` и `min` — это большее и меньшее из чисел `a` и `sw_i` соответственно.  
-Пример: `a = 0...011`, `sw_i = 0...0100`.   
-Результат вычислений: `out_o = 0...0101`.  
-
----
-
-6. Вычислить `a * sw_i` посредством суммы `sw_i` значений `a`. Вывести результат в `out_o`.  
-Пример: `a = 5`, `sw_i = 4`. `5 * 4 == 5 + 5 + 5 + 5 = 20`.  
-Результат вычислений: `out_o = 0...010100`.
-
-7. Если `sw_i[1:0] == 00`, то в `out_o` выводится `a`,  если `sw_i[1:0] == 01`, то `b`,  если `sw_i[1:0] == 10`, то `c`,  если `sw_i[1:0] == 11`, то `d`.   
-Пример: `a = 0...00`, `b = 0...010`, `c = 0...011`, `d = 0...001`, `sw_i[1:0] = 01`.   
-Результат вычислений: `out_o = 0...010`.  
-
-8. Посчитать длину окружности при заданном радиусе `sw_i`, считая, что `pi = 3`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...010`.  
-Результат вычислений: `out_o = 0...01100`.  
-
-9. Если `sw_i` является степенью двойки, то вывести `out_o =  0...01`, в противном случае, `out_o = 0...0`.   
-Пример 1: `sw_i = 0...0100`. Результат вычислений: `out_o = 0...01`.   
-Пример 2: `sw_i = 0...0110`. Результат вычислений: `out_o = 0...00`.
-
-10. Найти количество нулей в двоичном представлении числа `sw_i`. Вывести результат в `out_o`.   
-Пример: `sw_i = 1...10110_0010`.   
-Результат вычислений: `out_o = 0...0101`.
-
-11. Найти наибольший двоичный разряд числа `sw_i`, значение которого равно `1`. Если такого нет, вывести `32`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...0110`.   
-Результат вычислений: `out_o = 0...010`.  
-
-12. Сформировать число, состоящее из чётных двоичных разрядов числа `sw_i`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...011_1011_1000`.   
-Результат вычислений `out_o = 0...01_0100`.  
-
-13. Найти количество единиц в двоичном представлении числа `sw_i` (обратите внимание, `sw_i` – знаковое число). Вывести результат в `out_o`.   
-Пример: `sw_i = 0...0101_0110`.   
-Результат вычислений: `out_o = 0...0100`.  
-
-14. Найти количество двоичных разрядов, в которых различаются числа `sw_i` и `a`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...0110`, `a = 0...01110`.   
-Результат вычислений: `out_o = 0...01`.  
-
-15. Вывести в `out_o` подряд все единицы входного числа `sw_i`.   
-Пример: `sw_i = 0...01011011011`.   
-Результат вычислений:`out_o` = `0...01111111`.  
-
-16. Вывести в `out_o` значение выражения: `out = (k*a + b) + c`, где `k` — это `sw_i[15:12]`, `a` — это `sw_i[11:8]`, `b` — это `sw_i[7:4]`, `c` — это `sw_i[3:0]`.  
-Пример: `sw_i = 0...0011_0010_0100_0011`.   
-Результат вычислений: `out_o = 0...01101`.   
+5. Compute the approximate length of the vector `(a; sw_i)`. It is computed as `max + min/2`, where `max` and `min` are the larger and smaller of `a` and `sw_i` respectively.  
+Example: `a = 0...011`, `sw_i = 0...0100`.   
+Result: `out_o = 0...0101`.  
 
 ---
 
-17. Найти остаток от деления `sw_i` на `a`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...0101`, `a = 0...010`.   
-Результат вычислений: `out_o = 0...01`.   
+6. Compute `a * sw_i` as a sum of `sw_i` copies of `a`. Output the result to `out_o`.  
+Example: `a = 5`, `sw_i = 4`. `5 * 4 == 5 + 5 + 5 + 5 = 20`.  
+Result: `out_o = 0...010100`.
 
-18. Найти и вывести в `out_o` количество вхождений `a[2:0]` в `sw_i` без пересечений.   
-Пример: `a[2:0] = 010`, `sw_i = 0...01101_0101`.   
-Результат вычислений: `out_o = 0...01`.  
+7. If `sw_i[1:0] == 00`, output `a` to `out_o`; if `sw_i[1:0] == 01`, output `b`; if `sw_i[1:0] == 10`, output `c`; if `sw_i[1:0] == 11`, output `d`.   
+Example: `a = 0...00`, `b = 0...010`, `c = 0...011`, `d = 0...001`, `sw_i[1:0] = 01`.   
+Result: `out_o = 0...010`.  
 
-19. Определить, сколько раз встречается `11` в двоичном представлении `sw_i` без пересечений. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...01110`.    
-Результат вычислений: `out_o = 0...01`.  
+8. Compute the circumference for a given radius `sw_i`, assuming `pi = 3`. Output the result to `out_o`.   
+Example: `sw_i = 0...010`.  
+Result: `out_o = 0...01100`.  
 
-20. Вывести в `out_o` результат целочисленного деления `a/sw_i`.   
-Пример: `sw_i = 0...010`, `a = 0...0111`.   
-Результат вычислений: `out_o = 0...011`.  
+9. If `sw_i` is a power of two, output `out_o = 0...01`; otherwise output `out_o = 0...0`.   
+Example 1: `sw_i = 0...0100`. Result: `out_o = 0...01`.   
+Example 2: `sw_i = 0...0110`. Result: `out_o = 0...00`.
 
-21. Вывести в `out_o` сумму `sw_i[3:0]` + `sw_i[7:4]` + `sw_i[11:8]` + `sw_i[15:12]`.   
-Пример: `sw_i[15:0] = 0001_0010_0011_0000`.    
-Результат вычислений: `out_o = 0...0110`.  
+10. Count the number of zeros in the binary representation of `sw_i`. Output the result to `out_o`.   
+Example: `sw_i = 1...10110_0010`.   
+Result: `out_o = 0...0101`.
 
-22. В числе `sw_i` заменить справа-налево каждое `00` на `11`. Вывести результат в `out_o`.   
-Пример: `sw_i = 1...101000`.    
-Результат вычислений: `out_o = 1...101011`.  
+11. Find the highest binary bit of `sw_i` whose value is `1`. If no such bit exists, output `32`. Output the result to `out_o`.   
+Example: `sw_i = 0...0110`.   
+Result: `out_o = 0...010`.  
+
+12. Form a number consisting of the even-indexed binary bits of `sw_i`. Output the result to `out_o`.   
+Example: `sw_i = 0...011_1011_1000`.   
+Result: `out_o = 0...01_0100`.  
+
+13. Count the number of ones in the binary representation of `sw_i` (note: `sw_i` is a signed number). Output the result to `out_o`.   
+Example: `sw_i = 0...0101_0110`.   
+Result: `out_o = 0...0100`.  
+
+14. Count the number of binary bits in which `sw_i` and `a` differ. Output the result to `out_o`.   
+Example: `sw_i = 0...0110`, `a = 0...01110`.   
+Result: `out_o = 0...01`.  
+
+15. Output all the one-bits of `sw_i` packed consecutively to `out_o`.   
+Example: `sw_i = 0...01011011011`.   
+Result: `out_o = 0...01111111`.  
+
+16. Output to `out_o` the value of the expression: `out = (k*a + b) + c`, where `k` is `sw_i[15:12]`, `a` is `sw_i[11:8]`, `b` is `sw_i[7:4]`, `c` is `sw_i[3:0]`.  
+Example: `sw_i = 0...0011_0010_0100_0011`.   
+Result: `out_o = 0...01101`.   
 
 ---
 
-23. Поменять местами чётные биты числа `sw_i` с нечётными битами этого числа (то есть соседние биты поменять местами). Вывести результат в `out_o`.   
-Пример: `sw_i = 0...01010_0111`.   
-Результат вычислений: `out_o = 0...0101_1011`.  
+17. Find the remainder of dividing `sw_i` by `a`. Output the result to `out_o`.   
+Example: `sw_i = 0...0101`, `a = 0...010`.   
+Result: `out_o = 0...01`.   
 
-24. Инвертировать первые `sw_i` бит числа `a`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...011`, `a = 0...01010_0011`.   
-Результат вычислений: `out_o = 0...01010_0100`.  
+18. Find and output to `out_o` the number of non-overlapping occurrences of `a[2:0]` in `sw_i`.   
+Example: `a[2:0] = 010`, `sw_i = 0...01101_0101`.   
+Result: `out_o = 0...01`.  
 
-25. Вывести n-ый член [последовательности Фибоначчи](https://ru.wikipedia.org/wiki/Числа_Фибоначчи) Fn. n = `sw_i`. Вывести результат в `out_o`.   
-Пример: `sw_i = 0...0100`.   
-Результат вычислений: `out_o = 0...010`.  
+19. Determine how many times the pattern `11` occurs in the binary representation of `sw_i` without overlaps. Output the result to `out_o`.   
+Example: `sw_i = 0...01110`.    
+Result: `out_o = 0...01`.  
 
-26. Поменять в числе `a` разряды `i = sw_i[4:0]` и `j = sw_i[9:5]`. Вывести результат в `out_o`.   
-Пример: `a = 0...01001`, `sw_i[9:0] = 00000_00001`. Значит, в числе `а` необходимо поменять местами `а[0]` и `a[1]`.   
-Результат вычислений: `out_o = 0...01010`.  
+20. Output to `out_o` the result of integer division `a/sw_i`.   
+Example: `sw_i = 0...010`, `a = 0...0111`.   
+Result: `out_o = 0...011`.  
+
+21. Output to `out_o` the sum `sw_i[3:0]` + `sw_i[7:4]` + `sw_i[11:8]` + `sw_i[15:12]`.   
+Example: `sw_i[15:0] = 0001_0010_0011_0000`.    
+Result: `out_o = 0...0110`.  
+
+22. In the number `sw_i`, replace each occurrence of `00` with `11` scanning from right to left. Output the result to `out_o`.   
+Example: `sw_i = 1...101000`.    
+Result: `out_o = 1...101011`.  
 
 ---
 
-27. Вычислить `a * sw_i` с использованием операций сложений и сдвига ("в столбик"). Вывести результат в `out_o`.   
-[Пример](https://en.wikipedia.org/wiki/Binary_multiplier#Binary_long_multiplication): `a = 0...01011`, `sw_i[9:0] = 0...01110`.   
-Результат вычислений: `out_o = 0...010011010`.  
+23. Swap the even-indexed bits of `sw_i` with the odd-indexed bits (i.e., swap each pair of adjacent bits). Output the result to `out_o`.   
+Example: `sw_i = 0...01010_0111`.   
+Result: `out_o = 0...0101_1011`.  
+
+24. Invert the first `sw_i` bits of the number `a`. Output the result to `out_o`.   
+Example: `sw_i = 0...011`, `a = 0...01010_0011`.   
+Result: `out_o = 0...01010_0100`.  
+
+25. Output the n-th term of the [Fibonacci sequence](https://ru.wikipedia.org/wiki/Числа_Фибоначчи) Fn, where n = `sw_i`. Output the result to `out_o`.   
+Example: `sw_i = 0...0100`.   
+Result: `out_o = 0...010`.  
+
+26. In the number `a`, swap bits `i = sw_i[4:0]` and `j = sw_i[9:5]`. Output the result to `out_o`.   
+Example: `a = 0...01001`, `sw_i[9:0] = 00000_00001`. This means bits `a[0]` and `a[1]` must be swapped.   
+Result: `out_o = 0...01010`.  
+
+---
+
+27. Compute `a * sw_i` using addition and shift operations (long multiplication). Output the result to `out_o`.   
+[Example](https://en.wikipedia.org/wiki/Binary_multiplier#Binary_long_multiplication): `a = 0...01011`, `sw_i[9:0] = 0...01110`.   
+Result: `out_o = 0...010011010`.  
 ```  
-       1011   (11 в двоичном виде)
-     x 1110   (14 в двоичном виде)
+       1011   (11 in binary)
+     x 1110   (14 in binary)
      ======
-       0000   (это 1011 x 0)
-      1011    (это 1011 x 1, сдвинутое на 1 влево)
-     1011     (это 1011 x 1, сдвинутое на 2 влево)
-  + 1011      (это 1011 x 1, сдвинутое на 2 влево)
+       0000   (this is 1011 x 0)
+      1011    (this is 1011 x 1, shifted left by 1)
+     1011     (this is 1011 x 1, shifted left by 2)
+  + 1011      (this is 1011 x 1, shifted left by 3)
   =========
-   10011010   (154 в двоичном виде)
+   10011010   (154 in binary)
 ```
 
-28. Вывести в `out_o` n-ый член [арифметической прогрессии](https://ru.wikipedia.org/wiki/Арифметическая_прогрессия) aN, где `a1 = a`, `d = sw_i[15:8]`, `n = sw_i[7:0]` (d и n неотрицательные).   
-Пример: `sw_i[15:8] = 0000_0010`, `sw_i[7:0] = 0000_0011`, `a = 0...01`.   
-Результат вычислений: `out_o = 0...0101`.  
+28. Output to `out_o` the n-th term of the [arithmetic progression](https://ru.wikipedia.org/wiki/Арифметическая_прогрессия) aN, where `a1 = a`, `d = sw_i[15:8]`, `n = sw_i[7:0]` (d and n are non-negative).   
+Example: `sw_i[15:8] = 0000_0010`, `sw_i[7:0] = 0000_0011`, `a = 0...01`.   
+Result: `out_o = 0...0101`.  
 
-<!-- 25. *Зажечь все светодиоды на 50% яркости ([подсказка](http://wiki.amperka.ru/конспект-arduino:шим)) -->
+<!-- 25. *Turn on all LEDs at 50% brightness ([hint](http://wiki.amperka.ru/конспект-arduino:шим)) -->
 
-29. Удалить все вхождения `sw_i[2:0]` из `a` со сдвигом вправо (заполняя удалённые области).   
-Пример: `a = 0...010011010`, `sw_i[2:0] = 101`.  
-Результат вычислений: `out_o = 0...010010`
+29. Remove all occurrences of `sw_i[2:0]` from `a` with a right shift (filling in the removed areas).   
+Example: `a = 0...010011010`, `sw_i[2:0] = 101`.  
+Result: `out_o = 0...010010`

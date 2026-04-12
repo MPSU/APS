@@ -1,83 +1,83 @@
-# Что такое язык описания аппаратуры (HDL)
+# What is a Hardware Description Language (HDL)
 
-На заре появления цифровой электроники, [цифровые схемы](How%20FPGA%20works.md#Цифровые-схемы) в виде диаграммы на бумаге были маленькими, а их реализация в виде физической аппаратуры — большой. В процессе развития электроники (и её преобразования в микроэлектронику) цифровые схемы на бумаге становились всё больше, а относительный размер их реализации в виде физических микросхем — всё меньше. На _рис. 1_, вы можете увидеть цифровую схему устройства Intel 4004, выпущенного в 1971 году.
+In the early days of digital electronics, [digital circuits](How%20FPGA%20works.md#Digital-circuits) drawn on paper were small, while their physical hardware implementations were large. As electronics evolved into microelectronics, the paper diagrams grew increasingly complex, while the physical size of their chip implementations shrank dramatically. In _Fig. 1_, you can see the digital circuit of the Intel 4004 processor, released in 1971.
 
 ![../.pic/Introduction/What%20is%20HDL/i4004.gif](../.pic/Introduction/What%20is%20HDL/i4004.gif)
 
-_Рисунок 1. Цифровая схема процессора Intel 4004 на уровне транзисторов[[1]](https://www.4004.com/mcs4-masks-schematics-sim.html)._
+_Figure 1. Digital circuit of the Intel 4004 processor at the transistor level [[1]](https://www.4004.com/mcs4-masks-schematics-sim.html)._
 
-Данная микросхема состоит из 2300 транзисторов[[2]](https://en.wikipedia.org/wiki/Intel_4004).
+This chip contains 2,300 transistors [[2]](https://en.wikipedia.org/wiki/Intel_4004).
 
-За прошедшие полсотни лет сложность цифровых схем выросла колоссально. Современные процессоры для настольных компьютеров состоят из десятков миллиардов транзисторов. Диаграмма выше при печати в оригинальном размере займет прямоугольник размером 115х140 см с площадью около 1.6 м<sup>2</sup>. Предполагая, что площадь печати имеет прямо пропорциональную зависимость от количества транзисторов, получим, что распечатка схемы современного процессора из 23 млрд транзисторов заняла бы площадь в 16млн м<sup>2</sup>, что эквивалентно квадрату со стороной в 4км.
+Over the past fifty years, the complexity of digital circuits has grown enormously. Modern desktop processors contain tens of billions of transistors. If printed at its original scale, the diagram above would occupy a rectangle of 115×140 cm, with an area of about 1.6 m<sup>2</sup>. Assuming that the print area scales linearly with the transistor count, printing the circuit of a modern processor with 23 billion transistors would require an area of 16 million m<sup>2</sup> — equivalent to a square with a side length of 4 km.
 
-<img src="../.pic/Introduction/What%20is%20HDL/ancient_city.png" alt="Старый город" width="400"/>
+<img src="../.pic/Introduction/What%20is%20HDL/ancient_city.png" alt="Ancient city" width="400"/>
 
-_Рисунок 2. Масштаб размеров, которых могли бы достигать цифровые схемы современных процессоров, если бы они печатались на бумаге._
+_Figure 2. The scale that digital circuit diagrams of modern processors would reach if printed on paper._
 
-Как вы можете догадаться, в какой-то момент между 1971-м и 2024-м годами инженеры перестали разрабатывать цифровые схемы, рисуя их на бумаге.
+As you might guess, at some point between 1971 and 2024, engineers stopped designing digital circuits by drawing them on paper.
 
-Разумеется, разрабатывая устройство, не обязательно вырисовывать на схеме каждый транзистор — можно управлять сложностью, переходя с одного уровня абстракции на другой. Например, начинать разработку схемы с уровня функциональных блоков, а затем рисовать схему для каждого отдельного блока.
+Of course, when designing a device, it is not necessary to draw every transistor on a schematic — complexity can be managed by moving between levels of abstraction. For example, one can start designing at the level of functional blocks, and then draw the schematic for each individual block.
 
-К примеру, схему Intel 4004 можно представить в следующем виде:
+For instance, the Intel 4004 circuit can be represented as follows:
 
 <img src="../.pic/Introduction/What%20is%20HDL/4004_arch.png" alt="../.pic/Introduction/What%20is%20HDL/4004_arch.png" width="500"/>
 
-_Рисунок 3. Цифровая схема процессора Intel 4004 на уровне функциональных блоков[[2]](https://en.wikipedia.org/wiki/Intel_4004)._
+_Figure 3. Digital circuit of the Intel 4004 processor at the functional block level [[2]](https://en.wikipedia.org/wiki/Intel_4004)._
 
-Однако несмотря на это, даже отдельные блоки порой бывают довольно сложны. Возьмем блок аппаратного шифрования по алгоритму AES[[3]](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf) на рисунке 4:
+However, even individual blocks can sometimes be quite complex. Consider the hardware AES encryption block [[3]](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf) shown in Figure 4:
 
 ![../.pic/Introduction/What%20is%20HDL/aes_enc_sml.png](../.pic/Introduction/What%20is%20HDL/aes_enc_sml.png)
 
-_Рисунок 4. Цифровая схема блока аппаратного шифрования по алгоритму AES[[4]](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf)._
+_Figure 4. Digital circuit of a hardware AES encryption block [[4]](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf)._
 
-Заметьте, что даже этот блок не представлен на уровне отдельных транзисторов. Каждая операция Исключающего ИЛИ, умножения, мультиплексирования сигнала и таблицы подстановки — это отдельные блоки, функционал которых ещё надо реализовать.
-В какой-то момент инженеры поняли, что проще описать цифровую схему в текстовом представлении, нежели в графическом.
+Note that even this block is not shown at the individual transistor level. Each XOR operation, multiplication, signal multiplexing, and substitution table is a separate block whose functionality still needs to be implemented.
+At some point, engineers realized it was simpler to describe a digital circuit in textual form rather than graphical form.
 
-Как можно описать цифровую схему текстом? Рассмотрим цифровую схему полусумматора:
+How can a digital circuit be described in text? Let us consider the digital circuit of a half-adder:
 
-![Схема полусумматора](../.pic/Introduction/What%20is%20HDL/fig_05.drawio.svg)
+![Half-adder schematic](../.pic/Introduction/What%20is%20HDL/fig_05.drawio.svg)
 
-_Рисунок 5. Цифровая схема полусумматора на уровне логических вентилей._
+_Figure 5. Digital circuit of a half-adder at the logic gate level._
 
-Это **устройство** (_полусумматор_) имеет два **входа**: _a_ и _b_, а также два **выхода**: _sum_ и _carry_.
-Выход _sum_ является **результатом** логической операции **Исключающее ИЛИ** от операндов _a_ и _b_.
-Выход _carry_ является **результатом** логической операции **И** от операндов _a_ и _b_.
+This **module** (_half-adder_) has two **inputs**: _a_ and _b_, and two **outputs**: _sum_ and _carry_.
+The _sum_ output is the **result** of the logical **XOR** operation on operands _a_ and _b_.
+The _carry_ output is the **result** of the logical **AND** operation on operands _a_ and _b_.
 
-Текст выше и является тем описанием, по которому можно воссоздать эту цифровую схему. Если стандартизировать описание схемы, то в нем можно будет оставить только слова, выделенные жирным и курсивом. Пример того, как можно было бы описать эту схему по стандарту IEEE 1364-2005 (язык описания аппаратуры (Hardware Description Language — HDL) Verilog):
+The text above is precisely the description from which this digital circuit can be reconstructed. If the description is standardized, only the words in bold and italics need to be retained. The following is an example of how this circuit could be described according to the IEEE 1364-2005 standard (the Verilog Hardware Description Language — HDL):
 
 ```Verilog
-module half_sum(    // устройство полусумматор cо
-  input   a,        // входом a,
-  input   b,        // входом b,
-  output  sum,      // выходом sum и
-  output  carry     // выходом carry.
+module half_sum(    // module half-adder with
+  input   a,        // input a,
+  input   b,        // input b,
+  output  sum,      // output sum and
+  output  carry     // output carry.
 );
 
-assign sum   = a ^ b;   // Где выход sum является результатом Исключающего ИЛИ от a и b,
-assign carry = a & b;   // а выход carry является результатом логического И от a и b.
+assign sum   = a ^ b;   // Where output sum is the result of XOR of a and b,
+assign carry = a & b;   // and output carry is the result of logical AND of a and b.
 
 endmodule
 ```
 
-На первый взгляд такое описание выглядит даже больше, чем записанное естественным языком, однако видимый объем получен только за счёт переноса строк и некоторой избыточности в описании входов и выходов, которая была добавлена для повышения читаемости. То же самое описание можно было записать и в виде:
+At first glance, this description appears even longer than the natural-language version. However, the extra length comes only from line breaks and some redundancy in the port declarations, which was added to improve readability. The same description could also be written as:
 
-``` Verilog
+```Verilog
 module half_sum(input a, b, output sum, carry);
   assign sum = a ^ b;
   assign carry = a & b;
 endmodule
 ```
 
-Важно отметить, что код на языке Verilog описывает устройство целиком, одномоментно. Это **описание схемы** выше, а **не построчное выполнение программы**.
+It is important to note that Verilog code describes the device as a whole, all at once. It's a **description of a circuit**, not **line-by-line program execution**.
 
-С практикой описание схемы в текстовом виде становится намного проще и не требует графического представления. Для описания достаточно только спецификации: формальной записи того, как должно работать устройство. По ней разрабатывается алгоритм, который затем претворяется в описание на HDL.
+With practice, describing a circuit in text becomes much easier and requires no graphical representation. A specification — a formal statement of how the device should behave — is sufficient. From it, an algorithm is developed, which is then expressed as an HDL description.
 
-Занятный факт: ранее было высказано предположение о том, что инженеры перестали разрабатывать устройства, рисуя цифровые схемы в промежуток времени между 1971-м и 2024-м годами. Так вот, первая конференция, посвящённая языкам описания аппаратуры состоялась в 1973-м году[[5, стр. 8]](https://dl.acm.org/doi/pdf/10.1145/3386337). Таким образом, Intel 4004 можно считать одним из последних цифровых устройств, разработанных без использования языков описания аппаратуры.
+An interesting fact: it was mentioned earlier that engineers stopped designing devices by drawing digital circuits sometime between 1971 and 2024. The first conference dedicated to hardware description languages was held in 1973 [[5, p. 8]](https://dl.acm.org/doi/pdf/10.1145/3386337). Thus, the Intel 4004 can be considered one of the last digital devices designed without the use of hardware description languages.
 
-## Список источников
+## References
 
 1. [Intel 4004 — 50th Anniversary Project](https://www.4004.com/mcs4-masks-schematics-sim.html);
-2. [Страница википедии по Intel 4004](https://en.wikipedia.org/wiki/Intel_4004);
-3. [F.Kağan. Gürkaynak / Side Channel Attack Secure Cryptographic Accelerators](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf);
+2. [Wikipedia page on Intel 4004](https://en.wikipedia.org/wiki/Intel_4004);
+3. [F. Kağan Gürkaynak / Side Channel Attack Secure Cryptographic Accelerators](https://iis-people.ee.ethz.ch/~kgf/acacia/acacia_thesis.pdf);
 4. [FIPS 197, Advanced Encryption Standard (AES)](https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf);
 5. [P. Flake, P. Moorby, S. Golson, A. Salz, S. Davidmann / Verilog HDL and Its Ancestors and Descendants](https://dl.acm.org/doi/pdf/10.1145/3386337).

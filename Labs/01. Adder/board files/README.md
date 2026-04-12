@@ -1,25 +1,25 @@
-# Проверка работы полного 32-битного сумматора в ПЛИС
+# Testing the Full 32-bit Adder on FPGA
 
-После того, как вы создали проверили на моделировании 32-разрядный сумматор, вам необходимо проверить его работу на прототипе в ПЛИС.
+After creating and verifying the 32-bit adder in simulation, you need to test it on an FPGA prototype.
 
-Инструкция по реализации прототипа описана [здесь](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
+Instructions for implementing the prototype are described [here](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
 
-На _рис. 1_ представлена схема прототипа в ПЛИС.
+_Fig. 1_ shows the prototype schematic on the FPGA.
 
 ![../../../.pic/Labs/board%20files/nexys_adder_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_adder_structure.drawio.svg)
 
-_Рисунок 1. Структурная схема модуля `nexys_adder`._
+_Figure 1. Block diagram of the `nexys_adder` module._
 
-Модуль `nexys_adder` позволяет подавать данные с переключателей <span style="color:#FF6666;">❶</span> на входы `a_i`, `b_i`, а так же передавать входной бит переноса с помощью кнопки <span style="color:#FF6666;">❷</span> `BTND` на вход `carry_i`.
+The `nexys_adder` module allows you to supply data from the switches <span style="color:#FF6666;">❶</span> to the `a_i` and `b_i` inputs, and also to pass the carry-in bit using button <span style="color:#FF6666;">❷</span> `BTND` to the `carry_i` input.
 
-Переключатели делятся пополам между операндами `a_i`, `b_i` (переключатели `sw[7:0]` относятся к операнду `b_i`, переключатели `sw[15:8]` относятся к операнду `a_i`). Так как переключателей всего 16, каждому операнду достается только по 8. Таким образом, с переключателей можно ввести 8 младших бит каждого из операнда.
+The switches are split evenly between operands `a_i` and `b_i` (switches `sw[7:0]` correspond to operand `b_i`, switches `sw[15:8]` correspond to operand `a_i`). Since there are only 16 switches in total, each operand gets 8. Thus, only the 8 least significant bits of each operand can be entered via the switches.
 
-Старшие биты дополняются нулями, это значит что на нашем прототипе можно складывать числа в диапазоне `[0:255]` (плюс можно прибавлять входной бит переноса), а значит диапазон результатов будет `[0:511]`.
+The upper bits are padded with zeros, which means the prototype can add numbers in the range `[0:255]` (plus the carry-in bit), giving a result range of `[0:511]`.
 
-Семисегментные индикаторы <span style="color:#FF6666;">❸</span> отображают на левом блоке значение операндов `a_i` и `b_i` в шестнадцатеричном формате, а на правом — результат сложения. Светодиоды <span style="color:#FF6666;">❹</span>, расположенные над переключателями, дублируют сумму, представляя ее в двоичном формате.
+The seven-segment displays <span style="color:#FF6666;">❸</span> show the values of operands `a_i` and `b_i` in hexadecimal on the left block, and the sum result on the right block. The LEDs <span style="color:#FF6666;">❹</span> above the switches duplicate the sum in binary format.
 
-На _рис. 2_ показан пример сложения `0x48 + 0x18 = 0x60` при нулевом входном переносе (нулевом, т.к. не нажата кнопка `BTND`).
+_Fig. 2_ shows an example of adding `0x48 + 0x18 = 0x60` with zero carry-in (zero because the `BTND` button is not pressed).
 
 ![../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.drawio.svg](../../../.pic/Labs/board%20files/nexys_adder_48_plus_18.drawio.svg)
 
-_Рисунок 2. Использование сумматора для вычисления выражения `0x48 + 0x18` в ПЛИС._
+_Figure 2. Using the adder to compute `0x48 + 0x18` on the FPGA._

@@ -30,6 +30,8 @@ jobs:
       # ── 1. Checkout master (Russian) ──────────────────────────────────────
       - name: Checkout master (Russian)
         uses: actions/checkout@v4
+        with:
+          ref:  master
         # checks out into $GITHUB_WORKSPACE (i.e. the working directory)
 
       # ── 2. Install mdBook ─────────────────────────────────────────────────

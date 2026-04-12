@@ -1,41 +1,41 @@
-# Проверка работы арифметико-логического устройства в ПЛИС
+# Testing the Arithmetic Logic Unit on FPGA
 
-После того, как вы проверили на моделировании АЛУ, вам необходимо проверить его работу на прототипе в ПЛИС.
+After verifying the ALU in simulation, you need to test it on an FPGA prototype.
 
-Инструкция по реализации прототипа описана [здесь](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
+Instructions for implementing the prototype are described [here](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
 
-На _рис. 1_ представлена схема прототипа в ПЛИС.
+_Fig. 1_ shows the prototype schematic on the FPGA.
 
 ![../../../.pic/Labs/board%20files/nexys_alu_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_alu_structure.drawio.svg)
 
-_Рисунок 1. Структурная схема модуля `nexys_alu`, где блоки `SE` — [знакорасширители](https://ru.wikipedia.org/wiki/Дополнительный_код#Расширение_знака)._
+_Figure 1. Block diagram of the `nexys_alu` module, where `SE` blocks are [sign extenders](https://en.wikipedia.org/wiki/Sign_extension)._
 
-Модуль `nexys_alu` позволяет подавать данные на входы `a_i`, `b_i`, `alu_op_i`, а также управлять интерпретацией знака операндов/результата с помощью переключателей.
+The `nexys_alu` module allows you to supply data to the `a_i`, `b_i`, and `alu_op_i` inputs, and to control the interpretation of the operand/result sign using the switches.
 
-Переключатели `sw[15:0]` и сигналы, ими задаваемые, соотносятся следующим образом:
--   `sw[15:11]` — операнд `a_i`.
--   `sw[10:6]` — операнд `b_i`.
--   `sw[5]` — `sign_on` (назначение этого сигнала подробнее описано дальше по тексту).
+Switches `sw[15:0]` and the signals they set correspond as follows:
+-   `sw[15:11]` — operand `a_i`.
+-   `sw[10:6]` — operand `b_i`.
+-   `sw[5]` — `sign_on` (the purpose of this signal is described further below).
 -   `sw[4:0]` — `alu_op_i`.
 
-Сигнал `sign_on` — определяет интерпретацию (знаковый/беззнаковый) операндов `a_i`, `b_i` и результата `result_o`:
--   Если сигнал принимает значение `1` ("верхнее" положение переключателя), то операнды и результат интерпретируются и отображаются как **знаковые** числа.
--   Если сигнал принимает значение `0` ("нижнее" положение переключателя), то операнды и результат интерпретируются и отображаются как **беззнаковые** числа.
+The `sign_on` signal determines how operands `a_i`, `b_i` and result `result_o` are interpreted (signed/unsigned):
+-   If the signal is `1` (switch in the "up" position), the operands and result are interpreted and displayed as **signed** numbers.
+-   If the signal is `0` (switch in the "down" position), the operands and result are interpreted and displayed as **unsigned** numbers.
 
-Таким образом, область допустимых значений операндов:
--   При знаковой интерпретации: `[-16:15]`
--   При беззнаковой интерпретации: `[0:31]`
+The valid range of operand values is therefore:
+-   Signed interpretation: `[-16:15]`
+-   Unsigned interpretation: `[0:31]`
 
-Числа на семисегментных индикаторах отображаются в **десятичной** системе счисления.
+Numbers are displayed on the seven-segment displays in **decimal**.
 
-Блок результата отображает знак и 3 наименее значимые **цифры** (разряды сотен, десятков, единиц) результата с учетом его интерпретации как знаковое/беззнаковое число. Например, результат операции вычитания `0 - 1` при знаковой интерпретации отобразится как `-1` на семисегментых индикаторах, а при беззнаковой интерпретации как `295` (3 наименее значимые цифры числа `4 294 967 295`).
+The result block shows the sign and the 3 least significant **digits** (hundreds, tens, ones) of the result, taking into account whether it is interpreted as signed or unsigned. For example, the result of `0 - 1` under signed interpretation will be displayed as `-1` on the seven-segment displays, while under unsigned interpretation it will display as `295` (the 3 least significant digits of `4,294,967,295`).
 
-Светодиоды, расположенные над переключателями, отображают 15 бит результата и флаг. То есть `led[15]` соединен с `flag_o` сигналом `alu`, а `led[14:0]` — с `result_o[14:0]`.
+The LEDs above the switches display 15 bits of the result and the flag. That is, `led[15]` is connected to the `flag_o` signal of the ALU, and `led[14:0]` is connected to `result_o[14:0]`.
 
-На _рис. 2_ показан пример сложения `12 + (-16) = -4`.
+_Fig. 2_ shows an example of adding `12 + (-16) = -4`.
 
 ![../../../.pic/Labs/board%20files/nexys_alu_12_plus_minus_16.drawio.svg](../../../.pic/Labs/board%20files/nexys_alu_12_plus_minus_16.drawio.svg)
 
-_Рисунок 2. Использование АЛУ для вычисления выражения `12 + (-16)` в ПЛИС._
+_Figure 2. Using the ALU to compute `12 + (-16)` on the FPGA._
 
-Попробуйте выставить на переключателях различные операции (сложение, вычитание, сдвиг и сравнения), посмотрите различие между знаковыми/беззнаковыми операциями, убедитесь, что все работает исправно, и сдавайте работу.
+Try setting various operations on the switches (addition, subtraction, shift, and comparison), observe the difference between signed/unsigned operations, verify that everything works correctly, and submit your work.

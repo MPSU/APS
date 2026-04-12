@@ -1,23 +1,23 @@
-# Лабораторная работа №11 "Интеграция подсистемы прерывания"
+# Lab 11. Interrupt Subsystem Integration
 
-После реализации подсистемы прерывания её необходимо интегрировать в процессорную систему. Для этого необходимо обновить модуль `processor_core` по схеме, приведённой на _рис. 1_:
+After implementing the interrupt subsystem, it must be integrated into the processor system. To do this, update the `processor_core` module according to the diagram shown in _Fig. 1_:
 
 ![../../.pic/Labs/lab_11_irq_integration/fig_01.drawio.svg](../../.pic/Labs/lab_11_irq_integration/fig_01.drawio.svg)
 
-_Рисунок 1. Интеграция подсистемы прерываний в ядро процессора._
+_Figure 1. Integration of the interrupt subsystem into the processor core._
 
 <details>
-<summary>Схема без выделения новых частей относительно старой версии модуля</summary>
+<summary>Diagram without highlighting new parts relative to the previous module version</summary>
 
 ![../../.pic/Labs/lab_10_irq/fig_03.drawio.svg](../../.pic/Labs/lab_10_irq/fig_03.drawio.svg)
 
-_Рисунок 2. Схема без выделения новых частей относительно старой версии модуля._
+_Figure 2. Diagram without highlighting new parts relative to the previous module version._
 
 </details>
 
-## Задание
+## Assignment
 
-Интегрировать модули `csr_controller` и `interrupt_controller` в модуль `processor_core`. При этом у модуля `processor_core` будет обновлённый прототип (поскольку добавился вход `irq_req_i` и `irq_ret_o`):
+Integrate the `csr_controller` and `interrupt_controller` modules into the `processor_core` module. The `processor_core` module will have an updated interface (due to the addition of `irq_req_i` input and `irq_ret_o` output):
 
 ```Verilog
 module processor_core (
@@ -39,20 +39,20 @@ module processor_core (
 );
 ```
 
-Обновите код создания экземпляра модуля `processor_core` в модуле `processor_system` с учётом появившихся портов. Для этого создайте провода `irq_req` и `irq_ret` и подключите их к соответствующим входам `processor_core`. Другим концом эти провода не будут пока что ни к чему подключены — это изменится в [ЛР№13](../13.%20Peripheral%20units/).
+Update the instantiation of the `processor_core` module in the `processor_system` module to account for the new ports. Create wires `irq_req` and `irq_ret` and connect them to the corresponding inputs/outputs of `processor_core`. The other ends of these wires will not yet be connected to anything — this will change in [Lab 13](../13.%20Peripheral%20units/).
 
-В случае, если вы захотите расширить количество источников прерывания, вы можете выполнить вспомогательную [ЛР№12](../12.%20Daisy%20chain).
+If you want to extend the number of interrupt sources, you may complete the optional [Lab 12](../12.%20Daisy%20chain).
 
-## Порядок выполнения работы
+### Steps
 
-1. Замените файл `program.mem` в `Design Sources` проекта новым файлом [program.mem](program.mem), приложенном в данной лабораторной работе. Данный файл содержит программу из _листинга 1_ ЛР№10.
-2. Интегрируйте модули `csr_controller` и `interrupt_controller` в модуль `processor_core`.
-   1. Обратите внимание, что в модуле `processor_core` появились новые входные и выходные сигналы: `irq_req_i` и `irq_ret_o`. Эти порты должны быть использованы при подключении `processor_core` в модуле `processor_system`.
-      1. Ко входу `irq_req_i` должен быть подключён провод `irq_req`, другой конец которого пока не будет ни к чему подключён.
-      2. К выходу `irq_ret_o` необходимо подключить провод `irq_ret`, который также пока не будет использован.
-      3. Имена проводов `irq_req` и `irq_ret` должны быть именно такими, т.к. используются верификационным окружением при проверке данной лабораторной работы.
-   2. Обратите внимание на то, что появилась константа `imm_Z` — это единственная константа ядра, которая расширяется нулями, а не знаковым битом.
-3. Проверьте модуль с помощью верификационного окружения, представленного в файле [lab_11.tb_processor_system.sv](lab_11.tb_processor_system.sv).
-   1. Перед запуском симуляции убедитесь, что выбран правильный модуль верхнего уровня в `Simulation Sources`.
-   2. Как и в случае с проверкой процессора архитектуры CYBERcobra, вам не будет сказано пройден тест или нет. Вам необходимо самостоятельно, такт за тактом, проверить, что процессор правильно выполняет [описанные](../10.%20Interrupt%20subsystem#Пример-обработки-перехвата) в _Листинге 1_ ЛР№10 инструкции (см. порядок выполнения задания ЛР№4). Для этого необходимо сперва самостоятельно рассчитать что именно должна сделать данная инструкция, а потом проверить что процессор сделал именно это.
-4. Данная лабораторная работа не предполагает проверки в ПЛИС.
+1. Replace the `program.mem` file in the `Design Sources` of the project with the new file [program.mem](program.mem) provided in this lab. This file contains the program from _Listing 1_ of Lab 10.
+2. Integrate the `csr_controller` and `interrupt_controller` modules into the `processor_core` module.
+   1. Note that the `processor_core` module now includes new input and output signals: `irq_req_i` and `irq_ret_o`. These ports must be used when instantiating `processor_core` in the `processor_system` module.
+      1. Connect the `irq_req` wire to the `irq_req_i` input; the other end of this wire will remain unconnected for now.
+      2. Connect the `irq_ret` wire to the `irq_ret_o` output; it will also remain unused for now.
+      3. The wire names `irq_req` and `irq_ret` must be exactly as specified, as they are used by the verification environment for this lab.
+   2. Note the appearance of the `imm_Z` constant — it is the only core constant that is zero-extended rather than sign-extended.
+3. Verify the module using the verification environment provided in the file [lab_11.tb_processor_system.sv](lab_11.tb_processor_system.sv).
+   1. Before running the simulation, make sure that the correct top-level module is selected in `Simulation Sources`.
+   2. As with verification of the CYBERcobra processor architecture, you will not be explicitly told whether the test passed or failed. You must manually, cycle by cycle, verify that the processor correctly executes the instructions described in [Listing 1](../10.%20Interrupt%20subsystem#Пример-обработки-перехвата) of Lab 10 (see the procedure of Lab 4). To do this, first determine what each instruction should do, then check that the processor performs exactly that.
+4. This laboratory work does not require FPGA validation.

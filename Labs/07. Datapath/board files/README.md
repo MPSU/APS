@@ -1,46 +1,46 @@
-# Проверка работы processor_system на ПЛИС
+# Testing processor_system on FPGA
 
-После того, как вы проверили на моделировании дизайн, вам необходимо проверить его работу на прототипе в ПЛИС.
+After verifying the design through simulation, you need to test it on an FPGA prototype.
 
-Инструкция по реализации прототипа описана [здесь](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
+Instructions for implementing the prototype are described [here](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
 
-На _рис. 1_ представлена схема прототипа в ПЛИС.
+_Fig. 1_ shows the structure of the FPGA prototype.
 
 ![../../../.pic/Labs/board%20files/nexys_processor_system_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_processor_system_structure.drawio.svg)
 
-_Рисунок 1. Структурная схема модуля `nexys_processor_system`._
+_Figure 1. Block diagram of the `nexys_processor_system` module._
 
-Прототип позволяет потактово исполнять программу, прошитую в память инструкций. Также прототип отображает операцию исполняемую в данный момент.
+The prototype allows step-by-step execution of the program loaded into instruction memory. It also displays the operation currently being executed.
 
 > [!NOTE]
-> Объект модуля `processor_core` в модуле `processor_system` **должен** называться `core`. Т.е. строка создания сущности модуля должна выглядеть следующим образом: `processor_core core(...)`.
+> The instance of the `processor_core` module inside the `processor_system` module **must** be named `core`. That is, the instantiation line must look as follows: `processor_core core(...)`.
 
-## Описание используемой периферии
+## Description of the peripherals used
 
--   ### Кнопки
+-   ### Buttons
 
-    -   `BTND` — при нажатии создает тактовый импульс, поступающий на порт тактирования `clk_i` модуля дизайна. Стоит помнить то, что инструкции, работающие с внешней памятью, требуют несколько тактов для своего выполнения.
-    -   `CPU_RESET` — соединен со входом `rst_i` модуля дизайна. Поскольку в модуле `processor_system` используется синхронный сброс (то есть сигнал сброса учитывается только во время восходящего фронта тактового сигнала), то для сброса модуля `processor_system` и вложенных в него модулей необходимо при зажатой кнопке сброса еще нажать кнопку тактирования.
+    -   `BTND` — when pressed, generates a clock pulse delivered to the `clk_i` port of the design module. Note that instructions that access external memory require several clock cycles to complete.
+    -   `CPU_RESET` — connected to the `rst_i` input of the design module. Since `processor_system` uses synchronous reset (i.e., the reset signal is only sampled on the rising edge of the clock), resetting `processor_system` and its submodules requires holding the reset button while also pressing the clock button.
 
--   ### Семисегментные индикаторы
+-   ### Seven-segment displays
 
-    Семисегментные индикаторы разбиты на 2 блока (см. _рис. 1_):
+    The seven-segment displays are divided into 2 groups (see _Fig. 1_):
 
-    -   `PC` — отображают в виде шестнадцатеричного числа младшие 16 бит программного счетчика, которые вычисляются на основе выхода `instr_addr_o` модуля процессорного ядра.
-    -   `operation` — отображают [операцию](#Операции-отображаемые-прототипом), исполняемую процессором на текущем такте.
+    -   `PC` — displays the lower 16 bits of the program counter as a hexadecimal number, derived from the `instr_addr_o` output of the processor core module.
+    -   `operation` — displays the [operation](#Operations-displayed-by-the-prototype) currently being executed by the processor.
 
-## Операции, отображаемые прототипом
+## Operations displayed by the prototype
 
-Прототип определяет тип операции по младшим 7 битам инструкции.
+The prototype determines the operation type from the lower 7 bits of the instruction.
 
-Если тип операции является легальным в рамках процессорного устройства, реализуемого на лабораторных работах, то отображается соответствующий опкод. Опкоды описаны в [decoder_pkg.sv](../../05.%20Main%20decoder/decoder_pkg.sv). Если определенный прототипом тип операции является нелегальным, то на семисегментных индикаторах отображается `ILL` (от **ill**egal).
+If the operation type is legal within the processor implemented in the lab assignments, the corresponding opcode is displayed. Opcodes are defined in [decoder_pkg.sv](../../05.%20Main%20decoder/decoder_pkg.sv). If the operation type determined by the prototype is illegal, the seven-segment displays show `ILL` (from **ill**egal).
 
-Соответствие операции ее отображению на семисегментных индикаторах представлено на _рис. 2_:
+The mapping between operations and their representation on the seven-segment displays is shown in _Fig. 2_:
 
 !['../../../.pic/Labs/board%20files/nexys_processor_system_operations.drawio.svg'](../../../.pic/Labs/board%20files/nexys_processor_system_operations.drawio.svg)
 
-_Рисунок 2. Соответствие операции ее отображению на семисегментных индикаторах._
+_Figure 2. Mapping between operations and their representation on the seven-segment displays._
 
-## Демонстрационная программа
+## Demo program
 
-В качестве демонстрационной программы, предлагается использовать [program.mem](../program.mem). Описание ее работы можно прочитать в разделе [#задание](../#Задание).
+The recommended demo program is [program.mem](../program.mem). A description of its operation can be found in the [#task](../#Task) section.

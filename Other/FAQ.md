@@ -1,47 +1,47 @@
-# Список типичных ошибок при работе с Vivado и SystemVerilog
+# Common Errors When Working with Vivado and SystemVerilog
 
-## Содержание
+## Table of Contents
 
-- [Список типичных ошибок при работе с Vivado и SystemVerilog](#Список-типичных-ошибок-при-работе-с-vivado-и-systemverilog)
-  - [Содержание](#Содержание)
-  - [Ошибки связанные с САПР Vivado](#Ошибки-связанные-с-сапр-vivado)
-    - [Не запускается симуляция FATAL\_ERROR PrivateChannel Error creating client socket](#Не-запускается-симуляция-fatal_error-privatechannel-error-creating-client-socket)
-    - [Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу](#Не-запускается-симуляция-boost-filesystem-remove-процесс-не-может-получить-доступ-к-файлу)
-    - [Вылетает Vivado при попытке открыть схему](#Вылетает-vivado-при-попытке-открыть-схему)
-    - [Не устанавливается Vivado Unable to open archive](#Не-устанавливается-vivado-unable-to-open-archive)
-  - [Ошибки синтаксиса языка SystemVerilog](#Ошибки-синтаксиса-языка-systemverilog)
-    - [имя сигнала is not a type](#Имя-сигнала-is-not-a-type)
+- [Common Errors When Working with Vivado and SystemVerilog](#common-errors-when-working-with-vivado-and-systemverilog)
+  - [Table of Contents](#table-of-contents)
+  - [Errors Related to the Vivado EDA Tool](#errors-related-to-the-vivado-eda-tool)
+    - [Simulation fails to start: FATAL\_ERROR PrivateChannel Error creating client socket](#simulation-fails-to-start-fatal_error-privatechannel-error-creating-client-socket)
+    - [Simulation fails to start: boost filesystem remove The process cannot access the file](#simulation-fails-to-start-boost-filesystem-remove-the-process-cannot-access-the-file)
+    - [Vivado crashes when trying to open a schematic](#vivado-crashes-when-trying-to-open-a-schematic)
+    - [Vivado installation fails: Unable to open archive](#vivado-installation-fails-unable-to-open-archive)
+  - [SystemVerilog Syntax Errors](#systemverilog-syntax-errors)
+    - [signal name is not a type](#signal-name-is-not-a-type)
     - [cannot find port on this module](#cannot-find-port-on-this-module)
 
 
-## Ошибки связанные с САПР Vivado
+## Errors Related to the Vivado EDA Tool
 
-### Не запускается симуляция FATAL_ERROR PrivateChannel Error creating client socket
+### Simulation fails to start: FATAL_ERROR PrivateChannel Error creating client socket
 
-**Причина:** ошибка [связана с проблемами Win Sockets](https://support.xilinx.com/s/question/0D52E00006iI37SSAS/isim-124-m81d-fatal-error-privatechannel-error-creating-client-socket?language=en_US), из-за которых симуляция не может быть запущена на сетевых дисках.  
-**Способ воспроизведения ошибки:** создать проект на сетевом диске.  
-**Решение:** скорее всего, вы создали проект на диске `H:/`. Создайте проект на локальном диске (например, на рабочем столе диске `C:/`)  
+**Cause:** The error is [related to issues with Windows Sockets](https://support.xilinx.com/s/question/0D52E00006iI37SSAS/isim-124-m81d-fatal-error-privatechannel-error-creating-client-socket?language=en_US), which prevent the simulation from being launched on network drives.  
+**How to reproduce:** Create a project on a network drive.  
+**Solution:** You most likely created the project on the `H:/` drive. Create the project on a local drive (for example, on the `C:/` drive or the Desktop).
 
 ---
 
-### Не запускается симуляция boost filesystem remove Процесс не может получить доступ к файлу
+### Simulation fails to start: boost filesystem remove The process cannot access the file
 
 <details>
 
-<summary>Скриншот ошибки:</summary>
+<summary>Error screenshot:</summary>
 
 ![../.pic/Other/FAQ/boot_filesystem_remove.png](../.pic/Other/FAQ/boot_filesystem_remove.png)
 
 </details>
 
-**Причина:** вы запустили симуляцию с другим `top level`-модулем, не закрыв предыдущую симуляцию.  
-Скорее всего, после создания тестбенча, вы слишком быстро запустили первую симуляцию. Из-за этого, Vivado не успел обновить иерархию модулей и сделать тестбенч `top-level`-модулем. На запущенной симуляции все сигналы находились в Z и X состояниях, после чего вы попробовали запустить ее снова. К моменту повторного запуска иерархия модулей обновилась, сменился `top-level`, что и привело к ошибке.  
-**Способ воспроизведения ошибки:** запустить симуляцию, создать новый файл симуляции, сделать его `top-level`-модулем, запустить симуляцию.  
-**Решение:** закройте предыдущую симуляцию (правой кнопкой мыши по кнопки SIMULATION -> Close Simulation) затем запустите новую.
+**Cause:** You launched the simulation with a different top-level module without closing the previous simulation.  
+Most likely, after creating the testbench, you started the first simulation too quickly. As a result, Vivado did not have time to update the module hierarchy and set the testbench as the top-level module. In the running simulation all signals were in Z and X states, after which you tried to restart it. By the time of the restart, the module hierarchy had updated and the top-level module had changed, which caused the error.  
+**How to reproduce:** Launch a simulation, create a new simulation file, set it as the top-level module, and launch the simulation again.  
+**Solution:** Close the previous simulation (right-click on the SIMULATION button → Close Simulation), then start a new one.
 
 <details>
 
-<summary>Иллюстрация закрытия симуляции:</summary>
+<summary>Illustration of closing the simulation:</summary>
 
 ![../.pic/Other/FAQ/close_sim.png](../.pic/Other/FAQ/close_sim.png)
 
@@ -49,77 +49,45 @@
 
 ---
 
-### Вылетает Vivado при попытке открыть схему
+### Vivado crashes when trying to open a schematic
 
-**Причина:** кириллические символы (русские буквы) в пути рабочей папки Vivado. Скорее всего, причина в кириллице в имени пользователя (**НЕ В ПУТИ УСТАНОВКИ VIVADO**).  
-**Способ воспроизведения ошибки:** (см. решение, только для воспроизведение необходимо сделать обратно, дать папке имя с кириллицей)  
-**Решение:** чтобы не создавать нового пользователя без кириллицы в имени, проще назначить Vivado новую рабочую папку.  
-Для этого:
+**Cause:** Cyrillic characters (Russian letters) in the Vivado working directory path. The most likely cause is Cyrillic characters in the username (**NOT IN THE VIVADO INSTALLATION PATH**).  
+**How to reproduce:** (See the solution — to reproduce the issue, do the reverse and give the folder a name containing Cyrillic characters.)  
+**Solution:** Rather than creating a new user without Cyrillic characters in the name, it is easier to assign Vivado a new working directory.  
+To do this:
 
-1. Создайте в корне диска `C:/` какую-нибудь папку (например Vivado_temp).
-2. Откройте свойства ярлыка Vivado (правой кнопкой мыши по ярлыку -> свойства)
-2.1 Если у вас нет ярлыка Vivado на рабочем столе, вместо этого вы запускаете его из меню пуск, кликните в меню пуск правой кнопкой мыши по значку Vivado -> открыть расположение файла. Если там будет ярлык выполните пункт 2, если там будет исполняемый файл — создайте ярлык для этого файла (правой кнопкой мыши по файлу -> создать ярлык) и выполните пункт 2.
-3. В поле "Рабочая папка", укажите путь до созданной вами директории (в примере пункта 1 этот путь будет: `C:/Vivado_temp`). Нажмите "ОК".
+1. Create a folder in the root of the `C:/` drive (for example, `Vivado_temp`).
+2. Open the properties of the Vivado shortcut (right-click on the shortcut → Properties).  
+   2.1 If you do not have a Vivado shortcut on the Desktop and instead launch it from the Start menu, right-click the Vivado icon in the Start menu → Open file location. If a shortcut is shown there, perform step 2. If the executable file is shown there, create a shortcut for it (right-click the file → Create shortcut) and then perform step 2.
+3. In the **Start in** field, enter the path to the directory you created (in the example from step 1 this path would be: `C:/Vivado_temp`). Click **OK**.
 
 ---
 
-### Не устанавливается Vivado Unable to open archive
+### Vivado installation fails: Unable to open archive
 
 <details>
 
-<summary>Иллюстрация:</summary>
+<summary>Illustration:</summary>
 
 ![../.pic/Other/FAQ/unable_to_open_archive.jpg](../.pic/Other/FAQ/unable_to_open_archive.jpg)
 
 </details>
 
-**Причина:** скорее всего, проблема в том, что файлы установки (**НЕ ПУТЬ УСТАНОВКИ VIVADO**) расположены по пути с кириллическими символами (например, в какой-то личной папке "Загрузки").  
-**Решение:** переместите файлы установки в директорию, не содержащую кириллицу в пути.
+**Cause:** The problem is most likely that the installation files (**NOT THE VIVADO INSTALLATION PATH**) are located at a path containing Cyrillic characters (for example, in a personal "Downloads" folder with a Cyrillic name).  
+**Solution:** Move the installation files to a directory whose path contains no Cyrillic characters.
 
 ---
 
-## Ошибки синтаксиса языка SystemVerilog
+## SystemVerilog Syntax Errors
 
-<!-- ### concurrent assignment to a non-net is not permitted
+### signal name is not a type
 
-Запрещено выполнять непрерывное присваивание (`assign`) к объектам, не являющимися цепями. Скорее всего, вы пытались выполнить `assign b = a;`, где `b` является регистром.
-
-```SystemVerilog
-module alu(input a, input b,
-  input  logic [3:0] alu_op,
-  output logic flag,
-  output logic result
-);
-
-assign flag = alu_op[3] ? (a > b) : 1'b0; // ошибка
-endmodule
-```
-
---- -->
-
-<!-- ### procedural assignment to a non-register test is not permitted left-hand side should be reg
-
-Запрещено использовать процедурное присваивание (присваивание в блоке `always` или `initial`) объектам, не являющимися регистрами. Скорее всего, вы пытались выполнить `b = a;` или `b <= a;` блоке `always`/`initial`, где `b` является проводом.
-
-```SystemVerilog
-module adder(input a, input b, output c);
-always @(*) begin
-  c = a ^ b;  // ошибка, процедурное присваивание
-              // к проводам запрещено
-end
-endmodule
-```
-
---- -->
-
-### имя сигнала is not a type
-
-Скорее всего, компилятор не распознал присваивание, поскольку оно было записано с ошибками. Вне блоков `always` и `initial` можно выполнять только непрерывное присваивание (через `assign`).
+The compiler most likely failed to recognize the assignment because it was written incorrectly. Outside `always` and `initial` blocks, only continuous assignments (using `assign`) are permitted.
 
 ```SystemVerilog
 module half_adder(input logic a, input logic b, output logic c);
-c = a ^ b;  // ошибка, для непрерывного присваивания
-            // необходимо ключевое слово assign
+c = a ^ b;  // error: the keyword assign is required
+            // for a continuous assignment
 endmodule
 ```
 
@@ -127,9 +95,9 @@ endmodule
 
 ### cannot find port on this module
 
-Имя порта, указанного при подключении модуля (после точки) не соответствует ни одному имени сигналов подключаемого модуля
+The port name specified when instantiating the module (after the dot) does not match any signal name in the instantiated module.
 
-Пример
+Example:
 
 ```SystemVerilog
 module half_adder(input logic a, input logic b, output logic c);
@@ -140,8 +108,8 @@ module testbench();
 logic A, B, C;
 
 adder DUT(
-  .A(A),  // <- здесь будет ошибка,
-          // т.к. в модуле half_adder нет порта 'A'
+  .A(A),  // <- error here,
+          // because module half_adder has no port named 'A'
   .b(B),
   .c(C)
 );

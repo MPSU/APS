@@ -1,67 +1,67 @@
-# Проверка работы CYBERcobra на ПЛИС
+# Testing CYBERcobra on FPGA
 
-После того, как вы проверили на моделировании дизайн, вам необходимо проверить его работу на прототипе в ПЛИС.
+After verifying the design in simulation, you need to test it on an FPGA prototype.
 
-Инструкция по реализации прототипа описана [здесь](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
+Instructions for implementing the prototype are described [here](../../../Vivado%20Basics/07.%20Program%20and%20debug.md).
 
-На _рис. 1_ представлена схема прототипа в ПЛИС.
+_Fig. 1_ shows the prototype schematic on the FPGA.
 
 ![../../../.pic/Labs/board%20files/nexys_cobra_structure.drawio.svg](../../../.pic/Labs/board%20files/nexys_cobra_structure.drawio.svg)
 
-_Рисунок 1. Структурная схема модуля `nexys_CYBERcobra`._
+_Figure 1. Block diagram of the `nexys_CYBERcobra` module._
 
-Прототип позволяет потактово исполнять программу, прошитую в память инструкций. Также прототип отображает операцию исполняемую в данный момент.
+The prototype allows you to execute the program stored in the instruction memory one clock cycle at a time. It also displays the operation currently being executed by the processor.
 
 > [!NOTE]
-> Объект модуля `instr_mem` в модуле `CYBERcobra` **должен** называться `imem`. Т.е. строка создания сущности модуля должна выглядеть следующим образом: `instr_mem  imem(...)`.
+> The instance of the `instr_mem` module inside `CYBERcobra` **must** be named `imem`. That is, the instantiation line must look like this: `instr_mem imem(...)`.
 
-## Описание используемой периферии
+## Peripheral Description
 
--   ### Переключатели.
+-   ### Switches
 
-    Значение с переключателей `SW[15:0]` подаются напрямую на порт `sw_i` модуля дизайна.
+    The values of switches `SW[15:0]` are passed directly to the `sw_i` port of the design module.
 
--   ### Кнопки
+-   ### Buttons
 
-    -   `BTND` — при нажатии создает тактовый импульс, поступающий на порт тактирования `clk_i` модуля дизайна.
-    -   `CPU_RESET` — соединен со входом `rst_i` модуля дизайна. Поскольку в модуле `CYBERcobra` используется синхронный сброс (то есть сигнал сброса учитывается только во время восходящего фронта тактового сигнала), то для сброса модуля `CYBERcobra` и вложенных в него модулей необходимо при зажатой кнопке сброса еще нажать кнопку тактирования.
+    -   `BTND` — pressing this button generates a clock pulse delivered to the `clk_i` port of the design module.
+    -   `CPU_RESET` — connected to the `rst_i` input of the design module. Since `CYBERcobra` uses synchronous reset (i.e., the reset signal is only recognized on a rising clock edge), resetting the `CYBERcobra` module and its sub-modules requires holding down the reset button and then pressing the clock button.
 
--   ### Светодиоды
+-   ### LEDs
 
-    Светодиоды `LED[15:0]` отображают младшие 16 бит значения, выставленного в данный момент на порте `out_o` модуля дизайна.
+    LEDs `LED[15:0]` display the lower 16 bits of the value currently present on the `out_o` port of the design module.
 
--   ### Семисегментные индикаторы
+-   ### Seven-Segment Displays
 
-    Семисегментные индикаторы разбиты на 3 блока (см. _рис. 1_):
+    The seven-segment displays are divided into 3 blocks (see _Fig. 1_):
 
-    -   `out` — отображают младшие 8 бит значения, выставленного в данный момент на порте `out_o` модуля дизайна, в виде шестнадцатеричного числа.
-    -   `PC` — отображают в виде шестнадцатеричного числа младшие 8 бит программного счетчика, который подается на вход `addr_i` модуля памяти инструкций.
-    -   `operation` — отображают [операцию](#Операции-отображаемые-прототипом), исполняемую процессором на текущем такте.
+    -   `out` — displays the lower 8 bits of the value on the `out_o` port of the design module as a hexadecimal number.
+    -   `PC` — displays the lower 8 bits of the program counter, which is driven to the `addr_i` input of the instruction memory module, as a hexadecimal number.
+    -   `operation` — displays the [operation](#Operations-displayed-by-the-prototype) currently being executed by the processor.
 
-## Операции, отображаемые прототипом
+## Operations Displayed by the Prototype
 
-Соответствие типа инструкции отображаемой операции:
+Mapping of instruction types to displayed operations:
 
-1.  Вычислительные — соответствует опкодам вычислительных операций АЛУ.
-1.  Инструкция загрузки константы — `LI` (от **l**oad **i**mmediate).
-1.  Инструкция загрузки из внешних устройств — `IN` (от **in**put).
-1.  Безусловный переход — `JUMP`.
-1.  Инструкций условного перехода — соответствует опкодам операций сравнения АЛУ.
+1.  Computational instructions — corresponds to the opcodes of ALU computational operations.
+1.  Load-immediate instruction — `LI` (from **l**oad **i**mmediate).
+1.  Load-from-external-device instruction — `IN` (from **in**put).
+1.  Unconditional jump — `JUMP`.
+1.  Conditional branch instructions — corresponds to the opcodes of ALU comparison operations.
 
-Во время исполнения вычислительных инструкций и инструкций условного перехода могут встретиться нелегальные операции (отображается как `ILL`, от **ill**egal). Операция считается нелегальной в следующих случаях:
+During the execution of computational instructions and conditional branch instructions, illegal operations may be encountered (displayed as `ILL`, from **ill**egal). An operation is considered illegal in the following cases:
 
--   Если в поле инструкции, отвечающем за операция АЛУ, указана битовая последовательность, не входящая в диапазон допустимых значений.
--   Если инструкция является вычислительной, но в поле инструкции, отвечающем за операция АЛУ, указана битовая последовательность, соответствующая операции, вычисляющей флаг. И обратный случай.
+-   If the ALU operation field of the instruction contains a bit pattern that is not within the range of valid values.
+-   If the instruction is a computational instruction but the ALU operation field contains a bit pattern corresponding to a flag-computing operation, or vice versa.
 
-Инструкция `0 0 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxx` отображается как `NOP` (от **n**o **op**eration).
+The instruction `0 0 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxx` is displayed as `NOP` (from **n**o **op**eration).
 
-Соответствие операции ее отображению на семисегментных индикаторах представлено на _рис. 2_:
+The mapping of operations to their representation on the seven-segment displays is shown in _Fig. 2_:
 
 !['../../../.pic/Labs/board%20files/nexys_cobra_operations.drawio.svg'](../../../.pic/Labs/board%20files/nexys_cobra_operations.drawio.svg)
 
-_Рисунок 2. Соответствие операции ее отображению на семисегментных индикаторах._
+_Figure 2. Mapping of operations to their representation on the seven-segment displays._
 
 
-## Демонстрационная программа
+## Demo Program
 
-В качестве демонстрационной программы, предлагается использовать [program.mem](../program.mem). Описание ее работы можно прочитать в разделе [#финальный обзор](../#Финальный-обзор).
+The recommended demo program is [program.mem](../program.mem). A description of how it works can be found in the [#final-overview](../#Final-overview) section.

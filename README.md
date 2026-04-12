@@ -1,44 +1,44 @@
-# Путеводитель АПС
+# APS Guide
 
 ![.pic/README/gus_gr.svg](.pic/README/gus_gr.svg)
 
-- [Путеводитель АПС](#Путеводитель-АПС)
-  - [Как работать с репозиторием](#Как-работать-с-репозиторием)
-  - [Мотивация](#Мотивация)
-  - [Место АПС в Computer Science](#Место-АПС-в-computer-science)
-  - [История курса и разработчики](#История-курса-и-разработчики)
-  - [![Печатный экземпляр](https://img.shields.io/badge/📘-Печатный_экземпляр-blue)](https://ozon.ru/t/63aAzUd)
+**English translations is in "Work in Progress" status.**
 
-Привет, студент!
+- [APS Guide](#APS-Guide)
+  - [How to use the repository](#How-to-use-the-repository)
+  - [Motivation](#Motivation)
+  - [APS in Computer Science](#APS-in-Computer-Science)
+  - [Course history and contributors](#Course-history-and-contributors)
+  - [![Print edition](https://img.shields.io/badge/📘-Print_edition-blue)](https://ozon.ru/t/63aAzUd)
 
-Это путеводитель по дисциплине «Архитектуры процессорных систем». Здесь ты найдёшь ссылки на всю информацию генерируемую в данном курсе:
+Hello, student!
 
-- [Видеозаписи](https://www.youtube.com/c/%D0%90%D0%9F%D0%A1%D0%9F%D0%BE%D0%BF%D0%BE%D0%B2), [презентации](https://github.com/MPSU/APS-lect-presentations) и [конспекты](Lectures) лекций с прошлых лет.
-- методички по лабораторным работам ([Labs](Labs/))
-- дополнительные материалы и литературу ([Other/Further readings.md](Other/Further%20readings.md))
-- полезные интернет-ресурсы ([Other/Extras.md](Other/Extras.md))
-- информацию о преподавателях, их расписание и контакты ([Other/Educators.md](Other/Educators.md))
-- страницу с анонимной обратной связью ([Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSdoLdMCnFOv-RS_E4ztVjVzPqy-pqcCcaD7JNx6F4r8Kd_8iw/viewform?usp=sharing)).
+This is a guide to the course "Architectures of Processor Systems". Here you will find links to all the information generated within this course:
 
-Имея доступ к этой странице ты имеешь доступ ко всему курсу АПС.
+- [Video recordings](https://www.youtube.com/c/%D0%90%D0%9F%D0%A1%D0%9F%D0%BE%D0%BF%D0%BE%D0%B2), [slides](https://github.com/MPSU/APS-lect-presentations), and [lecture notes](Lectures) from previous years.
+- Lab manuals ([Labs](Labs/))
+- Additional materials and references ([Other/Further readings.md](Other/Further%20readings.md))
+- Anonymous feedback form ([Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSdoLdMCnFOv-RS_E4ztVjVzPqy-pqcCcaD7JNx6F4r8Kd_8iw/viewform?usp=sharing)).
 
-По всем замечаниям/пожеланиям/предложениям, а также в случае, если нашел ошибку в материалах репозитория, или если что-то из изложенных материалов непонятно обращайся в на страницу [проблем](https://github.com/MPSU/APS/issues) или [обсуждений](https://github.com/MPSU/APS/discussions). Помни, что в первую очередь репозиторий создан именно для студентов, поэтому не стесняйся предлагать улучшения.
+Having access to this page means you have access to the entire APS course.
 
-## Как работать с репозиторием
+For any comments, suggestions, or corrections — or if you find an error in the repository materials, or if anything in the presented content is unclear — please visit the [Issues](https://github.com/MPSU/APS/issues) or [Discussions](https://github.com/MPSU/APS/discussions) pages. Remember that the repository is created primarily for students, so do not hesitate to propose improvements.
 
-Данный репозиторий рассчитан на широкий охват аудитории по уровню их подготовки на момент начала этой дисциплины, поэтому для кого-то некоторые материалы окажутся избыточными, а для кого-то — крайне необходимыми.
+## How to use the repository
 
-Вне зависимости от вашего уровня подготовки, работу с этим курсом рекомендуется начать с прочтения документов из папки [Introduction](Introduction).
+This repository is designed for a wide range of students with varying levels of preparation at the time they begin this course. As a result, some materials may be redundant for some students while being essential for others.
 
-Далее можно приступать к лабораторным работам (расположенным в папке [Labs](Labs/)). Перед каждым лабораторным занятием вам рекомендуется ознакомиться с методичкой, они очень подробные и их чтение требует какого-то времени. Время отведенное на лабораторное занятие рекомендуется использовать по-максимуму, для этого лучше прочитать методичку заранее.
+Regardless of your level of preparation, it is recommended to start by reading the documents in the [Introduction](Introduction) folder.
 
-Кроме того, важно отметить, что в начале большинства лабораторных работ размещен раздел "Материалы для подготовки к лабораторной работе", где перечислены все материалы, которые студент должен успешно **освоить** перед выполнением этой лабораторной работы, со ссылками на документы в папке [Basic Verilog Structures](Basic%20Verilog%20structures/). Данная папка ориентирована в первую очередь на студентов, не работавших ранее с Verilog/SystemVerilog, однако даже если вы работали с этими языками, вам рекомендуется перейти в данные документы и проверить свои знания в разделе "Проверь себя".
+You can then proceed to the lab assignments (located in the [Labs](Labs/) folder). Before each lab session, it is recommended that you read the corresponding manual in advance — the manuals are very detailed and require some time to read. Make the most of the time allocated for lab sessions; reading the manual beforehand is the best way to do so.
 
-Лабораторные занятия будут проходить с использованием САПР Xilinx Vivado. Это очень сложный профессиональный инструмент, на изучение которого могут уйти годы. Во время данного курса лабораторных работ нет времени на эти годы, поэтому для вас собрана основная информация по взаимодействию с САПР в папке [Vivado Basics](Vivado%20Basics/).
+It is also important to note that most lab manuals begin with a section titled "Materials for lab preparation," which lists all materials the student must successfully **master** before performing the lab, along with links to documents in the [Basic Verilog Structures](Basic%20Verilog%20structures/) folder. This folder is primarily intended for students who have not previously worked with Verilog/SystemVerilog; however, even if you have experience with these languages, it is recommended that you review these documents and test your knowledge in the "Check yourself" section.
 
-В ходе выполнения лабораторных работ вы наверняка столкнетесь как с ошибками связанными с работой Vivado, так и с ошибками описания на языке SystemVerilog. В первую очередь, рекомендуется ознакомиться с текстом ошибки. В случае ошибок, связанных с языком SystemVerilog, чаще всего там содержится вся необходимая информация по её устранению. В случае, если текст непонятен, рекомендуется ознакомиться со [списком типичных ошибок](Other/FAQ.md).
+Lab sessions will be conducted using the Xilinx Vivado EDA tool. This is a highly complex professional tool that can take years to master. This course does not have years to spare, so the essential information for working with the tool has been compiled in the [Vivado Basics](Vivado%20Basics/) folder.
 
-Рассмотрим структуру папки Labs:
+During the lab assignments, you will likely encounter errors related both to Vivado and to SystemVerilog descriptions. In either case, the first step is always to read the error message carefully. For SystemVerilog-related errors, the message usually contains all the information needed to resolve the issue. If the message is unclear, consult the [list of common errors](Other/FAQ.md).
+
+The structure of the Labs folder is as follows:
 
 ```
 01. Adder/
@@ -49,134 +49,134 @@ Made-up modules/
 Readme.md
 ```
 
-Здесь находятся методические материалы ко всем 16 лабораторным работам, разложенные по соответствующим им папкам.
+This folder contains the lab manuals for all 16 lab assignments, organized into their respective subfolders.
 
-Практически в каждой такой папке находится файл формата `lab_xx.tb_xxx.sv` — это файл с верификационным окружением для данной лабораторной работы. Такой файл необходимо добавлять в _Simulation Sources_ проекта (подробнее в разделе _Vivado Basics_).
+Almost every subfolder contains a file named `lab_xx.tb_xxx.sv` — this is the verification environment (testbench) for the corresponding lab. This file must be added to the _Simulation Sources_ of the project (see _Vivado Basics_ for details).
 
-Кроме того, в папке лабораторной работы могут находиться `xxx_pkg.sv` и `xxx.mem` файлы, содержащие соответственно параметры и данные, которыми необходимо проинициализировать память устройства. Такие файлы будет необходимо добавлять в _Design Sources_ проекта.
+In addition, a lab folder may contain `xxx_pkg.sv` and `xxx.mem` files, which hold parameters and data used to initialize the device memory, respectively. These files must be added to the _Design Sources_ of the project.
 
-Ещё в большинстве папок будет находиться папка `board files`. Такая папка содержит модуль верхнего уровня (если требуется), описание способов взаимодействия с ним, а также файлы ограничений (_constraints_) под отладочную плату _Nexys A7_.
+Most folders also contain a `board files` subfolder. This subfolder includes the top-level module (if required), a description of how to interact with it, and constraint files for the _Nexys A7_ development board.
 
-Помимо прочего, в папке `Made-up modules/` находятся готовые модули для некоторых лабораторных работ. В случае, если по какой-то причине вы не смогли выполнить лабораторную работу, вы можете продолжить работу над курсом, использовав готовый модуль из этой папки.
+Furthermore, the `Made-up modules/` folder contains pre-built modules for certain lab assignments. If for any reason you were unable to complete a particular lab, you can continue working through the course using the ready-made module from this folder.
 
-## Мотивация
+## Motivation
 
-Целью курса "Архитектуры процессорных систем" является изучение устройства и способов организации процессоров, и систем под их управлением.
+The goal of this course is to study the structure and organization of processors and the systems they control.
 
-Под словом Архитектура понимается некоторый способ организации. Процессор – это программно-управляемое устройство для обработки информации. Проще говоря, это устройство, управлять поведением которого можно с помощью программ (последовательности команд/действий). Система – это комбинация взаимодействующих элементов, организованных для достижения поставленных целей. Таким образом, дисциплина "Архитектуры процессорных систем" посвящена способам организации и построения систем под управлением устройств управляемых программами. Большое внимание в курсе уделяется открытой, и очень популярной в настоящее время, процессорной архитектуре RISC-V.
+The word "Architecture" refers to a particular way of organizing something. A processor is a programmable device for information processing — in simple terms, a device whose behavior can be controlled through programs (sequences of commands/actions). A system is a combination of interacting elements organized to achieve defined goals. Thus, the course "Architectures of Processor Systems" is dedicated to the ways of organizing and building systems controlled by programmable devices. Significant attention in the course is given to the open and currently highly popular RISC-V processor architecture.
 
-Дисциплина реализуется Институтом МПСУ на базе НИУ МИЭТ сразу для 7 различных направлений подготовки, которые имеют разные названия и количество теоретического и практического материалов. Несмотря на это масштаб покрытия у них одинаковый, а суть предмета изучения общая - организация компьютеров. Отличаются лишь глубина погружения и акценты.
+The course is delivered by the MPSU Institute at MIET for 7 different degree programs, which differ in name and in the amount of theoretical and practical content. Despite this, the scope of coverage is the same across all programs, and the core subject matter is the same — the organization of computers. The differences lie only in the depth of study and the emphasis.
 
-Для успешного погружения в дисциплину важно понимать зачем эта дисциплина нужна именно тебе, будучи студентом:
+For a successful engagement with this course, it is important to understand why this discipline is relevant to you as a student:
 
 <details>
-<summary> Информационной безопасности </summary>
-Нет никаких сомнений в том, что люди, разрабатывающие системы безопасностей для автомобилей, хорошо знают, как эти автомобили устроены и работают. Очевидно, что пожарную безопасность невозможно организовать не понимая, как горят материалы или, к примеру, в чем особенность помещений, которые будут защищаться. Также невозможно организовать стойкую информационную безопасность без понимания принципов работы устройств, которые эту информацию получают, обрабатывают и передают. Чтобы специалисту по информационной безопасности обеспечивать соблюдение правил обмена и обработки информации в информационных системах, очевидно, что нужно понимать как эти системы работают.
+<summary> Information Security </summary>
+There is no doubt that people who develop security systems for automobiles have a thorough understanding of how those automobiles are built and work. It is obvious that fire safety cannot be organized without understanding how materials burn or, for example, what makes a given type of building unique. Similarly, robust information security cannot be achieved without understanding the principles of operation of the devices that receive, process, and transmit that information. For an information security specialist to enforce the rules of information exchange and processing in information systems, they clearly need to understand how those systems work.
 
-Преступники в сфере информационных технологий знают как они устроены и работают, потому что в результате своих действий они их не "ломают" (как принято говорить), а заставляют работать так, как нужно им, а не владельцам этих систем. Ну, а если чтобы найти преступника нужно думать, как преступник, то хорошему безопаснику остается только одно – разобраться как компьютеры работают, изучив курс АПС.
+Criminals in the field of information technology know how these systems are structured and operate, because through their actions they do not "break" them (as is commonly said), but rather make them work the way the criminals want, rather than the way the owners intend. And if catching a criminal requires thinking like one, then a good security professional has only one option — to understand how computers work by studying the APS course.
 </details>
 
 <details>
-<summary> Информатики и вычислительной техники </summary>
-30–40 лет назад, когда персональные компьютеры были ещё в новинку, а интернета как такового не было, пионеры вычислительной техники предсказывали, что в будущем электронные чипы станут настолько дешёвыми, что они будут повсюду — в домах, в транспорте, даже в человеческом теле. Для того времени эта идея казалась фантастической, даже абсурдной. Персональные компьютеры тогда были очень дороги и в большинстве своём даже не подключались к интернету. Мысль о том, что миллиарды крохотных чипов когда-нибудь будут во всем и станут дешевле семечек, казалась нелепой. Сегодня эти мысли уже не кажутся фантастическими. В последнее десятилетие почти всегда, какой-нибудь компьютер или компьютеры находятся на расстоянии вытянутой руки от человека. Билетик в метро – тоже компьютер, который спроектировал, возможно, выпускник ИВТ.
+<summary> Computer Science and Engineering </summary>
+30–40 years ago, when personal computers were still a novelty and the internet as we know it did not exist, pioneers of computing predicted that in the future electronic chips would become so cheap that they would be everywhere — in our homes, in transportation, even in the human body. At the time, this idea seemed fantastical, even absurd. Personal computers were very expensive and in most cases were not even connected to the internet. The notion that billions of tiny chips would one day be embedded in everything and cost less than a handful of sunflower seeds seemed ridiculous. Today, these thoughts no longer seem fantastical. In the past decade, some kind of computer has almost always been within arm's reach. A metro ticket is also a computer — one that may have been designed by a graduate of the Computer Science and Engineering program.
 
-Если ты выпускник направления Информатика и Вычислительная Техника, то скорее всего, в будущем, ты будешь разрабатывать электронику, компьютеры – цифровые автоматические устройства, которые, как правило, управляются процессорами и ПЛИС. Типичное современное электронное устройство – это набор датчиков физических величин, которые посылают свои измерения в процессор, который обрабатывает полученную информацию согласно заданной программе. Понимать, как это работает также разумно, как и терапевту знать из каких органов состоит человек, несмотря на то, что он не хирург и внутрь не полезет. Выпускник ИВТ, понимающий устройство компьютера будет способен разрабатывать более эффективные решения: более быстрые, точные, энергоэффективные.
+If you are graduating from the Computer Science and Engineering program, then most likely you will be developing electronics and computers in the future — digital automated devices that are typically controlled by processors and FPGAs. A typical modern electronic device is a set of physical sensors that send measurements to a processor, which processes the received information according to a given program. Understanding how this works is just as reasonable as a general practitioner knowing what organs the human body is made of, even though they are not a surgeon and will not be operating on anyone. A graduate of Computer Science and Engineering who understands the inner workings of a computer will be able to design more effective solutions: faster, more precise, and more energy-efficient.
 
-Логика такая: "Чтобы разрабатывать электронику, я должен понимать из чего она делается", "Современными электронными устройствами управляют процессоры" ⟹ "Чтобы разрабатывать электронику, я должен разбираться в процессорах".
+The logic is: "To develop electronics, I must understand what it is made of," and "Modern electronic devices are controlled by processors," therefore "To develop electronics, I must understand processors."
 </details>
 
 <details>
-<summary> Инфокоммуникационных технологий и систем связи</summary>
-Помимо своей очевидности существует множество подтверждений того, что уровень развития цивилизации связан с развитием связи. Разработка новейших систем связи и их внедрение еще очень долго будет одной из самых актуальных задач развития человечества. Мы сталкиваемся с постоянной потребностью обеспечивать связь нужных адресатов и делать это быстро и безопасно. Достигается это благодаря современным программно-аппаратным решениям, которые постоянно развиваются и совершенствуются. По сути, сетевые инженеры разрабатывают специализированные компьютеры, задачей которых является обмен информацией между некоторыми входными и выходными узлами по заданным правилам. Все это требует понимания работы программируемых устройств, которые и лежат в основе сетевых узлов.
+<summary> Infocommunication Technologies and Communication Systems </summary>
+Beyond its obvious importance, there are many indications that the level of civilizational development is tied to the advancement of communications. The development and deployment of cutting-edge communication systems will remain one of the most pressing challenges for humanity for a long time to come. We continuously face the need to connect the right parties quickly and securely. This is achieved through modern hardware-software solutions that are constantly evolving and improving. In essence, network engineers design specialized computers whose purpose is to exchange information between certain input and output nodes according to defined rules. All of this requires an understanding of how programmable devices work — the very devices that form the foundation of network nodes.
 
-Существует множество разнообразных сетевых процессоров и решений, реализуемых в программируемых логических интегральных схемах (ПЛИС). Для успешного участия в разработке современных сетевых решений необходимо не только знание методов передачи данных, алгоритмов кодирования и тому подобного, но и понимание принципов функционирования строительных блоков, из которых создаются сетевые системы. Глубина таких знаний позволяют увеличивать скорость передачи данных и улучшать безопасность.
+There are many diverse network processors and solutions implemented in field-programmable gate arrays (FPGAs). To successfully participate in the development of modern networking solutions, it is necessary not only to know data transmission methods and coding algorithms, but also to understand the principles of operation of the building blocks from which network systems are constructed. The depth of such knowledge enables increases in data transfer rates and improvements in security.
 
-Знания в области разработки компьютеров являются важным инструментом в создании информационно-коммуникационных систем связи.
+Knowledge in the field of computer design is an important tool for creating infocommunication systems.
 </details>
 
 <details>
-<summary> Конструирования и технологии электронных средств</summary>
-Не так давно, когда персональные компьютеры только начали завоевывать мир, и интернет еще не был доступен для всех, многие представители конструкторской и технологической индустрии предсказывали будущее, в котором электроника будет всюду: в наших домах, транспорте и даже в наших собственных телах. Это казалось невероятным и даже фантастическим сценарием для тех времен, когда персональные компьютеры были дорогими и не имели доступа к сети Интернет.
+<summary> Electronic Systems Design and Technology </summary>
+Not long ago, when personal computers were just beginning to conquer the world and the internet was not yet accessible to everyone, many representatives of the design and technology industries predicted a future in which electronics would be everywhere: in our homes, transportation, and even in our own bodies. This seemed like an incredible, even fantastical scenario for a time when personal computers were expensive and had no internet access.
 
-Сегодня эти идеи уже не кажутся фантастическими. В последние десятилетия мы постоянно окружены электроникой и множеством вычислительных систем, часть из которых появляется благодаря выпускникам Конструирования и технологии электронных средств. Возьмем, к примеру, роботов. Современные роботы – это высокотехнологичные электронные системы, спроектированные для выполнения различных задач. Они оснащены датчиками и процессорами, которые позволяют им воспринимать окружающую среду и принимать решения в реальном времени. Выпускник направления "Конструирование и Технология электронных средств" будет иметь уникальную возможность создавать и улучшать такие устройства, делая их более эффективными и функциональными.
+Today these ideas no longer seem fantastical. In recent decades we have been constantly surrounded by electronics and numerous computing systems, some of which exist thanks to graduates of the Electronic Systems Design and Technology program. Take robots, for example. Modern robots are high-tech electronic systems designed to perform a variety of tasks. They are equipped with sensors and processors that allow them to perceive their environment and make decisions in real time. A graduate of "Electronic Systems Design and Technology" will have the unique opportunity to create and improve such devices, making them more efficient and functional.
 
-Суть заключается в том, что для успешной карьеры в области конструирования и технологии электронных средств, необходимо обладать глубоким пониманием электронных систем. Это включает в себя знание принципов работы процессоров, сенсоров и других ключевых компонентов. Выпускники этой специальности будут способны создавать современные электронные устройства и внедрять их в самые разные области. Знание основ организации процессорных систем является мощным и необходимым инструментом в достижении цели создания передовых электронных систем.
+The point is that for a successful career in the field of electronic systems design and technology, a deep understanding of electronic systems is required. This includes knowledge of how processors, sensors, and other key components work. Graduates of this program will be able to create modern electronic devices and introduce them into a wide variety of fields. Knowledge of the fundamentals of processor system organization is a powerful and necessary tool for achieving the goal of creating advanced electronic systems.
 </details>
 
 <details>
-<summary> Программной инженерии </summary>
-Не понимать как устроен и работает компьютер современному программисту, все равно что гонщику Формулы-1 не знать, как работает и устроена его машина. Это просто немыслимо! Такое возможно, но скорее исключение из правил. Конечно же кузнец знает, как устроен его инструмент, ведь тогда он может его более эффективно использовать. Понимает его слабые стороны и знает как хитро применить его на практике. Только в этом случае кузнец ценен.
+<summary> Software Engineering </summary>
+For a modern software developer not to understand how a computer is built and works is like a Formula 1 driver not knowing how his car works. It is simply unthinkable! It is possible, but more of an exception than the rule. Of course a blacksmith knows how his tool is made — because then he can use it more effectively, understand its weaknesses, and know how to apply it cleverly in practice. Only then is the blacksmith truly valuable.
 
-Современные языки программирования дают возможность значительно оторваться от реального железа. Не редко в этом есть практический смысл, но далеко не всегда. Большинство современных компьютеров автономны (на батарейном питании), а значит, что эффективность их работы есть продолжительность их работы. Понимание нюансов может значительно сэкономить энергию. А порой надо выбрать железо для сервера, а порой понять почему очевидно быстрый код работает медленно. Часто приходится разбираться в новых технологиях, фреймворках, языках, сервисах, библиотеках, но все это дается легко только в том случае, если есть устойчивая база, отвечающая на вопрос - "как это работает и почему именно так?". Во всем перечисленном поможет знание АПС.
+Modern programming languages allow one to distance oneself significantly from the actual hardware. Often there is a practical reason for this, but not always. The majority of modern computers are battery-powered, which means that the efficiency of their operation directly translates to how long they operate. Understanding the nuances can save significant amounts of energy. Sometimes one needs to select hardware for a server; sometimes one needs to understand why apparently fast code runs slowly. Frequently one must get to grips with new technologies, frameworks, languages, services, and libraries — but all of this comes easily only when there is a solid foundation that answers the question "how does this work, and why does it work this way?" Knowledge of APS helps with all of this.
 
-"Разобраться в работе компьютера" не значит "делать(разрабатывать) компьютер". Врачи знают как устроен человек, чтобы лечить его, а не разрабатывать его. Гонщики знают свой автомобиль, чтобы совершенствовать его и использовать по-полной. Также и программисту необходимо понимание работы компьютера не для того, чтобы разрабатывать процессоры, а для более эффективного и разумного его использования.
+"Understanding how a computer works" does not mean "building (designing) a computer." Doctors know how the human body is structured in order to treat it, not to design it. Racing drivers know their car in order to refine it and use it to the fullest. In the same way, a software developer needs to understand how a computer works not in order to design processors, but to use the computer more effectively and intelligently.
 </details>
 
 <details>
-<summary> Прикладной математики </summary>
-Практически все современные приложения математики так или иначе связаны с компьютерами: большие данные, искусственный интеллект, робототехника, финансы и так далее. Математика давно вышла за рамки тетрадных листов, сегодня алгоритмы – это мысли процессоров.
+<summary> Applied Mathematics </summary>
+Virtually all modern applications of mathematics are connected in one way or another to computers: big data, artificial intelligence, robotics, finance, and so on. Mathematics has long outgrown notebook pages — today, algorithms are the thoughts of processors.
 
-Математические приложения, какими бы они ни были (моделирование, автоматизация, расчеты или что-то другое), требуют инструмента их решения – компьютера. Понимание устройства и работы основного инструмента дает явные преимущества перед тем, у кого этого понимания нет. Порой надо выбрать железо для системы, решающей некоторую задачу, порой – понять почему очевидно быстрый код работает медленно. Часто приходится разбираться в новых технологиях, фреймворках, языках, сервисах, библиотеках, но все это дается легко только в том случае, если есть устойчивая база, отвечающая на вопрос - "как это работает и почему именно так?". Во всем перечисленном поможет знание АПС.
+Mathematical applications, whatever they may be (simulation, automation, computation, or something else), require a tool to solve them — a computer. Understanding the structure and operation of one's primary tool provides clear advantages over those who lack that understanding. Sometimes one needs to select hardware for a system solving a particular problem; sometimes one needs to understand why apparently fast code runs slowly. Frequently one must get to grips with new technologies, frameworks, languages, services, and libraries — but all of this comes easily only when there is a solid foundation that answers the question "how does this work, and why does it work this way?" Knowledge of APS helps with all of this.
 
-"Разобраться в работе компьютера" не значит "делать(разрабатывать) компьютер". Врачи знают как устроен человек, чтобы лечить его, а не разрабатывать его. Гонщики знают свой автомобиль, чтобы совершенствовать его и использовать по-полной. Также и выпускнику прикладной математики необходимо понимание работы компьютера не для того, чтобы разрабатывать процессоры, а для более эффективного и разумного его использования в своих приложениях.
+"Understanding how a computer works" does not mean "building (designing) a computer." Doctors know how the human body is structured in order to treat it, not to design it. Racing drivers know their car in order to refine it and use it to the fullest. In the same way, a graduate of applied mathematics needs to understand how a computer works not in order to design processors, but to use the computer more effectively and intelligently in their own applications.
 </details>
 
 <details>
-<summary> Радиотехники </summary>
-Использование радиоволн сегодня помогает в решении огромного круга задач, связанных с передачей информации/энергии на расстояние, локацией, позиционированием, изучением свойств объектов отражения и многим другим на что только фантазии хватит. На практике радиоволны оказываются удивительно полезными, и для того, чтобы управлять ими и извлекать из них максимум, используются антенны. Эти устройства могут быть довольно сложными, и за ними должны стоять профессионалы, способные их создать. Управляют антеннами, контролируют их и получают с них информацию специальные устройства, которые, в конечном итоге, преобразуют радиосигналы в электрические цифровые, или наоборот.
+<summary> Radio Engineering </summary>
+The use of radio waves today helps solve a vast range of tasks related to transmitting information and energy over distances, location, positioning, studying the properties of reflecting objects, and much more — whatever one can imagine. In practice, radio waves prove to be remarkably useful, and to control them and extract maximum value from them, antennas are used. These devices can be quite complex, and behind them must stand professionals who are capable of designing them. Antennas are controlled, monitored, and read by specialized devices that ultimately convert radio signals into electrical digital signals, or vice versa.
 
-Современные микросхемы СВЧ (сверхвысоких частот), которые используются в антенных устройствах, часто являются программируемыми. Это означает, что они либо содержат в себе процессор, либо спроектированы для взаимодействия с процессорами. Чтобы раскрыть потенциал этих микросхем, вам нужно знать, как работают процессоры. Понимание их функций также пригодится в области радиотехники, особенно если вам нужно управлять сигналами в строгие временные рамки.
+Modern microwave (SHF) integrated circuits used in antenna systems are often programmable. This means they either contain a processor or are designed to interface with processors. To unlock the potential of these chips, you need to know how processors work. Understanding their functions will also be useful in the field of radio engineering, especially when you need to control signals within strict timing constraints.
 
-Радиотехника — это не только работа с радиосигналами, но и их обработка. Иногда нужно обрабатывать сигналы очень быстро. В таких случаях важно знать, какой вычислитель выбрать, чтобы обеспечить точность обработки в установленные временные рамки и при этом не превысить требования по энергопотреблению. Без понимания АПС вы не сможете решать такие задачи. Ведь приходится выбирать из множества устройств, включая микроконтроллеры и процессоры цифровой обработки сигналов с различными характеристиками, ПЛИС. А как это сделать, если даже не понимаешь, что это такое.
+Radio engineering is not just about working with radio signals — it is also about processing them. Sometimes signals must be processed very quickly. In such cases, it is important to know which computing platform to choose in order to ensure processing accuracy within the required time constraints while not exceeding power consumption requirements. Without an understanding of APS, you cannot solve such problems. After all, one must choose from among many devices, including microcontrollers, digital signal processors with various characteristics, and FPGAs. And how can you make that choice if you do not even understand what these things are?
 
-По сути, радиотехник – это специалист, который может не только посчитать антенну, но и создать ее, а также разработать систему управления, сбора и обработки данных с использованием знаний АПС.
+In essence, a radio engineer is a specialist who can not only design an antenna but also build it, and develop a control, data acquisition, and processing system using knowledge of APS.
 
-Радиотехника связана с радиосигналами, а радиосигналы всегда связаны с процессорами в современной аппаратуре. И если вы хотите быть в центре этой захватывающей области, изучение АПС — важный шаг на этом пути.
+Radio engineering is connected to radio signals, and radio signals are always connected to processors in modern equipment. And if you want to be at the forefront of this exciting field, studying APS is an important step on that path.
 </details>
 
-## Место АПС в Computer Science
+## APS in Computer Science
 
-В оригинальном видео [Map of Computer Science](https://www.youtube.com/watch?v=SzJ46YA_RaA) Доминик Уоллиман предлагает, безусловно неполную, но удобную для представления обширной области знаний, карту компьютерных наук. Ниже, на этой карте, отмечена зона, которую покрывает предлагаемый курс лекций и лабораторных работ.
+In the original video [Map of Computer Science](https://www.youtube.com/watch?v=SzJ46YA_RaA), Dominic Walliman presents an admittedly incomplete but convenient map of computer science for representing this vast field of knowledge. Below, the area covered by this lecture and lab course is marked on that map.
 
-Эта `COMPUTER ENGINEERING` дисциплина главным образом уделяет внимание компьютерным архитектурам, и всем взаимосвязанным вопросам в этом контексте: производительность, компиляторы, операционные системы, виртуальные машины, параллельные вычисления, ПЛИС. Такая дисциплина является важным связующим звеном между теоретическими компьютерными науками и ее приложениями, представленными в нижней части карты. Компьютерная инженерия – неотъемлемая часть в реализации современных приложений. АПС закладывает необходимую инженерную базу, наборы понятий и концепций в отношении цифровых технологий и устройств.
+This `COMPUTER ENGINEERING` discipline primarily focuses on computer architectures and all the interconnected topics in that context: performance, compilers, operating systems, virtual machines, parallel computing, and FPGAs. Such a discipline serves as an important link between theoretical computer science and its applications shown in the lower part of the map. Computer engineering is an indispensable part of realizing modern applications. APS lays the necessary engineering foundation, providing a set of concepts and ideas related to digital technologies and devices.
 
 ![.pic/README/computer_science.png](.pic/README/computer_science.png)
 
-Жёлтым выделена область Computer Science, покрываемая дисциплиной у групп ИБ, ИКТ, КТ, РТ.
+Yellow highlights the area of Computer Science covered by the course for the IB, IKT, KT, and RT degree programs.
 
-Жёлтым + зелёным выделена область Computer Science, покрываемая дисциплиной у групп ИВТ, ПИН, ПМ.
+Yellow + green highlights the area of Computer Science covered by the course for the IVT, PIN, and PM degree programs.
 
-## История курса и разработчики
+## Course history and contributors
 
-Дисциплины связанные с организацией вычислительной техники читаются в МИЭТ с самого его основания. Текущий курс эволюционировал из "Микропроцессорных средств и систем" (МПСиС), читаемый факультету МПиТК (Микроприборов и технической кибернетики) сначала [Савченко Юрием Васильевичем](https://miet.ru/person/10551), а после – [Переверзевым Алексеем Леонидовичем](https://miet.ru/person/49309). С 2014 по 2022 годы дисциплина проводилась и значительно модернизировалась [Поповым Михаилом Геннадиевичем](https://www.bsc.es/popov-mikhail) совместно с коллективом сотрудников и студентов Института МПСУ. С 2022 года группам ИБ, ИКТ, КТ и РТ курс читает [Силантьев Александр Михайлович](https://miet.ru/person/64030), а группам ИВТ, ПИН, ПМ – [Орлов Александр Николаевич](https://miet.ru/person/53686), разработка методических материалов перешла в руки [Солодовникова Андрея Павловича](https://miet.ru/person/141139).
+Disciplines related to computer organization have been taught at MIET since its founding. The current course evolved from "Microprocessor Tools and Systems" (MPSiS), which was taught to the MPiTK (Microdevices and Technical Cybernetics) faculty — first by [Yuri Vasilyevich Savchenko](https://miet.ru/person/10551), and later by [Alexei Leonidovich Pereverzev](https://miet.ru/person/49309). From 2014 to 2022, the course was taught and significantly modernized by [Mikhail Gennadyevich Popov](https://www.bsc.es/popov-mikhail), together with a team of staff and students from the MPSU Institute. Since 2022, the course for the IB, IKT, KT, and RT groups has been taught by [Alexander Mikhailovich Silantyev](https://miet.ru/person/64030), and for the IVT, PIN, and PM groups — by [Alexander Nikolaevich Orlov](https://miet.ru/person/53686); development of the educational materials has passed to [Andrei Pavlovich Solodovnikov](https://miet.ru/person/141139).
 
-В 2019-2023 годах была значительно переработана, осовременена и дополнена теоретическая часть курса. Тогда же разработаны и полностью обновлены лабораторные работы с переходом на использование архитектуры RISC-V, введены новые способы оценки полученных знаний. Все материалы курса, включая [видеозаписи лекций](https://www.youtube.com/c/АПСПопов), были выложены в свободный доступ.
+In 2019–2023, the theoretical part of the course was significantly revised, modernized, and expanded. During the same period, the lab assignments were fully redesigned and updated with a transition to the RISC-V architecture, and new methods of knowledge assessment were introduced. All course materials, including [lecture video recordings](https://www.youtube.com/c/АПСПопов), were made publicly available.
 
-Основное влияние на структуру и содержание курса в современном виде оказали: оригинальные лекции МПСиС для МПиТК, курс Вычислительных структур 6.004, читаемый в MIT, Харрис и Харрис "Цифровая схемотехника и архитектура компьютера", Орлов и Цилькер "Организация ЭВМ и систем".
+The main influences on the structure and content of the course in its current form were: the original MPSiS lectures for MPiTK, the 6.004 Computation Structures course taught at MIT, Harris & Harris "Digital Design and Computer Architecture," and Orlov & Tsilker "Computer Organization and Systems."
 
-Авторами курса в его текущем виде являются: Попов Михаил Геннадиевич и Солодовников Андрей Павлович.
+The authors of the course in its current form are: Mikhail Gennadyevich Popov and Andrei Pavlovich Solodovnikov.
 
-С подготовкой курса и репозитория помогали студенты и сотрудники института МПСУ (бывшие и нынешние): <!--- В алфавитном порядке -->
+The following students and staff of the MPSU Institute (past and present) contributed to the preparation of the course and the repository: <!--- In alphabetical order -->
 
-|     Фамилия, Имя, Отчество                                  |                                                           Вклад в курс                                                                                                                                   |
-|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Барков Евгений Сергеевич                                    | Профессиональные консультации по деталям языка SystemVerilog, спецификации RISC-V и RTL-разработки, тематике синтеза и констрейнов.                                                                      |
-| Булавин Никита Сергеевич                                    | Отработка материалов, подготовка тестбенчей и модулей верхнего уровня для плат Nexys A7 для лабораторных работ.                                                                                          |
-| Козин Алексей Александрович                                 | Отработка материалов, подготовка обфусцированных модулей для лабораторных работ.                                                                                                                         |
-| Коршунов Андрей Владимирович                                | Профессиональные консультации по темам проектирования и синтеза цифровых схем                                                                                                                            |
-| [Кулешов Владислав Константинович](https://t.me/SaintLiver) | Вычитка и исправление ошибок в методических материалах, сбор обратной связи от студентов.                                                                                                                |
-| Орлов Александр Николаевич                                  | Профессиональные консультации по деталям языка SystemVerilog, спецификации RISC-V и RTL-разработки, примерами программ иллюстрирующим особенности архитектуры.                                           |
-| Примаков Евгений Владимирович                               | Профессиональные консультации по деталям языка SystemVerilog, спецификации RISC-V и RTL-разработки и вопросам микроархитектуры.                                                                          |
-| [Протасова Екатерина Андреевна](https://t.me/Katkus_s)      | Подготовка индивидуальных заданий и допусков к лабораторным работам, вычитка и отработка материалов, а также сбор обратной связи от студентов.                                                                            |
-| Русановский Богдан Витальевич                               | Перенос лабораторной работы по прерываниям из PDF в Markdown, подготовка иллюстраций.                                                                                                                    |
-| Рыжкова Дарья Васильевна                                    | Подготовка тестбенчей для лабораторных работ.                                                                                                                                                            |
-| Силантьев Александр Михайлович                              | Профессиональные консультации по деталям языка SystemVerilog, спецификации RISC-V и RTL-разработки, вопросам микроархитектуры, тематике синтеза и констрейнов, особенностям компиляции и профилирования. |
-| Стрелков Даниил Владимирович                                | Отработка материалов, подготовка тестбенчей для лабораторных работ и иллюстраций структуры курса.                                                                                                        |
-| [Терновой Николай Эдуардович](https://t.me/cpu_design)      | Профессиональные консультации по деталям языка SystemVerilog, спецификации RISC-V и RTL-разработки, вычитка материалов, сбор обратной связи от студентов.                                                |
-| Харламов Александр Александрович                            | Отработка материалов, проектирование вспомогательных модулей для лабораторных работ.                                                                                                                     |
-| [Хисамов Василь Тагирович](https://t.me/PascalVT)           | Вычитка материалов, сбор обратной связи от студентов.                                                                                                                                                    |
-| Чусов Сергей Андреевич                                      | Вычитка материалов, сбор обратной связи от студентов.                                                                                                                                                    |
+| Full Name | Contribution to the course |
+|---|---|
+| Barkov Evgeny Sergeevich | Professional consultations on SystemVerilog language details, the RISC-V specification and RTL development, synthesis and constraints topics. |
+| Bulavin Nikita Sergeevich | Material validation, preparation of testbenches and top-level modules for Nexys A7 boards for the lab assignments. |
+| Kozin Alexei Alexandrovich | Material validation, preparation of obfuscated modules for the lab assignments. |
+| Korshunov Andrei Vladimirovich | Professional consultations on digital circuit design and synthesis topics. |
+| [Kuleshov Vladislav Konstantinovich](https://t.me/SaintLiver) | Proofreading and correction of errors in educational materials, collection of student feedback. |
+| Orlov Alexander Nikolaevich | Professional consultations on SystemVerilog language details, the RISC-V specification and RTL development, with examples of programs illustrating architectural features. |
+| Primakov Evgeny Vladimirovich | Professional consultations on SystemVerilog language details, the RISC-V specification and RTL development, and microarchitecture topics. |
+| [Protasova Ekaterina Andreevna](https://t.me/Katkus_s) | Preparation of individual assignments and lab admission tasks, proofreading and validation of materials, and collection of student feedback. |
+| Rusanovsky Bogdan Vitalyevich | Migration of the interrupt lab assignment from PDF to Markdown, preparation of illustrations. |
+| Ryzhkova Darya Vasilyevna | Preparation of testbenches for the lab assignments. |
+| Silantyev Alexander Mikhailovich | Professional consultations on SystemVerilog language details, the RISC-V specification and RTL development, microarchitecture topics, synthesis and constraints, compilation and profiling specifics. |
+| Strelkov Daniil Vladimirovich | Material validation, preparation of testbenches for the lab assignments and course structure illustrations. |
+| [Ternovoy Nikolai Eduardovich](https://t.me/cpu_design) | Professional consultations on SystemVerilog language details, the RISC-V specification and RTL development, proofreading of materials, collection of student feedback. |
+| Kharlamov Alexander Alexandrovich | Material validation, design of auxiliary modules for the lab assignments. |
+| [Khisamov Vasil Tagirovich](https://t.me/PascalVT) | Proofreading of materials, collection of student feedback. |
+| Chusov Sergei Andreevich | Proofreading of materials, collection of student feedback. |
 
-Кроме того, в написании конспектов лекций принимали участие студенты различных институтов университета МИЭТ, а часть иллюстраций была нарисована выпускницей МИЭТ Краснюк Екатериной Александровной.
+In addition, students from various institutes of MIET university participated in writing the lecture notes, and some illustrations were drawn by MIET alumna Ekaterina Alexandrovna Krasnyuk.
 
 ![.pic/README/miet_logo.png](.pic/README/miet_logo.png)

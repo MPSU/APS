@@ -1,188 +1,188 @@
-# Последовательностная логика
+# Sequential Logic
 
-## Классификация цифровой логики
+## Classification of Digital Logic
 
-Цифровая логика делится на **комбинационную** и **последовательностную**.
+Digital logic is divided into **combinational** and **sequential** logic.
 
-**Комбинационная логика** (или "логика без памяти") — это цифровая логика, выходы которой зависят только от её входов. Один и тот же набор входных воздействий на эту логику всегда будет давать один и тот же результат. Комбинационную логику можно всегда представить в виде таблицы истинности (или логической функции) всех её выходов от её входов.
+**Combinational logic** (or "memoryless logic") is digital logic whose outputs depend only on its inputs. The same set of input stimuli will always produce the same result. Combinational logic can always be represented as a truth table (or a logic function) of all its outputs in terms of its inputs.
 
-В противоположность комбинационной, существует также и **последовательностная логика**, или "логика с памятью" — цифровая логика, выходы которой зависят не только от её входов, но и от её внутреннего состояния.
+In contrast to combinational logic, there also exists **sequential logic**, or "logic with memory" — digital logic whose outputs depend not only on its inputs, but also on its internal state.
 
-Простейшим примером комбинационной логики может быть любой логический вентиль, например исключающее ИЛИ (_рис. 1 (а)_). Эта комбинационная схема всегда будет давать `0`, если оба её входа равны, в противном случае, она выдаст `1`.
+The simplest example of combinational logic is any logic gate, such as XOR (_fig. 1 (a)_). This combinational circuit will always output `0` when both of its inputs are equal, and `1` otherwise.
 
 ![../.pic/Introduction/Sequential%20logic/fig_01.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_01.drawio.svg)
 
-_Рисунок 1. Пример комбинационной (а), и последовательностной (б) схем._
+_Figure 1. Example of a combinational (a) and a sequential (b) circuit._
 
-Предположим теперь, что в качестве одного из входов исключающего ИЛИ стоит некая ячейка памяти, которая запоминает предыдущее значение, выданное этим логическим вентилем (_рис. 1 (б)_). Теперь, выходы схемы зависят не только от того, что мы подадим на вход, но и от того, что находится в данной ячейке памяти, а самое главное — теперь, подавая на вход одно и тоже воздействие, мы можем получить разные результаты.
+Now suppose that one of the XOR inputs is a memory cell that stores the previous value produced by that gate (_fig. 1 (b)_). The circuit's outputs now depend not only on what we apply to the input, but also on what is currently held in the memory cell — and most importantly, applying the same input stimulus can now yield different results.
 
-Будем исходить из того, что изначально ячейка памяти проинициализирована нулём. Сперва подадим на вход этой схемы `0`. Поскольку оба входа равны `0`, на выход схемы подаётся `0`, и значение в ячейке памяти остаётся прежним. Затем, подадим на вход `1` — теперь на выход схемы идёт значение `1` и оно же сохраняется в ячейке памяти. После, мы снова подаём на вход `0`, однако, в отличие от первого раза, на выход схемы пойдёт `1`, т.к. входы исключающего ИЛИ не равны. Выставив на вход `1` ещё раз, мы получим на выходе `0`.
+Assume the memory cell is initially set to zero. First, we apply `0` to the input. Since both inputs are equal to `0`, the output is `0` and the memory cell retains its value. Next, we apply `1` — the output becomes `1` and is stored in the memory cell. We then apply `0` again; unlike the first time, the output is now `1`, because the XOR inputs are unequal. Applying `1` once more yields `0` at the output.
 
-Как вы видите, результат последовательностной логики зависит от **последовательности** произведённых входных воздействий, в то время как комбинационная логика зависит от **комбинации** её текущих входных воздействий.
+As you can see, the result of sequential logic depends on the **sequence** of input stimuli applied, whereas combinational logic depends on the **combination** of its current inputs.
 
-Последовательностная логика делится на **синхронную** и **асинхронную**.
+Sequential logic is divided into **synchronous** and **asynchronous**.
 
-**Синхронной логикой** называется такая логика, которая обновляет своё состояние (содержимое ячеек памяти) одновременно (**синхронно**) с фронтом тактового сигнала*. В свою очередь **асинхронная последовательностная логика** — это логика, которая может обновлять своё состояние **асинхронно** (т.е. без привязки к фронту тактового синхроимпульса). Бывает также и синхронная логика с асинхронными сигналами предустановки/сброса.
+**Synchronous logic** is logic that updates its state (the contents of its memory cells) simultaneously (**synchronously**) with the edge of a clock signal\*. **Asynchronous sequential logic**, in turn, is logic that can update its state **asynchronously** (i.e., independently of a clock edge). There also exist synchronous circuits with asynchronous preset/reset signals.
 
-Комбинационная логика по своей природе является асинхронной, поэтому в зависимости от контекста под "асинхронной логикой" может подразумеваться как комбинационная логика, так и последовательностная логика, которая может обновлять значение не по фронту тактового синхроимпульса.
+Combinational logic is inherently asynchronous; therefore, depending on context, "asynchronous logic" may refer either to combinational logic or to sequential logic whose state can change without being tied to a clock edge.
 
 > [!Info]
-> В некоторых источниках синхронной логикой могут называть и ту, что работает по уровню (а не фронту) единого источника тактового синхроимпульса [[1, стр. 164](https://reader.lanbook.com/book/241166?lms=d92e0036d4c90623ffd0a8ecc34dee72)].
+> Some sources also refer to logic that operates on the level (rather than the edge) of a single clock source as synchronous logic [1, p. 119].
 
-## Бистабильные ячейки
+## Bistable Cells
 
-**Бистабильная ячейка** — это элемент статической памяти, способный принимать одно из двух устойчивых состояний, соответствующих цифровым значениям "0" или "1".
+A **bistable cell** is a static memory element capable of holding one of two stable states corresponding to the digital values "0" or "1".
 
-**Статическая память** — это тип памяти, который сохраняет данные в течении неопределённого времени, пока его питание остаётся включённым, без необходимости регенерации (в отличие от **динамической памяти**, использующей для хранения конденсаторы, требующие для хранения регулярного обновления данных).
+**Static memory** is a type of memory that retains data indefinitely as long as power is supplied, without requiring refresh cycles (unlike **dynamic memory**, which uses capacitors for storage and requires periodic data refresh to prevent loss).
 
-Рассмотрим простейшую ячейку статической памяти, представленную на _рис. 2_, которая способна хранить 1 бит информации.
+Consider the simplest static memory cell shown in _fig. 2_, which is capable of storing 1 bit of information.
 
 ![../.pic/Introduction/Sequential%20logic/fig_02.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_02.drawio.svg)
 
-_Рисунок 2. Простейшая ячейка статической памяти._
+_Figure 2. The simplest static memory cell._
 
-Данная ячейка представляет собой петлю из двух инверторов, в которых "заперто" хранимое значение. Дважды инвертированный сигнал совпадает по значению с исходным, при этом проходя через каждый из инверторов, сигнал обновляет своё значение напряжения, поддерживая тем самым уровни напряжения логических значений. Главной проблемой подобной ячейки является то, что она требует дополнительной аппаратуры для записи в эту ячейку хранимой информации.
+This cell consists of a loop of two inverters in which the stored value is "latched". A signal inverted twice equals its original value, and as it passes through each inverter the voltage level is refreshed, thereby maintaining the voltage levels that represent the logic values. The main drawback of such a cell is that it requires additional hardware to write new data into it.
 
-Для того, чтобы добавить в эту ячейку входы с возможностью записи данных, можно поставить перед инверторами логические элементы ИЛИ (которые совместно с инверторами образуют элементы ИЛИ-НЕ).
+To add write capability, OR gates can be placed before the inverters (which, together with the inverters, form NOR gates).
 
-В результате получится **RS-триггер** — бистабильная ячейка, представленная на _рис. 3_.
+The result is an **RS latch** — the bistable cell shown in _fig. 3_.
 
-## RS-триггер
+## RS latch
 
 ![../.pic/Introduction/Sequential%20logic/fig_03.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_03.drawio.svg)
 
-_Рисунок 3. Схема и таблица истинности RS-триггера. X означает, что в этой строке результат не зависит от хранимого значения._
+_Figure 3. Circuit and truth table of the RS latch. X indicates that the result in that row is independent of the stored value._
 
-RS-триггер — это бистабильная ячейка, имеющая два управляющих входа: `R` (reset) и `S` (set), и два выхода: `Q` и `Q̅`. `Q̅` является инверсией `Q`. RS-триггер, построенный на логических элементах ИЛИ-НЕ, работает следующим образом:
+An RS latch is a bistable cell with two control inputs: `R` (reset) and `S` (set), and two outputs: `Q` and `Q̅`. `Q̅` is the complement of `Q`. An RS latch built from NOR gates operates as follows:
 
-1. Если вход `R=1`, а `S=0`, то выход верхнего элемента ИЛИ-НЕ (а значит и выход `Q`) равен `0` вне зависимости от второго его входа. Этот выход поступает вместе с входом `S` на нижний элемент ИЛИ-НЕ, который выдаёт `1` (на выход `Q̅`), поскольку оба его входа равны `0`. Эта единица подаётся на второй вход верхнего элемента ИЛИ-НЕ и теперь, даже если вход `R` станет равным `0`, `1` на втором его входе сможет воспроизвести тоже самое поведение, запирая внутри триггера стабильное состояние `Q=0`.
-2. Если вход `R=0`, а `S=1`, схема работает противоположным образом: поскольку на нижний элемент подаётся `1` с входа `S`, выход `Q̅` равен `0` вне зависимости от второго входа нижнего элемента ИЛИ-НЕ. Этот ноль подаётся на второй вход верхнего элемента ИЛИ-НЕ, и поскольку оба его входа равны `0`, на выходе этого элемента (на выход `Q`) подаётся `1`, которая возвращается обратно на вход нижнего элемента ИЛИ-НЕ, запирая внутри триггера стабильное состояние `Q=1`.
-3. Таким образом, если на оба входа одновременно равны `0`, RS-триггер хранит своё предыдущее значение.
+1. If `R=1` and `S=0`, the output of the upper NOR gate (and therefore output `Q`) is `0` regardless of its second input. This output, together with input `S`, drives the lower NOR gate, which produces `1` (at output `Q̅`) since both of its inputs are `0`. This `1` is fed back to the second input of the upper NOR gate, so that even if `R` returns to `0`, the `1` on its second input reproduces the same behaviour, locking the stable state `Q=0` inside the flip-flop.
+2. If `R=0` and `S=1`, the circuit operates in the opposite manner: since `1` from input `S` drives the lower gate, output `Q̅` is `0` regardless of the lower NOR gate's second input. This `0` is applied to the second input of the upper NOR gate, and since both of its inputs are `0`, the output of that gate (output `Q`) is `1`, which feeds back to the lower NOR gate's input, locking the stable state `Q=1` inside the flip-flop.
+3. Therefore, when both inputs are simultaneously `0`, the RS latch retains its previous value.
 
-Проблемой данного триггера является то, что он имеет **запрещённую** комбинацию входов. В случае RS-триггера, построенного на элементах ИЛИ-НЕ, таковой комбинацией входов является `R=1` и `S=1`. Даже с точки зрения функционального назначения, данная комбинация не имеет смысла: кому потребуется одновременно и сбрасывать RS-триггер в 0 и устанавливать его в 1? Тем не менее, вот что произойдет, если использовать эту комбинацию:
+The drawback of this flip-flop is that it has a **forbidden** input combination. For an RS latch built from NOR gates, this forbidden combination is `R=1` and `S=1`. Even from a functional standpoint, this combination makes no sense: who would want to simultaneously reset an RS latch to 0 and set it to 1? Nevertheless, here is what happens when this combination is used:
 
-4. Если оба входа одновременно равны `1`, то оба выхода Q и Q̅ будут равны `0`, что нарушает логику работы триггера, поскольку выход Q̅ должен быть инверсией выхода Q. При этом, если после этого перевести оба входа в `0`, RS-триггер окажется в неустойчивом состоянии (в состоянии гонки), а выходы могут начать неопределённо долго инвертироваться. Пока RS-триггер был в запрещённом состоянии, выходы `Q` и `Q̅`, равные `0`, подавались на входы обоих элементов ИЛИ-НЕ, а если после этого **одновременно** перевести входы `R` и `S` в состояние `0`, то на входах обоих вентилей будут `0`, что побудит их выдать на выходы `1`, которые пойдут обратно на входы этих вентилей, после чего те подадут на выход `0`, и так будет продолжаться до тех пор, пока один из сигналов в петле обратной связи не выиграет гонку, и RS-триггер не окажется в стабильном состоянии `0` либо `1`.
+4. If both inputs are simultaneously `1`, both outputs Q and Q̅ will be `0`, which violates the latch logic since Q̅ should be the complement of Q. Moreover, if both inputs are then **simultaneously** returned to `0`, the RS latch enters an unstable (racing) state, and the outputs may oscillate indefinitely. While the RS latch was in the forbidden state, outputs `Q` and `Q̅`, both equal to `0`, were fed back to the inputs of both NOR gates. If both `R` and `S` are simultaneously returned to `0`, both gate inputs become `0`, causing both gates to output `1`, which feeds back to their inputs, after which they output `0`, and this continues until one of the signals in the feedback loop wins the race and the RS latch settles into a stable state of `0` or `1`.
 
-Для того чтобы избавиться от запрещённого состояния RS-триггера, была придумана D-защёлка (gated D-latch).
+To eliminate the forbidden state of the RS latch, the D latch was devised.
 
-## D-защелка
+## D Latch
 
-D-защёлка — это бистабильная ячейка памяти, имеющая входы `D` (Data) и `E` (enable). Иногда вход enable называют clk (clock) или G (gated), что никак не сказывается на его функциональном назначении. Когда сигнал `E` равен `1`, D-защёлка "захватывает" данные с входа `D`. Когда сигнал `E` равен `0`, D-защёлка сохраняет уже захваченные данные.
+A D latch is a bistable memory cell with inputs `D` (Data) and `E` (enable). The enable input is sometimes called clk (clock) or G (gated), which does not affect its functional role. When `E` is `1`, the D latch "captures" data from input `D`. When `E` is `0`, the D latch holds the previously captured data.
 
-D-защёлка может быть построена на базе RS-триггера, к которому добавляется логика, исключающая возможность появления запрещённого состояния (_рис. 4_).
+A D latch can be built on top of an RS latch by adding logic that prevents the forbidden state from occurring (_fig. 4_).
 
 ![../.pic/Introduction/Sequential%20logic/fig_04.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_04.drawio.svg)
 
-_Рисунок 4. Схема и таблица истинности D-защёлки._
+_Figure 4. Circuit and truth table of the D latch._
 
-Логика работы D-защёлки заключается в следующем. Когда сигнал `E` равен `0`, логические вентили И подают на выход `0` вне зависимости от второго входа, и RS-триггер переходит в состояние хранения текущего значения. В такой ситуации говорят, что D-защёлка "закрыта", или "перешла в непрозрачное состояние". Когда сигнал `E` равен `1`, логические элементы И, добавленные перед входами RS-триггера передают на выход значение со второго их входа. При этом на второй вход этих элементов подаются противоположные сигналы: `!D` и `D`, что исключает возможность одновременного появления `1` на входах `R` и `S`. В этом случае в RS-триггер попадает значение с входа `D`, а про D-защёлку говорят, что она "открыта" (перешла в "прозрачное" состояние). Пока защёлка "прозрачна", данные со входа `D` идут напрямую на выход `Q`.
+The D latch operates as follows. When `E` is `0`, the AND gates drive their outputs to `0` regardless of the second input, and the RS latch transitions to its hold state. In this situation the D latch is said to be "closed", or "opaque". When `E` is `1`, the AND gates placed before the RS latch inputs pass the value of their second input to the output. The complementary signals `!D` and `D` are applied to the second inputs of these gates, which prevents both `R` and `S` from being `1` simultaneously. In this case the value from input `D` enters the RS latch, and the D latch is said to be "open" (it transitions to the "transparent" state). While the latch is transparent, data from input `D` passes directly to output `Q`.
 
-Несмотря на то, что D-защёлка устраняет главный недостаток RS-триггера, она тоже является не самой надёжной бистабильной ячейкой памяти. Дело в том, что D-защёлка пропускает на выход данные со входа `D` всё то время, пока она "прозрачна". Это значит, что она будет пропускать через себя все возможные переходные процессы сигнала `D`. Это значит, что она будет распространять переходные процессы сигналов со входа D, на которые будут реагировать последующие участки цифровой схемы. Из-за этого, через всю цифровую схему, начиная со входов, будут распространяться переходные процессы. В результате определить моменты времени, в которых на выходе схемы будет корректный результат обработки входного сигнала, станет практически невозможно. Было бы гораздо удобней, если бы могли сохранять данные одномоментно, когда на входе `D` уже находится установившееся значение, отсекая тем самым на каждом элементе памяти переходные процессы всех предыдущих участков цифровой схемы. Таким элементом памяти, является D-триггер (D flip-flop).
+Although the D latch eliminates the main drawback of the RS latch, it is not the most reliable bistable memory cell too. The problem is that the D latch passes data from input `D` to the output for the entire time it is transparent. This means it propagates all transient glitches on the `D` signal, which subsequent portions of the digital circuit will react to. As a result, transients originating at the circuit inputs propagate throughout the entire design, making it practically impossible to determine at what moments in time the circuit output contains a valid result. It would be far more convenient to capture data instantaneously, at the moment when input `D` has already settled to a stable value, thereby cutting off transients from all preceding stages at each memory element. The D flip-flop (D flip-flop) is exactly such a memory element.
 
-## D-триггер
+## D Flip-Flop
 
-D-триггер — это элемент статической памяти, который сохраняет данные со входа `D` **в момент перехода управляющего сигнала из нуля в единицу** (либо в момент перехода из единицы в ноль). Данный сигнал называется **сигналом синхронизации** (или **синхроимпульсом**) и обозначается как clk (clock).
+A D flip-flop is a static memory element that captures data from input `D` **at the moment the control signal transitions from zero to one** (or from one to zero). This signal is called the **clock signal** (or **clock**) and is denoted clk.
 
-На _рис. 5_ показан способ построения D-триггера из двух D-защёлок.
+_Figure 5_ shows how a D flip-flop is constructed from two D latches.
 
 ![../.pic/Introduction/Sequential%20logic/fig_05.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_05.drawio.svg)
 
-_Рисунок 5. Схема и таблица истинности D-триггера._
+_Figure 5. Circuit and truth table of the D flip-flop._
 
-Принцип работы D-триггера, схема которого представлена на _рис. 5_ заключается в том, что управляющий сигнал `E` одной защёлки является инверсией управляющего сигнала `E` другой защёлки. Это значит, что пока одна защёлка "прозрачна" и принимает данные со входа — другая "непрозрачна" и данные не принимает. В момент, когда тактовый синхроимпульс меняет своё значение с `0` на `1`, ведущая защёлка становится "непрозрачной" для новых данных с входа `D`, и "запертые" в ней данные попадают в только что открывшуюся ведомую защёлку. Несмотря на то, что ведомая защёлка "прозрачна" всё то время, пока сигнал `clk = 1`, данные в ней остаются стабильными, поскольку выход ведущей защёлки больше не может измениться.
+The D flip-flop shown in _fig. 5_ operates on the principle that the enable signal `E` of one latch is the complement of the enable signal `E` of the other. This means that while one latch is transparent and accepting data from the input, the other is opaque and not accepting data. At the moment the clock transitions from `0` to `1`, the master latch becomes opaque to new data from input `D`, and the data "latched" inside it passes into the slave latch that has just opened. Although the slave latch remains transparent for the entire time `clk = 1`, the data inside it remains stable because the master latch output can no longer change.
 
-Описанные схемы бистабильных ячеек представляют собой скорее математическое описание элементов памяти — так проще объяснить принцип их работы. Если ваша технология позволяет реализовать элементы И, ИЛИ и НЕ — значит вы точно можете реализовать подобные элементы. При этом, используя особенности конкретной технологии, данные схемы можно реализовывать более эффективно. D-защёлку, к примеру, можно реализовать схемой, представленной на _рис. 6_.
+The bistable cell circuits described above are more of a mathematical model of memory elements — they serve to explain the operating principle more clearly. If your technology allows you to implement AND, OR, and NOT gates, you can certainly implement such elements. Moreover, by exploiting the characteristics of a specific technology, these circuits can be implemented more efficiently. A D latch, for example, can be implemented as the circuit shown in _fig. 6_.
 
 ![../.pic/Introduction/Sequential%20logic/fig_06.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_06.drawio.svg)
 
-_Рисунок 6. Конфигурируемая ячейка памяти ПЛИС Xilinx XC2064 [[2, стр. 2-63](https://archive.org/details/programmablegate00xili/page/n93/mode/2up)]._
+_Figure 6. Configurable memory cell of the Xilinx XC2064 FPGA [[2, p. 2-63](https://archive.org/details/programmablegate00xili/page/n93/mode/2up)]._
 
-## Метастабильность
+## Metastability
 
-Как ранее упоминалось, при проектировании эффективных цифровых схем, необходимо оглядываться на аналоговые особенности технологии, по которой эти схемы будут реализованы. Выполним анализ простейшей бистабильной ячейки, построенной на двух инверторах. Для этого рассмотрим _рис. 7_. На _рис. 7 (а)_ показана передаточная функция U<sub>вых</sub> = T(U<sub>вх</sub>) некоторого инвертора. По оси абсцисс откладывается входное напряжение, подаваемое на инвертор, а по оси ординат — его выходное напряжение. Если подать на вход инвертора, описываемого подобной передаточной функцией напряжение, равное 0В (соответствует цифровому значению `0`), на выходе будет напряжение равное 3В (соответствует цифровому значению `1`), и наоборот: если подать на вход значение 3В, мы получим на выходе значение приблизительно равное 0В.
+As mentioned earlier, designing efficient digital circuits requires consideration of the analog characteristics of the technology in which those circuits will be implemented. Let us analyze the simplest bistable cell built from two inverters by examining _fig. 7_. _Figure 7 (a)_ shows the transfer function U<sub>out</sub> = T(U<sub>in</sub>) of an inverter. The horizontal axis represents the input voltage applied to the inverter, and the vertical axis represents its output voltage. Applying 0 V (corresponding to digital value `0`) to the input of an inverter described by such a transfer function yields 3 V (corresponding to digital value `1`) at the output, and vice versa: applying 3 V yields approximately 0 V at the output.
 
-Поскольку в бистабильной ячейке выход одного инвертора подаётся на вход второго, оказывается удобным наложить графики передаточной функции обоих таким образом, чтобы входное напряжение одного инвертора оказалось на той же оси, где откладывается выходное напряжение другого инвертора, как представлено на _рис. 7 (б)_. Точки пересечения кривых на этом графике являются точками равновесия, в которых входные и выходные напряжения обоих инверторов являются согласованными.
+Since in a bistable cell the output of one inverter drives the input of the other, it is convenient to superimpose the transfer function plots of both inverters so that the input voltage of one inverter shares the same axis as the output voltage of the other, as shown in _fig. 7 (b)_. The intersection points of the curves on this plot are equilibrium points at which the input and output voltages of both inverters are mutually consistent.
 
 ![../.pic/Introduction/Sequential%20logic/fig_07.svg](../.pic/Introduction/Sequential%20logic/fig_07.svg)
 
-_Рисунок 7. Передаточные функции для: а) одиночного КМОП-инвертора; б) пары инверторов, объединённых в бистабильную петлю [3, стр. 497]._
+_Figure 7. Transfer functions for: a) a single CMOS inverter; b) a pair of inverters connected in a bistable loop [3, p. 497]._
 
-Как вы можете заметить, таких точек почему-то не две, а три. Две эти точки обозначены как **стабильные** и соответствуют привычным цифровым значениям 1 (для 3В) и 0 (для 0В). Третья точка равновесия обозначена как **метастабильная** и расположена примерно посередине между этими двумя значениями. И действительно, согласно графику, если подать на вход приблизительно 1.5В, на выходе будет точно такое же напряжение, которое затем будет подано на вход второго инвертора и т.д., благодаря чему петля будет находиться в подобном состоянии неопределённый промежуток времени. Подобное состояние называется **метастабильным состоянием** и присуще любой бистабильной ячейке, реализованной на электронной компонентной базе.
+As you can see, there are three intersection points rather than two. Two of these are labeled as **stable** and correspond to the familiar digital values 1 (at 3 V) and 0 (at 0 V). The third equilibrium point is labeled **metastable** and lies approximately midway between the two stable values. Indeed, according to the plot, applying approximately 1.5 V to the input produces exactly the same voltage at the output, which is then applied to the second inverter's input, and so on, causing the loop to remain in this state for an indeterminate period. This condition is called the **metastable state** and is an inherent property of any bistable cell implemented in electronic hardware.
 
-Традиционно, для объяснения явления метастабильности используется аналогия с шариком на холме (_рис. 8_). Предположим, шарик находится у подножия левого склона холма. Если приложить к нему достаточную силу, направленную вправо — шарик перекатится через холм, и он окажется на противоположном склоне (для удобства аналогии, на склонах холма стоят стенки, чтобы шарик останавливался всегда в одной и той же точке этого склона). Если приложить недостаточно силы — шарик поднимется немного вверх по холму, и скатится обратно, остановившись в той же точке, откуда и начал. Однако, если вы будете достаточно "удачливы" и "точны", вы можете приложить ровно столько силы, чтобы шарик поднялся на вершину холма, но не смог с неё скатиться. Этот шарик может оставаться в таком положении неопределённое количество времени, но любое малейшее возмущение (будь то лёгкое дуновение ветерка, вызванное взмахом крыла пролетевшей рядом бабочки, или далёкое землетрясение, можете придумать свою экстравагантную причину) может заставить шарик скатиться в любую сторону.
+Metastability is traditionally explained using the analogy of a ball on a hill (_fig. 8_). Suppose the ball is resting at the bottom of the left slope. Applying sufficient force to the right will cause the ball to roll over the hill and come to rest on the opposite slope (walls are placed at the bottom of each slope for convenience, so the ball always stops at the same point). Applying insufficient force causes the ball to roll partway up the hill and roll back to its starting position. However, if you are sufficiently "lucky" and "precise", you can apply exactly enough force to push the ball to the top of the hill without it rolling off. The ball may remain at the top for an indeterminate amount of time, but any slight disturbance — a gentle breeze from the wing of a passing butterfly, a distant earthquake, or any other exotic cause you care to imagine — can send the ball rolling in either direction.
 
 ![../.pic/Introduction/Sequential%20logic/fig_08.svg](../.pic/Introduction/Sequential%20logic/fig_08.svg)
 
-_Рисунок 8. Механическая аналогия явлению метастабильности [3, стр. 498]._
+_Figure 8. A mechanical analogy for metastability [3, p. 498]._
 
-Вернёмся к _рис. 7_ (б). Предположим, что инвертор находится в метастабильном состоянии и в цепи возникла случайная наводка, слегка отклонившая напряжение на входе одного из инверторов. Это отклонение усилится на выходе инвертора и попадёт на вход второго инвертора, усилившись на котором оно вернётся на вход первого инвертора и т.д. пока в конечном итоге не остановится в верхней равновесной точке.
+Returning to _fig. 7 (b)_: suppose the inverter is in the metastable state and a random noise event slightly perturbs the voltage at the input of one of the inverters. This perturbation is amplified at the inverter's output and applied to the second inverter's input, where it is amplified again and fed back to the first inverter's input, and so on, until the loop ultimately settles at the upper equilibrium point.
 
-Если же возмущение произойдёт, пока бистабильная ячейка была в стабильном состоянии — её состояние не изменится. Предположим, что бистабильная ячейка хранит значение `1`, т.е. на вход первого инвертора подаётся значение 0В, и пришло возмущение, отклонившее это напряжение до 1В (а для подобной цифровой схемы это очень экстремальное отклонение, за пределами допустимых режимов работы). Проведём вертикальную линию до точки пересечения с черной кривой — это значение на выходе первого инвертора, и входа второго инвертора. Из этой точки, проведём горизонтальную линию до пересечения с синей кривой — это значение на выходе второго инвертора и входе первого. В общем-то, уже на этом этапе, на вход первого инвертора снова подаётся околонулевое напряжение. Именно поэтому крайние две точки пересечения называются **стабильными** — пока на схему подаётся питание, ячейка будет находиться в этом состоянии бесконечно долго до тех пор, пока не произойдёт существенного воздействия, чтобы она могла изменить это состояние.
+If the disturbance occurs while the bistable cell is in a stable state, its state will not change. Suppose the bistable cell is storing the value `1`, meaning 0 V is applied to the first inverter's input, and a disturbance shifts this voltage to 1 V (an extremely large deviation for such a digital circuit, well outside the normal operating range). Drawing a vertical line to its intersection with the black curve gives the output voltage of the first inverter and the input voltage of the second. Drawing a horizontal line from that point to its intersection with the blue curve gives the output voltage of the second inverter and the input voltage of the first. By that point the first inverter's input has already returned to near-zero voltage. This is precisely why the two outer intersection points are called **stable**: as long as power is applied, the cell remains in that state indefinitely until a sufficiently large disturbance occurs to cause a transition.
 
-В случае метастабильного состояния — мы не можем предсказать, конкретное значение того, как долго ячейка будет находиться в этом состоянии — это случайная величина, для которой может быть оценено значение вероятности. Например, можно сделать оценку вроде: "вероятность того, что бистабильная ячейка выйдет из метастабильного состояния через 100мс много выше вероятности, что она выйдет из этого состояния через 100 секунд"
+In the metastable case, we cannot predict the specific duration for which the cell will remain in that state — it is a random variable for which only probabilistic estimates can be made. For example, one might say: "the probability that the bistable cell will exit the metastable state within 100 ms is far greater than the probability that it will still be in that state after 100 seconds."
 
-Таким образом, метастабильность — это явление, возникающее в ходе нарушения условий работы цифровых элементов. В обычных случаях это явление является нежелательным (если только вы не планируете использовать свою схему в качестве генератора случайных чисел) и важно знать, как его избежать.
+Thus, metastability is a phenomenon that arises when the operating conditions of digital elements are violated. In normal circumstances it is an undesirable effect (unless you intend to use your circuit as a random number generator), and it is important to know how to avoid it.
 
-Любые бистабильные ячейки имеют специальные временны́е параметры (ограничения), несоблюдение которых может привести к появлению метастабильности. В рамках этого курса, вы будете работать в основном с бистабильными ячейками, представленными в виде D-триггеров. Для D-триггеров таковыми временными параметрами являются:
+All bistable cells have specific timing parameters (constraints) whose violation can lead to metastability. In this course, you will primarily work with bistable cells in the form of D flip-flops. For D flip-flops, these timing parameters are:
 
-- T<sub>setup</sub> (**setup time**) — **время предустановки**. Это интервал времени, в течение которого сигнал на входе `D` должен оставаться неизменным перед наступлением фронта тактового сигнала.
-- T<sub>hold</sub> (**hold time**) — **время удержания**. Это интервал времени, в течение которого сигнал на входе `D` должен оставаться неизменным после наступления фронта тактового сигнала.
+- T<sub>setup</sub> (**setup time**) — the interval during which the signal at input `D` must remain stable before the clock edge arrives.
+- T<sub>hold</sub> (**hold time**) — the interval during which the signal at input `D` must remain stable after the clock edge arrives.
 
-Эти два параметра образуют временное окно вокруг фронта тактового сигнала, в течение которого входной сигнал должен оставаться стабильным. Несоблюдение данных требований приводит к неопределённому поведению триггера (см. _рис. 9_). В простейшем случае он сохранит либо "старое", либо "новое" значение, пришедшее на вход данных D в непосредственной близости от фронта клока, но какое именно — неизвестно. Однако иногда "звёзды сойдутся", и триггер окажется в метастабильном состоянии. Вероятность этого крайне мала (о таком событии можно сказать, что оно "одно на миллиард"), однако не стоит относиться к нему с пренебрежением. Если схема работает на частоте в 1ГГц, триггер будет обновлять своё состояние миллиард раз в секунду, а сама схема может содержать миллионы триггеров. В таком контексте, фраза "одно на миллиард" означает не "ничего страшного, скорее при моей жизни этого не произойдёт", а "чёрт, кажется, что поэтому у меня ничего не работает".
+These two parameters define a timing window around the clock edge during which the input signal must remain stable. Violating these requirements leads to undefined flip-flop behaviour (see _fig. 9_). In the simplest case, the flip-flop will capture either the "old" or the "new" value that arrived at data input D in the vicinity of the clock edge, but which one is unknown. However, sometimes "the stars align" and the flip-flop enters a metastable state. The probability of this is extremely low (the kind of event described as "one in a billion"), yet it should not be dismissed. If a circuit operates at 1 GHz, the flip-flop updates its state one billion times per second, and the circuit itself may contain millions of flip-flops. In that context, "one in a billion" does not mean "nothing to worry about, it probably won't happen in my lifetime" — it means "damn, that's apparently why nothing works."
 
 ![../.pic/Introduction/Sequential%20logic/fig_09.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_09.drawio.svg)
 
-_Рисунок 9. Пример нарушения временны́х параметров D-триггера [[4](https://habr.com/ru/articles/254869/)]._
+_Figure 9. Example of D flip-flop timing parameter violations [[4](https://habr.com/ru/articles/254869/)]._
 
-На _рис. 9_ показано три различных исхода нарушения временных ограничений:
+_Figure 9_ shows three possible outcomes of a timing violation:
 
-1. Выход триггера Q<sub>1</sub> принял новое значение сигнала D, которое было установлено во временном промежутке T<sub>setup</sub>.
-2. Выход триггера Q<sub>2</sub> принял старое значение сигнала D, которое было установлено на входе до начала T<sub>setup</sub>. На следующем положительном фронте clk на входе D находится уже установившееся значение, которое без проблем записывается в триггер.
-3. Перемена в уровне во время T<sub>setup</sub> привело к тому, что на триггер было подано напряжение, равное половине уровня логической единицы, и тот оказался в метастабильном состоянии. Спустя некоторое время, триггер оказался в одном из стабильных состояний, но в каком — никто заранее предсказать не может (заштрихованная область, где триггер принял значение либо 0, либо 1). На следующем положительном фронте clk на входе D находится уже установившееся значение, которое без проблем записывается в триггер.
+1. Flip-flop output Q<sub>1</sub> captured the new value of signal D that was established within the T<sub>setup</sub> window.
+2. Flip-flop output Q<sub>2</sub> captured the old value of signal D that was established before T<sub>setup</sub> began. On the next positive clock edge, input D already holds a settled value, which is captured without issue.
+3. A signal transition during T<sub>setup</sub> caused a voltage equal to half the logic-high level to reach the flip-flop, pushing it into a metastable state. After some time the flip-flop settled into one of the stable states, but which one cannot be predicted in advance (shown as the hatched region where the flip-flop took either 0 or 1). On the next positive clock edge, input D already holds a settled value, which is captured without issue.
 
-Нарушение по T<sub>setup</sub> обычно происходит, когда схема работает на частоте, не подходящей для имеющегося у схемы критического пути. Критический путь — это комбинационная часть цифровой схемы с наибольшей задержкой распространения сигнала. Время прохождения сигнала по этому пути характеризует минимально возможный период тактового сигнала и, соответственно, максимальную тактовую частоту работы всей схемы.
+A T<sub>setup</sub> violation typically occurs when the circuit is clocked at a frequency incompatible with the circuit's critical path. The critical path is the combinational portion of the digital circuit with the greatest signal propagation delay. The propagation time along this path determines the minimum achievable clock period and, consequently, the maximum operating frequency of the entire circuit.
 
-Если подать на схему частоту, превышающую ограничение, определяемое критическим путём, сигнал может не принять установившееся значение на конце критического пути и, если на этом конце находится вход триггера — будут нарушено его ограничение по времени предустановки T<sub>setup</sub>.
+If the circuit is driven at a frequency that exceeds the constraint imposed by the critical path, the signal may not have settled at the end of the critical path, and if a flip-flop input is located there, its T<sub>setup</sub> constraint will be violated.
 
-Нарушение по T<sub>hold</sub> происходит, когда у схемы есть пути с задержкой распространения сигнала до элементов последовательностной логики, которая меньше минимально допустимой. Данные пути напрямую не влияют на значение максимальной частоты, но требуют добавления элементов задержки на кратчайшие пути. Такие пути, как правило, являются значительной проблемой при проектировании интегральных схем специального назначения (application-specific integrated circuit, **ASIC**).
+A T<sub>hold</sub> violation occurs when the circuit contains paths with a signal propagation delay to sequential logic elements that is shorter than the minimum permissible value. Such paths do not directly limit the maximum operating frequency, but they require the insertion of delay elements on the shortest paths. These paths are typically a significant concern in the design of application-specific integrated circuits (**ASICs**).
 
-Допустим в схеме есть два регистра А и Б, задержка распространения сигнала между которыми меньше допустимой. В этом случае, в момент фронта синхроимпульса с выхода регистра А может начать распространяться изменение в уровне сигнала. Это изменение достигнет входа регистра Б в этом же такте, пока у того не завершилось время удержания T<sub>hold</sub>.
+Suppose a circuit contains two registers A and B whose signal propagation delay is shorter than the minimum allowed. In this case, at the moment of the clock edge, a level transition may begin propagating from the output of register A. This transition reaches the input of register B within the same clock cycle, before B's T<sub>hold</sub> interval has expired.
 
-Для того чтобы определить, способна ли проектируемая схема работать на целевой частоте, выполняется **статический временной анализ** (**static timing analysis**, **STA**). В процессе STA, САПР рассчитывает задержки всех временных путей схемы и определяет критический путь. Итогом статического временного анализа является оценка запаса по времени (или времени простоя, англ.: slack) для каждого временного пути, когда схема работает на заданной частоте. Если slack положительный — это значит, что задержка критического пути схемы меньше предельно допустимой, и возможно увеличение частоты схемы (например, при небольшом снижении напряжения питания) в пределах данной величины. Если slack отрицательный — это значит, что задержка по критическому пути уже превысила допустимую, и для корректной работы схемы необходимо либо изменить критический путь таким образом, чтобы сократилась его задержка распространения сигнала, либо уменьшить тактовую частоту.
+To determine whether a circuit under design is capable of operating at the target frequency, **static timing analysis** (**STA**) is performed. During STA, the EDA tool calculates the propagation delays of all timing paths and identifies the critical path. The result of static timing analysis is the timing slack for each path when the circuit operates at the specified frequency. A positive slack indicates that the critical path delay is below the maximum allowed value, meaning the circuit frequency could potentially be increased (for example, by slightly reducing the supply voltage) by up to that margin. A negative slack indicates that the critical path delay already exceeds the allowed limit, and correct circuit operation requires either modifying the critical path to reduce its propagation delay or reducing the clock frequency.
 
-К сожалению, соблюсти временны́е ограничения триггеров не всегда возможно, поскольку в некоторых случаях, вход данных может по своей природе быть асинхронен (т.е. никаким образом не зависеть от входного тактового сигнала). К примеру, данные на вход триггера подаются со входа цифровой схемы, который подключён к кнопке, нажатие на которую никак не привязано к тактовому синхроимпульсу. В других случаях, необходимо передать данные, синхронизированные с одним тактовым сигналом, в область схемы, работающей от другого тактового сигнала. Подобная ситуация называется **пересечением тактовых доменов**, или **clock domain crossing** (**CDC**). В зависимости от конкретного сценария, существуют различные схемы синхронизации, самой простой из которых является установка дополнительного триггера там, где прогнозируется возникновение метастабильного состояния (рис. 10). В высокой долей вероятности в течении 1-2 тактов на выходе синхронизирующего триггера окажется стабильное состояние, которое подавалось на вход Din. Неопределённость в количестве тактов появляется из-за того, что мы не знаем, в какую сторону "свалится" состояние первого регистра в цепи.
+Unfortunately, it is not always possible to meet flip-flop timing constraints, because in some cases the data input is inherently asynchronous (i.e., completely independent of the clock signal). For example, data may arrive at a flip-flop input from an external pin connected to a button press, which bears no relation to the clock. In other cases, data synchronized to one clock domain must be transferred to a region of the circuit operating from a different clock. This situation is called a **clock domain crossing** (**CDC**). Depending on the specific scenario, various synchronization circuits exist; the simplest is the insertion of an extra flip-flop at the point where a metastable state is anticipated (_fig. 10_). With high probability the synchronizing flip-flop output will settle to a valid state within 1–2 clock cycles. The uncertainty in the number of cycles arises because we do not know in which direction the first register in the chain will "fall".
 
 ![../.pic/Introduction/Sequential%20logic/fig_10.drawio.svg](../.pic/Introduction/Sequential%20logic/fig_10.drawio.svg)
 
-_Рисунок 10. Схема и временная диаграмма простейшего синхронизатора._
+_Figure 10. Circuit and timing diagram of the simplest synchronizer._
 
-## Итоги главы
+## Chapter Summary
 
-1. Цифровая логика делится на **комбинационную** и **последовательностную**.
-   1. **Комбинационной** называют логику без памяти, выходы которой зависят только от её входов.
-   2. **последовательностной** называют логику с памятью, выходы которой зависят не только от её входов, но и от её внутреннего состояния.
-2. Кроме того, цифровые схемы делят на **синхронные** и **асинхронные**.
-   1. **Синхронными** называют последовательностные схемы, состояние которых меняется синхронно фронту тактового сигнала.
-   2. **Асинхронными** называют как комбинационные схемы, так и последовательностные схемы, изменение состояния которых может происходить без привязки к фронту тактового сигнала.
-   3. Существуют синхронные схемы с асинхронными сигналами предустановки/сброса. В большинстве случаев, они рассматриваются как обычные синхронные схемы, но их асинхронная логика предустановки/сброса, должна учитываться при расчёте **критического пути**.
-3. **Критический путь** — это часть цифровой схемы с наибольшей задержкой распространения сигнала, на пути которой не встречаются элементы синхронной логики.
-4. **Статическая память** — это тип памяти, который сохраняет данные в течение неопределённого времени, пока его питание остаётся включённым, без необходимости регенерации.
-5. **Динамическая память** — это тип памяти, использующий для хранения конденсаторы, что приводит к необходимости в регулярном обновлении содержимого памяти для того, чтобы не утратить данные.
-6. Основой статической памяти является **бистабильная ячейка**.
-7. **Бистабильная ячейка** — элемент, способный сохранять одно из двух устойчивых состояний, соответствующих цифровым значениям «0» или «1».
-8. Простейшей бистабильной ячейкой является петля из двух инверторов. Недостатком данной реализации является отсутствие возможности подать данные в эту ячейку извне. Этот недостаток решается преобразованием цепи в **RS-триггер**.
-9. **RS-триггер** — это бистабильная ячейка, имеющая два входа: сброс (reset, R) и установка (set, S). Данная ячейка может быть построена на паре логических вентилей ИЛИ-НЕ или И-НЕ. Недостатком данной бистабильной ячейки является наличие запрещённой комбинации входных сигналов, которая может привести к непредсказуемому поведению. Данный недостаток может быть разрешён путём добавления в схему дополнительной логики, из которой получается **D-защёлка**.
-10. **D-защёлка** — это бистабильная ячейка, имеющая два входа: сигнал разрешения записи (`E` / `clk`), и сигнал входных данных (D). Пока сигнал `E` активен, данные со входа `D` сохраняются в D-защёлку и идут на её выход (в таких случаях говорят, что защёлка "прозрачна"). Несмотря на то, что D-защёлка разрешает проблему запрещённого состояния RS-триггера, всё то время, пока она "прозрачна", она пропускает через себя все переходные процессы входных сигналов.
-11. **D-триггер** — это бистабильная ячейка, которая подобно D-защёлке имеет входы `clk` и `D`, но который сохраняет данные только в момент одного из фронтов тактового синхроимпульса (положительного или отрицательного фронта). Как и любые бистабильные ячейки, D-триггер подвержен явлению **метастабильности**. Метастабильность в D-триггере может возникнуть, если данные на входе `D` меняются во временном окне, расположенном в окрестностях фронта тактового синхроимпульса, определяемом следующими двумя параметрами:
-    1. T<sub>setup</sub> (**setup time**) — **время предустановки**. Это интервал, в течение которого сигнал на входе должен оставаться неизменным перед наступлением фронта тактового сигнала.
-    2. T<sub>hold</sub> (**hold time**) — **время удержания**. Это интервал, в течение которого сигнал на входе должен оставаться стабильным после наступления фронта тактового сигнала.
-12. **Метастабильное состояние** — это состояние бистабильной ячейки, при котором та не находится ни в одном из стабильных цифровых состояниях `0`/`1`, находясь при этом примерно посередине между ними. Через неопределённый промежуток времени (длину которого можно оценить с точки зрения вероятностей) бистабильная ячейка может выйти из этого состояния, приняв любое из значений `0`/`1`.
-13. В большинстве случаев метастабильность является нежелательным явлением в цифровой схеме. Причиной такого явления может стать работа схемы на частоте, не подходящей для имеющегося у данной схемы критического пути. Для того, чтобы узнать, сможет ли схема работать на заданной частоте, проводится **статический временной анализ** (**static timing analysis**, **STA**).
-14. Метастабильность может возникнуть и в случае, если сигнал данных по своей природе является асинхронным тактовому сигналу бистабильной ячейки: он может передаваться по событиям из внешнего мира, или с выхода бистабильных ячеек, работающих от других тактовых синхроимпульсов (подобная ситуация называется **пересечением тактовых доменов**, **clock domain crossing**, **CDC**).
+1. Digital logic is divided into **combinational** and **sequential** logic.
+   1. **Combinational** logic is memoryless logic whose outputs depend only on its inputs.
+   2. **Sequential** logic is logic with memory whose outputs depend not only on its inputs but also on its internal state.
+2. Digital circuits are also divided into **synchronous** and **asynchronous**.
+   1. **Synchronous** circuits are sequential circuits whose state changes synchronously with the clock edge.
+   2. **Asynchronous** circuits include both combinational circuits and sequential circuits whose state can change independently of the clock edge.
+   3. Synchronous circuits with asynchronous preset/reset signals exist. In most cases they are treated as ordinary synchronous circuits, but their asynchronous preset/reset logic must be taken into account when calculating the **critical path**.
+3. The **critical path** is the portion of a digital circuit with the greatest signal propagation delay along which no synchronous logic elements are encountered.
+4. **Static memory** is a type of memory that retains data indefinitely as long as power is supplied, without requiring refresh cycles.
+5. **Dynamic memory** is a type of memory that uses capacitors for storage, requiring periodic refresh of memory contents to prevent data loss.
+6. The foundation of static memory is the **bistable cell**.
+7. A **bistable cell** is an element capable of holding one of two stable states corresponding to the digital values "0" or "1".
+8. The simplest bistable cell is a loop of two inverters. Its drawback is the absence of any means to write data from outside. This drawback is resolved by converting the circuit into an **RS latch**.
+9. An **RS latch** is a bistable cell with two inputs: reset (R) and set (S). It can be built from a pair of NOR or NAND gates. The drawback of this bistable cell is the existence of a forbidden input combination that can lead to unpredictable behaviour. This drawback can be resolved by adding extra logic to obtain a **D latch**.
+10. A **D latch** is a bistable cell with two inputs: a write-enable signal (`E` / `clk`) and a data input (D). While signal `E` is active, data from input `D` is stored in the D latch and appears at its output (the latch is said to be "transparent"). Although the D latch eliminates the forbidden state of the RS latch, it propagates all transients on the input signals for the entire time it is transparent.
+11. A **D flip-flop** is a bistable cell that, like a D latch, has `clk` and `D` inputs, but captures data only at one of the clock edges (positive or negative). Like all bistable cells, the D flip-flop is susceptible to **metastability**. Metastability in a D flip-flop can occur if the data at input `D` changes within the timing window around the clock edge defined by the following two parameters:
+    1. T<sub>setup</sub> (**setup time**) — the interval during which the input signal must remain stable before the clock edge arrives.
+    2. T<sub>hold</sub> (**hold time**) — the interval during which the input signal must remain stable after the clock edge arrives.
+12. The **metastable state** is a state of a bistable cell in which it is not in either stable digital state `0`/`1`, but instead sits approximately midway between them. After an indeterminate period of time (whose duration can only be estimated probabilistically), the bistable cell may exit this state and settle to either `0` or `1`.
+13. In most cases metastability is an undesirable phenomenon in a digital circuit. It can be caused by operating the circuit at a frequency incompatible with the circuit's critical path. To determine whether the circuit can operate at a given frequency, **static timing analysis** (**STA**) is performed.
+14. Metastability can also occur when the data signal is inherently asynchronous to the bistable cell's clock: it may be driven by external-world events or by bistable cells operating from different clocks (a situation called a **clock domain crossing**, **CDC**).
 
-## Список источников
+## References
 
-1. [Д.М. Харрис, С.Л. Харрис / Цифровая схемотехника и архитектура компьютера: RISC-V / пер. с англ. В. С. Яценков, А. Ю. Романов; под. ред. А. Ю. Романова  / М.: ДМК Пресс, 2021](https://e.lanbook.com/book/241166);
+1. D.M. Harris, S.L. Harris / Digital Design and Computer Architecture. RISC-V Edition, 2021;
 2. Xilinx / [The Programmable Gate Array Data Book](https://archive.org/details/programmablegate00xili);
 3. J. Wakerly, Digital Design: Principles and Practices (5th Edition). Pearson, 2017;
-4. [Метастабильность триггера и межтактовая синхронизация](https://habr.com/ru/articles/254869/).
+4. [Flip-flop metastability and clock domain synchronization](https://habr.com/ru/articles/254869/).

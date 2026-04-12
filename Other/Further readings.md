@@ -1,82 +1,62 @@
-# Список дополнительной литературы
+# Further Reading List
 
-В приведенном ниже списке будут даны описания книг, а также способы их получения: покупка/чтение в электронной библиотеке/получение экземпляра книги в университетской библиотеке. <!--Руководство по работе с электронной библиотекой вы можете найти [здесь](<placeholder>)-->.
+The list below provides descriptions of books along with ways to obtain them: purchase / read in an electronic library / borrow a copy from the university library. <!--A guide to using the electronic library can be found [here](<placeholder>)-->
 
-- [Список дополнительной литературы](#Список-дополнительной-литературы)
-  - [Митио Сибуя и Такаси Тонаги: Центральный процессор. Образовательная манга](#Митио-Сибуя-и-Такаси-Тонаги-Центральный-процессор-Образовательная-манга)
-  - [Чарльз Петцольд: Код. Тайный язык информатики](#Чарльз-Петцольд-Код-Тайный-язык-информатики)
-  - [Дэвид М. Харрис и Сара Л. Харрис: Цифровая схемотехника и архитектура компьютера: RISC-V](#Дэвид-М-Харрис-и-Сара-Л-Харрис-Цифровая-схемотехника-и-архитектура-компьютера-risc-v)
-  - [Дэвид М. Харрис и Сара Л. Харрис: Цифровая схемотехника и архитектура компьютера. Дополнение по архитектуре ARM\*](#Дэвид-М-Харрис-и-Сара-Л-Харрис-Цифровая-схемотехника-и-архитектура-компьютера-Дополнение-по-архитектуре-arm)
-  - [под редакцией Романова А.Ю. и Панчула Ю.В.: Цифровой синтез: практический курс](#под-редакцией-Романова-АЮ-и-Панчула-ЮВ-Цифровой-синтез-практический-курс)
-  - [Д. Паттерсон и Дж. Хеннесси: Архитектура компьютера и проектирование компьютерных систем](#Д-Паттерсон-и-Дж-Хеннесси-Архитектура-компьютера-и-проектирование-компьютерных-систем)
-  - [Д. Паттерсон и Дж. Хеннесси Архитектура компьютера. Количественный подход](#Д-Паттерсон-и-Дж-Хеннесси-Архитектура-компьютера-Количественный-подход)
-  - [С.А. Орлов и Б.Я. Цилькер: Организация ЭВМ и систем](#СА-Орлов-и-БЯ-Цилькер-Организация-ЭВМ-и-систем)
-  - [Д.Н. Беклемишев, А.Н. Орлов, А.Л. Переверзев, М.Г. Попов, А.В. Горячев, А.И. Кононова: Микропроцессорные средства и системы. Курс лекций](#ДН-Беклемишев-АН-Орлов-АЛ-Переверзев-МГ-Попов-АВ-Горячев-АИ-Кононова-Микропроцессорные-средства-и-системы-Курс-лекций)
-  - [Э. Таненбаум и Т. Остин: Архитектура компьютера](#Э-Таненбаум-и-Т-Остин-Архитектура-компьютера)
-  - [Дональд Томас: Логическое проектирование и верификация систем на SystemVerilog](#Дональд-Томас-Логическое-проектирование-и-верификация-систем-на-systemverilog)
+- [Further Reading List](#further-reading-list)
+  - [Michio Shibuya and Takashi Tonagi: The CPU. Educational Manga](#michio-shibuya-and-takashi-tonagi-the-cpu-educational-manga)
+  - [Charles Petzold: Code. The Hidden Language of Computer Hardware and Software](#charles-petzold-code-the-hidden-language-of-computer-hardware-and-software)
+  - [David M. Harris and Sarah L. Harris: Digital Design and Computer Architecture: RISC-V Edition](#david-m-harris-and-sarah-l-harris-digital-design-and-computer-architecture-risc-v-edition)
+  - [David M. Harris and Sarah L. Harris: Digital Design and Computer Architecture. ARM Edition\*](#david-m-harris-and-sarah-l-harris-digital-design-and-computer-architecture-arm-edition)
+  - [Edited by A.Yu. Romanov and Yu.V. Panchul: Digital Synthesis: A Practical Course](#edited-by-ayu-romanov-and-yuv-panchul-digital-synthesis-a-practical-course)
+  - [D. Patterson and J. Hennessy: Computer Organization and Design](#d-patterson-and-j-hennessy-computer-organization-and-design)
+  - [D. Patterson and J. Hennessy: Computer Architecture: A Quantitative Approach](#d-patterson-and-j-hennessy-computer-architecture-a-quantitative-approach)
+  - [A. Tanenbaum and T. Austin: Structured Computer Organization](#a-tanenbaum-and-t-austin-structured-computer-organization)
+  - [Donald Thomas: Logic Design and Verification Using SystemVerilog](#donald-thomas-logic-design-and-verification-using-systemverilog)
 
-## Митио Сибуя и Такаси Тонаги: Центральный процессор. Образовательная манга
+## Michio Shibuya and Takashi Tonagi: The CPU. Educational Manga
 
-Самый лайтовый вариант усвоения основных концепций изучаемой дисциплины. Про архитектуру процессора в виде манги. По сюжету девушка Каиураги Дюми, чемпион по японским шахматам сёги, встречает незнакомца, который предлагает ей сыграть с компьютером. Конечно же она сливает партию. И понеслось. Слово за слово и вот он уже рассказывает ей, как работает обыгравший ее компьютер. Не понять просто невозможно. А прочитав эту мангу любая книга ниже станет понятна абсолютно любому читателю. Манга [продается](https://dmkpress.com/catalog/manga/978-5-97060-507-3/) как в электронном, так и в печатном виде. В обозримом будущем будет доступна студентам МИЭТ в [электронной библиотеке](https://e.lanbook.com/book/93581).
+The lightest possible way to absorb the core concepts of this course. It covers processor architecture in manga form. In the story, a girl named Kayragi Dyumi, a champion in the Japanese board game shogi, meets a stranger who challenges her to play against a computer. She loses, of course. One thing leads to another, and he begins explaining how the computer that beat her actually works. Impossible not to understand. After reading this manga, any book on the list below will be completely accessible to any reader.
 
 ![../.pic/Other/Further%20readings/manga.jpg](../.pic/Other/Further%20readings/manga.jpg)
 
-## Чарльз Петцольд: Код. Тайный язык информатики
+## Charles Petzold: Code. The Hidden Language of Computer Hardware and Software
 
-Книга для тех, кому плохо пошел материал. Очень, очень классно рассказывается что такое цифровые устройства, как это работает и зачем это все нужно. На примере фонариков, азбуки Морзе, шрифта Брайля и штрих-кодов автор знакомит нас с основами кодирования информации. Из лампочек и батареек сначала собираются разные вроде бы пустяковые устройства, которые позже превращаются в полноценный компьютер. Отличная популярная литература. Если ты знаешь человека, которому с трудом дается понимание цифровой техники, то ты просто обязан порекомендовать ему эту книгу. В образовательных целях можно ознакомиться с ней в облаке. Почитать восхищенный отзыв о книге и ее содержании можно [тут](https://habr.com/ru/post/68365/). А дождаться, когда она начнет снова продаваться можно [тут](https://www.ozon.ru/context/detail/id/125884/). Либо поискать в магазинах.
+A book for those who are struggling with the material. It explains what digital devices are, how they work, and why any of it matters — in an exceptionally approachable way. Using examples like flashlights, Morse code, Braille, and barcodes, the author introduces the fundamentals of information encoding. From lightbulbs and batteries, seemingly trivial devices are assembled that eventually evolve into a fully functional computer. Excellent popular science writing. If you know someone who has difficulty understanding digital technology, you are simply obligated to recommend this book to them.
 
 ![../.pic/Other/Further%20readings/code.jpg](../.pic/Other/Further%20readings/code.jpg)
 
-## Дэвид М. Харрис и Сара Л. Харрис: Цифровая схемотехника и архитектура компьютера: RISC-V
+## David M. Harris and Sarah L. Harris: Digital Design and Computer Architecture: RISC-V Edition
 
-Потрясающая книга, являющаяся более доступным вариантом изложения и иллюстрации книги "Архитектура компьютера и проектирование компьютерных систем", Паттерсона и Хеннесси. На примере архитектуры **RISC-V** рассказывается как построить процессор начиная с вопросов работы транзистора. Рассматриваются базовые конструкции языков описания аппаратуры **SystemVerilog** и **VHDL**. Эту книгу на чистом энтузиазме перевели на русский язык группа ученых и инженеров из стран бывшего СССР с подачи [Юрия Панчула](http://panchul.com/about_ru/). Электронный вариант для архитектуры **MIPS** распространяется бесплатно и абсолютно легально. Обязательна к ознакомлению каждому! Гораздо удобнее использовать печатный вариант, на этот случай ее можно приобрести  [тут](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-961-3/). Электронный вариант с архитектурой **RISC-V** доступен в [электронной библотеке](https://e.lanbook.com/book/241166).
+An outstanding book that serves as a more accessible presentation and illustration of Patterson and Hennessy's *Computer Organization and Design*. Using the **RISC-V** architecture as an example, it explains how to build a processor starting from the fundamentals of transistor operation. Basic constructs of the hardware description languages **SystemVerilog** and **VHDL** are also covered.
 
 ![../.pic/Other/Further%20readings/harris.png](../.pic/Other/Further%20readings/harris.png)
 
-## Дэвид М. Харрис и Сара Л. Харрис: Цифровая схемотехника и архитектура компьютера. Дополнение по архитектуре ARM*
+## David M. Harris and Sarah L. Harris: Digital Design and Computer Architecture. ARM Edition*
 
-Как и следует из названия, эта книга дополняет предыдущие описанием отличий архитектуры **ARM** от **MIPS** и **RISC-V**. Книга состоит из глав, посвященных архитектуре процессоров **ARM**, их микроархитектуре, описанию подсистемы памяти и системы ввода-вывода. Также в приложении приведена система команд **ARM**. Почему такое пристальное внимание этой архитектуре? Потому что это одна из самых массово используемых архитектур в мире. Например, 98% всех мобильных телефонов работают на процессорах с архитектурой **ARM**. Книгу можно приобрести [тут](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-650-6/), а также прочесть в [электронной библиотеке](https://e.lanbook.com/book/111431).
+As the title suggests, this book complements the previous one by describing the differences between the **ARM** architecture and **MIPS** and **RISC-V**. The book consists of chapters dedicated to the **ARM** processor architecture, its microarchitecture, memory subsystem description, and the I/O system. The **ARM** instruction set is also provided in an appendix. Why such close attention to this architecture? Because it is one of the most widely used architectures in the world — for example, 98% of all mobile phones run on processors with an **ARM** architecture.
 
 ![../.pic/Other/Further%20readings/arm.jpg](../.pic/Other/Further%20readings/arm.jpg)
 
-## под редакцией Романова А.Ю. и Панчула Ю.В.: Цифровой синтез: практический курс
+## D. Patterson and J. Hennessy: Computer Organization and Design
 
-В дополнение к Харрисам отлично идет практический курс цифрового дизайна, в том числе, как раз, от того самого Юрия Панчула. Книга ориентирована в первую очередь на практику создания цифровой аппаратуры на ПЛИС с помощью **Verilog HDL**. Затрагиваются вопросы процесса создания **ASIC**. Очень хорошо написана, грамотно структурирована и имеет много полезной информации, требующейся на практике дизайнеру цифровой аппаратуры. Купить можно [тут](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-850-0/), так же доступна в [электронной библиотеке](https://e.lanbook.com/book/179492).
-
-![../.pic/Other/Further%20readings/digitaldesign.png](../.pic/Other/Further%20readings/digitaldesign.png)
-
-## Д. Паттерсон и Дж. Хеннесси: Архитектура компьютера и проектирование компьютерных систем
-
-Отцы архитектуры **RISC** делятся накопленным опытом. Не только рассказывают, как процессоры работают, но и как их построить, прививают принципы проектирования, красиво указывают на заблуждения, дают хитрые задания, да и вообще книга богата полезной информацией. Нетленка. Не зря на лицевой стороне книги написано *классика computer science*. Заканчивается книга разбором многоядерных, многопроцессорных параллельных систем. Если решишь поставить к себе на полку, то придется подождать когда она  [вновь поступит в продажу](https://www.ozon.ru/context/detail/id/7425447/) или поискать на полках магазинов.
+The fathers of **RISC** architecture share their accumulated expertise. They not only explain how processors work, but also how to build them, instill design principles, elegantly highlight common misconceptions, pose challenging exercises, and generally pack the book with valuable information. A timeless classic. Not for nothing does the cover read *a classic of computer science*. The book concludes with a treatment of multicore, multiprocessor parallel systems. If you want a copy for your shelf, you may need to wait for a [new printing](https://www.ozon.ru/context/detail/id/7425447/) or check bookstore shelves.
 
 ![../.pic/Other/Further%20readings/patterson1.jpg](../.pic/Other/Further%20readings/patterson1.jpg)
 
-## Д. Паттерсон и Дж. Хеннесси Архитектура компьютера. Количественный подход
+## D. Patterson and J. Hennessy: Computer Architecture: A Quantitative Approach
 
-Дополнение к предыдущей книге, вся суть которой передана в названии. Рассматривается эффективность современных вычислительных машин в численном эквиваленте. Что и как влияет на производительность вычислительных систем и какие существуют зависимости. Уделяется большое внимание построению иерархии памяти и анализу результатов, исследуется параллелизм исполнения команд. В некотором смысле это библия анализа вычислительных систем. Авторы получили за нее премию Тьюринга. Рекомендуется к прочтению после прослушивания курса Архитектуры процессорных систем. В облаке лежит часть книги для ознакомления, а ее  [физическая копия](https://www.ozon.ru/context/detail/id/35204637/) хорошо дополнит домашнюю библиотеку computer science.
+A companion to the previous book, the essence of which is captured in its title. The efficiency of modern computing systems is examined in quantitative terms. What factors affect the performance of computing systems and what dependencies exist between them. Significant attention is given to building the memory hierarchy and analyzing results, and instruction-level parallelism is explored. In some sense this is the bible of computing system analysis. The authors received the Turing Award for it. Recommended reading after completing the Processor System Architectures course. A portion of the book is available in the cloud for preview, and a [physical copy](https://www.ozon.ru/context/detail/id/35204637/) would make a fine addition to any computer science home library.
 
 ![../.pic/Other/Further%20readings/patterson2.jpg](../.pic/Other/Further%20readings/patterson2.jpg)
 
-## С.А. Орлов и Б.Я. Цилькер: Организация ЭВМ и систем
+## A. Tanenbaum and T. Austin: Structured Computer Organization
 
-Фундаментальный курс по архитектуре и структуре современных компьютерных систем, написанный двумя опытными профессорами из питерских вузов. Книга написана излишне сухо, в советской манере, порой с излишним формализмом даже там, где этого можно было избежать. Однако, книга изобилует большим объемом полезной информации, богатым списком источников, в основном зарубежных. Рекомендуется использовать ее как дополнительное справочное пособие. В ней можно найти много оригинальной информации, не содержащейся в другой отечественной печатной продукции. Купить книжку можно, например, [здесь](https://www.ozon.ru/context/detail/id/147603179/).
-
-![../.pic/Other/Further%20readings/orlov.jpg](../.pic/Other/Further%20readings/orlov.jpg)
-
-## Д.Н. Беклемишев, А.Н. Орлов, А.Л. Переверзев, М.Г. Попов, А.В. Горячев, А.И. Кононова: Микропроцессорные средства и системы. Курс лекций
-
-Курс лекций, читавшийся несколько лет назад. На данный момент книга является актуальной, но дисциплина организована несколько иначе. Из достоинств можно выделить хорошую организацию написанного материала, представленного в виде одинаковых порций разбитых на тематические лекции. Книга доступна в облаке и в университетской библиотеке. Отдельно стоит отметить, что часть читаемого на лекциях материала представлена только в этом издании.
-
-![../.pic/Other/Further%20readings/vt.jpg](../.pic/Other/Further%20readings/vt.jpg)
-
-## Э. Таненбаум и Т. Остин: Архитектура компьютера
-
-Книга для изучения компьютерной архитектуры от всемирно известного специалиста в области информационных технологий, писателя и преподавателя, выходящая уже в шестом издании и посвящена структурной организации компьютера. В качестве примеров архитектур рассматриваются **Intel Core i7**, **Texas Instrument OMAP4430** и **Atmel ATmega168**. Книга рассчитана на широкий круг читателей, так что можешь читать ее без опасения что что-то не поймешь, хотя не все с этим согласятся, некоторым (включая автора этих строк) книга [не нравится](https://habr.com/ru/post/589091/). Чувствуется влияние того, что Таненбаум чаще взаимодействует с цифровой аппаратурой в роли программиста, а не разработчика. Вероятно это поможет в освоении материала обучающимся на соответствующих специальностях. Купить книгу можно [тут](https://www.piter.com/collection/all/product/arhitektura-kompyutera-6-e-izd-2).
+A book on computer architecture from a world-renowned specialist in information technology, now in its sixth edition, dedicated to the structural organization of the computer. The architectures used as examples include the **Intel Core i7**, **Texas Instruments OMAP4430**, and **Atmel ATmega168**. The book is aimed at a broad audience, so you can read it without fear of not understanding something — though not everyone agrees with this assessment, and some (including the author of these lines) [do not enjoy it](https://habr.com/ru/post/589091/). You can sense that Tanenbaum more often interacts with digital hardware as a programmer rather than as a hardware designer. This may actually help students from the corresponding programs grasp the material. The book can be purchased [here](https://www.piter.com/collection/all/product/arhitektura-kompyutera-6-e-izd-2).
 
 ![../.pic/Other/Further%20readings/tanenbaum.jpg](../.pic/Other/Further%20readings/tanenbaum.jpg)
 
-## Дональд Томас: Логическое проектирование и верификация систем на SystemVerilog
+## Donald Thomas: Logic Design and Verification Using SystemVerilog
 
-Тем, кто не только пытается разобраться в принципах работы компьютера, но и сам хочет разрабатывать цифровые устройства потребуется более серьезно изучить какой-нибудь современный язык описания аппаратуры. Сходу, многие посоветуют SystemVerilog – наиболее популярный вариант в индустрии. Он является более современной версией Verilog, лишенной некоторых его недостатков.
+For those who not only want to understand how computers work, but also want to design digital devices themselves, a more serious study of a modern hardware description language will be necessary. Many will immediately recommend SystemVerilog — the most widely used option in industry. It is a more modern version of Verilog that addresses some of its shortcomings.
 
 ![../.pic/Other/Further%20readings/svbook.png](../.pic/Other/Further%20readings/svbook.png)

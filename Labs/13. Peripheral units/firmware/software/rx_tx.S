@@ -9,35 +9,35 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 _start:
-# Инициализируем начальные значения регистров
- 0: 050000b7      li x1 , 0x05000000          # сохраняем базовый адрес uart_rx
- 4: 06000137      li x2 , 0x06000000          # сохраняем базовый адрес uart_tx
- 8: 0001c1b7      li x3 , 0x0001c200          # устанавливаем бодрейт 115200
+# Initialize register values
+ 0: 050000b7      li x1 , 0x05000000          # save UART RX base address
+ 4: 06000137      li x2 , 0x06000000          # save UART TX base address
+ 8: 0001c1b7      li x3 , 0x0001c200          # set baud rate to 115200
  c: 20018193
 10: 0030a623      sw x3 , 0x0c(x1)
 14: 00312623      sw x3 , 0x0c(x2)
-18: 00100213      li x4 , 0x00000001          # устанавливаем parity_bit
+18: 00100213      li x4 , 0x00000001          # set parity bit
 1c: 0040a823      sw x4 , 0x10(x1)
 20: 00412823      sw x4 , 0x10(x2)
-24: 03c00293      la x5, trap_handler         # псевдоинструкция la аналогично li загружает число,
-28: 00028293                                  # только в случае la — это число является адресом
-                                              # указанного места (адреса обработчика перехвата)
-                                              # данная псевдоинструкция будет разбита на две
-                                              # инструкции: lui и addi
-2c: 30529073      csrw mtvec, x5              # устанавливаем вектор прерывания
-30: 000102b7      li x5 , 0x00010000          # подготавливаем маску прерывания единственного
-                                              # (нулевого) входа
-34: 30429073      csrw mie, x5                # загружаем маску в регистр маски
+24: 03c00293      la x5, trap_handler         # the la pseudo-instruction loads a number similarly to li,
+28: 00028293                                  # but in the case of la the number is the address
+                                              # of the specified location (the trap handler address);
+                                              # this pseudo-instruction will be split into two
+                                              # instructions: lui and addi
+2c: 30529073      csrw mtvec, x5              # set the interrupt vector
+30: 000102b7      li x5 , 0x00010000          # prepare the interrupt mask for the single
+                                              # (zeroth) input
+34: 30429073      csrw mie, x5                # load the mask into the mask register
 
-# Вызов функции main
+# Call main function
 main:
-38: 00000063      beq x0, x0, main            # бесконечный цикл, аналогичный while (1);
-# ОБРАБОТЧИК ПЕРЕХВАТА
-# Без стороннего вмешательства процессор никогда не перейдет к инструкциям ниже,
-# однако в случае прерывания в программный счетчик будет загружен адрес первой
-# нижележащей инструкции.
-# Сохраняем используемые регистры на стек
+38: 00000063      beq x0, x0, main            # infinite loop, equivalent to while (1);
+# TRAP HANDLER
+# Without external intervention the processor will never reach the instructions below;
+# however, upon an interrupt the program counter will be loaded with the address of
+# the first instruction below.
+# Save used registers to the stack
 trap_handler:
-3c: 0000a383      lw x7, 0(x1)                # загружаем пришедший байт
+3c: 0000a383      lw x7, 0(x1)                # load the received byte
 40: 00712023      sw x7, 0(x2)
 44: 30200073      mret

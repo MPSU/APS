@@ -1,12 +1,12 @@
-# Базовые конструкции языка Verilog
+# Basic Verilog Language Constructs
 
-Данные файлы содержат информацию, овладев которой вы сможете без труда выполнить первые лабораторные работы.
-Порядок изучения следующий:
+These files contain information that, once mastered, will allow you to complete the first lab assignments without difficulty.
+The recommended reading order is as follows:
 
-1. Для первой лабораторной работы необходимо разобраться как описывается базовый модуль и [комбинационная логика](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D0%BC%D0%B1%D0%B8%D0%BD%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BB%D0%BE%D0%B3%D0%B8%D0%BA%D0%B0), построенная на непрерывном присваивании. Этому посвящен документ [Modules.md](Modules.md).
-2. Для выполнения второй лабораторной работы необходимо уметь писать базовый модуль (см. пункт 1) и описывать такой комбинационный блок, как [мультиплексор](https://ru.wikipedia.org/wiki/%D0%9C%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%D0%BE%D1%80_%28%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%B8%D0%BA%D0%B0%29). Этому посвящен документ [Multiplexors.md](./Multiplexors.md).
-3. Для выполнения третьей лабораторной работы в дополнение к предыдущим добавляется знание по описанию базовой ячейки памяти — регистру, и способу группировки сигналов (конкатенации). Этому посвящены документы [Registers.md](./Registers.md) и [Concatenation.md](./Concatenation.md) соответственно.
+1. For the first lab assignment, you need to understand how a basic module is described and how [combinational logic](https://en.wikipedia.org/wiki/Combinational_logic) is built using continuous assignments. This is covered in the document [Modules.md](Modules.md).
+2. For the second lab assignment, you need to be able to write a basic module (see item 1) and describe a combinational block such as a [multiplexer](https://en.wikipedia.org/wiki/Multiplexer). This is covered in the document [Multiplexors.md](./Multiplexors.md).
+3. For the third lab assignment, in addition to the above, you need to know how to describe the basic memory element — a register — and how to group signals (concatenation). These topics are covered in [Registers.md](./Registers.md) and [Concatenation.md](./Concatenation.md) respectively.
 
-Для выполнения всех последующих лаб необходимы знания по всем этим документам.
+Knowledge from all of these documents is required for all subsequent lab assignments.
 
-Желаю успехов при подготовке к лабораторным работам!
+Good luck with your preparation!

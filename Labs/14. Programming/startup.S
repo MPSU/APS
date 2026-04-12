@@ -12,10 +12,10 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 
  .global _start
 _start:
-  la    gp, _gbl_ptr     # Инициализация глобального указателя
-  la    sp, _stack_ptr   # Инициализация указателя на стек
+  la    gp, _gbl_ptr     # Initialize the global pointer
+  la    sp, _stack_ptr   # Initialize the stack pointer
 
-# Инициализация (зануление) сегмента bss
+# Initialize (zero out) the bss segment
   la    t0, _bss_start
   la    t1, _bss_end
 _bss_init_loop:
@@ -24,67 +24,65 @@ _bss_init_loop:
   addi  t0, t0, 4
   j     _bss_init_loop
 
-# Настройка вектора (mtvec) и маски (mie) прерываний, а также указателя на стек
-# прерываний (mscratch).
+# Configure the interrupt vector (mtvec), interrupt mask (mie),
+# and trap stack pointer (mscratch).
 _irq_config:
   la    t0, _int_handler
-  li    t1, -1 # -1 (все биты равны 1) означает, что разрешены все прерывания
+  li    t1, -1 # -1 (all bits set to 1) means all interrupts are enabled
   la    t2, _trap_stack_ptr
   csrw  mtvec, t0
   csrw  mscratch, t2
   csrw  mie, t1
 
-# Вызов функции main
+# Call the main function
 _main_call:
-  li    a0, 0 # Передача аргументов argc и argv в main. Формально, argc должен
-  li    a1, 0 # быть больше нуля, а argv должен указывать на массив строк,
-              # нулевой элемент которого является именем исполняемого файла,
-              # Но для простоты реализации оба аргумента всего лишь обнулены.
-              # Это сделано для детерминированного поведения программы в случае,
-              # если программист будет пытаться использовать эти аргументы.
+  li    a0, 0 # Pass argc and argv arguments to main. Formally, argc should
+  li    a1, 0 # be greater than zero, and argv should point to an array of
+              # strings whose zeroth element is the executable name.
+              # For simplicity of implementation, both arguments are simply
+              # set to zero. This is done for deterministic program behavior
+              # in case the programmer tries to use these arguments.
 
-  # Вызов main.
-  # Для того чтобы программа скомпоновалась, где-то должна быть описана
-  # функция именно с таким именем.
+  # Call main.
+  # For the program to link successfully, a function with exactly
+  # this name must be defined somewhere.
   call  main
-# Зацикливание после выхода из функции main
+# Infinite loop after main returns
 _endless_loop:
   j     _endless_loop
 
-# Низкоуровневый обработчик прерывания отвечает за:
-#   * Сохранение и восстановление контекста;
-#   * Вызов высокоуровневого обработчика с передачей id источника прерывания в
-#     качестве аргумента.
-# В основе кода лежит обработчик из репозитория urv-core:
+# The low-level interrupt handler is responsible for:
+#   * Saving and restoring context;
+#   * Calling the high-level handler with the interrupt source id
+#     as an argument.
+# The code is based on the handler from the urv-core repository:
 # https://github.com/twlostow/urv-core/blob/master/sw/common/irq.S
-# Из реализации убраны сохранения нереализованных CS-регистров. Кроме того,
-# в реализации сохраняются только необерегаемые регистры регистрового файла.
-# Это сделано по причине того, что при вызове высокоуровневого обработчика
-# прерываний, тот будет обязан сохранить оберегаемые регистры в соответствии
-# с соглашением о вызовах.
+# Saves of unimplemented CS registers have been removed. Additionally,
+# only caller-saved registers are saved here, because the high-level
+# interrupt handler is required to preserve callee-saved registers
+# in accordance with the calling convention.
 _int_handler:
-  # Данная операция меняет местами регистры sp и mscratch.
-  # В итоге указатель на стек прерываний оказывается в регистре sp, а вершина
-  # программного стека оказывается в регистре mscratch.
+  # This operation swaps the sp and mscratch registers.
+  # As a result, the trap stack pointer ends up in sp, and the top
+  # of the program stack ends up in mscratch.
   csrrw sp, mscratch,sp
 
-  # Далее мы поднимаемся по стеку прерываний и сохраняем все регистры.
-  addi  sp, sp, -80  # Указатель на стек должен быть выровнен до 16 байт, поэтому
-                     # поднимаемся вверх не на 76, а на 80.
+  # Move up the trap stack and save all registers.
+  addi  sp, sp, -80  # The stack pointer must be aligned to 16 bytes,
+                     # so we move up by 80, not 76.
   sw    ra, 4(sp)
-  # Мы хотим убедиться, что очередное прерывание не наложит стек прерываний на
-  # программный стек, поэтому записываем в освободившийся регистр низ
-  # программного стека, и проверяем что приподнятый указатель на верхушку
-  # стека прерываний не залез в программный стек.
-  # В случае, если это произошло (произошло переполнение стека прерываний),
-  # мы хотим остановить работу процессора, чтобы не потерять данные, которые
-  # могут помочь нам в отладке этой ситуации.
+  # We want to ensure that a subsequent interrupt does not cause the trap
+  # stack to overwrite the program stack, so we load the bottom of the
+  # program stack into the freed register and verify that the raised trap
+  # stack pointer has not encroached on the program stack.
+  # If this has happened (trap stack overflow), we want to halt the
+  # processor to avoid losing data that could help us debug the situation.
   la    ra, _stack_ptr
   blt   sp, ra, _endless_loop
 
-  sw    t0, 12(sp) # Мы перепрыгнули через смещение 8, поскольку там должен
-                   # лежать регистр sp, который ранее сохранили в mscratch.
-                   # Мы запишем его на стек чуть позже.
+  sw    t0, 12(sp) # We skipped offset 8 because that is where the sp
+                   # register saved into mscratch earlier should go.
+                   # We will write it to the stack a little later.
   sw    t1, 16(sp)
   sw    t2, 20(sp)
   sw    a0, 24(sp)
@@ -100,8 +98,8 @@ _int_handler:
   sw    t5, 64(sp)
   sw    t6, 68(sp)
 
-  # Кроме того, мы сохраняем состояние регистров прерываний на случай, если
-  # произойдет ещё одно прерывание.
+  # We also save the interrupt register state in case another
+  # interrupt occurs.
   csrr  t0, mscratch
   csrr  t1, mepc
   csrr  a0, mcause
@@ -109,16 +107,16 @@ _int_handler:
   sw    t1, 72(sp)
   sw    a0, 76(sp)
 
-  # Вызов высокоуровневого обработчика прерываний.
-  # Для того чтобы программа скомпоновалась, где-то должна быть описана
-  # функция именно с таким именем.
+  # Call the high-level interrupt handler.
+  # For the program to link successfully, a function with exactly
+  # this name must be defined somewhere.
   call  int_handler
 
-  # Восстановление контекста. В первую очередь мы хотим восстановить CS-регистры,
-  # на случай, если происходило вложенное прерывание. Для этого, мы должны
-  # вернуть исходное значение указателя стека прерываний. Однако его нынешнее
-  # значение нам ещё необходимо для восстановления контекста, поэтому мы
-  # сохраним его в регистр a0, и будем восстанавливаться из него.
+  # Restore context. First, we want to restore the CS registers in case
+  # a nested interrupt occurred. To do this, we must restore the original
+  # value of the trap stack pointer. However, its current value is still
+  # needed for context restoration, so we save it to register a0 and
+  # restore from there.
   mv    a0,sp
 
   lw    t1, 72(a0)
@@ -132,9 +130,9 @@ _int_handler:
   lw    t0, 12(a0)
   lw    t1, 16(a0)
   lw    t2, 20(a0)
-  lw    a1, 28(a0)   # Мы пропустили a0, потому что сейчас он используется в
-                     # качестве указателя на верхушку стека и не может быть
-                     # восстановлен.
+  lw    a1, 28(a0)   # We skipped a0 because it is currently used as a
+                     # pointer to the top of the stack and cannot be
+                     # restored.
   lw    a2, 32(a0)
   lw    a3, 36(a0)
   lw    a4, 40(a0)
@@ -147,5 +145,6 @@ _int_handler:
   lw    t6, 68(a0)
   lw    a0, 24(a0)
 
-  # Выход из обработчика прерывания
+  # Return from the interrupt handler
   mret
+

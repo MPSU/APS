@@ -1,45 +1,45 @@
-# Описание мультиплексоров в SystemVerilog
+# Describing Multiplexers in SystemVerilog
 
-**Мультипле́ксор** — устройство, которое выбирает один из нескольких входных сигналов и передает его на единственный выход в зависимости от значения управляющего входа.
+**A multiplexer** is a device that selects one of several input signals and forwards it to a single output depending on the value of a control input.
 
-Иными словами, мультиплексор — это переключатель (коммутатор), соединяющий выход с одним из множества входов.
+In other words, a multiplexer is a switch that connects the output to one of many inputs.
 
 ![../.pic/Basic%20Verilog%20structures/multiplexor/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_01.drawio.svg)
 
-Для начала создадим простой двухвходовой мультиплексор. Предположим, на `Y` нам необходимо передать один из сигналов — `D0` или `D1` в зависимости от значения управляющего сигнала `S`: когда `S==0`, на `Y` подается сигнал `D0`, в противном случае — `D1`.
+Let us start with a simple two-input multiplexer. Suppose we need to forward one of the signals — `D0` or `D1` — to output `Y`, depending on the value of control signal `S`: when `S==0`, signal `D0` is driven to `Y`; otherwise, `D1` is driven.
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_02.drawio.svg)
 
-На языке SystemVerilog это можно описать несколькими способами. Первый — с помощью **[тернарного условного оператора](https://ru.wikipedia.org/wiki/Тернарная_условная_операция)**:
+In SystemVerilog this can be described in several ways. The first is using the **[ternary conditional operator](https://ru.wikipedia.org/wiki/Тернарная_условная_операция)**:
 
-## Тернарный условный оператор
+## Ternary Conditional Operator
 
 <details>
 
-<summary>О тернарном условном операторе</summary>
+<summary>About the ternary conditional operator</summary>
 
-Операторы бывают различной **[арности](https://ru.wikipedia.org/wiki/Арность)**(количества аргументов оператора[операндов]):
+Operators differ in their **[arity](https://ru.wikipedia.org/wiki/Арность)** (the number of operands they take):
 
-- унарный (с одним операндом), пример: `-a`;
-- бинарный (с двумя операндами), пример: `a+b`;
-- тернарный (с тремя операндами), пример: `cond ? if_true : if_false`;
-- и др.
+- unary (one operand), example: `-a`;
+- binary (two operands), example: `a+b`;
+- ternary (three operands), example: `cond ? if_true : if_false`;
+- and others.
 
-Несмотря на то, что тернарным оператором может быть любой оператор, принимающий три операнда, обычно под ним подразумевается **тернарный условный оператор**, работающий следующим образом:
+Although any operator that takes three operands is technically ternary, the term usually refers to the **ternary conditional operator**, which works as follows:
 
 ```text
-<условие> ? <значение_если_условие_истинно> : <значение_если_условие_ложно>
+<condition> ? <value_if_condition_is_true> : <value_if_condition_is_false>
 ```
 
-Первым операндом идет некоторое условие (любое выражение, которое может быть сведено к 1 или 0). Далее ставится знак вопроса (часть тернарного оператора, отделяющая выражение первого операнда от выражения второго операнда). Далее пишется выражение, которое будет результатом тернарного условного оператора в случае, если условие оказалось истинным. После чего ставится двоеточие (часть тернарного условного оператора, отделяющая выражение второго операнда от выражения третьего операнда). Затем пишется выражение, которое будет результатом тернарного условного оператора в случае, если условие оказалось ложным.
+The first operand is a condition (any expression that evaluates to 1 or 0). It is followed by a question mark (the part of the ternary operator that separates the first operand from the second). Next comes the expression that will be the result of the ternary conditional operator if the condition is true. This is followed by a colon (the part of the ternary conditional operator that separates the second operand from the third). Finally, the expression that will be the result if the condition is false.
 
-Пример для языка C++:
+Example in C++:
 
 ```c++
 a = b+c >= 5 ? b+c : b+d;
 ```
 
-Сперва вычисляется первый операнд (выражение `b+c >= 5`). Если это выражение оказалось истинным (равно единице), то переменной `a` будет присвоено значение второго операнда (выражения `b+c`), в противном случае переменной `a` будет присвоено значение третьего операнда (выражения `b+d`).
+First, the first operand (`b+c >= 5`) is evaluated. If this expression is true (equals one), then variable `a` is assigned the value of the second operand (`b+c`); otherwise, `a` is assigned the value of the third operand (`b+d`).
 </details>
 
 ```Verilog
@@ -47,62 +47,62 @@ logic Y;
 assign Y = S==1 ? D1 : D0;
 ```
 
-Данное выражение говорит нам, что если `S==1`, то `Y` присваивается значение `D1`, в противном случае — значение `D0`.
+This expression states that if `S==1`, then `Y` is assigned the value of `D1`; otherwise, the value of `D0`.
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_03.drawio.svg)
 
-Также мультиплексор можно описать через конструкцию `if-else` в блоке `always`.
+A multiplexer can also be described using an `if-else` construct inside an `always` block.
 
-> Далее будет ключевой параграф сложного для понимания текста, очень важно запомнить, что там написано и разобрать приведенные листинги.
+> The following section contains key concepts that may be difficult to grasp at first. It is very important to understand and remember what is written there, and to work through the code listings provided.
 
 <br><br>
 
 ---
 
-## Блок always
+## The always Block
 
-Блок `always` — это специальный блок, который позволяет описывать комбинационные и последовательностные схемы (см. документ "[Последовательностная логика](../Introduction/Sequential%20logic.md)"), используя более сложные конструкции, такие как `if-else`, `case`. На самом деле, в языке SystemVerilog помимо общего блока `always`, которым можно описать любой вид логики, существует множество специализированных блоков, предназначенных для описания отдельно комбинационной, последовательностной синхронной и асинхронной логики соответственно:
+The `always` block is a special block that allows describing both combinational and sequential circuits (see the document "[Sequential Logic](../Introduction/Sequential%20logic.md)"), using more complex constructs such as `if-else` and `case`. In fact, SystemVerilog provides not only the general-purpose `always` block, which can describe any type of logic, but also several specialized blocks for combinational, synchronous sequential, and asynchronous sequential logic respectively:
 
 - always_comb
 - always_ff
 - always_latch
 
-Мультиплексор можно описать в любом из этих блоков, разница будет лишь в том, к чему именно будет подключен выход мультиплексора: к проводу, регистру или защелке.
+A multiplexer can be described in any of these blocks; the only difference is what the multiplexer output will be connected to: a wire, a register, or a latch.
 
-В зависимости от вида `always`-блока используется один из двух видов присваиваний: **блокирующее присваивание** (`=`) и **неблокирующего присваивания** (`<=`). Подробно о различиях между присваиваниями рассказано в [этом документе](Assignments.md). До его прочтения запомните:
+Depending on the type of `always` block used, one of two assignment operators is required: **blocking assignment** (`=`) or **non-blocking assignment** (`<=`). The differences between these assignment types are described in detail in [this document](Assignments.md). Until you read it, remember the following:
 
-- внутри блока `always_ff` и `always_latch` необходимо использовать оператор неблокирующего присваивания (`<=`);
-- внутри блока `always_comb` необходимо использовать оператор блокирующего присваивания (`=`).
+- inside `always_ff` and `always_latch` blocks, use the non-blocking assignment operator (`<=`);
+- inside `always_comb` blocks, use the blocking assignment operator (`=`).
 
 ---
 
-> Остановитесь на выделенном выше фрагменте документа, пока полностью не разберете его. Без освоения всех описанных выше особенностей языка SystemVerilog вы столкнетесь в будущем с множеством ошибок.
+> Do not move past the highlighted section above until you fully understand it. Without mastering these features of SystemVerilog, you will encounter many errors in the future.
 
 <br><br>
 
-## Блок if-else
+## The if-else Block
 
-Реализация мультиплексора через блок `if-else` похожа на реализацию мультиплексора через тернарный оператор. Если в тернарном операторе управляющий сигнал указывался в качестве первого операнда, отделяемого оператором `?`, то в данном блоке управляющий сигнал указывается в скобках после ключевого слова `if`.
+Describing a multiplexer using `if-else` is similar to using the ternary operator. Whereas in the ternary operator the control signal is the first operand separated by the `?` operator, in this construct the control signal is placed in parentheses after the keyword `if`.
 
-Далее описывается присваивание сигнала, который должен идти на выход при управляющем сигнале равном единице (значение до оператора `:` в тернарном операторе).
+The assignment for the signal that should appear at the output when the control signal equals one follows (corresponding to the value before the `:` operator in the ternary form).
 
-После в блоке `else` описывается присваивание сигнала, который должен идти на выход при управляющем сигнале, равном нулю (значение после оператора `:` в тернарном операторе).
+The assignment for the signal that should appear at the output when the control signal equals zero is then placed in the `else` block (corresponding to the value after the `:` operator in the ternary form).
 
 ```Verilog
 logic Y;
-always_comb begin // 1) Используется always_comb, т.к. мы хотим подключить
-                  // выход мультиплексора к проводу
-  if(S) begin     // 2) if-else может находиться только внутри блока always.
-    Y = D1;       // 3) Используется оператор блокирующего присваивания.
+always_comb begin // 1) always_comb is used because we want to connect
+                  // the multiplexer output to a wire
+  if(S) begin     // 2) if-else can only be placed inside an always block.
+    Y = D1;       // 3) The blocking assignment operator is used.
   end else begin
     Y = D0;
   end
 end
 ```
 
-Кроме того, важно запомнить, что присваивание сигналу допускается **только в одном** блоке always.
+It is also important to remember that assignment to a signal is allowed in **only one** always block.
 
-Неправильно:
+Incorrect:
 
 ```Verilog
 logic Y;
@@ -113,44 +113,44 @@ always_comb begin
 end
 
 always_comb begin
-  if(S==0) begin // Нельзя выполнять операцию присваивания
-    Y = D0;      // для одного сигнала (Y) в нескольких
-  end            // блоках always!
+  if(S==0) begin // It is not allowed to assign
+    Y = D0;      // the same signal (Y) in multiple
+  end            // always blocks!
 end
 ```
 
-Если нарушить это правило, то в будущем (возможно не сразу, но в любом случае — обязательно), возникнет ошибка, которая так или иначе будет связана с **multiple drivers**.
+Violating this rule will eventually (perhaps not immediately, but inevitably) cause an error related to **multiple drivers**.
 
-Будьте **очень внимательны** при использовании данного блока. Он обманчиво похож на условный блок в языках программирования, из-за чего возникает желание пользоваться им так же, как можно пользоваться условными блоками в языках программирования. Это не так. Обратите внимание на то, что данный блок выше упоминается исключительно как блок `if-else`. При реализации мультиплексора, у любого блока `if` должен быть соответствующий блок `else`, как у тернарного оператора должно быть два выходных операнда. Если не указать блок `else` при описании мультиплексора, у него будет только один вход, и в итоге на выходе мультиплексора будет сгенерирована **защелка**. Подробнее о защелках описано [здесь](Latches.md).
+Be **very careful** when using this construct. It is deceptively similar to a conditional block in programming languages, which may tempt you to use it the same way. This is not correct. Note that this construct is referred to strictly as an `if-else` block. When describing a multiplexer, every `if` block must have a corresponding `else` block, just as the ternary operator requires two output operands. If the `else` block is omitted when describing a multiplexer, the output will have only one driver, and a **latch** will be inferred. Latches are described in more detail [here](Latches.md).
 
-Существуют ситуации, когда блок `if` может быть использован без блока `else` (например, при описании дешифраторов или сигналов разрешения записи). Однако при описании мультиплексоров таких ситуаций не бывает.
+There are situations where an `if` block can be used without a corresponding `else` block (for example, when describing decoders or write-enable signals). However, this never applies when describing multiplexers.
 
-## case-блок
+## The case Block
 
-Мультиплексор также можно описать с использованием **конструкции case**. Блок `case` лучше подходит для описания мультиплексора, когда у того более двух входов (ведь в случае конструкции `if-else` пришлось бы делать вложенное ветвление).
+A multiplexer can also be described using the **case construct**. The `case` block is better suited for multiplexers with more than two inputs (since `if-else` would require nested branching).
 
-Конструкция `case` представляет собой инструмент множественного ветвления, который сравнивает значение заданного выражения с множеством вариантов, и, в случае первого совпадения, использует соответствующую ветвь. Как и блок `if-else`, блок `case` должен описывать все возможные комбинации управляющего сигнала (иначе будет сгенерирована защёлка). На случай, если ни один из вариантов не совпадет с заданным выражением, конструкция `case` поддерживает вариант `default`. Данная конструкция визуально похожа на оператор `switch-case` в Си, однако вы должны понимать, что используется она не для написания программы, а описания аппаратуры, в частности **мультиплексоров**/**демультиплексоров** и **дешифраторов**.
+The `case` construct is a multi-way branching tool that compares the value of a given expression against a set of alternatives and executes the matching branch. Like `if-else`, the `case` block must cover all possible combinations of the control signal (otherwise a latch will be inferred). To handle any combination not explicitly listed, the `case` construct supports a `default` branch. This construct visually resembles the `switch-case` operator in C, but keep in mind that it is used not to write a program, but to describe hardware — in particular **multiplexers**/**demultiplexers** and **decoders**.
 
-**Конструкция `case`, наряду с `if-else`, может быть описана только в блоке `always`**.
+**The `case` construct, like `if-else`, can only be described inside an `always` block.**
 
-Реализация двухвходового мультиплексора с помощью `case` может выглядеть так:
+A two-input multiplexer implemented with `case` may look like this:
 
 ```Verilog
 logic Y;
 always_comb begin
-  case(S)           // Описываем блок case, где значение сигнала S
-                    // будет сравниваться с различными возможными его значениями
-    1'b0: Y = D0;   // Если S==0, то Y = D0
+  case(S)           // Describe a case block where the value of signal S
+                    // is compared against its possible values
+    1'b0: Y = D0;   // If S==0, then Y = D0
     1'b1: Y = D1;
-  endcase           // Каждый case должен заканчиваться endcase
-end                 // (так же как каждый begin должен оканчиваться end)
+  endcase           // Every case must end with endcase
+end                 // (just as every begin must end with end)
 ```
 
-Рассмотрим вариант посложнее и опишем следующую схему:
+Let us consider a more complex example and describe the following circuit:
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_04.drawio.svg)
 
-Здесь уже используется мультиплексор 8в1. Управляющий сигнал `S` в данном случае 3-битный. В блоке `case` мы перечисляем все возможные варианты значений `S` и описываем выход мультиплексора.
+Here an 8-to-1 multiplexer is used. The control signal `S` is 3 bits wide. In the `case` block, we enumerate all possible values of `S` and describe the multiplexer output.
 
 ```Verilog
 module case_mux_ex(
@@ -166,16 +166,16 @@ module case_mux_ex(
   always_comb begin
     case(S)
       3'b000:  Y = A;
-      3'b001:  Y = C | B;      // в блоке case можно мультиплексировать
-                               // не только провода, но и логические выражения
+      3'b001:  Y = C | B;      // inside a case block, you can multiplex
+                               // not only wires but also logical expressions
       3'b010:  Y = (C|B) & D;
       /*
-        Обратите внимание, что разрядность сигнала S — 3 бита.
-        Это означает, что есть 8 комбинаций его разрядов.
-        Выше было описано только 3 комбинации из 8.
-        Если для всех остальных комбинаций на выходе мультиплексора должно
-        быть какое-то одно значение "по умолчанию", используется специальная
-        комбинация "default":
+        Note that signal S is 3 bits wide.
+        This means there are 8 possible combinations of its bits.
+        Only 3 out of 8 combinations are described above.
+        If all remaining combinations should produce a single
+        "default" value at the multiplexer output, use the
+        special "default" branch:
       */
       default: Y = D;
     endcase
@@ -183,14 +183,14 @@ module case_mux_ex(
 endmodule
 ```
 
-## Оператор адресации
+## Indexing Operator
 
-Представим, что нам необходимо мультиплексировать реально много сигналов. Например, отдельные биты 1024-разрядной шины. Описывать `case` на 1024 варианта будет сущим безумием. В этом случае, можно будет воспользоваться оператором '[]', который наверняка известен вам как "оператор адресации по массиву" в Си-подобных языках. Работает он интуитивно понятно:
+Suppose we need to multiplex a very large number of signals — for example, individual bits of a 1024-bit bus. Writing a `case` with 1024 branches would be impractical. In this case, the `[]` operator can be used, which you likely know as the "array indexing operator" from C-like languages. It works intuitively:
 
-- перед оператором указывается имя массива или вектора (читай как "памяти или шины"), по которым будет идти индексация;
-- за именем в квадратных скобках указывается индекс (не важно, в виде константы, или выражения, использующего другие сигналы).
+- before the operator, specify the name of the array or vector (i.e., a memory or bus) to be indexed;
+- inside the square brackets, specify the index — either a constant or an expression using other signals.
 
-В контексте примера по мультиплексированию 1024 бит использование оператора может быть выполнено следующим образом:
+In the context of multiplexing 1024 bits, the operator can be used as follows:
 
 ```Verilog
 logic [1023:0] bus1024;
@@ -201,28 +201,28 @@ logic          one_bit_result;
 assign one_bit_result = bus1024[select];
 ```
 
-Реализация мультиплексоров через оператор '[]' будет активно применяться вами при реализации различных памятей.
+The `[]` operator for implementing multiplexers will be used extensively when implementing various memory structures.
 
-## Итоги главы
+## Chapter Summary
 
-1. Мультиплексор — это **комбинационный** блок, подающий на выход один из нескольких входных сигналов.
-2. Мультиплексор можно описать множеством способов, среди них:
-   1. использование [тернарного условного оператора](#Тернарный-условный-оператор);
-   2. использование конструкции [`if-else`](#Блок-if-else) внутри блока [`always`](#Блок-always);
-   3. использование конструкции [`case`](#case-блок) внутри блока [`always`](#Блок-always);
-   4. использование [оператора '[]'](#Оператор-адресации).
-3. Во избежание появления [защелок](Latches.md) при описании мультиплексора, необходимо убедиться что у блоков `if` есть соответствующие им блоки `else`, а в блоке `case` описаны все комбинации управляющего сигнала (при необходимости, множество оставшихся комбинаций можно покрыть с помощью комбинации `default`). Появление непреднамеренной защелки в дизайне ведет к ухудшению временных характеристик, избыточному использованию ресурсов, а также непредсказуемому поведению схемы из-за возможного удержания сигнала.
-4. Важно отметить, что блоки `if-else` и `case` могут использоваться не только для описания мультиплексоров.
-5. Конструкции `if-else` и `case` в рамках данных лабораторных работ можно описывать только внутри блока [`always`](#Блок-always). При работе с этим блоком необходимо помнить следующие особенности:
-   1. Существует несколько типов блока `always`: `always_comb`, `always_ff`, `always_latch`, определяющих то, к чему будет подключена описанная в этом блоке логика: проводу, регистру или защелке соответственно. В данных лабораторных работах вам нужно будет пользоваться блоками  `always_ff` и `always_comb`, причем:
-      1. внутри блока `always_ff` необходимо использовать оператор неблокирующего присваивания (`<=`);
-      2. внутри блока `always_comb` необходимо использовать оператор блокирующего присваивания (`=`).
-   2. Присваивание для любого сигнала возможно только внутри **одного** блока always. Два разных сигнала могут присваиваться как в одном блоке always, так и каждый в отдельном, но операция присваивания одному и тому же сигналу в двух разных блоках always — нет.
+1. A multiplexer is a **combinational** block that forwards one of several input signals to the output.
+2. A multiplexer can be described in multiple ways, including:
+   1. using the [ternary conditional operator](#ternary-conditional-operator);
+   2. using the [`if-else`](#the-if-else-block) construct inside an [`always`](#the-always-block) block;
+   3. using the [`case`](#the-case-block) construct inside an [`always`](#the-always-block) block;
+   4. using the [`[]` operator](#indexing-operator).
+3. To avoid unintended [latches](Latches.md) when describing a multiplexer, ensure that every `if` block has a corresponding `else` block, and that every `case` block covers all combinations of the control signal (if needed, the remaining combinations can be covered with `default`). An unintended latch in a design degrades timing characteristics, wastes resources, and causes unpredictable behavior due to unwanted signal retention.
+4. It is important to note that `if-else` and `case` blocks can be used for purposes other than describing multiplexers.
+5. In the scope of these lab assignments, `if-else` and `case` constructs may only be used inside an [`always`](#the-always-block) block. When working with this block, keep the following in mind:
+   1. There are several types of `always` blocks: `always_comb`, `always_ff`, `always_latch`, which determine what the described logic will be connected to: a wire, a register, or a latch, respectively. In these lab assignments, you will use `always_ff` and `always_comb`, where:
+      1. inside `always_ff`, use the non-blocking assignment operator (`<=`);
+      2. inside `always_comb`, use the blocking assignment operator (`=`).
+   2. Assignment to any given signal is allowed in **only one** always block. Two different signals may be assigned either in the same always block or each in a separate one, but assigning the same signal in two different always blocks is not permitted.
 
 ---
 
-## Проверь себя
+## Test Yourself
 
-Как описать на языке SystemVerilog следующую схему?
+How would you describe the following circuit in SystemVerilog?
 
 ![../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/multiplexors/fig_05.drawio.svg)

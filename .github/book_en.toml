@@ -2,7 +2,7 @@
 authors = ["Andrei Solodovnikov, Mikhail Popov"]
 language = "en"
 src = "./"
-title = "Processor System Architectures"
+title = "Architectures of Processor Systems"
 
 [output.html]
 git-repository-url = "https://github.com/MPSU/APS"

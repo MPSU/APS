@@ -1,29 +1,29 @@
-# Лабораторная работа №12 "Блок приоритетных прерываний"
+# Lab 12. Priority Interrupt Unit
 
-В базовом варианте лабораторных работ предлагается реализовать процессорную систему с одним источником прерываний, чего достаточно для выполнения лабораторных работ. Однако, если появится желание усовершенствовать систему и увеличить количество периферийных устройств, то поддержка только одного источника прерываний создаст множество сложностей. В рамках данной лабораторной работы необходимо реализовать блок приоритетных прерываний и интегрировать его в контроллер прерываний, увеличив число потенциальных источников прерываний до 16.
+In the basic version of the lab work, it is proposed to implement a processor system with a single interrupt source, which is sufficient for completing the labs. However, if you wish to improve the system and increase the number of peripheral devices, supporting only one interrupt source will create many complications. In this lab work, you need to implement a priority interrupt unit and integrate it into the interrupt controller, increasing the number of potential interrupt sources to 16.
 
-## Цель
+## Goal
 
-1. Разработать блок приоритетных прерываний (БПП), построенный по схеме daisy chain.
-2. Интегрировать БПП в контроллер прерываний.
+1. Develop a priority interrupt unit (PIU) built using a daisy chain scheme.
+2. Integrate the PIU into the interrupt controller.
 
-## Теория
+## Theory
 
-Если процессорная система предполагает наличие более одного источника прерываний, то необходимо разобраться с тем, что делать в случае возникновения коллизий — наложения одновременных запросов прерываний от нескольких источников. Одним из способов решения такой проблемы является реализация приоритетов прерываний. Со схемотехнической точки зрения, проще всего реализовать схему со статическим, не изменяемым, приоритетом. Одной из таких схем является daisy chain (по-русски — гирлянда, или дейзи-чейн, или дейзи-цепочка). Пример такой схемы можно увидеть на _рис. 1_.
+If the processor system is expected to have more than one interrupt source, it is necessary to determine how to handle collisions — simultaneous interrupt requests from multiple sources. One way to solve this problem is to implement interrupt priorities. From a circuit design perspective, the simplest approach is to implement a scheme with a static, fixed priority. One such scheme is a daisy chain. An example of such a scheme can be seen in _Fig. 1_.
 
 ![../../.pic/Labs/lab_12_daisy_chain/fig_01.png](../../.pic/Labs/lab_12_daisy_chain/fig_01.png)
 
-_Рисунок 1. Структурная схема daisy chain._
+_Figure 1. Daisy chain block diagram._
 
-Данная схема состоит из двух массивов элементов И. Первый массив (верхний ряд элементов) формирует многоразрядный сигнал (назовём его для определённости `ready`, на _рис. 1_ он обозначен как "_Приоритет_"), который перемножается с запросами с помощью массива элементов И нижнего ряда, формируя многоразрядный сигнал `y`. Обратите внимание на то, что результат операции И на очередном элементе нижнего массива влияет на результат И следующего за ним элемента верхнего массива и наоборот (`readyₙ₊₁` зависит от `yₙ`, в то время как `yₙ` зависит от `readyₙ`). Как только на одном из разрядов `y` появится значение `1`, оно сразу же распространится в виде `0` по всем оставшимся последующим разрядам `ready`, обнуляя их. А приняв нулевое значение, разряды `ready` обнулят соответствующие разряды `y` (нулевые разряды `ready` запрещают генерацию прерывания для соответствующих разрядов `y`).
+This scheme consists of two arrays of AND gates. The first array (the top row of elements) generates a multi-bit signal (let's call it `ready`, shown in _Fig. 1_ as "_Priority_"), which is ANDed with the interrupt requests using the bottom row of AND gates, producing the multi-bit signal `y`. Note that the result of the AND operation on each element of the bottom array affects the AND result of the next element in the top array, and vice versa (`readyₙ₊₁` depends on `yₙ`, while `yₙ` depends on `readyₙ`). As soon as any bit of `y` becomes `1`, it immediately propagates as `0` through all subsequent bits of `ready`, zeroing them. Once zeroed, the `ready` bits zero the corresponding bits of `y` (zero bits in `ready` prevent interrupt generation for the corresponding bits of `y`).
 
-Нижний массив элементов И можно описать через непрерывное присваивание побитового И между `ready` и сигналом запросов на прерывание.
+The bottom array of AND gates can be described using a continuous assignment of the bitwise AND between `ready` and the interrupt request signal.
 
-Для описания верхнего ряда элементов И вам будет необходимо сделать непрерывное присваивание `readyₙ & !yₙ` для `n+1`-ого бита `ready`. Для этого будет удобно воспользоваться конструкцией `generate for`, которая позволяет автоматизировать создание множества однотипных структур.
+To describe the top row of AND gates, you will need to make a continuous assignment of `readyₙ & !yₙ` to the `n+1`-th bit of `ready`. The `generate for` construct is convenient for this, as it allows automating the creation of many identical structures.
 
-Рассмотрим принцип работы этой конструкции. Предположим, мы хотим создать побитовое присваивание 5-битного сигнала `a` 5-битному сигналу `b`.
+Let's examine how this construct works. Suppose we want to create a bitwise assignment of a 5-bit signal `a` from a 5-bit signal `b`.
 
-Индексы, используемые конструкцией, должны быть объявлены с помощью ключевого слова `genvar`. Далее, в области, ограниченной ключевыми словами `generate`/`endgenerate` описывается цикл присваиваний (в подобном цикле можно и создавать модули):
+Indices used by the construct must be declared with the `genvar` keyword. Then, within the area bounded by the `generate`/`endgenerate` keywords, a loop of assignments is described (modules can also be instantiated inside such a loop):
 
 ```Verilog
 logic [4:0] a;
@@ -39,55 +39,55 @@ generate
 endgenerate
 ```
 
-_Листинг 1. Пример использования конструкции generate._
+_Listing 1. Example of using the generate construct._
 
-Разумеется в этом примере можно было бы просто сделать одно непрерывное присваивание `assign a = b;`, однако в случае реализации верхнего ряда элементов И, подобное многобитное непрерывное присваивание не приведёт к синтезу требуемой схемы.
+Of course, in this example one could simply write a single continuous assignment `assign a = b;`, but for implementing the top row of AND gates, such a multi-bit continuous assignment would not synthesize the required circuit.
 
-## Практика
+## Practice
 
-Рассмотрим реализацию контроллера прерываний, представленную на _рис. 2_.
+Let's consider the interrupt controller implementation shown in _Fig. 2_.
 
 ![../../.pic/Labs/lab_12_daisy_chain/fig_02.drawio.svg](../../.pic/Labs/lab_12_daisy_chain/fig_02.drawio.svg)
 
-_Рисунок 2. Структурная схема блока приоритетных прерываний._
+_Figure 2. Block diagram of the priority interrupt unit._
 
-Помимо портов `clk_i` и `rst_i`, модуль `daisy_chain` будет иметь 3 входа и три выхода:
+In addition to ports `clk_i` and `rst_i`, the `daisy_chain` module will have 3 inputs and 3 outputs:
 
-- `masked_irq_i` — 16-разрядный вход маскированного запроса на прерывания (т.е. источник прерывания уже прошел маскирование сигналом регистра контроля и статуса `mie`).
-- `irq_ret_i` — сигнал о возврате управления основному потоку инструкций (выход из обработчика прерываний).
-- `ready_i` — сигнал о готовности процессора к перехвату (т.е. прямо сейчас процессор не находится в обработчике перехвата). Это нулевой бит сигнала `ready` в дейзи-цепочке. Пока `ready_i` равен нулю, дейзи-цепочка не будет генерировать сигналы прерываний.
-- `irq_o` — сигнал о начале обработки прерываний.
-- `irq_cause_o` — причина прерывания.
-- `irq_ret_o` — сигнал о завершении обработки запроса на прерывания. Будет соответствовать `cause_o` в момент появления сигнала `mret_i`.
+- `masked_irq_i` — 16-bit input for a masked interrupt request (i.e., the interrupt source has already been masked by the `mie` control and status register signal).
+- `irq_ret_i` — signal indicating return of control to the main instruction flow (exit from the interrupt handler).
+- `ready_i` — signal indicating the processor is ready to accept a trap (i.e., the processor is not currently inside a trap handler). This is bit zero of the `ready` signal in the daisy chain. While `ready_i` is zero, the daisy chain will not generate any interrupt signals.
+- `irq_o` — signal indicating the start of interrupt processing.
+- `irq_cause_o` — interrupt cause.
+- `irq_ret_o` — signal indicating completion of interrupt request handling. It will correspond to `cause_o` at the moment the `mret_i` signal appears.
 
-Внутренний сигнал `cause` является сигналом `y` с _рис. 1_. Как пояснялось выше, этот сигнал может содержать только одну единицу, она будет соответствовать прошедшему запросу на прерывание. А значит, этот результат можно использовать в качестве сигнала для идентификации причины прерывания. При этом свертка по ИЛИ (операция ИЛИ между всеми битами) этого сигнала даст итоговый запрос на прерывание.
+The internal signal `cause` is the signal `y` from _Fig. 1_. As explained above, this signal can contain only one set bit, which corresponds to the accepted interrupt request. Therefore, this result can be used as a signal to identify the interrupt cause. The OR reduction (OR of all bits) of this signal yields the final interrupt request.
 
-Однако, как упоминалось в [ЛР№10](../10.%20Interrupt%20subsystem/), спецификация RISC-V накладывает определенные требования на кодирование кода `mcause` для причины прерывания. В частности, необходимо выставить старший бит в единицу, а значение на оставшихся битах должно быть больше 16. Схемотехнически это проще реализовать выполнив склейку `{12'h800, cause, 4'b0000}` — в этом случае старший разряд будет равен единице, и если хоть один разряд `cause` будет равен единице (а именно это и является критерием появления прерывания), младшие 31 бит `mcause` будут больше 16.
+However, as mentioned in [Lab #10](../10.%20Interrupt%20subsystem/), the RISC-V specification imposes certain requirements on the encoding of the `mcause` code for the interrupt cause. In particular, the most significant bit must be set to one, and the value of the remaining bits must be greater than 16. From a circuit design perspective, this is most easily implemented by concatenation: `{12'h800, cause, 4'b0000}` — in this case the most significant bit will be one, and if any bit of `cause` is one (which is the criterion for an interrupt occurring), the lower 31 bits of `mcause` will be greater than 16.
 
-Регистр на _рис. 2_ хранит значение внутреннего сигнала `cause`, чтобы по завершению прерывания выставить единицу на соответствующем разряде сигнала `irq_ret_o`, который сообщит устройству, чьё прерывание обрабатывалось ранее, что его обработка завершена.
+The register in _Fig. 2_ stores the value of the internal `cause` signal so that upon completion of the interrupt, a one is asserted on the corresponding bit of the `irq_ret_o` signal, notifying the device whose interrupt was being handled that processing has finished.
 
-## Задание
+## Assignment
 
-- Реализовать модуль `daisy_chain`.
-- Интегрировать `daisy_chain` в модуль `interrupt_controller` по схеме, представленной на _рис. 3_.
-- Отразить изменения в прототипе сигнала `interrupt_controller` в модулях `processor_core` и `processor_system`.
+- Implement the `daisy_chain` module.
+- Integrate `daisy_chain` into the `interrupt_controller` module according to the scheme shown in _Fig. 3_.
+- Reflect the changes to the `interrupt_controller` signal prototype in the `processor_core` and `processor_system` modules.
 
 ![../../.pic/Labs/lab_12_daisy_chain/fig_03.drawio.svg](../../.pic/Labs/lab_12_daisy_chain/fig_03.drawio.svg)
 
-_Рисунок 3. Структурная схема блока приоритетных прерываний._
+_Figure 3. Block diagram of the priority interrupt unit._
 
 > [!IMPORTANT]
-> Обратите внимание, что разрядность сигналов `irq_req_i`, `mie_i`, `irq_ret_o` изменилась. Теперь это 16-разрядные сигналы. Сигнал, который ранее шёл на выход к `irq_ret_o` теперь идёт на вход `irq_ret_i` модуля `daisy_chain`. Формирование кода причины прерывания `irq_cause_o` перенесено в модуль `daisy_chain`.
+> Note that the bit width of signals `irq_req_i`, `mie_i`, and `irq_ret_o` has changed. These are now 16-bit signals. The signal that previously went to the `irq_ret_o` output now goes to the `irq_ret_i` input of the `daisy_chain` module. The generation of the interrupt cause code `irq_cause_o` has been moved into the `daisy_chain` module.
 
-## Порядок выполнения работы
+### Steps
 
-1. Опишите модуль `daisy_chain`.
-   1. При формировании верхнего массива элементов И с _рис. 2_, вам необходимо сформировать 16 непрерывных присваиваний через блок `generate for`.
-   2. Формирование нижнего массива элементов И можно сделать с помощью одного непрерывного присваивания посредством операции побитовое И.
-2. Проверьте модуль `daisy_chain` с помощью верификационного окружения, представленного в файле [`lab_12.tb_daisy_chain`](lab_12.tb_daisy_chain.sv). В случае, если в TCL-консоли появились сообщения об ошибках, вам необходимо [найти](../../Vivado%20Basics/05.%20Bug%20hunting.md) и исправить их.
-   1. Перед запуском моделирования убедитесь, что у вас выбран корректный модуль верхнего уровня в `Simulation Sources`.
-3. Интегрируйте модуль `daisy_chain` в модуль `interrupt_controller` по схеме, представленной на _рис. 3_.
-   1. Не забудьте обновить разрядность сигналов `irq_req_i`, `mie_i`, `irq_ret_o` в модуле `interrupt_controller`.
-   2. Также не забудьте обновить разрядность сигналов `irq_req_i`, `irq_ret_o` в модулях `processor_core` и `processor_system`.
-   3. Кроме того, теперь вам нужно использовать старшие 16 бит сигнала `mie` вместо одного при подключении модуля `interrupt_controller` в модуле `processor_core`.
-4. Проверьте с помощью верификационного окружения из ЛР№11, что в процессе интеграции ничего не сломалось.
+1. Implement the `daisy_chain` module.
+   1. When forming the top array of AND gates from _Fig. 2_, you need to generate 16 continuous assignments using a `generate for` block.
+   2. The bottom array of AND gates can be formed using a single continuous assignment via the bitwise AND operation.
+2. Verify the `daisy_chain` module using the verification environment provided in the file [`lab_12.tb_daisy_chain`](lab_12.tb_daisy_chain.sv). If error messages appear in the TCL console, you need to [find](../../Vivado%20Basics/05.%20Bug%20hunting.md) and fix them.
+   1. Before running the simulation, make sure the correct top-level module is selected in `Simulation Sources`.
+3. Integrate the `daisy_chain` module into the `interrupt_controller` module according to the scheme shown in _Fig. 3_.
+   1. Make sure to update the bit width of signals `irq_req_i`, `mie_i`, and `irq_ret_o` in the `interrupt_controller` module.
+   2. Also update the bit width of signals `irq_req_i` and `irq_ret_o` in the `processor_core` and `processor_system` modules.
+   3. Additionally, you now need to use the upper 16 bits of the `mie` signal instead of a single bit when connecting the `interrupt_controller` module inside `processor_core`.
+4. Verify using the testbench from Lab #11 that nothing was broken during integration.

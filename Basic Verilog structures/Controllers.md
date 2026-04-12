@@ -1,49 +1,49 @@
-# Пример разработки модуля-контроллера периферийного устройства
+# Example of Developing a Peripheral Device Controller Module
 
-Для того, чтобы лучше понять, что от вас требуется в рамках лабораторной работы по периферийным устройствам, рассмотрим процесс разработки структурной схемы (не SystemVerilog-описания) для контроллера светодиодов.
+To better understand what is required in the peripheral devices lab, let us walk through the process of developing a block diagram (not a SystemVerilog description) for an LED controller.
 
-В первую очередь, здесь будет продублирована выдержка из спецификации на этот контроллер (общая часть раздела "[Описание контроллеров периферийных устройств](../Labs/13.%20Peripheral%20units/README.md#описание-контроллеров-периферийных-устройств)", а также подраздел "[Светодиоды](../Labs/13.%20Peripheral%20units/#Светодиоды)"):
+First, we reproduce the relevant excerpt from the controller specification (the general section "[Peripheral Device Controller Descriptions](../Labs/13.%20Peripheral%20units/README.md#описание-контроллеров-периферийных-устройств)" and the subsection "[LEDs](../Labs/13.%20Peripheral%20units/#Светодиоды)"):
 
-## Спецификация контроллера
+## Controller Specification
 
-### Общие термины
+### General Terms
 
-1. Под "**запросом на запись** по адресу `0xАДРЕС`" будет пониматься совокупность следующих условий:
-   1. Происходит восходящий фронт `clk_i`.
-   2. На входе `req_i` выставлено значение `1`.
-   3. На входе `write_enable_i` выставлено значение `1`.
-   4. На входе `addr_i` выставлено значение `0xАДРЕС`
-2. Под "**запросом на чтение** по адресу `0xАДРЕС`" будет пониматься совокупность следующих условий:
-   1. Происходит восходящий фронт `clk_i`.
-   2. На входе `req_i` выставлено значение `1`.
-   3. На входе `write_enable_i` выставлено значение `0`.
-   4. На входе `addr_i` выставлено значение `0xАДРЕС`
+1. A "**write request** to address `0xADDRESS`" refers to the combination of the following conditions:
+   1. A rising edge of `clk_i` occurs.
+   2. The input `req_i` is asserted to `1`.
+   3. The input `write_enable_i` is asserted to `1`.
+   4. The input `addr_i` holds the value `0xADDRESS`
+2. A "**read request** to address `0xADDRESS`" refers to the combination of the following conditions:
+   1. A rising edge of `clk_i` occurs.
+   2. The input `req_i` is asserted to `1`.
+   3. The input `write_enable_i` is asserted to `0`.
+   4. The input `addr_i` holds the value `0xADDRESS`
 
-Обратите внимание на то, что **запрос на чтение** должен обрабатываться **синхронно** (выходные данные должны выдаваться по положительному фронту `clk_i`) так же как был реализован порт на чтение памяти данных в [ЛР№6](../Labs/06.%20Main%20memory/).
+Note that a **read request** must be handled **synchronously** (output data must be produced on the rising edge of `clk_i`), in the same way as the read port of the data memory was implemented in [Lab 6](../Labs/06.%20Main%20memory/).
 
-При описании поддерживаемых режимов доступа по данному адресу используются следующее обозначения:
+The following notation is used to describe the supported access modes for each address:
 
-- R — доступ **только на чтение**;
-- W — доступ **только на запись**;
-- RW — доступ на **чтение и запись**.
+- R — **read-only** access;
+- W — **write-only** access;
+- RW — **read and write** access.
 
-В случае отсутствия **запроса на чтение**, на выходе `read_data_o` не должно меняться значение (тоже самое было сделано в процессе разработки памяти данных).
+When there is no **read request**, the value on `read_data_o` must not change (the same behavior was implemented during data memory development).
 
-Если пришел **запрос на запись** или **чтение**, это еще не значит, что контроллер должен его выполнить. В случае, если запрос происходит по адресу, не поддерживающему этот запрос (например **запрос на запись** по адресу, поддерживающему только чтение), данный запрос должен игнорироваться. В случае **запроса на чтение** по недоступному адресу, на выходе `read_data_o` должно остаться прежнее значение.
+Receiving a **write** or **read request** does not necessarily mean the controller must execute it. If a request is made to an address that does not support the requested operation (e.g., a **write request** to a read-only address), the request must be ignored. For a **read request** to an unsupported address, the value on `read_data_o` must remain unchanged.
 
-В случае осуществления записи по принятому запросу, необходимо записать данные с сигнала `write_data_i` в регистр, ассоциированный с адресом `addr_i` (если разрядность регистра меньше разрядности сигнала `write_data_i`, старшие биты записываемых данных отбрасываются).
+When a write is performed in response to a valid request, the data from `write_data_i` must be written into the register associated with `addr_i` (if the register width is less than the width of `write_data_i`, the upper bits of the written data are discarded).
 
-В случае осуществления чтения по принятому запросу, необходимо по положительному фронту `clk_i` выставить данные с сигнала, ассоциированного с адресом `addr_i` на выходной сигнал `read_data_o` (если разрядность сигнала меньше разрядности выходного сигнала `read_data_o`, возвращаемые данные должны дополниться нулями в старших битах).
+When a read is performed in response to a valid request, on the rising edge of `clk_i` the data associated with `addr_i` must be placed on the output `read_data_o` (if the signal width is less than the width of `read_data_o`, the returned data must be zero-extended in the upper bits).
 
-### Светодиоды
+### LEDs
 
-Светодиоды являются простейшим устройством вывода. Поэтому, чтобы задание было интересней, для их управления был добавлен регистр, управляющий режимом вывода данных на светодиоды.
-Рассмотрим прототип модуля, который вам необходимо реализовать:
+LEDs are the simplest output device. To make the assignment more interesting, a register controlling the LED output mode has been added.
+Here is the module prototype you need to implement:
 
 ```Verilog
 module led_sb_ctrl(
 /*
-    Часть интерфейса модуля, отвечающая за подключение к системной шине
+    Part of the module interface responsible for connection to the system bus
 */
   input  logic        clk_i,
   input  logic        rst_i,
@@ -54,7 +54,7 @@ module led_sb_ctrl(
   output logic [31:0] read_data_o,
 
 /*
-    Часть интерфейса модуля, отвечающая за подключение к периферии
+    Part of the module interface responsible for connection to the peripheral
 */
   output logic [15:0] led_o
 );
@@ -65,88 +65,88 @@ logic         led_mode;
 endmodule
 ```
 
-Данный модуль должен подавать на выходной сигнал `led_o` данные с регистра `led_val`. Запись и чтение регистра `led_val` осуществляется по адресу `0x00`.
+This module must drive the output signal `led_o` with the value from register `led_val`. Reading and writing register `led_val` is performed at address `0x00`.
 
-Регистр `led_mode` отвечает за режим вывода данных на светодиоды. Когда этот регистр равен единице, светодиоды должны "моргать" выводимым значением. Под морганием подразумевается вывод значения из регистра `led_val` на выход `led_o` на одну секунду (загорится часть светодиодов, соответствующие которым биты шины `led_o` равны единице), после чего на одну секунду выход `led_o` необходимо подать нули. Запись и чтение регистра `led_mode` осуществляется по адресу `0x04`.
+Register `led_mode` controls the LED output mode. When this register equals one, the LEDs must "blink" with the output value. Blinking means: drive the value from `led_val` onto `led_o` for one second (the LEDs whose corresponding bits in `led_o` are one will light up), then drive `led_o` to zero for one second. Reading and writing register `led_mode` is performed at address `0x04`.
 
-Отсчет времени можно реализовать простейшим счетчиком, каждый такт увеличивающимся на 1 и сбрасывающимся по достижении определенного значения, чтобы продолжить считать с нуля. Зная тактовую частоту, нетрудно определить до скольки должен считать счетчик. При тактовой частоте в 10 МГц происходит 10 миллионов тактов в секунду. Это означает, что при такой тактовой частоте через секунду счетчик будет равен `10⁷-1` (счет идет с нуля). Тем не менее удобней будет считать не до `10⁷-1` (что было бы достаточно очевидным и тоже правильным решением), а до `2*10⁷-1`. В этом случае старший бит счетчика каждую секунду будет инвертировать свое значение, что может быть использовано при реализации логики "моргания".
+Timekeeping can be implemented with a simple counter that increments by 1 each clock cycle and resets when it reaches a certain value to start counting again. Knowing the clock frequency, it is straightforward to determine the counter limit. At a clock frequency of 10 MHz, there are 10 million cycles per second. This means that at this frequency, after one second the counter will equal `10⁷-1` (counting from zero). However, it is more convenient to count not to `10⁷-1` (which would be an obvious and correct solution), but to `2*10⁷-1`. In this case, the MSB of the counter inverts its value every second, which can be used directly to implement the blinking logic.
 
-Важно отметить, что счетчик должен работать только при `led_mode == 1`, в противном случае счетчик должен быть равен нулю.
+It is important to note that the counter must operate only when `led_mode == 1`; otherwise, the counter must be held at zero.
 
-Обратите внимание на то, что адрес `0x24` является адресом сброса. В случае **запроса на запись** по этому адресу значения `1`, вы должны сбросить регистры `led_val`, `led_mode` и все вспомогательные регистры, которые вы создали. Для реализации сброса вы можете как создать отдельный регистр `led_rst`, в который будет происходить запись, а сам сброс будет происходить по появлению единицы в этом регистре (в этом случае необходимо не забыть сбрасывать и этот регистр тоже), так и создать обычный провод, формирующий единицу в случае выполнения всех указанных условий (условий **запроса на запись**, адреса сброса и значения записываемых данных равному единице).
+Note that address `0x24` is the reset address. Upon a **write request** of value `1` to this address, you must reset registers `led_val`, `led_mode`, and all auxiliary registers you created. To implement the reset, you may either create a dedicated register `led_rst` that is written to, with the reset occurring when this register becomes one (in which case you must also reset this register), or create a plain wire that goes high when all specified conditions are met (the conditions of the **write request**, the reset address, and the written data value equaling one).
 
-Адресное пространство контроллера:
+Controller address space:
 
-|Адрес|Режим доступа|Допустимые значения|                       Функциональное назначение                                   |
-|-----|-------------|-------------------|-----------------------------------------------------------------------------------|
-|0x00 | RW          | [0:65535]         | Чтение и запись в регистр `led_val` отвечающий за вывод данных на светодиоды      |
-|0x04 | RW          | [0:1]             | Чтение и запись в регистр `led_mode`, отвечающий за режим "моргания" светодиодами |
-|0x24 | W           |  1                | Запись сигнала сброса                                                             |
+|Address|Access Mode|Valid Values|                       Functional Description                                   |
+|-------|-----------|------------|--------------------------------------------------------------------------------|
+|0x00   | RW        | [0:65535]  | Read and write to register `led_val`, which controls the data output to the LEDs |
+|0x04   | RW        | [0:1]      | Read and write to register `led_mode`, which controls the LED blinking mode    |
+|0x24   | W         |  1         | Write reset signal                                                             |
 
-## Реализация схемы контроллера
+## Controller Circuit Implementation
 
-Для начала, добавим на структурную схему входы и выходы модуля:
+First, add the module's inputs and outputs to the block diagram:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_01.drawio.svg)
 
-В первую очередь, спецификация вводит понятия **запрос на чтение** и **запрос на запись**. Создадим вспомогательные провода, которые будут сигнализировать о том, что произошел **запрос на чтение** или **запрос на запись**:
+The specification introduces the concepts of **read request** and **write request**. Let us create auxiliary wires that signal when a **read request** or **write request** has occurred:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_02.drawio.svg)
 
-Помимо прочего, спецификация описывает адресное пространство контроллера. Поэтому создадим вспомогательные сигналы, сигнализирующие о том, что текущий адрес соответствует одному из регистров контроллера:
+Additionally, the specification defines the controller's address space. Let us create auxiliary signals that indicate whether the current address corresponds to one of the controller's registers:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_03.drawio.svg)
 
-Теперь, когда подготовительные работы выполнены, начнем с реализации сброса этого контроллера. Сброс может произойти в двух случаях: когда `rst_i == 1` либо же в случае **запроса на запись** единицы по адресу `0x24`. Создадим вспомогательный провод `rst`, который будет равен единице в случае, если произойдет любое из этих событий. Этот сигнал будет сбрасывать все созданные в данном модуле регистры.
+With the preparatory work done, let us begin with the reset logic for this controller. A reset can occur in two cases: when `rst_i == 1`, or when a **write request** of value one is made to address `0x24`. Let us create an auxiliary wire `rst` that is high when either of these events occurs. This signal will reset all registers created inside this module.
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_04.drawio.svg)
 
-Продолжим описание контроллера, создав первый из **архитектурных регистров** — `led_val`. Запись в этот регистр возможна только при запросе на запись по адресу `0x00`. Создадим вспомогательный сигнал `val_en`, который будет равен единице только в случае выполнения этих условий:
+Continuing the controller description, let us create the first **architectural register** — `led_val`. Writing to this register is only permitted on a write request to address `0x00`. Let us create an auxiliary signal `val_en` that is high only when these conditions are met:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_05.drawio.svg)
 
-Теперь реализация регистра `lev_val` становится совершенно тривиальной задачей, ведь у нас есть:
+Now implementing register `led_val` becomes a straightforward task, since we have:
 
-- сигнал сброса регистра `rst`;
-- сигнал разрешения записи в регистр `val_en`;
-- сигнал данных для записи в регистр `write_data_i`(из которого мы будем брать только младшие 16 бит данных).
+- the register reset signal `rst`;
+- the register write-enable signal `val_en`;
+- the write data signal `write_data_i` (from which we take only the lower 16 bits).
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_06.drawio.svg)
 
-Аналогичным образом реализуем еще один **архитектурный регистр** `led_mode`:
+Similarly, implement the second **architectural register** `led_mode`:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_07.drawio.svg)
 
-Два этих регистра должны управлять поведением выходного сигнала `led_o` следующим образом:
+These two registers must control the behavior of the output signal `led_o` as follows:
 
-1. В случае `led_mode == 0` на выходе `led_o` должно оказаться значение `led_val`;
-2. В случае `led_mode == 1` на выходе `led_o` должно циклически меняться значение c `led_val` на `16'd0` и обратно с периодом в одну секунду.
+1. When `led_mode == 0`, the output `led_o` must carry the value of `led_val`;
+2. When `led_mode == 1`, the output `led_o` must cyclically alternate between `led_val` and `16'd0` with a period of one second.
 
-Для реализации счета времени нам потребуется вспомогательный **неархитектурный регистр** `cntr`, который станет простейшим счетчиком со сбросом. Мы знаем, что тактовый сигнал нашей схемы будет работать с периодом в 10 МГц. Если каждый такт инкрементировать счетчик на единицу, то за одну секунду счетчик досчитает до 10 миллионов. Первой мыслью может показаться, что нам нужно, чтобы счетчик считал до 10 миллионов, дойдя до которых он бы сбрасывался в ноль, однако в этом случае у нас будут сложности при дальнейшей реализации. Будет куда удобней, если вместо этого счетчик будет считать до 20 миллионов (полного периода смены значения с `led_val` на `16'd0` и обратно). В этом случае, нам останется всего лишь добавить условие вывода значения на мультиплексор:
+To implement timekeeping, we need an auxiliary **non-architectural register** `cntr`, which acts as a simple resettable counter. We know that our circuit's clock runs at 10 MHz. Incrementing the counter by one each cycle, after one second the counter will reach 10 million. The first instinct might be to count to 10 million and then reset to zero, but this creates complications for the subsequent implementation. It is much more convenient to count to 20 million instead (the full period of alternating between `led_val` and `16'd0`). In this case, we only need to add a multiplexer output condition:
 
-- пока значение счетчика меньше 10 миллионов, на выходе `led_o` будет значение `led_val`
-- в противном случае, на выходе `led_o` будет значение `16'd0`.
+- while the counter value is less than 10 million, `led_o` outputs `led_val`
+- otherwise, `led_o` outputs `16'd0`.
 
-Таким образом, поведение счетчика описывается следующим образом:
+The counter behavior is therefore described as follows:
 
-- счетчик сбрасывается, в следующих случаях:
-  - произошел сброс (`rst == 1`);
-  - произошло отключение "моргания" светодиодов (`led_mode == 0`);
-  - счетчик досчитал до 20 миллионов (`cntr >= 32'd20_000_000`);
-- в остальных ситуациях, счетчик инкрементирует свое значение.
+- the counter resets in the following cases:
+  - a reset occurred (`rst == 1`);
+  - LED blinking was disabled (`led_mode == 0`);
+  - the counter reached 20 million (`cntr >= 32'd20_000_000`);
+- in all other cases, the counter increments its value.
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_08.drawio.svg)
 
-Последним этапом описания контроллера будет добавление логики управления выходным сигналом `read_data_o`.
+The final step in describing the controller is adding the logic that controls the output signal `read_data_o`.
 
-На управление этим сигналом наложены следующие требования:
+The following requirements apply to this signal:
 
-- изменения этого сигнала должны быть **синхронными** (значит перед выходным сигналом должен стоять регистр);
-- в случае **запроса на чтение** по поддерживаемому адресу, данный сигнал должен принять значение ассоциированного с этим адресом регистра (дополнив это значение нулями в старших разрядах).
-- в случае отсутствия **запроса на чтение**, или запроса на чтение по неподдерживаемому адресу, регистр должен сохранить значение
+- changes to this signal must be **synchronous** (i.e., a register must precede the output signal);
+- upon a **read request** to a supported address, this signal must take the value of the register associated with that address (zero-extended to the full output width);
+- in the absence of a **read request**, or on a read request to an unsupported address, the register must retain its current value.
 
-Чтобы регистр сохранял значение между **запросами на чтение** по поддерживаемому адресу, добавим ему сигнал enable, а на вход данных подадим выход с мультиплексора, выбирающего между доступными источниками данных для чтения.
+To keep the register's value between **read requests** to supported addresses, we add an enable signal to it, and drive its data input from a multiplexer that selects among the available read data sources.
 
-Таким образом, итоговая схема примет вид:
+The final circuit is thus:
 
 ![../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.svg](../.pic/Basic%20Verilog%20structures/controllers/fig_09.drawio.svg)

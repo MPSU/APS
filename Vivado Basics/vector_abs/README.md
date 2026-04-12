@@ -1,7 +1,7 @@
-# Модуль приближенного вычисления длины вектора
+# Approximate Vector Length Computation Module
 
-Модуль `vector_abs` предназначен для вычисления приближенной длины вектора в евклидовом пространстве (выражения `sqrt(a^2+b^2)`). Для эффективного использования логических вентилей используется следующее приближение:
+The `vector_abs` module is designed to compute the approximate length of a vector in Euclidean space (i.e., the expression `sqrt(a^2+b^2)`). To make efficient use of logic gates, the following approximation is applied:
 
-`sqrt(a^2+b^2) ≈ max + min/2`, где max и min — наибольшее и наименьшее из пары чисел соответственно [**Ричард Лайонс: Цифровая обработка сигналов, Глава 13.2, стр. 475**].
+`sqrt(a^2+b^2) ≈ max + min/2`, where max and min are the larger and smaller of the two numbers, respectively [**Richard Lyons: Understanding Digital Signal Processing, Chapter 13.2, p. 475**].
 
-Для определения максимума/минимума используется модуль `max_min`, для вычисления деления пополам используется модуль `half_divider`.
+The `max_min` module is used to determine the maximum/minimum values, and the `half_divider` module is used to compute the division by two.

@@ -1,10 +1,10 @@
-# Конкатенация (объединение сигналов)
+# Concatenation (Signal Merging)
 
-Конкатенация позволяет присвоить какому-то многоразрядному сигналу "склейку" из нескольких сигналов меньшей разрядности, либо наоборот: присвоить сигнал большей разрядности группе сигналов меньшей разрядности.
+Concatenation allows assigning a multi-bit signal the "join" of several lower-width signals, or conversely, assigning a higher-width signal to a group of lower-width signals.
 
-Оператор конкатенации выглядит следующим образом: `{sig1, sig2, ..., sign}`.
+The concatenation operator has the following form: `{sig1, sig2, ..., sign}`.
 
-Предположим, у нас есть следующий набор сигналов:
+Suppose we have the following set of signals:
 
 ![../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_01.drawio.svg)
 
@@ -18,16 +18,16 @@ logic [1:0] d;
 logic [5:0] e;
 ```
 
-И мы хотим, чтобы на провод `e` подавались следующие сигналы:
+And we want the wire `e` to receive the following signals:
 
-- на старший бит сигнала `e` подавался сигнал `a`
-- на его следующий бит подавался сигнал `b`
-- на его следующие 2 бита подавались биты `[4:3]` сигнала `c`
-- на младшие 2 бита подавался сигнал `d`
+- the MSB of signal `e` receives signal `a`
+- the next bit receives signal `b`
+- the next 2 bits receive bits `[4:3]` of signal `c`
+- the 2 LSBs receive signal `d`
 
 ![../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_02.drawio.svg)
 
-Это можно сделать путем 4 непрерывных присваиваний:
+This can be done using 4 continuous assignments:
 
 ```Verilog
 logic a;
@@ -43,7 +43,7 @@ assign e[3:2] = c[4:3];
 assign e[1:0] = d;
 ```
 
-либо через одно присваивание, использующее конкатенацию:
+or with a single assignment using concatenation:
 
 ```Verilog
 logic a;
@@ -56,7 +56,7 @@ logic [5:0] e;
 assign e = {a, b, c[4:3], d};
 ```
 
-Кроме того, возможна и обратная ситуация. Предположим, мы хотим подать отдельные биты сигнала `e` на различные провода:
+The reverse is also possible. Suppose we want to drive individual wires from separate bits of signal `e`:
 
 ![../.pic/Basic%20Verilog%20structures/concatenation/fig_03.drawio.svg](../.pic/Basic%20Verilog%20structures/concatenation/fig_03.drawio.svg)
 
@@ -74,7 +74,7 @@ assign c[4:3] = e[3:2];
 assign d      = e[1:0];
 ```
 
-Подобную операцию можно так же выполнить в одно выражение через конкатенацию:
+This operation can also be expressed as a single concatenation:
 
 ```Verilog
 logic a;
@@ -87,14 +87,13 @@ logic [5:0] e;
 assign {a, b, c[4:3], d} = e;
 ```
 
-Кроме того, конкатенация может использоваться при **множественном дублировании** сигналов. Дублирование выполняется выражением:
+Additionally, concatenation can be used for **signal replication**. Replication is expressed as:
 
 ```Verilog
-{a, {число_повторений{повторяемый_сигнал}} ,b}
+{a, {replication_count{signal_to_replicate}} ,b}
 ```
 
-Допустим, мы хотим присвоить какому-то сигналу три копии `[4:3]` битов сигнала `c`, после которых идут сигналы `a` и `b`.
-Это можно сделать выражением:
+For example, to assign three copies of bits `[4:3]` of signal `c`, followed by signals `a` and `b`:
 
 ```Verilog
 logic a;
@@ -106,9 +105,9 @@ logic [7:0] e;
 assign e = { {3{c[4:3]}}, a, b};
 ```
 
-## Итоги главы
+## Chapter Summary
 
-Оператор конкатенации может быть использован для группировки и репликации сигналов по обе стороны присваивания, а именно:
+The concatenation operator can be used to group and replicate signals on either side of an assignment:
 
-- он может быть использован для присваивания сигналу большей разрядности группы сигналов меньшей разрядности
-- он может быть использован для присваивания группе сигналов меньшей разрядности соответствующих бит сигнала большей разрядности.
+- it can be used to assign a group of lower-width signals to a higher-width signal
+- it can be used to assign the corresponding bits of a higher-width signal to a group of lower-width signals.

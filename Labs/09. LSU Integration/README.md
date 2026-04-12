@@ -1,24 +1,24 @@
-# Лабораторная работа №9 "Интеграция блока загрузки и сохранения"
+# Lab 9. Integration of the Load/Store Unit
 
-После реализации блока загрузки и сохранения его необходимо интегрировать в процессорную систему, реализованную в рамках ЛР№7. На _рис. 1_ представлена схема, иллюстрирующая интеграцию компонентов:
+After implementing the load/store unit, it must be integrated into the processor system developed in Lab 7. Figure 1 shows a diagram illustrating the integration of components:
 
 ![../../.pic/Labs/lab_08_lsu/fig_01.drawio.svg](../../.pic/Labs/lab_08_lsu/fig_01.drawio.svg)
 
-_Рисунок 1. Подключение LSU в процессорную систему._
+_Figure 1. Connecting the LSU to the processor system._
 
-## Материалы для подготовки к лабораторной работе
+## Preparation Materials
 
-Перед выполнением данной лабораторной работы рекомендуется изучить теоретическую часть ЛР№8.
+Before performing this lab, it is recommended to study the theoretical part of Lab #8.
 
-## Задание
+## Assignment
 
-Интегрировать модуль `lsu` в модуль `processor_system`.
+Integrate the `lsu` module into the `processor_system` module.
 
-## Порядок выполнения работы
+### Steps
 
-1. Интегрируйте модули `lsu` и `data_mem` в модуль `processor_system`.
-   1. Обратите внимание, что из модуля `processor_system` необходимо убрать логику сигнала `stall`, т.к. она была перемещена внутрь модуля `lsu`.
-2. После интеграции модулей проверьте процессорную систему с помощью [программы](../07.%20Datapath/#Задание) и верификационного окружения из ЛР№7.
-   1. Как и в случае с проверкой процессора архитектуры CYBERcobra, вам не будет сказано, пройден тест или нет. Вам необходимо самостоятельно, такт за тактом, проверить, что процессор правильно выполняет описанные в [_листинге 1_](../07.%20Datapath/#Задание) ЛР№7 инструкции (см. порядок выполнения задания ЛР№4). Для этого необходимо сперва самостоятельно рассчитать, что именно должна сделать данная инструкция, а потом проверить, что процессор сделал именно это.
-   2. Обратите внимание на то, как теперь исполняются инструкции `sw`, `sh`, `sb`, `lw`, `lh`, `lb`, `lhu`, `lbu`.
-3. Данная лабораторная работа не предполагает проверки в ПЛИС.
+1. Integrate the `lsu` and `data_mem` modules into the `processor_system` module.
+   1. Note that the `stall` signal logic must be removed from the `processor_system` module, since it has been moved inside the `lsu` module.
+2. After integration, verify the processor system using the [program](../07.%20Datapath/#Assignment) and verification environment from Lab 7.
+   1. As with testing the CYBERcobra architecture processor, you will not be explicitly told whether the test passed. You need to manually check, cycle by cycle, that the processor correctly executes the instructions described in [_Listing 1_](../07.%20Datapath/#Assignment) of Lab 7 (see the procedure in Lab #4). To do this, first determine yourself what each instruction should do, and then verify that the processor does exactly that.
+   2. Pay attention to how the instructions `sw`, `sh`, `sb`, `lw`, `lh`, `lb`, `lhu`, `lbu` are executed now.
+3. This lab does not require testing on FPGA.
