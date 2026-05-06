@@ -1,0 +1,44 @@
+/* ── Language Switcher ───────────────────────────────────────────────────── */
+
+#language-switcher {
+  display:     inline-flex;
+  align-items: center;
+  gap:         4px;
+
+  background:  none;
+  border:      1px solid var(--icons);
+  border-radius: 4px;
+  color:       var(--icons);
+  cursor:      pointer;
+  font-size:   0.82em;
+  font-weight: 600;
+  line-height: 1;
+  padding:     3px 8px;
+
+  /* sit nicely alongside the existing icon buttons */
+  margin-right: 4px;
+  vertical-align: middle;
+
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+#language-switcher:hover,
+#language-switcher:focus-visible {
+  color:            var(--icons-hover);
+  border-color:     var(--icons-hover);
+  background-color: rgba(128, 128, 128, 0.08);
+  outline:          none;
+}
+
+/* Keep the flag emoji from being shrunk by the parent flex layout */
+#language-switcher span[aria-hidden] {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* Hide text label on very small screens, show only flag */
+@media (max-width: 420px) {
+  #language-switcher .lang-label {
+    display: none;
+  }
+}

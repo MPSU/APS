@@ -1,12 +1,12 @@
 [book]
 authors = ["Andrei Solodovnikov, Mikhail Popov"]
-language = "ru"
+language = "en"
 src = "./"
-title = "Архитектуры процессорных систем"
+title = "Processor System Architectures"
 
 [output.html]
 git-repository-url = "https://github.com/MPSU/APS"
 git-repository-icon = "fa-github"
-site-url = "/APS/"
+site-url = "/APS/en/"
 additional-js  = ["theme/language-switcher.js"]
 additional-css = ["theme/language-switcher.css"]
