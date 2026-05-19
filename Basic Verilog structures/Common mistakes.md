@@ -32,7 +32,7 @@ endmodule
 module testbench();
 logic A, B, C;
 
-adder DUT(
+half_adder DUT(
   .A(A),  // <- здесь будет ошибка,
           // т.к. в модуле half_adder нет порта 'A'
   .b(B),
