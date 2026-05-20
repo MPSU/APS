@@ -10,33 +10,40 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 */
 module lab_04_tb_CYBERcobra();
 
-    CYBERcobra DUT(
+  logic [31:0]  OUT;
+  logic         clk;
+  logic         rst;
+  logic [15:0]  sw_i;
+
+
+  CYBERcobra DUT(
     .clk_i(clk),
-    .rst_i(rstn),
-    .sw_i (sw_i ),
+    .rst_i(rst),
+    .sw_i (sw_i),
     .out_o(OUT)
-    );
+  );
 
-    wire [31:0] OUT;
-    reg clk;
-    reg rstn;
-    reg [15:0] sw_i;
+  initial clk <= 0;
+  always #5ns clk = ~clk;
 
-    initial clk <= 0;
-    always #5 clk = ~clk;
-
-    initial begin
+  initial begin
+    logic [15:0] count_num;
     $display("Test has been started");
-    rstn = 1'b1;
-    #10;
-    rstn = 1'b0;
-    sw_i = 16'b100001000; //значение, до которого считает счетчик
-    #10000;
-    $display("\n The test is over \n See the internal signals of the CYBERcobra on the waveform \n");
-    $finish;
-    #5;
-    $display("You're trying to run simulation that has finished. Aborting simulation.");
-    $fatal();
+    rst = 1'b1;
+    repeat(2)@(posedge clk);
+    rst = 1'b0;
+    count_num = $urandom_range(5, 10);
+    sw_i = count_num;
+    repeat(count_num * 2 + 15) begin
+      @(posedge clk);
     end
+    $display("\nThe test is over.");
+    $display("See the internal signals of the CYBERcobra on the waveform");
+    $finish;
+    @(posedge clk);
+    $display("You're trying to run simulation that has finished.");
+    $display("Aborting simulation.");
+    $fatal();
+  end
 
 endmodule
