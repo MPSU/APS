@@ -16,7 +16,7 @@ module lab_15_tb_system();
   logic          flash_rx;
   logic          tx_o;
   logic ps2_clk, ps2_dat;
-  logic sw_i;
+  logic [15:0] sw_i;
   logic tb_rx;
   logic flashing_is_done = 0;
   logic core_reset;
