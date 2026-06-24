@@ -17,7 +17,7 @@ OBJCOPY =   $(CC_PATH)/$(CC_PREFIX)-objcopy
 SIZE    =   $(CC_PATH)/$(CC_PREFIX)-size
 
 OBJS = core_main.o core_list_join.o core_matrix.o core_state.o core_util.o \
-				barebones/core_portme.o barebones/startup.o barebones/cvt.o \
+				startup.o barebones/core_portme.o barebones/cvt.o \
 				barebones/ee_printf.o
 
 
