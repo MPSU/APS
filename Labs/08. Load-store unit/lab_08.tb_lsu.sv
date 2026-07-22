@@ -83,7 +83,7 @@ initial begin
     $stop();
     not_stopped = 0;
   end
-  @(posedge clk_i);
+  @(negedge clk_i);
     if(!core_stall_o) begin
       core_req_i    = $random;
       core_we_i     = $random;
