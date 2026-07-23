@@ -82,7 +82,7 @@ irq_o_is_not_0: assert property (
 irq_cause_o_mcause: assert property (
   @(posedge clk_i) disable iff ( rst_i )
   irq_o |-> $onehot0(irq_cause_o[19:4])
-)else $error("error value on irq_cause_o: %08h, should be onehot", $sampled(irq_cause_o[20:5]));
+)else $error("error value on irq_cause_o: %08h, should be onehot", $sampled(irq_cause_o[19:4]));
 
 irq_cause_o_borders: assert property (
   @(posedge clk_i) disable iff ( rst_i )
