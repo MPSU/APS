@@ -9,16 +9,16 @@ See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
 module lab_16_tb_coremark();
-
+  import bluster_pkg::*;
   logic        clk100mhz_i;
   logic        aresetn_i;
   logic        rx_i;
   logic        tx_o;
   logic        clk_i;
   logic        rst_i;
-
+  logic        core_reset;
   assign aresetn_i = !rst_i;
-
+  assign core_reset = DUT.core.rst_i;
   logic rx_busy, rx_valid, tx_busy, tx_valid;
   logic [7:0] rx_data, tx_data;
 
@@ -38,7 +38,7 @@ module lab_16_tb_coremark();
     repeat(2) @(posedge clk_i);
     rst_i <= 0;
 
-    dummy_programming();
+    finish_programming(clk_i, tx_valid, tx_busy, core_reset, tx_data);
 
     coremark_cntr = 0;
     coremark_msg = {32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
@@ -89,60 +89,5 @@ uart_tx tx(
   .tx_data_i  (tx_data    ),
   .tx_valid_i (tx_valid   )
 );
-
-task send_data(input byte mem[$]);
-  for(int i = mem.size()-1; i >=0; i--) begin
-    tx_data = mem[i];
-    tx_valid = 1'b1;
-    @(posedge clk_i);
-    tx_valid = 1'b0;
-    @(posedge clk_i);
-    while(tx_busy) @(posedge clk_i);
-  end
-endtask
-
-task rcv_data(input int size);
-  byte str[57];
-  logic [3:0][7:0] size_val;
-  for(int i = 0; i < size; i++) begin
-    @(posedge clk_i);
-    while(!rx_valid)@(posedge clk_i);
-    str[i] = rx_data;
-    size_val[3-i] = rx_data;
-  end
-  if(size!=4)$display("%s", str);
-  else $display("%d", size_val);
-  wait(tx_o);
-endtask
-
-task program_region(input byte mem[$], input logic [3:0][7:0] start_addr);
-  byte str [4];
-  logic [3:0][7:0] size;
-  size = mem.size();
-  if(start_addr) begin
-    str = {start_addr[0],start_addr[1],start_addr[2],start_addr[3]};
-    send_data(str);
-  end
-  rcv_data(40);
-  str = {size[0],size[1],size[2],size[3]};
-  send_data(str);
-  rcv_data(4);
-  send_data(mem);
-  rcv_data(57);
-
-endtask
-
-task finish_programming();
-  send_data({8'd0, 8'd0, 8'd0, 8'd0});
-endtask
-
-task dummy_programming();
-  byte str [4] = {8'd0, 8'd0, 8'd0, 8'd0};
-  rcv_data(40);
-  send_data(str);
-  rcv_data(4);
-  rcv_data(57);
-  send_data(str);
-endtask
 
 endmodule
