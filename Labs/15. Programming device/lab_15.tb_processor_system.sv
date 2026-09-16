@@ -8,7 +8,7 @@
 See https://github.com/MPSU/APS/blob/master/LICENSE file for licensing details.
 * ------------------------------------------------------------------------------
 */
-module lab_15_tb_system();
+module lab_15_tb_processor_system();
 
   logic          clk_i;
   logic          sysclk;
