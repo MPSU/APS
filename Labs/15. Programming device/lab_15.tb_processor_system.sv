@@ -111,7 +111,7 @@ module lab_15_tb_processor_system();
     .sw_i     (sw_i   )
   );
 
-  assign core_reset = DUT.core_inst.rst_i;
+  assign core_reset = DUT.core.rst_i;
 
   uart_rx rx(
   .clk_i      (sysclk     ),
