@@ -1,4 +1,4 @@
-# Builds the Russian (master) and English (english_version) editions of the
+# Builds the Russian and English editions of the
 # mdBook and deploys them as one GitHub Pages site:
 #
 #   /APS/        ← Russian
@@ -8,7 +8,7 @@ name: Deploy mdBook site to Pages
 
 on:
   push:
-    branches: ["master", "english_version"]
+    branches: ["russian_version", "english_version"]
   workflow_dispatch:
 
 permissions:
@@ -27,9 +27,11 @@ jobs:
       MDBOOK_VERSION: 0.4.36
 
     steps:
-      # ── 1. Checkout master (Russian) ──────────────────────────────────────
-      - name: Checkout master (Russian)
+      # ── 1. Checkout Russian version ──────────────────────────────────────
+      - name: Checkout Russian version
         uses: actions/checkout@v4
+        with:
+          ref:  russian_version
         # checks out into $GITHUB_WORKSPACE (i.e. the working directory)
 
       # ── 2. Install mdBook ─────────────────────────────────────────────────
@@ -68,7 +70,7 @@ jobs:
           # Use the dedicated English book.toml (sets site-url = "/APS/en/")
           cp .github/book_en.toml book.toml
 
-          # Copy language-switcher theme files from the master checkout
+          # Copy language-switcher theme files from the russian_version checkout
           cp -r ../.github/theme ./theme
 
       - name: Build English (mdbook → english_src/book/)
