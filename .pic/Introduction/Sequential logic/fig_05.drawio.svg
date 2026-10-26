@@ -341,7 +341,7 @@
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <table data-ve-attributes="{&quot;style&quot;:&quot;text-align:center;&quot;}" id="mwAjk" style="text-align: center; font-size: 17px; border: 1px solid rgb(179, 179, 179); border: 1px solid light-dark(rgb(179, 179, 179), rgb(73, 73, 73)); border-collapse: collapse;" class="wikitable" border="1">
                                     <tbody id="mwAjs">
-                                        <tr data-ve-attributes="{&quot;style&quot;:&quot;background:#def;&quot;}" id="mwAjw" style="background:#def;background:light-dark(#def, #172430);">
+                                        <tr data-ve-attributes="{&quot;style&quot;:&quot;background:#def;&quot;}" id="mwAjw" style="background:#def;background:light-dark(#def, #204a71);">
                                             <td colspan="3">
                                                 <b>
                                                     Входы
@@ -355,7 +355,7 @@
                                                 </b>
                                             </td>
                                         </tr>
-                                        <tr data-ve-attributes="{&quot;style&quot;:&quot;background:#def;&quot;}" id="mwAkE" style="background:#def;background:light-dark(#def, #172430);">
+                                        <tr data-ve-attributes="{&quot;style&quot;:&quot;background:#def;&quot;}" id="mwAkE" style="background:#def;background:light-dark(#def, #204a71);">
                                             <td>
                                                 clk
                                             </td>
@@ -388,137 +388,137 @@
                                             </td>
                                         </tr>
                                         <tr id="mwAko">
-                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
-                                            <td id="mwAks" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td id="mwAks" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 <font style="font-size: 17px;">
                                                     x
                                                 </font>
                                             </td>
-                                            <td id="mwAkw" style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td id="mwAkw" style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 <font style="font-size: 17px;">
                                                     0
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     0
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     1
                                                 </font>
                                             </td>
                                         </tr>
                                         <tr id="mwAlM">
-                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
-                                            <td id="mwAlQ" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td id="mwAlQ" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 <font style="font-size: 17px;">
                                                     x
                                                 </font>
                                             </td>
-                                            <td id="mwAlU" style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td id="mwAlU" style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 <font style="font-size: 17px;">
                                                     1
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 1
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     0
                                                 </font>
                                             </td>
                                         </tr>
                                         <tr id="mwAlw">
-                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 1
                                             </td>
-                                            <td id="mwAl0" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td id="mwAl0" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 <font style="font-size: 17px;">
                                                     x
                                                 </font>
                                             </td>
-                                            <td id="mwAl4" style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td id="mwAl4" style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     0
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     1
                                                 </font>
                                             </td>
                                         </tr>
                                         <tr id="mwAmU">
-                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 1
                                             </td>
-                                            <td id="mwAmY" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td id="mwAmY" style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 <font style="font-size: 17px;">
                                                     x
                                                 </font>
                                             </td>
-                                            <td id="mwAmc" style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td id="mwAmc" style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 <font style="font-size: 17px;">
                                                     1
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background:#bfd; color:black; vertical-align:middle; text-align:center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt125&quot;}" data-ve-no-generated-contents="true" id="mwASc" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;yes2&quot;,&quot;href&quot;:&quot;./Template:Yes2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-yes2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     1
                                                 </font>
                                             </td>
-                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(0, 79, 141)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td data-ve-attributes="{&quot;style&quot;:&quot;background: #FFE3E3; color: black; vertical-align: middle; text-align: center; &quot;,&quot;typeof&quot;:&quot;mw:Transclusion&quot;,&quot;about&quot;:&quot;#mwt122&quot;}" data-ve-no-generated-contents="true" id="mwASM" data-mw="{&quot;parts&quot;:[&quot;|| &quot;,{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;no2&quot;,&quot;href&quot;:&quot;./Template:No2&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;0&quot;}},&quot;i&quot;:0}},&quot; &quot;]}" class="table-no2" style="background: rgb(102, 178, 255);background: light-dark(rgb(102, 178, 255), rgb(24, 102, 170)); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 <font style="font-size: 17px;">
                                                     0
                                                 </font>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="background-color: rgb(255, 255, 204);background-color: light-dark(rgb(255, 255, 204), rgb(23, 22, 0));">
+                                            <td style="background-color: rgb(255, 255, 204);background-color: light-dark(rgb(255, 255, 204), rgb(87, 85, 25));">
                                                 <span style="">
                                                     ↑
                                                 </span>
                                             </td>
-                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
-                                            <td style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 x
                                             </td>
-                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
-                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 1
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="background-color: rgb(255, 255, 204);background-color: light-dark(rgb(255, 255, 204), rgb(23, 22, 0));">
+                                            <td style="background-color: rgb(255, 255, 204);background-color: light-dark(rgb(255, 255, 204), rgb(87, 85, 25));">
                                                 <span style="">
                                                     ↑
                                                 </span>
                                                 <br/>
                                             </td>
-                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 1
                                             </td>
-                                            <td style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(39, 39, 39));">
+                                            <td style="background-color: rgb(230, 230, 230);background-color: light-dark(rgb(230, 230, 230), rgb(61, 61, 61));">
                                                 x
                                             </td>
-                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 37, 22));">
+                                            <td style="background-color: rgb(187, 255, 221);background-color: light-dark(rgb(187, 255, 221), rgb(0, 98, 67));">
                                                 1
                                             </td>
-                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(51, 31, 32));">
+                                            <td style="background-color: rgb(255, 227, 227);background-color: light-dark(rgb(255, 227, 227), rgb(124, 49, 55));">
                                                 0
                                             </td>
                                         </tr>

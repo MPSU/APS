@@ -151,7 +151,7 @@
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <table style="float: right; border: 1px solid rgb(179, 179, 179); border: 1px solid light-dark(rgb(179, 179, 179), rgb(73, 73, 73)); border-collapse: collapse;" class="wikitable" border="1">
                                     <tbody>
-                                        <tr style="background:#def;background:light-dark(#def, #172430); text-align:center;">
+                                        <tr style="background:#def;background:light-dark(#def, #204a71); text-align:center;">
                                             <td>
                                                 <b>
                                                     Input
@@ -164,7 +164,7 @@
                                                 <br/>
                                             </td>
                                         </tr>
-                                        <tr style="background:#def;background:light-dark(#def, #172430); text-align:center;">
+                                        <tr style="background:#def;background:light-dark(#def, #204a71); text-align:center;">
                                             <td>
                                                 A
                                             </td>
@@ -174,19 +174,19 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="table-no2" style="background: #FFE3E3;background: light-dark(#FFE3E3, #331f20); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td class="table-no2" style="background: #FFE3E3;background: light-dark(#FFE3E3, #7c3137); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 0
                                             </td>
-                                            <td class="table-yes2" style="background:#bfd;background:light-dark(#bfd, #002516); color:black; color:light-dark(black, #ffffff); vertical-align:middle; text-align:center;">
+                                            <td class="table-yes2" style="background:#bfd;background:light-dark(#bfd, #006243); color:black; color:light-dark(black, #ffffff); vertical-align:middle; text-align:center;">
                                                 1
                                                 <br/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="table-yes2" style="background:#bfd;background:light-dark(#bfd, #002516); color:black; color:light-dark(black, #ffffff); vertical-align:middle; text-align:center;">
+                                            <td class="table-yes2" style="background:#bfd;background:light-dark(#bfd, #006243); color:black; color:light-dark(black, #ffffff); vertical-align:middle; text-align:center;">
                                                 1
                                             </td>
-                                            <td class="table-no2" style="background: #FFE3E3;background: light-dark(#FFE3E3, #331f20); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
+                                            <td class="table-no2" style="background: #FFE3E3;background: light-dark(#FFE3E3, #7c3137); color: black; color: light-dark(black, #ffffff); vertical-align: middle; text-align: center;">
                                                 0
                                                 <br/>
                                             </td>
