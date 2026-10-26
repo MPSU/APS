@@ -1,33 +1,33 @@
-<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="181px" height="122px" viewBox="-0.5 -0.5 181 122" content="&lt;mxfile scale=&quot;1&quot; border=&quot;0&quot;&gt;&lt;diagram name=&quot;Страница — 1&quot; id=&quot;-sAuFuvBt7Gn3LlA9TYI&quot;&gt;7VlNc5swEP01HOsBFGN8TMhHD+lMOulM21NHMTKoEYgRcoz76yshCZDlJK6HOJ26HDLs02qR9j2WteKBpGhuGKzyTzRFxAv9tPHApReGQRCJvxLYKADEsQIyhlPt0wP3+BeywRVOUW1BnFLCcWWDC1qWaMEtDDJG17bbkhL7oRXMkAPcLyBx0a845blC43DW4x8RznLebXeuRh7g4jFjdFXq53khWLaXGi6gieUroM5hStcDCFx5IGGUcnVXNAkiMrMma2re9TOj3boZKvk+E0I14QmSFTIrbtfFNyYXT4hxLFJzCx8QuaM15piWYuiBck4LD1x0e/CFkcI6R6k2IMGZdF2I1SAmgJwXRNiBuDVhz7UPp5WKVcnnFk0mdTVBRNDLpN+E0AwvfmSQo3qCSzkdsR8iYRdLTEhCCWXtesG1uJJE4G4udHrauc0A0rm5QbRAnG2Eix6N5kBN0TIOzzRv614VMw3lA0EArXaodZh1kXsuxI2mYzc1wGECpUKk2qSM5zSjJSRXPXrRKq9Lf+9zS2V227z/RJxv9AsHV5zarKAG82+D++8y1GSqrctGR26NzcC4QwyLHUqSFVam5/I9FGZJS6SQayw3244/y43c44vMMEQgx0/2i7orz3rqHcXiER2js9i3GTW2CcEhyxDXs4ZvznagaCvQdG4HqumKLZATqKW9289eSjh7TyX476UElT+rTL21OKLZtjjAYeKI5oEdKIpF6vaRh8gV3AzcKulQ/8GStQx7tamIh2pvevLaC8D7iA8Es4k/vKJDtbgVF4RH0iI4C0fVYvT/i3iELyII/VF0t/2BNGp4gw+kbstf6mLd9A84tkVyOBODrnC6oys02PiFYq/EjtYLHcBQfNIMOX3EoQyB8M0Ymo/KUC0Wxo0zFUENpiteW01LsbjuMy+NQW2VZl9cW2vzGvsqGRrat2U8jiIcIvcshk6g2H8l0HiKCPx/TBJ/V5Fwqu80nsTROKrYFWtEYQSOMD47yuCo4bYcas7oIzInNVouw8MbDTmnRttHRQVO07a5W+eYo/sKtq36msHKEd2Slly3doEUUS2ccZl9aZu/D9NxToliUzy77LunRCbqUEiiwZ8+r5p9z4lMpbPYSBIvdn+6nTAnAICJ+TF7HFrA69XztI9Ww63WBjjsjHS0Ksz+RF3Vu/6fFuDqNw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);">
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="181px" height="122px" viewBox="-0.5 -0.5 181 122" content="&lt;mxfile scale=&quot;1&quot; border=&quot;0&quot;&gt;&lt;diagram name=&quot;Страница — 1&quot; id=&quot;-sAuFuvBt7Gn3LlA9TYI&quot;&gt;7VlNc5swEP01HOsBFGN8TMhHD+lMOulM21NHMTKoEYgRcoz76yshCZDlJK6HOJ26HDLs02qR9j2WteKBpGhuGKzyTzRFxAv9tPHApReGQRCJvxLYKADEsQIyhlPt0wP3+BeywRVOUW1BnFLCcWWDC1qWaMEtDDJG17bbkhL7oRXMkAPcLyBx0a845blC43DW4x8RznLebXeuRh7g4jFjdFXq53khWLaXGi6gieUroM5hStcDCFx5IGGUcnVXNAkiMrMma2re9TOj3boZKvk+E0I14QmSFTIrbtfFNyYXT4hxLFJzCx8QuaM15piWYuiBck4LD1x0e/CFkcI6R6k2IMGZdF2I1SAmgJwXRNiBuDVhz7UPp5WKVcnnFk0mdTVBRNDLpN+E0AwvfmSQo3qCSzkdsR8iYRdLTEhCCWXtesG1uJJE4G4udHrauc0A0rm5QbRAnG2Eix6N5kBN0TIOzzRv614VMw3lA0EArXaodZh1kXsuxI2mYzc1wGECpUKk2qSM5zSjJSRXPXrRKq9Lf+9zS2V227z/RJxv9AsHV5zarKAG82+D++8y1GSqrctGR26NzcC4QwyLHUqSFVam5/I9FGZJS6SQayw3244/y43c44vMMEQgx0/2i7orz3rqHcXiER2js9i3GTW2CcEhyxDXs4ZvznagaCvQdG4HqumKLZATqKW9289eSjh7TyX476UElT+rTL21OKLZtjjAYeKI5oEdKIpF6vaRh8gV3AzcKulQ/8GStQx7tamIh2pvevLaC8D7iA8Es4k/vKJDtbgVF4RH0iI4C0fVYvT/i3iELyII/VF0t/2BNGp4gw+kbstf6mLd9A84tkVyOBODrnC6oys02PiFYq/EjtYLHcBQfNIMOX3EoQyB8M0Ymo/KUC0Wxo0zFUENpiteW01LsbjuMy+NQW2VZl9cW2vzGvsqGRrat2U8jiIcIvcshk6g2H8l0HiKCPx/TBJ/V5Fwqu80nsTROKrYFWtEYQSOMD47yuCo4bYcas7oIzInNVouw8MbDTmnRttHRQVO07a5W+eYo/sKtq36msHKEd2Slly3doEUUS2ccZl9aZu/D9NxToliUzy77LunRCbqUEiiwZ8+r5p9z4lMpbPYSBIvdn+6nTAnAICJ+TF7HFrA69XztI9Ww63WBjjsjHS0Ksz+RF3Vu/6fFuDqNw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background: #ffffff; background-color: light-dark(#ffffff, #121212); color-scheme: light dark; fill: light-dark(#000000, #ffffff);">
     <defs/>
     <g>
-        <path d="M 23 19 L 37 19" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <path d="M 81.8 19 L 93 19" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <path d="M 76.9 19 L 34.9 38 L 34.9 0 Z" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <ellipse cx="79.7" cy="19" rx="2.8" ry="2.533333333333333" fill="#ffffcc" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <path d="M 90 19 L 110 19 L 110 40" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 23 19 L 0 19 L 0 43" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 22 102 L 0 102 L 0 77" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 90 102 L 110 102 L 110 80" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 0 77 L 110 40" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 0 43 L 110 80" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <path d="M 113 102 L 159 102" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <ellipse cx="110" cy="102" rx="3" ry="3" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <path d="M 113 18.85 L 159 18.75" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
-        <ellipse cx="110" cy="18.86" rx="3" ry="3" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 23 19 L 37 19" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 81.8 19 L 93 19" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 76.9 19 L 34.9 38 L 34.9 0 Z" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <ellipse cx="79.7" cy="19" rx="2.8" ry="2.533333333333333" fill="#ffffcc" stroke="rgb(0, 0, 0)" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 90 19 L 110 19 L 110 40" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 23 19 L 0 19 L 0 43" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 22 102 L 0 102 L 0 77" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 90 102 L 110 102 L 110 80" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 0 77 L 110 40" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 0 43 L 110 80" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 113 102 L 159 102" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <ellipse cx="110" cy="102" rx="3" ry="3" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" pointer-events="all" style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 113 18.85 L 159 18.75" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <ellipse cx="110" cy="18.86" rx="3" ry="3" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" pointer-events="all" style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
         <rect x="159" y="10" width="21" height="17.5" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 19px; height: 1px; padding-top: 16px; margin-left: 160px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 Q
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="170" y="21" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle">
+                <text x="170" y="21" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle" style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));">
                     Q
                 </text>
             </switch>
@@ -38,21 +38,21 @@
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 19px; height: 1px; padding-top: 100px; margin-left: 160px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                            <div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: rgb(0, 0, 0); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 Q̅
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="170" y="104" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle">
+                <text x="170" y="104" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="15px" text-anchor="middle" style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));">
                     Q̅
                 </text>
             </switch>
         </g>
-        <path d="M 22 102 L 36 102" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <path d="M 80.8 102 L 92 102" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <path d="M 75.9 102 L 33.9 121 L 33.9 83 Z" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-        <ellipse cx="78.7" cy="102" rx="2.8" ry="2.533333333333333" fill="#ffffcc" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 22 102 L 36 102" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 80.8 102 L 92 102" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <path d="M 75.9 102 L 33.9 121 L 33.9 83 Z" fill="#ffffcc" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        <ellipse cx="78.7" cy="102" rx="2.8" ry="2.533333333333333" fill="#ffffcc" stroke="rgb(0, 0, 0)" pointer-events="all" style="fill: light-dark(#ffffcc, #171600); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
     </g>
     <switch>
         <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
