@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 241.04 133.06" style="background-color: rgb(255, 255, 255);">
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 241.04 133.06" style="background: #ffffff; background-color: light-dark(#ffffff, #121212); color-scheme: light dark; fill: light-dark(#000000, #ffffff);">
   <defs>
     <style>
       .cls-1 {
@@ -8,82 +8,102 @@
 
       .cls-2 {
         fill: #cbccce;
+        fill: light-dark(#cbccce, #38383a);
       }
 
       .cls-3 {
         fill: #989a9d;
+        fill: light-dark(#989a9d, #5b5d5f);
       }
 
       .cls-4 {
         fill: #bec0c2;
+        fill: light-dark(#bec0c2, #3f4143);
       }
 
       .cls-5 {
         fill: #abadaf;
+        fill: light-dark(#abadaf, #4c4e50);
       }
 
       .cls-6 {
         fill: #d1d3d4;
+        fill: light-dark(#d1d3d4, #333435);
       }
 
       .cls-7 {
         fill: #c8c9cb;
+        fill: light-dark(#c8c9cb, #3a3a3c);
       }
 
       .cls-8 {
         fill: #c7eafb;
+        fill: light-dark(#c7eafb, #0c2b38);
       }
 
       .cls-9 {
         fill: #231f20;
+        fill: light-dark(#231f20, #f3eeef);
       }
 
       .cls-10 {
         fill: #b7b9bc;
+        fill: light-dark(#b7b9bc, #444648);
       }
 
       .cls-11 {
         fill: #aeb0b2;
+        fill: light-dark(#aeb0b2, #4a4c4e);
       }
 
       .cls-12 {
         fill: #dbdcde;
+        fill: light-dark(#dbdcde, #2d2e2f);
       }
 
       .cls-13 {
         fill: #f2f2f3;
+        fill: light-dark(#f2f2f3, #1e1e1e);
       }
 
       .cls-14 {
         fill: #bbbdbf;
+        fill: light-dark(#bbbdbf, #414345);
       }
 
       .cls-15 {
         fill: #dedfe1;
+        fill: light-dark(#dedfe1, #2b2c2d);
       }
 
       .cls-16 {
         fill: #d8d9db;
+        fill: light-dark(#d8d9db, #2f3031);
       }
 
       .cls-17 {
         fill: #9b9da0;
+        fill: light-dark(#9b9da0, #585a5d);
       }
 
       .cls-18 {
         fill: #c1c3c5;
+        fill: light-dark(#c1c3c5, #3d3f40);
       }
 
       .cls-19 {
         fill: #ced0d1;
+        fill: light-dark(#ced0d1, #353637);
       }
 
       .cls-20 {
         fill: #00aeef;
+        fill: light-dark(#00aeef, #0084b7);
       }
 
       .cls-21 {
         fill: #c4c6c8;
+        fill: light-dark(#c4c6c8, #3b3d3e);
       }
 
       .cls-22 {
@@ -96,50 +116,62 @@
 
       .cls-24 {
         fill: #b1b3b5;
+        fill: light-dark(#b1b3b5, #484a4c);
       }
 
       .cls-25 {
         fill: #b4b6b8;
+        fill: light-dark(#b4b6b8, #464849);
       }
 
       .cls-26 {
         fill: #e8e9ea;
+        fill: light-dark(#e8e9ea, #242525);
       }
 
       .cls-27 {
         fill: #a4a6a9;
+        fill: light-dark(#a4a6a9, #525356);
       }
 
       .cls-28 {
         fill: #e2e3e4;
+        fill: light-dark(#e2e3e4, #28292a);
       }
 
       .cls-29 {
         fill: #efeff0;
+        fill: light-dark(#efeff0, #202021);
       }
 
       .cls-30 {
         fill: #9ea0a3;
+        fill: light-dark(#9ea0a3, #56585b);
       }
 
       .cls-31 {
         fill: #ebeced;
+        fill: light-dark(#ebeced, #222223);
       }
 
       .cls-32 {
         fill: #a1a3a6;
+        fill: light-dark(#a1a3a6, #545658);
       }
 
       .cls-33 {
         fill: #e5e6e7;
+        fill: light-dark(#e5e6e7, #262728);
       }
 
       .cls-34 {
         fill: #a7aaac;
+        fill: light-dark(#a7aaac, #4e5153);
       }
 
       .cls-35 {
         fill: #95979a;
+        fill: light-dark(#95979a, #5d5f62);
       }
 
       .cls-36 {
@@ -148,6 +180,7 @@
 
       .cls-37 {
         fill: #d5d6d8;
+        fill: light-dark(#d5d6d8, #313233);
       }
     </style>
     <clipPath id="clippath">
