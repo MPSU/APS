@@ -154,8 +154,6 @@ In 2019–2023, the theoretical part of the course was significantly revised, mo
 
 The main influences on the structure and content of the course in its current form were: the original MPSiS lectures for MPiTK, the 6.004 Computation Structures course taught at MIT, Harris & Harris "Digital Design and Computer Architecture," and Orlov & Tsilker "Computer Organization and Systems."
 
-The authors of the course in its current form are: Mikhail Gennadyevich Popov and Andrei Pavlovich Solodovnikov.
-
 The following students and staff of the MPSU Institute (past and present) contributed to the preparation of the course and the repository: <!--- In alphabetical order -->
 
 | Full Name | Contribution to the course |
